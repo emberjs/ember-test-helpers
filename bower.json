@@ -1,0 +1,23 @@
+{
+  "name": "ember-test-helpers",
+  "version": "0.0.1",
+  "authors": [
+    "Adolfo Builes <builes.adolfo@gmail.com>"
+  ],
+  "description": "Ember.js test helpers.",
+  "main": "index.js",
+  "keywords": [
+    "Ember.js",
+    "ember",
+    "testing"
+  ],
+  "license": "MIT",
+  "homepage": "http://github.com/abuiles/ember-test-helpers",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
