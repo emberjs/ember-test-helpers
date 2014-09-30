@@ -1,0 +1,39 @@
+{
+  "name": "ember-test-helpers",
+  "private": true,
+  "description": "Ember.js test helpers",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/switchfly/ember-test-helpers.git"
+  },
+  "scripts": {
+    "build": "ember build --environment=production",
+    "test": "ember test",
+    "test-server": "ember test --server",
+    "start": "ember server"
+  },
+  "authors": [
+    "Dan Gebhardt",
+    "Robert Jackson",
+    "Stefan Penner",
+    "Ryan Florence",
+    "Adolfo Builes"
+  ],
+  "license": "Apache Version 2.0 and MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "broccoli-closure-compiler": "^0.2.0",
+    "broccoli-compile-modules": "git://github.com/eventualbuddha/broccoli-compile-modules",
+    "broccoli-concat": "0.0.7",
+    "broccoli-file-mover": "^0.4.0",
+    "broccoli-jshint": "~0.5.1",
+    "broccoli-merge-trees": "^0.1.4",
+    "broccoli-static-compiler": "~0.1.4",
+    "broccoli-string-replace": "0.0.2",
+    "ember-cli": "0.0.40",
+    "es6-module-transpiler-amd-formatter": "0.0.1",
+    "express": "^4.6.1",
+    "testem": "^0.6.17"
+  }
+}

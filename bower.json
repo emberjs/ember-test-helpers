@@ -1,24 +1,33 @@
 {
   "name": "ember-test-helpers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
-    "Adolfo Builes <builes.adolfo@gmail.com>",
-    "Dan Gebhardt <dan@cerebris.com>"
+    "Dan Gebhardt",
+    "Robert Jackson",
+    "Stefan Penner",
+    "Ryan Florence",
+    "Adolfo Builes"
   ],
-  "description": "Ember.js test helpers.",
+  "description": "Ember.js test helpers",
   "main": "index.js",
   "keywords": [
     "Ember.js",
     "ember",
     "testing"
   ],
-  "license": "MIT",
-  "homepage": "https://github.com/dgeb/ember-test-helpers",
+  "license": "Apache Version 2.0 and MIT",
+  "homepage": "https://github.com/switchfly/ember-test-helpers",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "ember": "^1.3.0"
+  },
+  "devDependencies": {
+    "ember-data": "~1.0.0-beta.10"
+  }
 }
