@@ -1,8 +1,7 @@
-var compileES6 = require('broccoli-es6-concatenator');
+var concat     = require('broccoli-concat');
 var pickFiles  = require('broccoli-static-compiler');
 var mergeTrees = require('broccoli-merge-trees');
-
-// --- Main lib and tests ---
+var compileES6 = require('broccoli-es6-concatenator');
 
 var loader = pickFiles('bower_components', {
   srcDir: 'loader',
@@ -10,68 +9,31 @@ var loader = pickFiles('bower_components', {
   destDir: '/assets'
 });
 
-var lib = mergeTrees([loader, 'lib']);
-
 var tests = pickFiles('tests', {
   srcDir: '/',
   files: ['test-support/*.js', '*.js'],
   destDir: '/tests'
 });
 
-var libAndTests = mergeTrees([lib, tests]);
-
-var main = compileES6(libAndTests, {
+var libAndTests = mergeTrees([loader, 'lib', tests]);
+libAndTests = compileES6(libAndTests, {
   loaderFile: 'assets/loader.js',
   inputFiles: ['**/*.js'],
   ignoredModules: ['ember'],
   outputFile: '/assets/ember-test-helpers.amd.js'
 });
 
-// --- Vendor ---
-
-var jQuery = pickFiles('bower_components', {
-  srcDir: 'jquery/dist',
-  files: ['jquery.js'],
-  destDir: '/assets'
+var vendor = concat('bower_components', {
+  inputFiles: ['jquery/dist/jquery.js',
+               'handlebars/handlebars.js',
+               'ember/ember.js',
+               'ember-data/ember-data.js'],
+  outputFile: '/assets/vendor.js'
 });
-
-var handlebars = pickFiles('bower_components', {
-  srcDir: 'handlebars',
-  files: ['handlebars.js'],
-  destDir: '/assets'
-});
-
-var ember = pickFiles('bower_components', {
-  srcDir: 'ember',
-  files: ['ember.js'],
-  destDir: '/assets'
-});
-
-var emberData = pickFiles('bower_components', {
-  srcDir: 'ember-data',
-  files: ['ember-data.js'],
-  destDir: '/assets'
-});
-
-var vendor = mergeTrees([jQuery, handlebars, ember, emberData]);
-
-// --- Test support ---
 
 var qunit = pickFiles('bower_components', {
   srcDir: '/qunit/qunit',
   files: ['qunit.js', 'qunit.css'],
-  destDir: '/assets'
-});
-
-var testLoader = pickFiles('bower_components', {
-  srcDir: 'ember-cli-test-loader',
-  files: ['test-loader.js'],
-  destDir: '/assets'
-});
-
-var testShims = pickFiles('bower_components', {
-  srcDir: 'ember-cli-shims',
-  files: ['app-shims.js'],
   destDir: '/assets'
 });
 
@@ -81,7 +43,11 @@ var testIndex = pickFiles('tests', {
   destDir: '/tests'
 });
 
-var testSupport = mergeTrees([qunit, testLoader, testShims, testIndex]);
+var testSupport = concat('bower_components', {
+  inputFiles: ['ember-cli-shims/app-shims.js',
+               'ember-cli-test-loader/test-loader.js'],
+  outputFile: '/assets/test-support.js'
+});
 
-module.exports = mergeTrees([testSupport, vendor, main]);
+module.exports = mergeTrees([libAndTests, vendor, testIndex, qunit, testSupport]);
 
