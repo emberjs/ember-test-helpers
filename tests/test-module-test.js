@@ -1,28 +1,24 @@
 import { TestModule } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
+import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
+
+function moduleFor(fullName, description, callbacks) {
+  var module = new TestModule(fullName, description, callbacks);
+  qunitModuleFor(module);
+}
 
 var registry = {
   'component:x-foo': Ember.Component.extend()
 };
 
-function moduleFor(fullName, description, callbacks) {
-  var module = new TestModule(fullName, description, callbacks);
-
-  QUnit.module(module.name, {
-    setup: function() {
-      setResolverRegistry(registry);
-      module.setup();
-    },
-    teardown: function() {
-      module.teardown();
-    }
-  });
-}
-
 var a = 0;
 
 moduleFor('component:x-foo', 'moduleFor callbacks', {
+  preSetup: function() {
+    setResolverRegistry(registry);
+  },
+
   setup: function() {
     a += 1;
   },

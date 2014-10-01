@@ -1,6 +1,12 @@
 import { TestModuleForModel } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
+import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
+
+function moduleForModel(name, description, callbacks) {
+  var module = new TestModuleForModel(name, description, callbacks);
+  qunitModuleFor(module);
+}
 
 var Post = DS.Model.extend({
   title: DS.attr(),
@@ -18,7 +24,6 @@ var PrettyColor = Ember.Component.extend({
     return 'color: ' + this.get('name') + ';';
   }.property('name')
 });
-
 
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
 var whazzitCreateRecordCalled = false;
@@ -48,21 +53,13 @@ var registry = {
   'adapter:application': ApplicationAdapter,
 };
 
-function moduleForModel(name, description, callbacks) {
-  var module = new TestModuleForModel(name, description, callbacks);
+///////////////////////////////////////////////////////////////////////////////
 
-  QUnit.module(module.module.name, { //TODO
-    setup: function() {
-      setResolverRegistry(registry);
-      module.setup();
-    },
-    teardown: function() {
-      module.teardown();
-    }
-  });
-}
-
-moduleForModel('whazzit', 'moduleForModel whazzit without adapter');
+moduleForModel('whazzit', 'moduleForModel whazzit without adapter', {
+  preSetup: function() {
+    setResolverRegistry(registry);
+  }
+});
 
 test('store exists', function() {
   var store = this.store();
@@ -132,6 +129,9 @@ test('model is using the WhazzitAdapter', function() {
 //// }
 
 moduleForModel('whazzit', 'moduleForModel whazzit with application adapter', {
+  preSetup: function() {
+    setResolverRegistry(registry);
+  },
   needs: ['adapter:application']
 });
 

@@ -1,7 +1,13 @@
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
+import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
+
+function moduleForComponent(name, description, callbacks) {
+  var module = new TestModuleForComponent(name, description, callbacks);
+  qunitModuleFor(module);
+}
 
 var PrettyColor = Ember.Component.extend({
   classNames: ['pretty-color'],
@@ -17,23 +23,13 @@ var registry = {
   'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>')
 };
 
-function moduleForComponent(name, description, callbacks) {
-  var module = new TestModuleForComponent(name, description, callbacks);
-
-  QUnit.module(module.module.name, { //TODO
-    setup: function() {
-      setResolverRegistry(registry);
-      module.setup();
-    },
-    teardown: function() {
-      module.teardown();
-    }
-  });
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
-moduleForComponent('x-foo', 'moduleForComponent with x-foo');
+moduleForComponent('x-foo', 'moduleForComponent with x-foo', {
+  preSetup: function() {
+    setResolverRegistry(registry);
+  }
+});
 
 test('renders', function() {
   expect(2);
@@ -83,7 +79,11 @@ test('clears out views from test to test', function() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-moduleForComponent('pretty-color', 'moduleForComponent with pretty-color');
+moduleForComponent('pretty-color', 'moduleForComponent with pretty-color', {
+  preSetup: function() {
+    setResolverRegistry(registry);
+  }
+});
 
 test("className", function(){
   // first call to this.$() renders the component.
