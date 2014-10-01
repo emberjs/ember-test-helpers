@@ -14,7 +14,7 @@ var registry = {
 
 var a = 0;
 
-moduleFor('component:x-foo', 'moduleFor callbacks', {
+moduleFor('component:x-foo', 'TestModule callbacks', {
   preSetup: function() {
     setResolverRegistry(registry);
   },

@@ -25,7 +25,7 @@ var registry = {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-moduleForComponent('x-foo', 'moduleForComponent with x-foo', {
+moduleForComponent('x-foo', {
   preSetup: function() {
     setResolverRegistry(registry);
   }
@@ -79,7 +79,7 @@ test('clears out views from test to test', function() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-moduleForComponent('pretty-color', 'moduleForComponent with pretty-color', {
+moduleForComponent('pretty-color', {
   preSetup: function() {
     setResolverRegistry(registry);
   }

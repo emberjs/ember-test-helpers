@@ -55,7 +55,7 @@ var registry = {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-moduleForModel('whazzit', 'moduleForModel whazzit without adapter', {
+moduleForModel('whazzit', 'model:whazzit without adapter', {
   preSetup: function() {
     setResolverRegistry(registry);
   }
@@ -81,7 +81,7 @@ test('model is using the FixtureAdapter', function() {
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
 });
 
-moduleForModel('whazzit', 'moduleForModel whazzit with adapter', {
+moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   needs: ['adapter:whazzit'],
   teardown: function(){
     whazzitCreateRecordCalled = false;
@@ -128,7 +128,7 @@ test('model is using the WhazzitAdapter', function() {
 //   });
 // }
 
-moduleForModel('whazzit', 'moduleForModel whazzit with application adapter', {
+moduleForModel('whazzit', 'model:whazzit with application adapter', {
   preSetup: function() {
     setResolverRegistry(registry);
   },
