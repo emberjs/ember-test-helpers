@@ -18,7 +18,7 @@ var lib = mergeTrees([loader, 'lib']);
 
 var tests = pickFiles('tests', {
   srcDir: '/',
-  files: ['**/*.js'],
+  files: ['test-support/*.js', '*.js'],
   destDir: '/tests'
 });
 
