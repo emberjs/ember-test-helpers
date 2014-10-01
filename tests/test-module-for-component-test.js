@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
-import { setResolverRegistry } from 'tests/test-support/resolver-registry';
+import { setResolverRegistry } from 'tests/test-support/resolver';
 
 var PrettyColor = Ember.Component.extend({
   classNames: ['pretty-color'],

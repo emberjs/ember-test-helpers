@@ -1,6 +1,6 @@
 import { TestModule } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
-import { setResolverRegistry } from 'tests/test-support/resolver-registry';
+import { setResolverRegistry } from 'tests/test-support/resolver';
 
 var registry = {
   'component:x-foo': Ember.Component.extend()
