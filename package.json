@@ -23,17 +23,10 @@
   "license": "Apache Version 2.0 and MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "broccoli-closure-compiler": "^0.2.0",
-    "broccoli-compile-modules": "git://github.com/eventualbuddha/broccoli-compile-modules",
-    "broccoli-concat": "0.0.7",
-    "broccoli-file-mover": "^0.4.0",
-    "broccoli-jshint": "~0.5.1",
+    "broccoli": "^0.13.0",
+    "broccoli-es6-concatenator": "^0.1.7",
     "broccoli-merge-trees": "^0.1.4",
-    "broccoli-static-compiler": "~0.1.4",
-    "broccoli-string-replace": "0.0.2",
-    "ember-cli": "0.0.40",
-    "es6-module-transpiler-amd-formatter": "0.0.1",
-    "express": "^4.6.1",
-    "testem": "^0.6.17"
+    "broccoli-static-compiler": "^0.1.4",
+    "testem": "^0.6.19"
   }
 }
