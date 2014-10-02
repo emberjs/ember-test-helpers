@@ -7,16 +7,40 @@ A test-framework-agnostic set of helpers for testing Ember.js applications.
 These helpers are best used in conjunction with a test-framework-specific wrapper, such as
 [ember-qunit](https://github.com/rwjblue/ember-qunit).
 
-## Installation and Testing
+## Installation
 
 ```
 $ npm install
 $ bower install
 $ npm install -g broccoli-cli
+```
+
+## Testing
+
+In order to test in the browser:
+
+```
 $ broccoli serve
 ```
 
-Browse to [http://localhost:4200/tests](http://localhost:4200/tests) to run tests in your browser. 
+... and then visit [http://localhost:4200/tests](http://localhost:4200/tests).
+
+In order to perform a CI test:
+
+```
+$ rm -rf build && BROCCOLI_ENV=test broccoli build build && testem ci
+```
+
+Or simply:
+
+```
+$ npm test
+```
+
+## Attribution
+
+Much of `ember-test-helpers` was extracted from the original `ember-qunit`, which
+was written by Stefan Penner, Robert Jackson, and  Ryan Florence. 
 
 ## Copyright and License
 
