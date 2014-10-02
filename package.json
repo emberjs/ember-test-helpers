@@ -20,6 +20,7 @@
   "license": "Apache Version 2.0 and MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "bower": "^1.3.8",
     "broccoli": "^0.13.0",
     "broccoli-concat": "^0.0.11",
     "broccoli-es6-concatenator": "^0.1.7",
