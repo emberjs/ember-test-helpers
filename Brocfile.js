@@ -20,7 +20,7 @@ libAndTests = compileES6(libAndTests, {
   loaderFile: 'assets/loader.js',
   inputFiles: ['**/*.js'],
   ignoredModules: ['ember'],
-  outputFile: '/assets/ember-test-helpers.amd.js'
+  outputFile: '/assets/ember-test-helpers-tests.amd.js'
 });
 
 var vendor = concat('bower_components', {

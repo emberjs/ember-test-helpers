@@ -1,6 +1,11 @@
 {
   "framework": "qunit",
-  "test_page": "tests/index.html",
+  "cwd": "build/",
+  "serve_files": [
+    "assets/ember-test-helpers-tests.amd.js",
+    "assets/vendor.js",
+    "assets/test-support.js"
+  ],
   "launch_in_ci": ["PhantomJS"],
   "launch_in_dev": ["PhantomJS", "Chrome"]
 }
