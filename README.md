@@ -1,4 +1,4 @@
-# ember-test-helpers
+# ember-test-helpers [![Build Status](https://secure.travis-ci.org/switchfly/ember-test-helpers.png?branch=master)](http://travis-ci.org/switchfly/ember-test-helpers)
 
 A test-framework-agnostic set of helpers for testing Ember.js applications.
 
