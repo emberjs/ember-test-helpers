@@ -10,9 +10,9 @@ These helpers are best used in conjunction with a test-framework-specific wrappe
 ## Installation
 
 ```
+$ npm install -g bower broccoli-cli
 $ npm install
 $ bower install
-$ npm install -g broccoli-cli
 ```
 
 ## Testing
