@@ -2,7 +2,7 @@
   "name": "ember-test-helpers",
   "private": true,
   "description": "Helpers for testing Ember.js applications",
-  "main": "index.js",
+  "main": "lib/ember-test-helpers.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/switchfly/ember-test-helpers.git"
