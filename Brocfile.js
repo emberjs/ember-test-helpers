@@ -11,6 +11,12 @@ var loader = pickFiles('bower_components', {
   destDir: '/'
 });
 
+var klassy = pickFiles('bower_components', {
+  srcDir: '/klassy/lib',
+  files: ['klassy.js'],
+  destDir: '/'
+});
+
 var lib = pickFiles('lib', {
   srcDir: '/',
   files: ['**/*.js'],
@@ -23,7 +29,7 @@ var tests = pickFiles('tests', {
   destDir: '/tests'
 });
 
-var main = mergeTrees([loader, lib, tests]);
+var main = mergeTrees([loader, klassy, lib, tests]);
 main = compileES6(main, {
   loaderFile: '/loader.js',
   inputFiles: ['**/*.js'],
@@ -60,4 +66,3 @@ var testSupport = concat('bower_components', {
 });
 
 module.exports = mergeTrees([main, vendor, testIndex, qunit, testSupport]);
-
