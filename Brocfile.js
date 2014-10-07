@@ -3,10 +3,18 @@ var pickFiles  = require('broccoli-static-compiler');
 var mergeTrees = require('broccoli-merge-trees');
 var compileES6 = require('broccoli-es6-concatenator');
 
+// --- Compile ES6 modules ---
+
 var loader = pickFiles('bower_components', {
   srcDir: 'loader',
   files: ['loader.js'],
-  destDir: '/assets'
+  destDir: '/'
+});
+
+var lib = pickFiles('lib', {
+  srcDir: '/',
+  files: ['**/*.js'],
+  destDir: '/'
 });
 
 var tests = pickFiles('tests', {
@@ -15,13 +23,15 @@ var tests = pickFiles('tests', {
   destDir: '/tests'
 });
 
-var libAndTests = mergeTrees([loader, 'lib', tests]);
-libAndTests = compileES6(libAndTests, {
-  loaderFile: 'assets/loader.js',
+var main = mergeTrees([loader, lib, tests]);
+main = compileES6(main, {
+  loaderFile: '/loader.js',
   inputFiles: ['**/*.js'],
   ignoredModules: ['ember'],
   outputFile: '/assets/ember-test-helpers-tests.amd.js'
 });
+
+// --- Select and concat vendor / support files ---
 
 var vendor = concat('bower_components', {
   inputFiles: ['jquery/dist/jquery.js',
@@ -49,5 +59,5 @@ var testSupport = concat('bower_components', {
   outputFile: '/assets/test-support.js'
 });
 
-module.exports = mergeTrees([libAndTests, vendor, testIndex, qunit, testSupport]);
+module.exports = mergeTrees([main, vendor, testIndex, qunit, testSupport]);
 
