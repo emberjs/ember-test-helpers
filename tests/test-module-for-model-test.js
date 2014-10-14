@@ -8,56 +8,34 @@ function moduleForModel(name, description, callbacks) {
   qunitModuleFor(module);
 }
 
-var Post = DS.Model.extend({
-  title: DS.attr(),
-  user: DS.attr(),
-  comments: DS.hasMany('comment')
-});
-var Comment = DS.Model.extend({
-  post: DS.belongsTo('post')
-});
-
-var PrettyColor = Ember.Component.extend({
-  classNames: ['pretty-color'],
-  attributeBindings: ['style'],
-  style: function(){
-    return 'color: ' + this.get('name') + ';';
-  }.property('name')
-});
-
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
-var whazzitCreateRecordCalled = false;
+var whazzitAdapterFindAllCalled = false;
 var WhazzitAdapter = DS.FixtureAdapter.extend({
-  createRecord: function(){
-    whazzitCreateRecordCalled = true;
+  findAll: function(store, type) {
+    whazzitAdapterFindAllCalled = true;
     return this._super.apply(this, arguments);
   }
 });
 
 var ApplicationAdapter = DS.FixtureAdapter.extend();
 
-var registry = {
-  'component:x-foo': Ember.Component.extend(),
-  'component:pretty-color': PrettyColor,
-  'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>'),
-  'route:foo': Ember.Route.extend(),
-  'controller:foos': Ember.ArrayController.extend(),
-  'controller:hello-world': Ember.ObjectController.extend(),
-  'controller:bar': Ember.Controller.extend({
-    needs: ['foos', 'helloWorld']
-  }),
-  'model:post': Post,
-  'model:comment': Comment,
-  'model:whazzit': Whazzit,
-  'adapter:whazzit': WhazzitAdapter,
-  'adapter:application': ApplicationAdapter,
-};
+function setupRegistry() {
+  setResolverRegistry({
+    'model:whazzit': Whazzit,
+    'adapter:whazzit': WhazzitAdapter,
+    'adapter:application': ApplicationAdapter
+  });
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForModel('whazzit', 'model:whazzit without adapter', {
   preSetup: function() {
-    setResolverRegistry(registry);
+    setupRegistry();
+  },
+
+  setup: function() {
+    Whazzit.FIXTURES = [];
   }
 });
 
@@ -81,63 +59,58 @@ test('model is using the FixtureAdapter', function() {
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
 });
 
+///////////////////////////////////////////////////////////////////////////////
+
 moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   needs: ['adapter:whazzit'],
-  teardown: function(){
-    whazzitCreateRecordCalled = false;
+
+  preSetup: function() {
+    setupRegistry();
+  },
+
+  setup: function() {
+    Whazzit.FIXTURES = [];
+    whazzitAdapterFindAllCalled = false;
   }
 });
 
 test('model is using the WhazzitAdapter', function() {
   var model = this.subject(),
-    store = this.store();
+      store = this.store();
 
   ok(store.adapterFor(model.constructor) instanceof WhazzitAdapter);
 });
 
-//TODO - model.save() promise is never fulfilled
-//       (broken on this branch as well as on master)
-//
-// if (DS._setupContainer) {
-//   test('creates the custom adapter', function() {
-//     expect(2);
-//     ok(!whazzitCreateRecordCalled, 'precond - custom adapter is not yet instantiated');
-//
-//     var model = this.subject();
-//
-//     return Ember.run(function(){
-//       model.set('gear', '42');
-//       return model.save().then(function(){
-//         ok(whazzitCreateRecordCalled, 'uses the custom adapter');
-//       });
-//     });
-//   });
-// } else {
-//   test('without DS._setupContainer fails to create the custom adapter', function() {
-//     var thrown = false;
-//     try {
-//       var model = this.subject();
-//       Ember.run(function(){
-//         model.set('gear', '42');
-//         return model.save();
-//       });
-//     } catch(e) {
-//       thrown = true;
-//     }
-//     ok(thrown, 'error is thrown without DS._setupContainer');
-//   });
-// }
+test('uses the custom adapter', function() {
+  expect(2);
+  ok(!whazzitAdapterFindAllCalled, 'precond - custom adapter has not yet been called');
+
+  var store = this.store();
+
+  return Ember.run(function() {
+    return store.find('whazzit').then(function() {
+      ok(whazzitAdapterFindAllCalled, 'uses the custom adapter');
+    });
+  });
+});
+
+///////////////////////////////////////////////////////////////////////////////
 
 moduleForModel('whazzit', 'model:whazzit with application adapter', {
+  needs: ['adapter:application'],
+
   preSetup: function() {
-    setResolverRegistry(registry);
+    setupRegistry();
   },
-  needs: ['adapter:application']
+
+  setup: function() {
+    Whazzit.FIXTURES = [];
+  }
 });
 
 test('model is using the ApplicationAdapter', function() {
   var model = this.subject(),
-    store = this.store();
+      store = this.store();
 
   ok(store.adapterFor(model.constructor) instanceof ApplicationAdapter);
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
