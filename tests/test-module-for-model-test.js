@@ -30,7 +30,7 @@ function setupRegistry() {
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForModel('whazzit', 'model:whazzit without adapter', {
-  preSetup: function() {
+  beforeSetup: function() {
     setupRegistry();
   },
 
@@ -64,7 +64,7 @@ test('FixtureAdapter is registered for model', function() {
 moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   needs: ['adapter:whazzit'],
 
-  preSetup: function() {
+  beforeSetup: function() {
     setupRegistry();
   },
 
@@ -99,7 +99,7 @@ test('WhazzitAdapter is used for `find`', function() {
 moduleForModel('whazzit', 'model:whazzit with application adapter', {
   needs: ['adapter:application'],
 
-  preSetup: function() {
+  beforeSetup: function() {
     setupRegistry();
   },
 

@@ -28,7 +28,7 @@ function setupRegistry() {
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForComponent('x-foo', {
-  preSetup: function() {
+  beforeSetup: function() {
     setupRegistry();
   }
 });
@@ -82,7 +82,7 @@ test('clears out views from test to test', function() {
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForComponent('pretty-color', {
-  preSetup: function() {
+  beforeSetup: function() {
     setupRegistry();
   }
 });
