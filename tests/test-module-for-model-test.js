@@ -51,9 +51,9 @@ test('model exists as subject', function() {
   ok(model instanceof Whazzit);
 });
 
-test('model is using the FixtureAdapter', function() {
+test('FixtureAdapter is registered for model', function() {
   var model = this.subject(),
-    store = this.store();
+      store = this.store();
 
   ok(store.adapterFor(model.constructor) instanceof DS.FixtureAdapter);
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
@@ -74,14 +74,14 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   }
 });
 
-test('model is using the WhazzitAdapter', function() {
+test('WhazzitAdapter is registered for model', function() {
   var model = this.subject(),
       store = this.store();
 
   ok(store.adapterFor(model.constructor) instanceof WhazzitAdapter);
 });
 
-test('uses the custom adapter', function() {
+test('WhazzitAdapter is used for `find`', function() {
   expect(2);
   ok(!whazzitAdapterFindAllCalled, 'precond - custom adapter has not yet been called');
 
@@ -108,7 +108,7 @@ moduleForModel('whazzit', 'model:whazzit with application adapter', {
   }
 });
 
-test('model is using the ApplicationAdapter', function() {
+test('ApplicationAdapter is registered for model', function() {
   var model = this.subject(),
       store = this.store();
 

@@ -17,17 +17,19 @@ var PrettyColor = Ember.Component.extend({
   }.property('name')
 });
 
-var registry = {
-  'component:x-foo': Ember.Component.extend(),
-  'component:pretty-color': PrettyColor,
-  'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>')
-};
+function setupRegistry() {
+  setResolverRegistry({
+    'component:x-foo': Ember.Component.extend(),
+    'component:pretty-color': PrettyColor,
+    'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>')
+  });
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForComponent('x-foo', {
   preSetup: function() {
-    setResolverRegistry(registry);
+    setupRegistry();
   }
 });
 
@@ -81,7 +83,7 @@ test('clears out views from test to test', function() {
 
 moduleForComponent('pretty-color', {
   preSetup: function() {
-    setResolverRegistry(registry);
+    setupRegistry();
   }
 });
 

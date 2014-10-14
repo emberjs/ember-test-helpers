@@ -8,9 +8,11 @@ function moduleFor(fullName, description, callbacks) {
   qunitModuleFor(module);
 }
 
-var registry = {
-  'component:x-foo': Ember.Component.extend()
-};
+function setupRegistry() {
+  setResolverRegistry({
+    'component:x-foo': Ember.Component.extend()
+  });
+}
 
 var a = 0;
 var b = 0;
@@ -19,7 +21,7 @@ var preTeardownOk = false;
 
 moduleFor('component:x-foo', 'TestModule callbacks', {
   preSetup: function() {
-    setResolverRegistry(registry);
+    setupRegistry();
 
     preSetupOk = (a === 0);
     b += 1;
