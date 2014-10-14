@@ -5,7 +5,8 @@ A test-framework-agnostic set of helpers for testing Ember.js applications.
 ## Usage
 
 These helpers are best used in conjunction with a test-framework-specific wrapper, such as
-[ember-qunit](https://github.com/rwjblue/ember-qunit).
+[ember-qunit](https://github.com/rwjblue/ember-qunit) or
+[ember-mocha](https://github.com/switchfly/ember-mocha).
 
 ## Installation
 
