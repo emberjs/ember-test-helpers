@@ -8,7 +8,7 @@
     "url": "https://github.com/switchfly/ember-test-helpers.git"
   },
   "scripts": {
-    "test": "bower install && rm -rf build && BROCCOLI_ENV=test broccoli build build && testem ci"
+    "test": "rm -rf build && BROCCOLI_ENV=test broccoli build build && testem ci"
   },
   "authors": [
     "Dan Gebhardt",
