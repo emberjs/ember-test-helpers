@@ -9,7 +9,7 @@
     "Adolfo Builes"
   ],
   "description": "Ember.js test helpers",
-  "main": "index.js",
+  "main": "lib/ember-test-helpers.js",
   "keywords": [
     "Ember.js",
     "ember",
