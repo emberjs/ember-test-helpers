@@ -4,11 +4,14 @@ A test-framework-agnostic set of helpers for testing Ember.js applications.
 
 ## Usage
 
-These helpers are best used in conjunction with a test-framework-specific
+This library is best used in conjunction with a test-framework-specific
 wrapper, such as [ember-qunit](https://github.com/rwjblue/ember-qunit) or
 [ember-mocha](https://github.com/switchfly/ember-mocha).
 
-## Exports
+This library was written using ES6 modules, which are contained in `lib/`.
+These modules must be transpiled for pre-ES6 compatibility.
+
+## Test Helpers
 
 ### TestModule
 
@@ -81,19 +84,24 @@ each test's container.
 
 * `isolatedContainer` - creates a new isolated container for unit testing.
 
-## Installation
+## Contributing
 
-```
+Contributions are welcome. Please follow the instructions below to install and
+test this library.
+
+### Installation
+
+```sh
 $ npm install -g bower broccoli-cli
 $ npm install
 $ bower install
 ```
 
-## Testing
+### Testing
 
 In order to test in the browser:
 
-```
+```sh
 $ broccoli serve
 ```
 
@@ -101,19 +109,15 @@ $ broccoli serve
 
 In order to perform a CI test:
 
-```
+```sh
 $ rm -rf build && BROCCOLI_ENV=test broccoli build build && testem ci
 ```
 
 Or simply:
 
-```
+```sh
 $ npm test
 ```
-
-## Distribution
-
-Transpile this repo's ES6 modules (from `lib`).
 
 ## Attribution
 
