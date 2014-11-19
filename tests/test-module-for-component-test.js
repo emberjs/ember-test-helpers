@@ -17,17 +17,33 @@ var PrettyColor = Ember.Component.extend({
   }.property('name')
 });
 
+var ColorController = Ember.ObjectController.extend({
+  hexa: function() {
+    switch( this.get('model') ) {
+      case 'red':
+        return '0xFF0000';
+      case 'green':
+        return '0x00FF00';
+      case 'blue':
+        return '0x0000FF';
+    }
+  }.property('model')
+});
+
 function setupRegistry() {
   setResolverRegistry({
     'component:x-foo': Ember.Component.extend(),
     'component:pretty-color': PrettyColor,
-    'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>')
+    'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>'),
+    'controller:color': ColorController
   });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForComponent('x-foo', {
+  needs: ['controller:color'],
+
   beforeSetup: function() {
     setupRegistry();
   }
@@ -65,6 +81,66 @@ test('can lookup components in its layout', function() {
   expect(1);
   var component = this.subject({
     layout: Ember.Handlebars.compile("{{x-foo id='yodawg-i-heard-you-liked-x-foo-in-ur-x-foo'}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup array controllers in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{#each colors itemController='color'}}{{hexa}}{{/each}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup object controllers in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{#each colors itemController='object'}}{{this}}{{/each}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup basic controllers in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{#each colors itemController='basic'}}{{this}}{{/each}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup Ember.Select in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{view 'select'}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup default Ember.Views in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{view 'default'}}")
+  });
+  this.render();
+  equal(component._state, 'inDOM');
+});
+
+test('can lookup toplevel Ember.Views in its layout', function() {
+  expect(1);
+  var component = this.subject({
+    colors: ['red', 'green', 'blue'],
+    layout: Ember.Handlebars.compile("{{view 'toplevel'}}")
   });
   this.render();
   equal(component._state, 'inDOM');
