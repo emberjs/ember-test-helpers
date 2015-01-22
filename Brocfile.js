@@ -1,14 +1,14 @@
-var concat     = require('broccoli-concat');
 var pickFiles  = require('broccoli-static-compiler');
 var mergeTrees = require('broccoli-merge-trees');
-var compileES6 = require('broccoli-es6-concatenator');
+var compileES6 = require('broccoli-es6modules');
+var concat   = require('broccoli-sourcemap-concat');
 
 // --- Compile ES6 modules ---
 
 var loader = pickFiles('bower_components', {
   srcDir: 'loader',
   files: ['loader.js'],
-  destDir: '/'
+  destDir: '/assets'
 });
 
 var klassy = pickFiles('bower_components', {
@@ -29,11 +29,11 @@ var tests = pickFiles('tests', {
   destDir: '/tests'
 });
 
-var main = mergeTrees([loader, klassy, lib, tests]);
-main = compileES6(main, {
-  loaderFile: '/loader.js',
+var main = mergeTrees([klassy, lib, tests]);
+main = new compileES6(main);
+
+main = concat(main, {
   inputFiles: ['**/*.js'],
-  ignoredModules: ['ember'],
   outputFile: '/assets/ember-test-helpers-tests.amd.js'
 });
 
@@ -65,4 +65,4 @@ var testSupport = concat('bower_components', {
   outputFile: '/assets/test-support.js'
 });
 
-module.exports = mergeTrees([main, vendor, testIndex, qunit, testSupport]);
+module.exports = mergeTrees([main, vendor, testIndex, qunit, loader, testSupport]);
