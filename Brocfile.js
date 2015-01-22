@@ -6,7 +6,7 @@ var concat   = require('broccoli-sourcemap-concat');
 // --- Compile ES6 modules ---
 
 var loader = pickFiles('bower_components', {
-  srcDir: 'loader',
+  srcDir: 'loader.js',
   files: ['loader.js'],
   destDir: '/assets'
 });
