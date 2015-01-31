@@ -185,3 +185,24 @@ test("$", function(){
   equal($.trim(this.$('.color-name').text()), 'green');
   equal($.trim(this.$().text()), 'Pretty Color: green');
 });
+
+moduleForComponent('pretty-color', 'component:pretty-color -- this.render in setup', {
+  beforeSetup: function() {
+    setupRegistry();
+  },
+
+  setup: function() {
+    this.subject({
+      name: 'red'
+    });
+
+    this.render();
+  }
+});
+
+test("className", function(){
+  // calling `this.$` or `this.subject.$` would
+  // force it to `render` initially, so we access the `ember-testing`
+  // div contents directly
+  equal($.trim($('#ember-testing').text()), 'Pretty Color: red');
+});
