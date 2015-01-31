@@ -8,7 +8,9 @@
     "url": "https://github.com/switchfly/ember-test-helpers.git"
   },
   "scripts": {
-    "test": "rm -rf build && BROCCOLI_ENV=test broccoli build build && testem ci"
+    "start": "ember serve",
+    "pretest": "ember build",
+    "test": "testem ci"
   },
   "authors": [
     "Dan Gebhardt",
@@ -25,6 +27,7 @@
     "broccoli-es6-concatenator": "^0.1.7",
     "broccoli-merge-trees": "^0.1.4",
     "broccoli-static-compiler": "^0.1.4",
+    "ember-cli": "^0.1.12",
     "testem": "^0.6.19"
   }
 }
