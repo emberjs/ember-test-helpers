@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "klassy": "cerebris/klassy.js#0.1.0",
-    "ember": "^1.7.0"
+    "ember": "^1.10.0"
   },
   "devDependencies": {
     "qunit": "^1.15.0",
