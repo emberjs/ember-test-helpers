@@ -41,7 +41,7 @@ main = concat(main, {
 
 var vendor = concat('bower_components', {
   inputFiles: ['jquery/dist/jquery.js',
-               'handlebars/handlebars.js',
+               'ember/ember-template-compiler.js',
                'ember/ember.js',
                'ember-data/ember-data.js'],
   outputFile: '/assets/vendor.js'
