@@ -83,3 +83,17 @@ test("can lookup factory registered in setup", function() {
 
   equal(service.get('purpose'), 'blabering');
 });
+
+moduleFor('component:x-foo', 'component:x-foo -- callback context', {
+  beforeSetup: function() {
+    setupRegistry();
+  },
+
+  getSubjectName: function() {
+    return this.subjectName;
+  }
+});
+
+test("callbacks are called in the context of the module", function() {
+  equal(this.getSubjectName(), 'component:x-foo');
+});
