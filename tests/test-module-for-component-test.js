@@ -30,10 +30,20 @@ var ColorController = Ember.ObjectController.extend({
   }.property('model')
 });
 
+var BoringColor = Ember.Component.extend({
+  willDestroyElement: function(){
+    var stateIndicatesInDOM = (this._state === 'inDOM');
+    var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
+
+    ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM')
+  }
+});
+
 function setupRegistry() {
   setResolverRegistry({
     'component:x-foo': Ember.Component.extend(),
     'component:pretty-color': PrettyColor,
+    'component:boring-color': BoringColor,
     'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>'),
     'controller:color': ColorController
   });
@@ -205,4 +215,19 @@ test("className", function(){
   // force it to `render` initially, so we access the `ember-testing`
   // div contents directly
   equal($.trim($('#ember-testing').text()), 'Pretty Color: red');
+});
+
+moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {
+  beforeSetup: function() {
+    setupRegistry();
+  },
+
+  setup: function() {
+    this.render();
+  }
+});
+
+test("className", function(){
+  expect(1)
+  // the assertion is in the willDestroyElement() hook of the component
 });
