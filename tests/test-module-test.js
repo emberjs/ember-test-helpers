@@ -97,3 +97,29 @@ moduleFor('component:x-foo', 'component:x-foo -- callback context', {
 test("callbacks are called in the context of the module", function() {
   equal(this.getSubjectName(), 'component:x-foo');
 });
+
+moduleFor('component:x-foo', 'component:x-foo -- created subjects are cleaned up', {
+  beforeSetup: function() {
+    setupRegistry();
+  },
+
+  afterTeardown: function() {
+    var subject = this.cache.subject;
+
+    ok(subject.isDestroyed);
+  }
+});
+
+test("subject's created in a test are destroyed", function() {
+  this.subject();
+});
+
+moduleFor('component:x-foo', 'component:x-foo -- uncreated subjects do not error', {
+  beforeSetup: function() {
+    setupRegistry();
+  }
+});
+
+test("subject's created in a test are destroyed", function() {
+  expect(0);
+});
