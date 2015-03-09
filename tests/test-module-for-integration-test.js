@@ -41,3 +41,8 @@ test('it can handle actions', function() {
   this.$('button').click();
   equal(handlerArg, 42);
 });
+
+test('it accepts precompiled templates', function() {
+  this.render(Ember.Handlebars.compile("<span>Hello</span>"));
+  equal(this.$('span').text(), 'Hello');
+});
