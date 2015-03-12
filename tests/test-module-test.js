@@ -10,7 +10,8 @@ function moduleFor(fullName, description, callbacks) {
 
 function setupRegistry() {
   setResolverRegistry({
-    'component:x-foo': Ember.Component.extend()
+    'component:x-foo':           Ember.Component.extend(),
+    'component:not-the-subject': Ember.Component.extend()
   });
 }
 
@@ -122,4 +123,14 @@ moduleFor('component:x-foo', 'component:x-foo -- uncreated subjects do not error
 
 test("subject's created in a test are destroyed", function() {
   expect(0);
+});
+
+moduleFor('component:x-foo', 'component:x-foo -- `integration: true`', {
+  beforeSetup: setupRegistry(),
+  integration: true
+});
+
+test("needs is not needed (pun intended) when integration is true", function() {
+  var otherComponent = this.container.lookup('component:not-the-subject');
+  ok(otherComponent, 'another component can be resolved when integration is true');
 });
