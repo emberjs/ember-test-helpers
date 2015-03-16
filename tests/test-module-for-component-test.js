@@ -39,11 +39,16 @@ var BoringColor = Ember.Component.extend({
   }
 });
 
+var TaglessThing = Ember.Component.extend({
+  tagName: ''
+});
+
 function setupRegistry() {
   setResolverRegistry({
     'component:x-foo': Ember.Component.extend(),
     'component:pretty-color': PrettyColor,
     'component:boring-color': BoringColor,
+    'component:tagless-thing': TaglessThing,
     'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>'),
     'controller:color': ColorController
   });
@@ -230,4 +235,32 @@ moduleForComponent('boring-color', 'component:boring-color -- still in DOM in wi
 test("className", function(){
   expect(1)
   // the assertion is in the willDestroyElement() hook of the component
+});
+
+moduleForComponent('tagless-thing', 'component:tagless-thing -- this.render', {
+  beforeSetup: function() {
+    setupRegistry();
+  }
+});
+
+test("render returns undefined, does not call component.$()", function(){
+  expect(2);
+
+  var error = null;
+  var result;
+
+  try {
+    result = this.render();
+  } catch (e) {
+    error = e;
+  }
+
+  if (error) {
+    ok(false, 'render failed with error: ' + error.message);
+  } else {
+    ok(true, 'render did not error');
+  }
+
+  ok(result === undefined,
+     'this.render() returns undefined');
 });
