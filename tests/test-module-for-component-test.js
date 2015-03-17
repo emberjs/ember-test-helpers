@@ -51,8 +51,17 @@ function setupRegistry() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+var originalDeprecate;
 moduleForComponent('x-foo', {
   needs: ['controller:color'],
+
+  setup: function() {
+    originalDeprecate = Ember.deprecate;
+  },
+
+  teardown: function() {
+    Ember.deprecate = originalDeprecate;
+  },
 
   beforeSetup: function() {
     setupRegistry();
@@ -68,13 +77,22 @@ test('renders', function() {
 });
 
 test('append', function() {
-  expect(2);
-  var component = this.subject();
+  expect(4);
+
+  var deprecations = [];
+  var $el;
+  var component;
+
+  // capture all deprecations so they can be checked later
+  Ember.deprecate = function(message) {
+    deprecations.push(message);
+  };
+  component = this.subject();
   equal(component._state, 'preRender');
-  this.append();
+  $el = this.append();
   equal(component._state, 'inDOM');
-  // TODO - is there still a way to check deprecationWarnings?
-//  ok(Ember.A(Ember.deprecationWarnings).contains('this.append() is deprecated. Please use this.render() instead.'));
+  ok($el && $el.length, 'append returns $el');
+  ok(Ember.A(deprecations).contains('this.append() is deprecated. Please use this.render() or this.$() instead.'));
 });
 
 test('yields', function() {
