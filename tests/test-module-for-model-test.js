@@ -29,6 +29,7 @@ function setupRegistry() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+var store1, store2;
 moduleForModel('whazzit', 'model:whazzit without adapter', {
   beforeSetup: function() {
     setupRegistry();
@@ -36,16 +37,30 @@ moduleForModel('whazzit', 'model:whazzit without adapter', {
 
   setup: function() {
     Whazzit.FIXTURES = [];
+  },
+
+  teardown: function() {
+    if (store1 && store2) {
+      notEqual(store1, store2, 'store should be separate between tests');
+    }
   }
 });
 
-test('store exists', function() {
-  var store = this.store();
-  ok(store instanceof DS.Store);
+test('store exists: 1', function() {
+  store1 = this.store();
+
+  ok(store1 instanceof DS.Store);
+});
+
+test('store exists: 2', function() {
+  store2 = this.store();
+
+  ok(store2 instanceof DS.Store);
 });
 
 test('model exists as subject', function() {
   var model = this.subject();
+
   ok(model);
   ok(model instanceof DS.Model);
   ok(model instanceof Whazzit);
@@ -58,6 +73,22 @@ test('FixtureAdapter is registered for model', function() {
   ok(store.adapterFor(model.constructor) instanceof DS.FixtureAdapter);
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
 });
+
+moduleForModel('whazzit', 'subject does not share the store', {
+  beforeSetup: function() {
+    setupRegistry();
+  },
+
+  teardown: function() {
+    var model = this.subject();
+    var store = this.store();
+
+    equal(model.store, store, 'is created from the correct store instance');
+  }
+});
+
+test('first subject test', function() { });
+test('second subject test', function() { });
 
 ///////////////////////////////////////////////////////////////////////////////
 
