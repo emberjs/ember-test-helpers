@@ -1,10 +1,12 @@
 export default function qunitModuleFor(module) {
   QUnit.module(module.name, {
-    setup: function() {
-      module.setup();
+    setup: function(assert) {
+      var done = assert.async();
+      module.setup()['finally'](done);
     },
-    teardown: function() {
-      module.teardown();
+    teardown: function(assert) {
+      var done = assert.async();
+      module.teardown()['finally'](done);
     }
   });
 }
