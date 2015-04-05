@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start": "ember serve",
-    "pretest": "ember build",
-    "test": "testem ci"
+    "test": "ember test"
   },
   "authors": [
     "Dan Gebhardt",
@@ -28,6 +27,7 @@
     "broccoli-sourcemap-concat": "^0.4.3",
     "broccoli-static-compiler": "^0.1.4",
     "ember-cli": "^0.1.12",
+    "ember-try": "0.0.3",
     "testem": "^0.6.19"
   }
 }
