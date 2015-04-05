@@ -7,4 +7,4 @@ install:
   - bower install
 
 script:
-  - npm test
+  - ./node_modules/.bin/ember try:testall
