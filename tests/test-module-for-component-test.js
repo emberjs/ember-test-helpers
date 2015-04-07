@@ -186,6 +186,7 @@ test('clears out views from test to test', function() {
 ///////////////////////////////////////////////////////////////////////////////
 
 moduleForComponent('pretty-color', {
+  unit: true,
   beforeSetup: function() {
     setupRegistry();
   }
@@ -215,6 +216,7 @@ test("$", function(){
 });
 
 moduleForComponent('pretty-color', 'component:pretty-color -- this.render in setup', {
+  unit: true,
   beforeSetup: function() {
     setupRegistry();
   },
@@ -236,6 +238,7 @@ test("className", function(){
 });
 
 moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {
+  unit: true,
   beforeSetup: function() {
     setupRegistry();
   },

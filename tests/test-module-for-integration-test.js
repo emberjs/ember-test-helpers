@@ -1,15 +1,17 @@
 import Ember from 'ember';
-import { TestModuleForIntegration } from 'ember-test-helpers';
+import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
 
-function moduleForIntegration(name, description, callbacks) {
-  var module = new TestModuleForIntegration(name, description, callbacks);
+function moduleForComponent(name, description, callbacks) {
+  var module = new TestModuleForComponent(name, description, callbacks);
   qunitModuleFor(module);
 }
 
-moduleForIntegration('Better Integration Tests', {
+
+moduleForComponent('Component Integration Tests', {
+  integration: true,
   beforeSetup: function() {
     setResolverRegistry({
       'template:components/my-component': Ember.Handlebars.compile(
@@ -23,6 +25,21 @@ test('it can render a template', function() {
   this.render("<span>Hello</span>");
   equal(this.$('span').text(), 'Hello');
 });
+
+test('it complains if you try to use bare render', function() {
+  var self = this;
+  throws(function() {
+    self.render();
+  }, /in a component integration test you must pass a template to `render\(\)`/);
+});
+
+test('it complains if you try to use subject()', function() {
+  var self = this;
+  throws(function() {
+    self.subject();
+  }, /component integration tests do not support `subject\(\)`\./);
+});
+
 
 test('it can access the full container', function() {
   this.set('myColor', 'red');
