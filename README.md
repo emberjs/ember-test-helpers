@@ -23,7 +23,7 @@ create modules focused on particular types of unit tests.
 a test framework. For instance, you could create QUnit-compatible modules with
 a method such as:
 
-```
+```javascript
 function moduleFor(name, description, callbacks) {
   var module = new TestModule(name, description, callbacks);
 
