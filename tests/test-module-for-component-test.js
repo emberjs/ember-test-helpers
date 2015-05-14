@@ -252,3 +252,21 @@ test("className", function(){
   expect(1)
   // the assertion is in the willDestroyElement() hook of the component
 });
+
+var testModule;
+module('moduleForComponent: can be invoked with only the component name', {
+  beforeEach: function(assert) {
+    var done = assert.async();
+    testModule = new TestModuleForComponent('pretty-color');
+    testModule.setup()['finally'](done);
+  },
+
+  afterEach: function(assert) {
+    var done = assert.async();
+    testModule.teardown()['finally'](done);
+  }
+});
+
+test('it allows missing callbacks', function() {
+  ok(true, 'no errors are thrown');
+});
