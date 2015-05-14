@@ -158,10 +158,10 @@ test('can lookup default Ember.Views in its layout', function() {
   expect(1);
   var component = this.subject({
     colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{view 'default'}}")
+    layout: Ember.Handlebars.compile("{{view id='foo'}}")
   });
   this.render();
-  equal(component._state, 'inDOM');
+  equal(component.$('#foo').length, 1, 'expected to find `foo` element');
 });
 
 test('can lookup toplevel Ember.Views in its layout', function() {
