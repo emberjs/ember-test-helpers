@@ -157,3 +157,20 @@ test("needs is not needed (pun intended) when integration is true", function() {
   var otherComponent = this.container.lookup('component:not-the-subject');
   ok(otherComponent, 'another component can be resolved when integration is true');
 });
+
+moduleFor('view:with-outlet', 'view:with-outlet does not error', {
+  beforeSetup: function() {
+    var WithOutletView = Ember.View.extend({
+      template: Ember.Handlebars.compile('{{outlet}}')
+    });
+    setResolverRegistry({'view:with-outlet': WithOutletView});
+  }
+});
+
+test("a view with an outlet in its template can be rendered", function() {
+  expect(0);
+  var view = this.subject();
+  Ember.run(function() {
+    view.appendTo("#ember-testing");
+  });
+});
