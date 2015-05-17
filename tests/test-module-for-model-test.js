@@ -146,3 +146,21 @@ test('ApplicationAdapter is registered for model', function() {
   ok(store.adapterFor(model.constructor) instanceof ApplicationAdapter);
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+moduleForModel('whazzit', 'model:whazzit when using integration:true', {
+
+  integration: true,
+
+  beforeSetup: function() {
+    setupRegistry();
+  }
+
+});
+
+test('the store still exists', function() {
+  var store = this.store();
+  equal(123, Ember.inspect(store));
+  ok(store instanceof DS.Store);
+});
