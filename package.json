@@ -28,7 +28,7 @@
     "broccoli-static-compiler": "^0.1.4",
     "ember-cli": "^0.1.12",
     "ember-cli-release": "^0.2.3",
-    "ember-try": "0.0.3",
+    "ember-try": "0.0.5",
     "testem": "^0.6.19"
   }
 }
