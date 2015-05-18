@@ -270,3 +270,21 @@ module('moduleForComponent: can be invoked with only the component name', {
 test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
+
+var testModule;
+module('moduleForComponent: can be invoked with the component name and description', {
+  beforeEach: function(assert) {
+    var done = assert.async();
+    testModule = new TestModuleForComponent('pretty-color', 'PrettyColor');
+    testModule.setup()['finally'](done);
+  },
+
+  afterEach: function(assert) {
+    var done = assert.async();
+    testModule.teardown()['finally'](done);
+  }
+});
+
+test('it allows missing callbacks', function() {
+  ok(true, 'no errors are thrown');
+});
