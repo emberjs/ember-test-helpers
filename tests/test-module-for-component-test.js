@@ -124,6 +124,21 @@ test('can lookup array controllers in its layout', function() {
   equal(component._state, 'inDOM');
 });
 
+test('sets up the component with a container', function() {
+  expect(1);
+  var component = this.subject();
+
+  ok(component.get('container'));
+});
+
+test('sets up the component\'s container with an application stub', function() {
+  expect(1);
+  var component = this.subject();
+  var container = component.get('container');
+
+  ok(container.lookup('application:main'));
+});
+
 test('can lookup object controllers in its layout', function() {
   expect(1);
   var component = this.subject({
