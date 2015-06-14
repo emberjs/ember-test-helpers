@@ -13,7 +13,7 @@ var PrettyColor = Ember.Component.extend({
   classNames: ['pretty-color'],
   attributeBindings: ['style'],
   style: function(){
-    return 'color: ' + this.get('name') + ';';
+    return new Ember.Handlebars.SafeString('color: ' + this.get('name') + ';');
   }.property('name')
 });
 
@@ -114,65 +114,6 @@ test('can lookup components in its layout', function() {
   equal(component._state, 'inDOM');
 });
 
-test('can lookup array controllers in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{#each colors itemController='color'}}{{hexa}}{{/each}}")
-  });
-  this.render();
-  equal(component._state, 'inDOM');
-});
-
-test('can lookup object controllers in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{#each colors itemController='object'}}{{this}}{{/each}}")
-  });
-  this.render();
-  equal(component._state, 'inDOM');
-});
-
-test('can lookup basic controllers in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{#each colors itemController='basic'}}{{this}}{{/each}}")
-  });
-  this.render();
-  equal(component._state, 'inDOM');
-});
-
-test('can lookup Ember.Select in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{view 'select'}}")
-  });
-  this.render();
-  equal(component._state, 'inDOM');
-});
-
-test('can lookup default Ember.Views in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{view id='foo'}}")
-  });
-  this.render();
-  equal(component.$('#foo').length, 1, 'expected to find `foo` element');
-});
-
-test('can lookup toplevel Ember.Views in its layout', function() {
-  expect(1);
-  var component = this.subject({
-    colors: ['red', 'green', 'blue'],
-    layout: Ember.Handlebars.compile("{{view 'toplevel'}}")
-  });
-  this.render();
-  equal(component._state, 'inDOM');
-});
 
 test('clears out views from test to test', function() {
   expect(1);
@@ -257,7 +198,7 @@ var testModule;
 module('moduleForComponent: can be invoked with only the component name', {
   beforeEach: function(assert) {
     var done = assert.async();
-    testModule = new TestModuleForComponent('pretty-color');
+    testModule = new TestModuleForComponent('pretty-color', { unit: true });
     testModule.setup()['finally'](done);
   },
 
@@ -275,7 +216,7 @@ var testModule;
 module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach: function(assert) {
     var done = assert.async();
-    testModule = new TestModuleForComponent('pretty-color', 'PrettyColor');
+    testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', { unit: true });
     testModule.setup()['finally'](done);
   },
 

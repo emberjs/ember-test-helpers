@@ -63,3 +63,41 @@ test('it accepts precompiled templates', function() {
   this.render(Ember.Handlebars.compile("<span>Hello</span>"));
   equal(this.$('span').text(), 'Hello');
 });
+
+test('it supports DOM events', function() {
+  setResolverRegistry({
+    'component:my-component': Ember.Component.extend({
+      value: 0,
+      layout: Ember.Handlebars.compile("<span class='target'>Click to increment!</span><span class='value'>{{value}}</span>"),
+      incrementOnClick: Ember.on('click', function() {
+        this.incrementProperty('value');
+      })
+    })
+  });
+  this.render('{{my-component}}');
+  this.$('.target').click();
+  equal(this.$('.value').text(), '1');
+});
+
+moduleForComponent('Component Integration Tests: render during setup', {
+  integration: true,
+  beforeSetup: function() {
+    setResolverRegistry({
+      'component:my-component': Ember.Component.extend({
+        value: 0,
+        layout: Ember.Handlebars.compile("<span class='target'>Click to increment!</span><span class='value'>{{value}}</span>"),
+        incrementOnClick: Ember.on('click', function() {
+          this.incrementProperty('value');
+        })
+      })
+    });
+  },
+  setup: function() {
+    this.render('{{my-component}}');
+  }
+});
+
+test('it has working events', function() {
+  this.$('.target').click();
+  equal(this.$('.value').text(), '1');
+});
