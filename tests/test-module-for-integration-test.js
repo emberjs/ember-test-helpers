@@ -68,10 +68,7 @@ test('it supports DOM events', function() {
   setResolverRegistry({
     'component:my-component': Ember.Component.extend({
       value: 0,
-      layout: Ember.Handlebars.compile(`
-        <span class='target'>Click to increment!</span>
-        <span class='value'>{{value}}</span>
-      `),
+      layout: Ember.Handlebars.compile("<span class='target'>Click to increment!</span><span class='value'>{{value}}</span>"),
       incrementOnClick: Ember.on('click', function() {
         this.incrementProperty('value');
       })
@@ -88,17 +85,14 @@ moduleForComponent('Component Integration Tests: render during setup', {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
         value: 0,
-        layout: Ember.Handlebars.compile(`
-          <span class='target'>Click to increment!</span>
-          <span class='value'>{{value}}</span>
-        `),
+        layout: Ember.Handlebars.compile("<span class='target'>Click to increment!</span><span class='value'>{{value}}</span>"),
         incrementOnClick: Ember.on('click', function() {
           this.incrementProperty('value');
         })
       })
     });
   },
-  setup() {
+  setup: function() {
     this.render('{{my-component}}');
   }
 });
