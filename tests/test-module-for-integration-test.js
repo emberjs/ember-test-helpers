@@ -101,3 +101,25 @@ test('it has working events', function() {
   this.$('.target').click();
   equal(this.$('.value').text(), '1');
 });
+
+var origDeprecate;
+moduleForComponent('Component Integration Tests: implicit views are not deprecated', {
+  integration: true,
+  setup: function () {
+    origDeprecate = Ember.deprecate;
+    Ember.deprecate = function(msg, check) {
+      if (!check) {
+        throw new Error("unexpected deprecation: " + msg);
+      }
+    };
+  },
+  teardown: function () {
+    Ember.deprecate = origDeprecate;
+  }
+});
+
+test('the toplevel view is not deprecated', function () {
+  expect(0);
+  (this.registry || this.container).register('component:my-toplevel', this.container.lookupFactory('view:toplevel'));
+  this.render("{{my-toplevel}}");
+});
