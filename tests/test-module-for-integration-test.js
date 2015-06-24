@@ -79,6 +79,41 @@ test('it supports DOM events', function() {
   equal(this.$('.value').text(), '1');
 });
 
+test('it supports updating an input', function() {
+  setResolverRegistry({
+    'component:my-input': Ember.TextField.extend({
+      value: null
+    })
+  });
+  this.render('{{my-input value=value}}');
+  this.$('input').val('1').change();
+  equal(this.get('value'), '1');
+});
+
+test('it supports dom triggered focus events', function() {
+  setResolverRegistry({
+    'component:my-input': Ember.TextField.extend({
+      _onInit: Ember.on('init', function() {
+        this.set('value', 'init');
+      }),
+      focusIn: function() {
+        this.set('value', 'focusin');
+      },
+      focusOut: function() {
+        this.set('value', 'focusout');
+      }
+    })
+  });
+  this.render('{{my-input}}');
+  equal(this.$('input').val(), 'init');
+
+  this.$('input').trigger('focusin');
+  equal(this.$('input').val(), 'focusin');
+
+  this.$('input').trigger('focusout');
+  equal(this.$('input').val(), 'focusout');
+});
+
 moduleForComponent('Component Integration Tests: render during setup', {
   integration: true,
   beforeSetup: function() {
