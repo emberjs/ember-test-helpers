@@ -131,7 +131,7 @@ moduleFor('component:x-foo', 'component:x-foo -- without needs or `integration: 
 
 test("knows nothing about our non-subject component", function() {
   var otherComponent = this.container.lookup('component:not-the-subject');
-  equal(null, otherComponent, "We shouldn't know about a non-subject component")
+  equal(null, otherComponent, "We shouldn't know about a non-subject component");
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- when needing another component', {
@@ -146,7 +146,7 @@ test("needs gets us the component we need", function() {
 
 moduleFor('component:x-foo', 'component:x-foo -- `integration: true`', {
   beforeSetup: function() {
-    setupRegistry()
+    setupRegistry();
     ok(!this.callbacks.integration, "integration property should be removed from callbacks");
     ok(this.isIntegration, "isIntegration should be set when we set `integration: true` in callbacks");
   },

@@ -35,7 +35,7 @@ var BoringColor = Ember.Component.extend({
     var stateIndicatesInDOM = (this._state === 'inDOM');
     var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
-    ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM')
+    ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM');
   }
 });
 
@@ -199,7 +199,7 @@ moduleForComponent('boring-color', 'component:boring-color -- still in DOM in wi
 });
 
 test("className", function(){
-  expect(1)
+  expect(1);
   // the assertion is in the willDestroyElement() hook of the component
 });
 
