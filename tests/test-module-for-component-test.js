@@ -238,3 +238,17 @@ module('moduleForComponent: can be invoked with the component name and descripti
 test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
+
+moduleForComponent('x-bad', {
+    needs: ['mis:sing'],
+    beforeEach: function(assert) {
+      // won't be called because of setup error
+      var done = assert.async();
+      assert.ok(true);
+      done();
+    }
+});
+
+test('it happens', function() {
+  expect(0);
+});
