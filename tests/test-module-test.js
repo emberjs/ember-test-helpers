@@ -159,3 +159,20 @@ test("needs is not needed (pun intended) when integration is true", function() {
   var otherComponent = this.container.lookup('component:not-the-subject');
   ok(otherComponent, 'another component can be resolved when integration is true');
 });
+
+test("throws an error when declaring integration: true and needs in the same module", function() {
+  expect(3);
+
+  var result = false;
+
+  try {
+    moduleFor('component:x-foo', {
+      integration: true,
+      needs: ['component:x-bar']
+    });
+  } catch(err) {
+    result = true;
+  }
+
+  ok(result, "should throw an Error when integration: true and needs are provided");
+});
