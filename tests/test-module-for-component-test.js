@@ -17,7 +17,7 @@ var PrettyColor = Ember.Component.extend({
   }.property('name')
 });
 
-var ColorController = Ember.ObjectController.extend({
+var ColorController = Ember.Controller.extend({
   hexa: function() {
     switch( this.get('model') ) {
       case 'red':
