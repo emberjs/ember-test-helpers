@@ -239,16 +239,28 @@ test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
 
-moduleForComponent('x-bad', {
-    needs: ['mis:sing'],
-    beforeEach: function(assert) {
-      // won't be called because of setup error
-      var done = assert.async();
-      assert.ok(true);
-      done();
-    }
+module('moduleForComponent: handles errors thrown during setup', {
+  beforeEach: function(assert) {
+    var done = assert.async();
+    testModule = new TestModuleForComponent('x-bad', {
+      needs: ['mis:sing'],
+
+      beforeEach: function(assert) {
+        // won't be called because of setup error
+        var done = assert.async();
+        assert.ok(true);
+        done();
+      }
+    });
+
+    testModule.setup()
+      .catch(function(error) {
+        ok(error.message.indexOf('mis:sing') > -1, 'correct error was thrown from module setup');
+      })
+      .finally(done);
+  }
 });
 
 test('it happens', function() {
-  expect(0);
+  ok(true, 'errors are properly thrown/handled');
 });
