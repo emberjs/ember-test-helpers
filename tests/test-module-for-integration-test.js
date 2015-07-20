@@ -102,6 +102,37 @@ test('it has working events', function() {
   equal(this.$('.value').text(), '1');
 });
 
+moduleForComponent('Component Integration Tests: context', {
+  integration: true,
+  beforeSetup: function() {
+    setResolverRegistry({
+      'component:my-component': Ember.Component.extend({
+        layout: Ember.Handlebars.compile('<span class="foo">{{foo}}</span><span class="bar">{{bar}}</span>')
+      })
+    });
+  }
+});
+
+test('it can set and get properties', function() {
+  this.set('foo', 1);
+  this.render('{{my-component foo=foo}}');
+  equal(this.get('foo'), '1');
+  equal(this.$('.foo').text(), '1');
+});
+
+test('it can setProperties and getProperties', function() {
+  this.setProperties({
+    foo: 1,
+    bar: 2
+  });
+  this.render('{{my-component foo=foo bar=bar}}');
+  var properties = this.getProperties('foo', 'bar');
+  equal(properties.foo, '1');
+  equal(properties.bar, '2');
+  equal(this.$('.foo').text(), '1');
+  equal(this.$('.bar').text(), '2');
+});
+
 var origDeprecate;
 moduleForComponent('Component Integration Tests: implicit views are not deprecated', {
   integration: true,
