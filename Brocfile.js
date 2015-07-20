@@ -43,8 +43,15 @@ var vendor = concat('bower_components', {
   inputFiles: ['jquery/dist/jquery.js',
                'ember/ember-template-compiler.js',
                'ember/ember.debug.js',
-               'ember-data/ember-data.js'],
+               'ember-data/ember-data.js',
+               'FakeXMLHttpRequest/fake_xml_http_request.js',
+               'route-recognizer/dist/route-recognizer.js',
+               'pretender/pretender.js'],
   outputFile: '/assets/vendor.js'
+});
+
+var pretender = pickFiles('bower_components', {
+
 });
 
 var qunit = pickFiles('bower_components', {
