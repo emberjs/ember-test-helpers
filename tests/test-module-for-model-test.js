@@ -21,7 +21,7 @@ var WhazzitAdapter = adapter.extend({
   }
 });
 
-var ApplicationAdapter = DS.JSONAPIAdapter.extend();
+var ApplicationAdapter = adapter.extend();
 
 function setupRegistry() {
   setResolverRegistry({
