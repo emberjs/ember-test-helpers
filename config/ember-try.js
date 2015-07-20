@@ -3,13 +3,21 @@ module.exports = {
     {
       name: 'ember-1.11.3',
       dependencies: {
-        "ember": "1.11.3"
+        "ember": "1.11.3",
+        "ember-data": "~1.0.0-beta.19.2"
       }
     },
     {
       name: 'ember-1.12.1',
       dependencies: {
-        "ember": "1.12.1"
+        "ember": "1.12.1",
+        "ember-data": "~1.0.0-beta.19.2"
+      }
+    },
+    {
+      name: 'ember-1.13.5',
+      dependencies: {
+        "ember": "1.13.5"
       }
     },
     {

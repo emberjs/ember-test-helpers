@@ -8,16 +8,20 @@ function moduleForModel(name, description, callbacks) {
   qunitModuleFor(module);
 }
 
+var server;
+
+var adapter = DS.JSONAPIAdapter || DS.FixtureAdapter;
+
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
 var whazzitAdapterFindAllCalled = false;
-var WhazzitAdapter = DS.FixtureAdapter.extend({
+var WhazzitAdapter = adapter.extend({
   findAll: function(store, type) {
     whazzitAdapterFindAllCalled = true;
     return this._super.apply(this, arguments);
   }
 });
 
-var ApplicationAdapter = DS.FixtureAdapter.extend();
+var ApplicationAdapter = adapter.extend();
 
 function setupRegistry() {
   setResolverRegistry({
@@ -66,11 +70,11 @@ test('model exists as subject', function() {
   ok(model instanceof Whazzit);
 });
 
-test('FixtureAdapter is registered for model', function() {
+test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for model', function() {
   var model = this.subject(),
       store = this.store();
 
-  ok(store.adapterFor(model.constructor) instanceof DS.FixtureAdapter);
+  ok(store.adapterFor(model.constructor) instanceof adapter);
   ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
 });
 
@@ -101,7 +105,22 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
 
   setup: function() {
     Whazzit.FIXTURES = [];
+
+    if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
+      server = new Pretender(function() {
+        this.get('/whazzits', function(request) {
+          return [200, {"Content-Type": "application/json"}, JSON.stringify({ data: Whazzit.FIXTURES })];
+        });
+      });
+    }
+
     whazzitAdapterFindAllCalled = false;
+  },
+
+  teardown: function() {
+    if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
+      server.shutdown();
+    }
   }
 });
 
@@ -112,14 +131,14 @@ test('WhazzitAdapter is registered for model', function() {
   ok(store.adapterFor(model.constructor) instanceof WhazzitAdapter);
 });
 
-test('WhazzitAdapter is used for `find`', function() {
+test('WhazzitAdapter is used for `findAll`', function() {
   expect(2);
   ok(!whazzitAdapterFindAllCalled, 'precond - custom adapter has not yet been called');
 
   var store = this.store();
 
   return Ember.run(function() {
-    return store.find('whazzit').then(function() {
+    return store.findAll('whazzit', { reload: true }).then(function() {
       ok(whazzitAdapterFindAllCalled, 'uses the custom adapter');
     });
   });
