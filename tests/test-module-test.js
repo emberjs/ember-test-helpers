@@ -69,7 +69,8 @@ moduleFor('component:x-foo', 'component:x-foo -- setup context', {
       name: 'Max'
     });
 
-    this.container.register('service:blah', Ember.Object.extend({
+    var thingToRegisterWith = this.registry || this.container;
+    thingToRegisterWith.register('service:blah', Ember.Object.extend({
       purpose: 'blabering'
     }));
   }
