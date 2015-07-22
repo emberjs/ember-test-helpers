@@ -1,4 +1,4 @@
-import { TestModule } from 'ember-test-helpers';
+import { TestModule, getContext } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
@@ -48,7 +48,8 @@ moduleFor('component:x-foo', 'TestModule callbacks', {
   afterTeardown: function() {
     afterTeardownContext = this;
     callbackOrder.push('afterTeardown');
-
+    equal(this.context, undefined, "don't leak the this.context");
+    equal(getContext(), undefined, "don't leak the internal context");
     deepEqual(callbackOrder, [ 'beforeSetup', 'setup', 'teardown', 'afterTeardown']);
     equal(afterTeardownContext, beforeSetupContext);
     ok(afterTeardownContext !== teardownContext);
