@@ -17,6 +17,7 @@ var PrettyColor = Ember.Component.extend({
   }.property('name')
 });
 
+
 var ColorController = Ember.Controller.extend({
   hexa: function() {
     switch( this.get('model') ) {
@@ -39,11 +40,18 @@ var BoringColor = Ember.Component.extend({
   }
 });
 
+var ChangingColor = Ember.Component.extend({
+  didInsertElement: function() {
+    this.attrs.change('foo');
+  }
+});
+
 function setupRegistry() {
   setResolverRegistry({
     'component:x-foo': Ember.Component.extend(),
     'component:pretty-color': PrettyColor,
     'component:boring-color': BoringColor,
+    'component:changing-color': ChangingColor,
     'template:components/pretty-color': Ember.Handlebars.compile('Pretty Color: <span class="color-name">{{name}}</span>'),
     'controller:color': ColorController
   });
@@ -202,6 +210,19 @@ test("className", function(){
   expect(1);
   // the assertion is in the willDestroyElement() hook of the component
 });
+
+
+moduleForComponent('changing-color', 'component:changing-color -- handles closure actions', {
+  integration: true
+});
+
+if (!/^1\.(11|12)/.test(Ember.VERSION)) {
+  test('handles a closure actions', function() {
+    expect(1);
+    this.on('colorChange', function(arg) { equal(arg, 'foo'); });
+    this.render(Ember.Handlebars.compile("{{changing-color change=(action 'colorChange')}}"));
+  });
+}
 
 var testModule;
 module('moduleForComponent: can be invoked with only the component name', {
