@@ -14,9 +14,12 @@ var PrettyColor = Ember.Component.extend({
   attributeBindings: ['style'],
   style: function(){
     return new Ember.Handlebars.SafeString('color: ' + this.get('name') + ';');
-  }.property('name')
-});
+  }.property('name'),
 
+  click: function() {
+    ok(true, 'pretty-color was clicked');
+  }
+});
 
 var ColorController = Ember.Controller.extend({
   hexa: function() {
@@ -211,6 +214,24 @@ test("className", function(){
   // the assertion is in the willDestroyElement() hook of the component
 });
 
+moduleForComponent('pretty-color', 'component:pretty-color - event dispatching works in unit tests', {
+  unit: true,
+  beforeSetup: function() {
+    setupRegistry();
+  }
+});
+
+test('can handle click', function() {
+  expect(1); // assert in pretty-color `click` handler above
+
+  var component = this.subject();
+
+  this.render();
+
+  Ember.run(function() {
+    component.$().click();
+  });
+});
 
 moduleForComponent('changing-color', 'component:changing-color -- handles closure actions', {
   integration: true
