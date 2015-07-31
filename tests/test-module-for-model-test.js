@@ -74,8 +74,8 @@ test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for mode
   var model = this.subject(),
       store = this.store();
 
-  ok(store.adapterFor(model.constructor) instanceof adapter);
-  ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
+  ok(store.adapterFor(model.constructor.modelName) instanceof adapter);
+  ok(!(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter));
 });
 
 moduleForModel('whazzit', 'subject does not share the store', {
@@ -128,7 +128,7 @@ test('WhazzitAdapter is registered for model', function() {
   var model = this.subject(),
       store = this.store();
 
-  ok(store.adapterFor(model.constructor) instanceof WhazzitAdapter);
+  ok(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter);
 });
 
 test('WhazzitAdapter is used for `findAll`', function() {
@@ -162,8 +162,8 @@ test('ApplicationAdapter is registered for model', function() {
   var model = this.subject(),
       store = this.store();
 
-  ok(store.adapterFor(model.constructor) instanceof ApplicationAdapter);
-  ok(!(store.adapterFor(model.constructor) instanceof WhazzitAdapter));
+  ok(store.adapterFor(model.constructor.modelName) instanceof ApplicationAdapter);
+  ok(!(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
