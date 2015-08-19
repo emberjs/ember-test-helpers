@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "qunit": "^1.15.0",
-    "ember-data": "canary",
+    "ember-data": "1.13.9",
     "pretender": "^0.7.0",
     "loader.js": "ember-cli/loader.js#3.0.0",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.3",
