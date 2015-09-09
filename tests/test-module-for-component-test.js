@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
@@ -237,7 +238,7 @@ moduleForComponent('changing-color', 'component:changing-color -- handles closur
   integration: true
 });
 
-if (!/^1\.(11|12)/.test(Ember.VERSION)) {
+if (hasEmberVersion(1,13)) {
   test('handles a closure actions', function() {
     expect(1);
     this.on('colorChange', function(arg) { equal(arg, 'foo'); });

@@ -26,6 +26,11 @@ test('it can render a template', function() {
   equal(this.$('span').text(), 'Hello');
 });
 
+test('it can render a link-to', function() {
+  this.render("{{link-to 'Hi' 'index'}}");
+  ok(true, 'it renders without fail');
+});
+
 test('it complains if you try to use bare render', function() {
   var self = this;
   throws(function() {
