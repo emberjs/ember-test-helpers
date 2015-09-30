@@ -73,8 +73,7 @@ moduleFor('component:x-foo', 'component:x-foo -- setup context', {
       name: 'Max'
     });
 
-    var thingToRegisterWith = this.registry || this.container;
-    thingToRegisterWith.register('service:blah', Ember.Object.extend({
+    this.register('service:blah', Ember.Object.extend({
       purpose: 'blabering'
     }));
   }
@@ -85,9 +84,8 @@ test("subject can be initialized in setup", function() {
 });
 
 test("can lookup factory registered in setup", function() {
-  var service = this.container.lookup('service:blah');
-
-  equal(service.get('purpose'), 'blabering');
+  this.inject.service('blah');
+  equal(Ember.get(this, 'blah.purpose'), 'blabering');
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- callback context', {
@@ -195,7 +193,7 @@ test('gets the default by default', function() {
 });
 
 test('can override the default', function() {
-  this.registry.register('foo:thing', Ember.Object.extend({
+  this.register('foo:thing', Ember.Object.extend({
     notTheDefault: true
   }));
   var thing = this.container.lookup('foo:thing');
