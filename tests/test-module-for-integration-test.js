@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
@@ -26,10 +27,12 @@ test('it can render a template', function() {
   equal(this.$('span').text(), 'Hello');
 });
 
-test('it can render a link-to', function() {
-  this.render("{{link-to 'Hi' 'index'}}");
-  ok(true, 'it renders without fail');
-});
+if (hasEmberVersion(1,11)) {
+  test('it can render a link-to', function() {
+    this.render("{{link-to 'Hi' 'index'}}");
+    ok(true, 'it renders without fail');
+  });
+}
 
 test('it complains if you try to use bare render', function() {
   var self = this;
