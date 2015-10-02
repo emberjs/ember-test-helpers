@@ -1,4 +1,5 @@
 import { TestModule, getContext } from 'ember-test-helpers';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
@@ -178,26 +179,28 @@ test("throws an error when declaring integration: true and needs in the same mod
   ok(result, "should throw an Error when integration: true and needs are provided");
 });
 
-moduleFor('component:x-foo', 'should be able to override factories in integration mode', {
-  beforeSetup: function() {
-    setupRegistry();
-  },
+if (hasEmberVersion(1,11)) {
+  moduleFor('component:x-foo', 'should be able to override factories in integration mode', {
+    beforeSetup: function() {
+      setupRegistry();
+    },
 
-  integration: true
-});
+    integration: true
+  });
 
-test('gets the default by default', function() {
-  var thing = this.container.lookup('foo:thing');
+  test('gets the default by default', function() {
+    var thing = this.container.lookup('foo:thing');
 
-  ok(thing.fromDefaultRegistry, 'found from the default registry');
-});
+    ok(thing.fromDefaultRegistry, 'found from the default registry');
+  });
 
-test('can override the default', function() {
-  this.register('foo:thing', Ember.Object.extend({
-    notTheDefault: true
-  }));
-  var thing = this.container.lookup('foo:thing');
+  test('can override the default', function() {
+    this.register('foo:thing', Ember.Object.extend({
+      notTheDefault: true
+    }));
+    var thing = this.container.lookup('foo:thing');
 
-  ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
-  ok(thing.notTheDefault, 'found from the overridden factory');
-});
+    ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
+    ok(thing.notTheDefault, 'found from the overridden factory');
+  });
+}
