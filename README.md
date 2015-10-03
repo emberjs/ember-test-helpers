@@ -119,7 +119,7 @@ which was written by Stefan Penner, Robert Jackson, and Ryan Florence.
 
 ## Copyright and License
 
-Copyright 2014 Switchfly and contributors.
+Copyright 2015 [Switchfly](https://github.com/switchfly) and contributors.
 
 Dual-licensed under the [Apache License, Version 2.0](./APACHE-LICENSE) and
 the [MIT License](./MIT-LICENSE).
