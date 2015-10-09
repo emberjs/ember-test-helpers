@@ -252,3 +252,26 @@ test('can inject a service directly into test context, with aliased name', funct
   this.set('hornedBeast.sparkliness', 'amazing');
   equal(this.$('.x-foo').text().trim(), "amazing");
 });
+
+moduleForComponent('Component Integration Tests: willDestoryElement', {
+  integration: true,
+  beforeSetup: function() {
+    setResolverRegistry({
+      'component:my-component': Ember.Component.extend({
+        willDestroyElement: function() {
+          var stateIndicatesInDOM = (this._state === 'inDOM');
+          var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
+
+          ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM');
+      }
+
+      })
+    });
+  }
+});
+
+test('still in DOM in willDestroyElement', function() {
+    expect(1);
+    this.render("{{my-component}}");
+
+});
