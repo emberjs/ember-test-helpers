@@ -42,6 +42,70 @@ moduleForComponent('wait helper tests', {
     this.register('template:components/x-test-2', Ember.Handlebars.compile(
       "{{internalValue}}"
     ));
+
+    this.register('component:x-test-3', Ember.Component.extend({
+      internalValue: '',
+
+      click: function() {
+        var component = this;
+
+        jQuery.ajax('/whazzits', { cache: false })
+          .then(function(data) {
+            var value = component.get('internalValue');
+
+            Ember.run(component, 'set', 'internalValue', value + data);
+          });
+      }
+    }));
+
+    this.register('template:components/x-test-3', Ember.Handlebars.compile("{{internalValue}}"));
+
+    this.register('component:x-test-4', Ember.Component.extend({
+      internalValue: '',
+
+      click: function() {
+        var component = this;
+
+        Ember.run.later(function() {
+          Ember.run(component, 'set', 'internalValue', 'Local Data!');
+        }, 10);
+
+        jQuery.ajax('/whazzits', { cache: false })
+          .then(function(data) {
+            var value = component.get('internalValue');
+
+            Ember.run(component, 'set', 'internalValue', value + data);
+
+            Ember.run.later(function() {
+
+              jQuery.ajax('/whazzits', { cache: false })
+                .then(function(data) {
+                  if (component.isDestroyed) { return; }
+
+                  var value = component.get('internalValue');
+
+                  Ember.run(component, 'set', 'internalValue', value + data);
+                });
+            }, 15);
+          });
+      }
+    }));
+
+    this.register('template:components/x-test-4', Ember.Handlebars.compile("{{internalValue}}"));
+
+    this.server = new Pretender(function() {
+      this.get('/whazzits', function(request) {
+        return [
+          200,
+          { "Content-Type": "text/plain" },
+          'Remote Data!'
+        ];
+      }, 25);
+    });
+  },
+
+  teardown: function() {
+    this.server.shutdown();
   }
 });
 
@@ -68,5 +132,57 @@ test('it works when async exists in an event/action', function() {
   return wait()
     .then(function() {
       equal(testContext.$().text(), 'async value');
+    });
+});
+
+test('it waits for AJAX requests to finish', function() {
+  var testContext = this;
+
+  this.render('{{x-test-3}}');
+
+  this.$('div').click();
+
+  return wait()
+    .then(function() {
+      equal(testContext.$().text(), 'Remote Data!' );
+    });
+});
+
+test('it waits for interleaved AJAX and run loops to finish', function() {
+  var testContext = this;
+
+  this.render('{{x-test-4}}');
+
+  this.$('div').click();
+
+  return wait()
+    .then(function() {
+      equal(testContext.$().text(), 'Local Data!Remote Data!Remote Data!' );
+    });
+});
+
+test('it can wait only for AJAX', function() {
+  var testContext = this;
+
+  this.render('{{x-test-4}}');
+
+  this.$('div').click();
+
+  return wait({ waitForTimers: false })
+    .then(function() {
+      equal(testContext.$().text(), 'Local Data!Remote Data!' );
+    });
+});
+
+test('it can wait only for timers', function() {
+  var testContext = this;
+
+  this.render('{{x-test-4}}');
+
+  this.$('div').click();
+
+  return wait({ waitForAJAX: false })
+    .then(function() {
+      equal(testContext.$().text(), 'Local Data!' );
     });
 });
