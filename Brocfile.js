@@ -25,7 +25,7 @@ var lib = pickFiles('lib', {
 
 var tests = pickFiles('tests', {
   srcDir: '/',
-  files: ['test-support/*.js', '*.js'],
+  files: ['**/*.js'],
   destDir: '/tests'
 });
 
