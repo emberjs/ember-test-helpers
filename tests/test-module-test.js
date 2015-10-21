@@ -15,7 +15,11 @@ function setupRegistry() {
     'component:not-the-subject': Ember.Component.extend(),
     'foo:thing': Ember.Object.extend({
       fromDefaultRegistry: true
+    }),
+    'service:other-thing': Ember.Object.extend({
+      fromDefaultRegistry: true
     })
+
   });
 }
 
@@ -199,6 +203,33 @@ if (hasEmberVersion(1,11)) {
       notTheDefault: true
     }));
     var thing = this.container.lookup('foo:thing');
+
+    ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
+    ok(thing.notTheDefault, 'found from the overridden factory');
+  });
+
+  test('gets the default with fullName normalization by default', function() {
+    this.register('foo:needs-service', Ember.Object.extend({
+      otherThing: Ember.inject.service()
+    }));
+
+    var foo = this.container.lookup('foo:needs-service');
+    var thing = foo.get('otherThing');
+
+    ok(thing.fromDefaultRegistry, 'found from the default registry');
+  });
+
+  test('can override the default with fullName normalization', function() {
+    this.register('service:other-thing', Ember.Object.extend({
+      notTheDefault: true
+    }));
+
+    this.register('foo:needs-service', Ember.Object.extend({
+      otherThing: Ember.inject.service()
+    }));
+
+    var foo = this.container.lookup('foo:needs-service');
+    var thing = foo.get('otherThing');
 
     ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
     ok(thing.notTheDefault, 'found from the overridden factory');
