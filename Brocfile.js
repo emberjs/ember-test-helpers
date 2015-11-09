@@ -1,6 +1,6 @@
 var pickFiles  = require('broccoli-static-compiler');
 var mergeTrees = require('broccoli-merge-trees');
-var compileES6 = require('broccoli-es6modules');
+var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
 
 // --- Compile ES6 modules ---
@@ -30,7 +30,11 @@ var tests = pickFiles('tests', {
 });
 
 var main = mergeTrees([klassy, lib, tests]);
-main = new compileES6(main);
+main = new Babel(main, {
+  loose: true,
+  moduleIds: true,
+  modules: 'amdStrict'
+});
 
 main = concat(main, {
   inputFiles: ['**/*.js'],
