@@ -2,8 +2,8 @@ sudo: false
 language: node_js
 
 install:
-  - npm install -g bower broccoli-cli
-  - npm install
+  - npm install -g bower
+  - npm install --no-optional
   - bower install
 
 script:
