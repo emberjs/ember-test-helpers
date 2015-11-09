@@ -19,7 +19,7 @@ var klassy = new Funnel('bower_components', {
 
 var getowner = new Funnel('node_modules/ember-getowner-polyfill/addon', {
   files: ['fake-owner.js'],
-  destDir: 'ember-test-helpers'
+  destDir: 'ember-test-helpers/ember-getowner-polyfill'
 });
 
 var lib = new Funnel('lib', {
