@@ -28,6 +28,7 @@
     "broccoli-sourcemap-concat": "^0.4.3",
     "ember-cli": "^0.2.7",
     "ember-cli-release": "^0.2.4",
+    "ember-getowner-polyfill": "^0.1.2",
     "ember-try": "0.0.8",
     "testem": "^0.6.19"
   }
