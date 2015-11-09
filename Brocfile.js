@@ -1,31 +1,31 @@
-var pickFiles  = require('broccoli-static-compiler');
+var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
 
 // --- Compile ES6 modules ---
 
-var loader = pickFiles('bower_components', {
+var loader = new Funnel('bower_components', {
   srcDir: 'loader.js',
   files: ['loader.js'],
   destDir: '/assets'
 });
 
-var klassy = pickFiles('bower_components', {
+var klassy = new Funnel('bower_components', {
   srcDir: '/klassy/lib',
   files: ['klassy.js'],
   destDir: '/'
 });
 
-var lib = pickFiles('lib', {
+var lib = new Funnel('lib', {
   srcDir: '/',
-  files: ['**/*.js'],
+  include: ['**/*.js'],
   destDir: '/'
 });
 
-var tests = pickFiles('tests', {
+var tests = new Funnel('tests', {
   srcDir: '/',
-  files: ['**/*.js'],
+  include: ['**/*.js'],
   destDir: '/tests'
 });
 
@@ -54,17 +54,13 @@ var vendor = concat('bower_components', {
   outputFile: '/assets/vendor.js'
 });
 
-var pretender = pickFiles('bower_components', {
-
-});
-
-var qunit = pickFiles('bower_components', {
+var qunit = new Funnel('bower_components', {
   srcDir: '/qunit/qunit',
   files: ['qunit.js', 'qunit.css'],
   destDir: '/assets'
 });
 
-var testIndex = pickFiles('tests', {
+var testIndex = new Funnel('tests', {
   srcDir: '/',
   files: ['index.html'],
   destDir: '/tests'
