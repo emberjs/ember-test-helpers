@@ -17,11 +17,6 @@ var klassy = new Funnel('bower_components', {
   destDir: '/'
 });
 
-var getowner = new Funnel('node_modules/ember-getowner-polyfill/addon', {
-  files: ['fake-owner.js'],
-  destDir: 'ember-test-helpers/ember-getowner-polyfill'
-});
-
 var lib = new Funnel('lib', {
   srcDir: '/',
   include: ['**/*.js'],
@@ -34,7 +29,7 @@ var tests = new Funnel('tests', {
   destDir: '/tests'
 });
 
-var main = mergeTrees([klassy, getowner, lib, tests]);
+var main = mergeTrees([klassy, lib, tests]);
 main = new Babel(main, {
   loose: true,
   moduleIds: true,
