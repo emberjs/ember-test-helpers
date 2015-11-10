@@ -275,3 +275,27 @@ test('still in DOM in willDestroyElement', function() {
     this.render("{{my-component}}");
 
 });
+
+if (! hasEmberVersion(2,0)) {
+  moduleForComponent('my-component', 'Component Legacy Integration Tests', {
+    integration: 'legacy',
+    beforeSetup: function() {
+      setResolverRegistry({
+        'component:my-component': Ember.Component.extend(),
+        'template:components/my-component': Ember.Handlebars.compile(
+          '<span>{{name}}</span>'
+        )
+      });
+    }
+  });
+
+  test('it can render components semantically equivalent to v0.4.3', function(assert) {
+    var component = this.subject({
+      name: 'Ryan Ringler',
+    });
+    this.render();
+
+    equal(this.$('span').text(), 'Ryan Ringler');
+  });
+}
+

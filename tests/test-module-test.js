@@ -157,7 +157,7 @@ moduleFor('component:x-foo', 'component:x-foo -- `integration: true`', {
   beforeSetup: function() {
     setupRegistry();
     ok(!this.callbacks.integration, "integration property should be removed from callbacks");
-    ok(this.isIntegration, "isIntegration should be set when we set `integration: true` in callbacks");
+    ok(this.isIntegrationTest(), "isIntegrationTest() should return true we set `integration: true` in callbacks");
   },
   integration: true
 });
@@ -182,6 +182,62 @@ test("throws an error when declaring integration: true and needs in the same mod
   }
 
   ok(result, "should throw an Error when integration: true and needs are provided");
+});
+
+test("throws an error when declaring integration: true and unit:true in the same module", function() {
+  expect(3);
+
+  var result = false;
+
+  try {
+    moduleFor('component:x-foo', {
+      unit: true,
+      integration: true
+    });
+  } catch(err) {
+    result = true;
+  }
+
+  ok(result, "should throw an Error when integration: true and needs are provided");
+});
+
+moduleFor('component:x-foo', 'component:x-foo -- `integration: true` test types', {
+  beforeSetup: function () {
+    equal(this.isUnitTest(), false);
+    equal(this.isIntegrationTest(), true);
+    equal(this.isLegacyIntegrationTest(), false);
+  },
+  integration: true
+});
+
+test("testType functions report the correct test type", function(assert) {
+  ok(true);
+});
+
+moduleFor('component:x-foo', 'component:x-foo -- `unit: true` test types', {
+  beforeSetup: function () {
+    equal(this.isUnitTest(), true);
+    equal(this.isIntegrationTest(), false);
+    equal(this.isLegacyIntegrationTest(), false);
+  },
+  unit: true
+});
+
+test("testType functions report the correct test type", function(assert) {
+  ok(true);
+});
+
+moduleFor('component:x-foo', 'component:x-foo -- `integration: "legacy"` test types', {
+  beforeSetup: function () {
+    equal(this.isUnitTest(), false);
+    equal(this.isIntegrationTest(), false);
+    equal(this.isLegacyIntegrationTest(), true);
+  },
+  integration: "legacy"
+});
+
+test("testType functions report the correct test type", function(assert) {
+  ok(true);
 });
 
 if (hasEmberVersion(1,11)) {
