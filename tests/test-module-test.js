@@ -256,4 +256,12 @@ if (Ember.getOwner) {
     var otherThing = owner.lookup('service:other-thing');
     ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on an instance and lookup an instance');
   });
+
+  test('test context gets an owner', function() {
+    var owner = Ember.getOwner(this);
+
+    var otherThing = owner.lookup('service:other-thing');
+    ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on test context and lookup an instance');
+  });
+
 }
