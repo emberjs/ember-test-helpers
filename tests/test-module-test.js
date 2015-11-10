@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { TestModule, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import test from 'tests/test-support/qunit-test';
@@ -234,4 +235,33 @@ if (hasEmberVersion(1,11)) {
     ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
     ok(thing.notTheDefault, 'found from the overridden factory');
   });
+}
+
+if (Ember.getOwner) {
+  // this conditional should be changed to `hasEmberVersion` once
+  // `ember-container-inject-owner` lands in a stable version
+
+  moduleFor('foo:thing', 'should be able to use `getOwner` on instances', {
+    beforeSetup: function() {
+      setupRegistry();
+    },
+
+    integration: true
+  });
+
+  test('instances get an owner', function() {
+    var subject = this.subject();
+    var owner = Ember.getOwner(subject);
+
+    var otherThing = owner.lookup('service:other-thing');
+    ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on an instance and lookup an instance');
+  });
+
+  test('test context gets an owner', function() {
+    var owner = Ember.getOwner(this);
+
+    var otherThing = owner.lookup('service:other-thing');
+    ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on test context and lookup an instance');
+  });
+
 }
