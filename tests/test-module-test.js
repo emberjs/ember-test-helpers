@@ -153,7 +153,7 @@ test("needs gets us the component we need", function() {
   ok(otherComponent, "another component can be resolved when it's in our needs array");
 });
 
-moduleFor('component:x-foo', 'component:x-foo -- `integration: true`', {
+moduleFor('component:x-foo', 'component:x-foo -- `integration`', {
   beforeSetup: function() {
     setupRegistry();
     ok(!this.callbacks.integration, "integration property should be removed from callbacks");
@@ -182,6 +182,22 @@ test("throws an error when declaring integration: true and needs in the same mod
   }
 
   ok(result, "should throw an Error when integration: true and needs are provided");
+});
+
+test("throws an error when declaring integration: 'legacy' in `moduleFor` test", function() {
+  expect(3);
+
+  var result = false;
+
+  try {
+    moduleFor('component:x-foo', {
+      integration: 'legacy'
+    });
+  } catch(err) {
+    result = true;
+  }
+
+  ok(result, "should throw an Error when integration: 'legacy' outside of a component integration test");
 });
 
 if (hasEmberVersion(1,11)) {
