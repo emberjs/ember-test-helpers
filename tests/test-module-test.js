@@ -253,10 +253,7 @@ if (hasEmberVersion(1,11)) {
   });
 }
 
-if (Ember.getOwner) {
-  // this conditional should be changed to `hasEmberVersion` once
-  // `ember-container-inject-owner` lands in a stable version
-
+if (hasEmberVersion(2, 3)) {
   moduleFor('foo:thing', 'should be able to use `getOwner` on instances', {
     beforeSetup: function() {
       setupRegistry();
@@ -279,5 +276,4 @@ if (Ember.getOwner) {
     var otherThing = owner.lookup('service:other-thing');
     ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on test context and lookup an instance');
   });
-
 }
