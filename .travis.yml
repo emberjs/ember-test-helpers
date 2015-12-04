@@ -1,12 +1,15 @@
 sudo: false
 language: node_js
 node_js:
-- 'stable'
+  - '5.1.1'
 
 install:
+  - npm install -g npm
   - npm install -g bower
-  - npm install --no-optional
+  - npm install -g phantomjs
+  - npm install
   - bower install
+  - echo "$(phantomjs -v)"
 
 script:
   - ./node_modules/.bin/ember try:testall

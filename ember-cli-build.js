@@ -2,7 +2,10 @@ var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
-
+var stew = require('broccoli-stew');
+var fs = require('fs');
+var walk = require('fs-walk');
+var path = require('path');
 
 module.exports = function() {
   // --- Dependencies ---
@@ -78,5 +81,21 @@ module.exports = function() {
     outputFile: '/assets/test-support.js'
   });
 
-  return mergeTrees([main, vendor, testIndex, qunit, loader, testSupport]);
+  var loggedTree = stew.log(
+    mergeTrees([main, vendor, testIndex, qunit, loader, testSupport]),
+    { output: 'tree' }
+  );
+
+  return stew.afterBuild(loggedTree, function(dir) {
+    walk.walkSync(dir, function(basedir, filename, stat) {
+      var fullPath = path.join(basedir, filename);
+      console.log("============================================");
+      console.log(fullPath);
+      console.log("--------------------------------------------");
+      if (fs.lstatSync(fullPath).isFile()) {
+        console.log(fs.readFileSync(fullPath, 'utf8').slice(0, 1000));
+      }
+      console.log("============================================");
+    });
+  });
 };
