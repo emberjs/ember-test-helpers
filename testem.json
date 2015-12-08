@@ -1,6 +1,5 @@
 {
   "framework": "qunit",
-  "cwd": "build/",
   "serve_files": [
     "assets/loader.js",
     "assets/vendor.js",
