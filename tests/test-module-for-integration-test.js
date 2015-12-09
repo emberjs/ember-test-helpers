@@ -289,8 +289,8 @@ if (! hasEmberVersion(2,0)) {
     }
   });
 
-  test('it can render components semantically equivalent to v0.4.3', function(assert) {
-    var component = this.subject({
+  test('it can render components semantically equivalent to v0.4.3', function() {
+    this.subject({
       name: 'Charles XII',
     });
     this.render();

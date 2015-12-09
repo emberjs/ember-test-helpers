@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { getContext } from 'ember-test-helpers';
 
 export default function test(testName, callback) {
@@ -11,8 +12,8 @@ export default function test(testName, callback) {
     }
 
     Ember.run(function(){
-      stop();
-      Ember.RSVP.Promise.cast(result)['catch'](failTestOnPromiseRejection)['finally'](start);
+      QUnit.stop();
+      Ember.RSVP.Promise.cast(result)['catch'](failTestOnPromiseRejection)['finally'](QUnit.start);
     });
   }
 

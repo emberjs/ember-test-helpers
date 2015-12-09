@@ -5,6 +5,8 @@ import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
 
+var $ = Ember.$;
+
 function moduleForComponent(name, description, callbacks) {
   var module = new TestModuleForComponent(name, description, callbacks);
   qunitModuleFor(module);
@@ -174,7 +176,8 @@ test("template", function(){
 });
 
 test("$", function(){
-  var component = this.subject({name: 'green'});
+  this.subject({name: 'green'});
+
   equal($.trim(this.$('.color-name').text()), 'green');
   equal($.trim(this.$().text()), 'Pretty Color: green');
 });
@@ -237,7 +240,11 @@ test('can handle click', function() {
 });
 
 moduleForComponent('changing-color', 'component:changing-color -- handles closure actions', {
-  integration: true
+  integration: true,
+
+  beforeSetup: function() {
+    setupRegistry();
+  }
 });
 
 if (hasEmberVersion(1,13)) {
@@ -249,9 +256,10 @@ if (hasEmberVersion(1,13)) {
 }
 
 var testModule;
-module('moduleForComponent: can be invoked with only the component name', {
+QUnit.module('moduleForComponent: can be invoked with only the component name', {
   beforeEach: function(assert) {
     var done = assert.async();
+    setupRegistry();
     testModule = new TestModuleForComponent('pretty-color', { unit: true });
     testModule.setup()['finally'](done);
   },
@@ -267,7 +275,7 @@ test('it allows missing callbacks', function() {
 });
 
 var testModule;
-module('moduleForComponent: can be invoked with the component name and description', {
+QUnit.module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach: function(assert) {
     var done = assert.async();
     testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', { unit: true });
@@ -284,7 +292,7 @@ test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
 
-module('moduleForComponent: handles errors thrown during setup', {
+QUnit.module('moduleForComponent: handles errors thrown during setup', {
   beforeEach: function(assert) {
     var done = assert.async();
     testModule = new TestModuleForComponent('x-bad', {

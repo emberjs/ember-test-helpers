@@ -2,6 +2,8 @@ import { TestModuleForModel } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
+import Ember from 'ember';
+import DS from 'ember-data';
 
 function moduleForModel(name, description, callbacks) {
   var module = new TestModuleForModel(name, description, callbacks);
@@ -15,7 +17,7 @@ var adapter = DS.JSONAPIAdapter || DS.FixtureAdapter;
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
 var whazzitAdapterFindAllCalled = false;
 var WhazzitAdapter = adapter.extend({
-  findAll: function(store, type) {
+  findAll: function() {
     whazzitAdapterFindAllCalled = true;
     return this._super.apply(this, arguments);
   }
@@ -108,7 +110,7 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
 
     if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
       server = new Pretender(function() {
-        this.get('/whazzits', function(request) {
+        this.get('/whazzits', function() {
           return [200, {"Content-Type": "application/json"}, JSON.stringify({ data: Whazzit.FIXTURES })];
         });
       });

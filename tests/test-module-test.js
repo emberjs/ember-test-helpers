@@ -24,11 +24,6 @@ function setupRegistry() {
   });
 }
 
-var a = 0;
-var b = 0;
-var beforeSetupOk = false;
-var afterTeardownOk = false;
-
 var callbackOrder, setupContext, teardownContext, beforeSetupContext, afterTeardownContext;
 
 moduleFor('component:x-foo', 'TestModule callbacks', {
