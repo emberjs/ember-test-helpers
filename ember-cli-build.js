@@ -2,7 +2,7 @@ var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
-
+var JSHint = require('broccoli-jshint');
 
 module.exports = function() {
   // --- Dependencies ---
@@ -32,7 +32,10 @@ module.exports = function() {
     destDir: '/tests'
   });
 
-  var main = mergeTrees([klassy, lib, tests]);
+  var libJSHint = new JSHint(lib);
+  var testJSHint = new JSHint(tests);
+
+  var main = mergeTrees([klassy, lib, tests, libJSHint, testJSHint]);
 
   // --- Compile ES6 modules ---
 

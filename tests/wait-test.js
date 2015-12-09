@@ -2,9 +2,9 @@ import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
-import { setResolverRegistry } from 'tests/test-support/resolver';
-
 import wait from 'ember-test-helpers/wait';
+
+var $ = Ember.$;
 
 function moduleForComponent(name, description, callbacks) {
   var module = new TestModuleForComponent(name, description, callbacks);
@@ -49,7 +49,7 @@ moduleForComponent('wait helper tests', {
       click: function() {
         var component = this;
 
-        jQuery.ajax('/whazzits', { cache: false })
+        $.ajax('/whazzits', { cache: false })
           .then(function(data) {
             var value = component.get('internalValue');
 
@@ -70,7 +70,7 @@ moduleForComponent('wait helper tests', {
           Ember.run(component, 'set', 'internalValue', 'Local Data!');
         }, 10);
 
-        jQuery.ajax('/whazzits', { cache: false })
+        $.ajax('/whazzits', { cache: false })
           .then(function(data) {
             var value = component.get('internalValue');
 
@@ -78,7 +78,7 @@ moduleForComponent('wait helper tests', {
 
             Ember.run.later(function() {
 
-              jQuery.ajax('/whazzits', { cache: false })
+              $.ajax('/whazzits', { cache: false })
                 .then(function(data) {
                   if (component.isDestroyed) { return; }
 
@@ -94,7 +94,7 @@ moduleForComponent('wait helper tests', {
     this.register('template:components/x-test-4', Ember.Handlebars.compile("{{internalValue}}"));
 
     this.server = new Pretender(function() {
-      this.get('/whazzits', function(request) {
+      this.get('/whazzits', function() {
         return [
           200,
           { "Content-Type": "text/plain" },
