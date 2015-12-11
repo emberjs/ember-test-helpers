@@ -10,7 +10,6 @@ function moduleForComponent(name, description, callbacks) {
   qunitModuleFor(module);
 }
 
-
 moduleForComponent('Component Integration Tests', {
   integration: true,
   beforeSetup: function() {
@@ -157,17 +156,32 @@ moduleForComponent('Component Integration Tests: context', {
 });
 
 test('it can set and get properties', function() {
-  this.set('foo', 1);
+  var setResult = this.set('foo', 1);
+
+  if (hasEmberVersion(2,0)) {
+    equal(setResult, '1');
+  } else {
+    equal(setResult, undefined);
+  }
+
   this.render('{{my-component foo=foo}}');
   equal(this.get('foo'), '1');
   equal(this.$('.foo').text(), '1');
 });
 
 test('it can setProperties and getProperties', function() {
-  this.setProperties({
+  var hash = {
     foo: 1,
     bar: 2
-  });
+  };
+  var setResult = this.setProperties(hash);
+
+  if (hasEmberVersion(2,0)) {
+    deepEqual(setResult, hash);
+  } else {
+    equal(setResult, undefined);
+  }
+
   this.render('{{my-component foo=foo bar=bar}}');
   var properties = this.getProperties('foo', 'bar');
   equal(properties.foo, '1');
