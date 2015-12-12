@@ -12,7 +12,7 @@ module.exports = function() {
     destDir: '/assets'
   });
 
-  var klassy = new Funnel('bower_components', {
+  var klassy = new Funnel('node_modules', {
     srcDir: '/klassy/lib',
     files: ['klassy.js'],
     destDir: '/'

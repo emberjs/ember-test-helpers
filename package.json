@@ -29,5 +29,8 @@
     "ember-cli": "1.13.13",
     "ember-cli-release": "^0.2.4",
     "ember-try": "0.0.8"
+  },
+  "dependencies": {
+    "klassy": "^0.1.3"
   }
 }
