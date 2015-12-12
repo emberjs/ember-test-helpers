@@ -1,0 +1,10 @@
+bower_components
+build
+config
+node_modules
+tests
+tmp
+.travis.yml
+bower.json
+ember-cli-build.js
+testem.json
