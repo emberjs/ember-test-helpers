@@ -24,7 +24,6 @@
     "tests"
   ],
   "dependencies": {
-    "klassy": "cerebris/klassy.js#0.1.0",
     "ember": "^2.2.0"
   },
   "devDependencies": {
