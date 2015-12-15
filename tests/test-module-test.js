@@ -24,7 +24,7 @@ function setupRegistry() {
   });
 }
 
-var callbackOrder, setupContext, teardownContext, beforeSetupContext, afterTeardownContext;
+var callbackOrder, setupContext, teardownContext, beforeSetupContext, afterTeardownContext, originalDeprecate;
 
 moduleFor('component:x-foo', 'TestModule callbacks', {
   beforeSetup: function() {
@@ -94,13 +94,45 @@ moduleFor('component:x-foo', 'component:x-foo -- callback context', {
     setupRegistry();
   },
 
+  setup: function() {
+    originalDeprecate = Ember.deprecate;
+  },
+
+  teardown: function() {
+    Ember.deprecate = originalDeprecate;
+  },
+
   getSubjectName: function() {
     return this.subjectName;
+  },
+
+  getFoo: function() {
+    return this.foo;
   }
 });
 
-test("callbacks are called in the context of the module", function() {
+test("can access TestModule properties from a callback but raises a deprecation", function() {
+  var deprecations = [];
+  Ember.deprecate = function(message) {
+    deprecations.push(message);
+  };
+
   equal(this.getSubjectName(), 'component:x-foo');
+  ok(Ember.A(deprecations).contains('Accessing the test module property "subjectName" from a callback is deprecated.'));
+});
+
+test("can access test context properties from a callback's 'this' and not raise a deprecation", function() {
+  var deprecations = [];
+  Ember.deprecate = function(message, test) {
+    if (!test) {
+      deprecations.push(message);
+    }
+  };
+
+  this.foo = 'bar';
+
+  equal(this.getFoo(), 'bar');
+  ok(!deprecations.length);
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- created subjects are cleaned up', {
