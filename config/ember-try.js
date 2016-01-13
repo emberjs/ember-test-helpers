@@ -98,6 +98,18 @@ module.exports = {
       resolutions: {
         "ember": "canary"
       }
+    },
+    {
+      name: 'ember-data-2.3',
+      dependencies: {
+        "ember": "components/ember#release",
+      },
+      devDependencies: {
+        "ember-data": "~2.3"
+      },
+      resolutions: {
+        "ember": "release"
+      }
     }
   ]
 };
