@@ -93,6 +93,35 @@ moduleForComponent('wait helper tests', {
 
     this.register('template:components/x-test-4', Ember.Handlebars.compile("{{internalValue}}"));
 
+    this.register('component:x-test-5', Ember.Component.extend({
+      internalValue: 'initial value',
+
+      ready: false,
+
+      isReady() {
+        return this.get('ready');
+      },
+
+      init() {
+        this._super.apply(this, arguments);
+        Ember.Test.registerWaiter(this, this.isReady);
+        Ember.run.later(() => {
+          this.setProperties({
+            internalValue: 'async value',
+            ready: true
+          });
+        }, 25);
+      },
+
+      willDestroy() {
+        this._super.apply(this, arguments);
+        Ember.Test.unregisterWaiter(this, this.isReady);
+      }
+
+    }));
+
+    this.register('template:components/x-test-5', Ember.Handlebars.compile('{{internalValue}}'));
+
     this.server = new Pretender(function() {
       this.get('/whazzits', function() {
         return [
@@ -184,5 +213,14 @@ test('it can wait only for timers', function() {
   return wait({ waitForAJAX: false })
     .then(function() {
       equal(testContext.$().text(), 'Local Data!' );
+    });
+});
+
+test('it waits for Ember test waiters', function() {
+  this.render('{{x-test-5}}');
+
+  return wait({ waitForTimers: false })
+    .then(() => {
+      equal(this.$().text(), 'async value');
     });
 });
