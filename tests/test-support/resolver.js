@@ -5,7 +5,7 @@ var Resolver = Ember.DefaultResolver.extend({
   registry: null,
 
   resolve: function(fullName) {
-    return this.registry[fullName] || this._super.apply(this, arguments);
+    return this.registry[fullName];
   },
 
   normalize: function(fullName) {
@@ -19,3 +19,9 @@ setResolver(resolver);
 export function setResolverRegistry(registry) {
   resolver.set('registry', registry);
 }
+
+export default {
+  create() {
+    return resolver;
+  }
+};
