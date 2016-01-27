@@ -1,17 +1,16 @@
 import Ember from 'ember';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import { TestModuleForComponent } from 'ember-test-helpers';
+import { TestModuleForIntegration } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
 
-function moduleForComponent(name, description, callbacks) {
-  var module = new TestModuleForComponent(name, description, callbacks);
+function moduleForIntegration(description, callbacks) {
+  var module = new TestModuleForIntegration(description, callbacks);
   qunitModuleFor(module);
 }
 
-moduleForComponent('Component Integration Tests', {
-  integration: true,
+moduleForIntegration('Component Integration Tests', {
   beforeSetup: function() {
     setResolverRegistry({
       'template:components/my-component': Ember.Handlebars.compile(
@@ -39,14 +38,6 @@ test('it complains if you try to use bare render', function() {
     self.render();
   }, /in a component integration test you must pass a template to `render\(\)`/);
 });
-
-test('it complains if you try to use subject()', function() {
-  var self = this;
-  throws(function() {
-    self.subject();
-  }, /component integration tests do not support `subject\(\)`\./);
-});
-
 
 test('it can access the full container', function() {
   this.set('myColor', 'red');
@@ -121,8 +112,7 @@ test('it supports dom triggered focus events', function() {
   equal(this.$('input').val(), 'focusout');
 });
 
-moduleForComponent('Component Integration Tests: render during setup', {
-  integration: true,
+moduleForIntegration('TestModuleForIntegration | render during setup', {
   beforeSetup: function() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
@@ -144,8 +134,7 @@ test('it has working events', function() {
   equal(this.$('.value').text(), '1');
 });
 
-moduleForComponent('Component Integration Tests: context', {
-  integration: true,
+moduleForIntegration('TestModuleForIntegration | context', {
   beforeSetup: function() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
@@ -191,8 +180,7 @@ test('it can setProperties and getProperties', function() {
 });
 
 var origDeprecate;
-moduleForComponent('Component Integration Tests: implicit views are not deprecated', {
-  integration: true,
+moduleForIntegration('TestModuleForIntegration | implicit views are not deprecated', {
   setup: function () {
     origDeprecate = Ember.deprecate;
     Ember.deprecate = function(msg, check) {
@@ -213,9 +201,7 @@ test('the toplevel view is not deprecated', function () {
 });
 
 
-moduleForComponent('Component Integration Tests: register and inject', {
-  integration: true
-});
+moduleForIntegration('TestModuleForIntegration | register and inject', {});
 
 test('can register a component', function() {
   this.register('component:x-foo', Ember.Component.extend({
@@ -267,8 +253,7 @@ test('can inject a service directly into test context, with aliased name', funct
   equal(this.$('.x-foo').text().trim(), "amazing");
 });
 
-moduleForComponent('Component Integration Tests: willDestoryElement', {
-  integration: true,
+moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
   beforeSetup: function() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
@@ -276,7 +261,7 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
           var stateIndicatesInDOM = (this._state === 'inDOM');
           var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
-          ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM');
+          ok((actuallyInDOM === true) && (stateIndicatesInDOM === true), 'component should still be in the DOM');
       }
 
       })
@@ -289,26 +274,3 @@ test('still in DOM in willDestroyElement', function() {
     this.render("{{my-component}}");
 
 });
-
-if (! hasEmberVersion(2,0)) {
-  moduleForComponent('my-component', 'Component Legacy Integration Tests', {
-    integration: 'legacy',
-    beforeSetup: function() {
-      setResolverRegistry({
-        'component:my-component': Ember.Component.extend(),
-        'template:components/my-component': Ember.Handlebars.compile(
-          '<span>{{name}}</span>'
-        )
-      });
-    }
-  });
-
-  test('it can render components semantically equivalent to v0.4.3', function() {
-    this.subject({
-      name: 'Charles XII',
-    });
-    this.render();
-
-    equal(this.$('span').text(), 'Charles XII');
-  });
-}
