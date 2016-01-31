@@ -101,14 +101,28 @@ module.exports = {
     },
     {
       name: 'ember-data-2.3',
-      dependencies: {
-        "ember": "components/ember#release",
+      bower: {
+        dependencies: {
+          "ember": "components/ember#release",
+        },
+        devDependencies: {
+          // Note that the bower dependency for ember-data is set here to ~2.3,
+          // altough since 2.3 ember-data is a proper addon which is installed
+          // via npm; we are setting the version for the bower dependency here
+          // so we make sure that ember-data 2.3 is used. This can be removed
+          // once there is support for removing dependencies in an ember-try
+          // scenario
+          "ember-data": "~2.3",
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "release"
+        }
       },
-      devDependencies: {
-        "ember-data": "~2.3"
-      },
-      resolutions: {
-        "ember": "release"
+      npm: {
+        devDependencies: {
+          "ember-data": "~2.3"
+        }
       }
     }
   ]
