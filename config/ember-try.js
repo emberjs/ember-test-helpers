@@ -101,14 +101,21 @@ module.exports = {
     },
     {
       name: 'ember-data-2.3',
-      dependencies: {
-        "ember": "components/ember#release",
+      bower: {
+        dependencies: {
+          "ember": "release"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "release"
+        }
       },
-      devDependencies: {
-        "ember-data": "~2.3"
-      },
-      resolutions: {
-        "ember": "release"
+      npm: {
+        devDependencies: {
+          "ember-data": "~2.3"
+        }
       }
     }
   ]

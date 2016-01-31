@@ -28,9 +28,7 @@
   },
   "devDependencies": {
     "qunit": "^1.15.0",
-    "ember-data": "^2.2.0",
     "pretender": "~0.10.1",
-    "loader.js": "ember-cli/loader.js#3.0.0",
     "ember-cli-shims": "ember-cli/ember-cli-shims#0.0.6",
     "ember-cli-test-loader": "rwjblue/ember-cli-test-loader#0.0.4",
     "jquery": "~2.1.1"

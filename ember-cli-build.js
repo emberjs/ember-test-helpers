@@ -3,13 +3,25 @@ var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
 var JSHint = require('broccoli-jshint');
+var existsSync = require('exists-sync');
 
-module.exports = function() {
+module.exports = function(options) {
+  var project = options.project;
+  project.initializeAddons();
+
+  function addonTreesFor(type) {
+    return project.addons.map(function(addon) {
+      if (addon.treeFor) {
+        return addon.treeFor(type);
+      }
+    }).filter(Boolean);
+  }
+
   // --- Dependencies ---
-  var loader = new Funnel('bower_components', {
-    srcDir: 'loader.js',
-    files: ['loader.js'],
-    destDir: '/assets'
+  var addonVendorTrees = mergeTrees(addonTreesFor('vendor'));
+  var loader = new Funnel(addonVendorTrees, {
+    destDir: '/assets',
+    files: ['loader.js']
   });
 
   var klassy = new Funnel('node_modules', {
@@ -35,8 +47,14 @@ module.exports = function() {
   var libJSHint = new JSHint(lib);
   var testJSHint = new JSHint(tests);
 
-  var main = mergeTrees([klassy, lib, tests, libJSHint, testJSHint]);
+  var mainTrees = [klassy, lib, tests, libJSHint, testJSHint];
+  var addonTree = mergeTrees(addonTreesFor('addon'));
+  var addonModulesTree = new Funnel(addonTree, {
+    srcDir: 'modules',
+    destDir: '/'
+  });
 
+  var main = mergeTrees(mainTrees.concat(addonModulesTree));
   // --- Compile ES6 modules ---
 
   main = new Babel(main, {
@@ -52,14 +70,19 @@ module.exports = function() {
 
   // --- Select and concat vendor / support files ---
 
+  var inputFiles = ['jquery/dist/jquery.js',
+                    'ember/ember-template-compiler.js',
+                    'ember/ember.debug.js',
+                    'FakeXMLHttpRequest/fake_xml_http_request.js',
+                    'route-recognizer/dist/route-recognizer.js',
+                    'pretender/pretender.js'];
+
+  if (existsSync('bower_components/ember-data/ember-data.js')) {
+    inputFiles.push('ember-data/ember-data.js');
+  }
+
   var vendor = concat('bower_components', {
-    inputFiles: ['jquery/dist/jquery.js',
-                 'ember/ember-template-compiler.js',
-                 'ember/ember.debug.js',
-                 'ember-data/ember-data.js',
-                 'FakeXMLHttpRequest/fake_xml_http_request.js',
-                 'route-recognizer/dist/route-recognizer.js',
-                 'pretender/pretender.js'],
+    inputFiles: inputFiles,
     outputFile: '/assets/vendor.js'
   });
 
