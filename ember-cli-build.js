@@ -4,12 +4,23 @@ var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
 var JSHint = require('broccoli-jshint');
 
-module.exports = function() {
+module.exports = function(options) {
+  var project = options.project;
+  project.initializeAddons();
+
+  function addonTreesFor(type) {
+    return project.addons.map(function(addon) {
+      if (addon.treeFor) {
+        return addon.treeFor(type);
+      }
+    }).filter(Boolean);
+  }
+
   // --- Dependencies ---
-  var loader = new Funnel('bower_components', {
-    srcDir: 'loader.js',
-    files: ['loader.js'],
-    destDir: '/assets'
+  var addonVendorTrees = mergeTrees(addonTreesFor('vendor'));
+  var loader = new Funnel(addonVendorTrees, {
+    destDir: '/assets',
+    files: ['loader.js']
   });
 
   var klassy = new Funnel('node_modules', {
