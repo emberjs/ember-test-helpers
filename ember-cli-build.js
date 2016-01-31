@@ -46,8 +46,14 @@ module.exports = function(options) {
   var libJSHint = new JSHint(lib);
   var testJSHint = new JSHint(tests);
 
-  var main = mergeTrees([klassy, lib, tests, libJSHint, testJSHint]);
+  var mainTrees = [klassy, lib, tests, libJSHint, testJSHint];
+  var addonTree = mergeTrees(addonTreesFor('addon'));
+  var addonModulesTree = new Funnel(addonTree, {
+    srcDir: 'modules',
+    destDir: '/'
+  });
 
+  var main = mergeTrees(mainTrees.concat(addonModulesTree));
   // --- Compile ES6 modules ---
 
   main = new Babel(main, {
