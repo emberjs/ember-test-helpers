@@ -4,6 +4,7 @@ node_js:
 - 'stable'
 
 install:
+  - npm install -g npm
   - npm install -g bower
   - npm install --no-optional
   - bower install
