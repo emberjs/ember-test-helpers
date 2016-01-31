@@ -3,6 +3,7 @@ var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-sourcemap-concat');
 var JSHint = require('broccoli-jshint');
+var existsSync = require('exists-sync');
 
 module.exports = function(options) {
   var project = options.project;
@@ -69,14 +70,19 @@ module.exports = function(options) {
 
   // --- Select and concat vendor / support files ---
 
+  var inputFiles = ['jquery/dist/jquery.js',
+                    'ember/ember-template-compiler.js',
+                    'ember/ember.debug.js',
+                    'FakeXMLHttpRequest/fake_xml_http_request.js',
+                    'route-recognizer/dist/route-recognizer.js',
+                    'pretender/pretender.js'];
+
+  if (existsSync('bower_components/ember-data/ember-data.js')) {
+    inputFiles.push('ember-data/ember-data.js');
+  }
+
   var vendor = concat('bower_components', {
-    inputFiles: ['jquery/dist/jquery.js',
-                 'ember/ember-template-compiler.js',
-                 'ember/ember.debug.js',
-                 'ember-data/ember-data.js',
-                 'FakeXMLHttpRequest/fake_xml_http_request.js',
-                 'route-recognizer/dist/route-recognizer.js',
-                 'pretender/pretender.js'],
+    inputFiles: inputFiles,
     outputFile: '/assets/vendor.js'
   });
 
