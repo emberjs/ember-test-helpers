@@ -274,3 +274,25 @@ test('still in DOM in willDestroyElement', function() {
     this.render("{{my-component}}");
 
 });
+
+moduleForIntegration('TestModuleForIntegration: force willDestroyElement via clearRender', {
+  beforeSetup: function() {
+    setResolverRegistry({});
+  }
+});
+
+test('still in DOM in willDestroyElement', function() {
+  expect(1);
+
+  let willDestroyCalled = false;
+  this.register('component:x-button', Ember.Component.extend({
+    willDestroyElement: function() {
+      willDestroyCalled = true;
+    }
+  }));
+
+  this.render("{{x-button}}");
+  this.clearRender();
+
+  ok(willDestroyCalled, 'can add assertions after willDestroyElement is called');
+});

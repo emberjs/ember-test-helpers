@@ -584,8 +584,7 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
           var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
           ok((actuallyInDOM === true) && (actuallyInDOM === stateIndicatesInDOM), 'component should still be in the DOM');
-      }
-
+        }
       })
     });
   }
@@ -594,7 +593,29 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 test('still in DOM in willDestroyElement', function() {
     expect(1);
     this.render("{{my-component}}");
+});
 
+moduleForComponent('Component Integration Tests: force willDestroyElement via clearRender', {
+  integration: true,
+  beforeSetup: function() {
+    setResolverRegistry({});
+  }
+});
+
+test('still in DOM in willDestroyElement', function() {
+  expect(1);
+
+  let willDestroyCalled = false;
+  this.register('component:x-button', Ember.Component.extend({
+    willDestroyElement: function() {
+      willDestroyCalled = true;
+    }
+  }));
+
+  this.render("{{x-button}}");
+  this.clearRender();
+
+  ok(willDestroyCalled, 'can add assertions after willDestroyElement is called');
 });
 
 if (!hasEmberVersion(2,0)) {
