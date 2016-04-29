@@ -20,8 +20,9 @@ module.exports = function(options) {
   // --- Dependencies ---
   var addonVendorTrees = mergeTrees(addonTreesFor('vendor'));
   var loader = new Funnel(addonVendorTrees, {
-    destDir: '/assets',
-    files: ['loader.js']
+    srcDir: 'loader',
+    files: ['loader.js'],
+    destDir: '/assets'
   });
 
   var klassy = new Funnel('node_modules', {
