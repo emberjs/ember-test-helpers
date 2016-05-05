@@ -10,4 +10,4 @@ install:
   - bower install
 
 script:
-  - ./node_modules/.bin/ember try:testall
+  - ./node_modules/.bin/ember try:each
