@@ -595,6 +595,12 @@ test('still in DOM in willDestroyElement', function() {
     this.render("{{my-component}}");
 });
 
+test('is destroyed when rendered twice', function() {
+  expect(2);
+  this.render("{{my-component}}");
+  this.render("{{my-component}}");
+});
+
 moduleForComponent('Component Integration Tests: force willDestroyElement via clearRender', {
   integration: true,
   beforeSetup: function() {
