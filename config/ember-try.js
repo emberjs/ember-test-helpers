@@ -64,40 +64,126 @@ module.exports = {
       }
     },
     {
-      name: 'ember-release',
+      name: 'ember-2.3',
       dependencies: {
-        "ember": "components/ember#release"
+        "ember": "~2.3.0"
       },
       devDependencies: {
-        "ember-data": "~2.2.0"
+        "ember-data": "~2.3.0"
+      }
+    },
+    {
+      name: 'ember-2.4',
+      bower: {
+        dependencies: {
+          "ember": "~2.4.0"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "~2.4.0"
+        }
       },
-      resolutions: {
-        "ember": "release"
+      npm: {
+        devDependencies: {
+          "ember-data": "~2.4"
+        }
+      }
+    },
+    {
+      name: 'ember-2.5',
+      bower: {
+        dependencies: {
+          "ember": "~2.5.0"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "~2.5.0"
+        }
+      },
+      npm: {
+        devDependencies: {
+          "ember-data": "~2.5"
+        }
+      }
+    },
+    {
+      name: 'ember-2.6',
+      bower: {
+        dependencies: {
+          "ember": "~2.6.0-beta.1"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "~2.6.0-beta.1"
+        }
+      },
+      npm: {
+        devDependencies: {
+          "ember-data": "^2.5.0"
+        }
+      }
+    },
+    {
+      name: 'ember-release',
+      bower: {
+        dependencies: {
+          "ember": "components/ember#release"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "release"
+        }
+      },
+      npm: {
+        devDependencies: {
+          "ember-data": "^2.5.0"
+        }
       }
     },
     {
       name: 'ember-beta',
-      dependencies: {
-        "ember": "components/ember#beta"
+      bower: {
+        dependencies: {
+          "ember": "components/ember#beta"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "beta"
+        }
       },
-      devDependencies: {
-        "ember-data": "~2.2.0"
-      },
-      resolutions: {
-        "ember": "beta"
+      npm: {
+        devDependencies: {
+          "ember-data": "^2.5.0"
+        }
       }
     },
     {
       name: 'ember-canary',
-      allowedToFail: true,
-      dependencies: {
-        "ember": "components/ember#canary"
+      bower: {
+        dependencies: {
+          "ember": "components/ember#canary"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "canary"
+        }
       },
-      devDependencies: {
-        "ember-data": "~2.2.0"
-      },
-      resolutions: {
-        "ember": "canary"
+      npm: {
+        devDependencies: {
+          "ember-data": "^2.5.0"
+        }
       }
     },
     {
