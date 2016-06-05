@@ -665,8 +665,8 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 });
 
 test('still in DOM in willDestroyElement', function() {
-    expect(1);
-    this.render("{{my-component}}");
+  expect(1);
+  this.render("{{my-component}}");
 });
 
 test('is destroyed when rendered twice', function() {
