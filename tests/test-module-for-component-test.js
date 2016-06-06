@@ -253,6 +253,12 @@ if (hasEmberVersion(1,13)) {
     this.on('colorChange', function(arg) { equal(arg, 'foo'); });
     this.render(Ember.Handlebars.compile("{{changing-color change=(action 'colorChange')}}"));
   });
+
+  test('handles a closure actions when set on the test context', function() {
+    expect(1);
+    this.set('colorChange', function(arg) { equal(arg, 'foo'); });
+    this.render(Ember.Handlebars.compile("{{changing-color change=(action colorChange)}}"));
+  });
 }
 
 var testModule;
@@ -497,6 +503,70 @@ test('it can setProperties and getProperties', function() {
   equal(this.$('.bar').text(), '2');
 });
 
+test('two way bound arguments are updated', function() {
+  var instance;
+  setResolverRegistry({
+    'component:my-component': Ember.Component.extend({
+      init: function() {
+        this._super();
+        instance = this;
+      },
+      didInsertElement: function() {
+        Ember.run.schedule('afterRender', () => {
+          this.set('foo', 'updated!');
+        });
+      }
+    })
+  });
+
+  this.set('foo', 'original');
+  this.render('{{my-component foo=foo}}');
+
+  equal(instance.get('foo'), 'updated!');
+  equal(this.get('foo'), 'updated!');
+});
+
+test('two way bound arguments are available after clearRender is called', function() {
+  setResolverRegistry({
+    'component:my-component': Ember.Component.extend({
+      didInsertElement: function() {
+        Ember.run.schedule('afterRender', () => {
+          this.set('foo', 'updated!');
+          this.set('bar', 'updated bar!');
+        });
+      }
+    })
+  });
+
+  this.set('foo', 'original');
+  this.render('{{my-component foo=foo bar=bar}}');
+  this.clearRender();
+
+  equal(this.get('foo'), 'updated!');
+  equal(this.get('bar'), 'updated bar!');
+});
+
+test('rendering after calling clearRender', function() {
+  setResolverRegistry({
+    'component:my-component': Ember.Component.extend({
+      didInsertElement: function() {
+        Ember.run.schedule('afterRender', () => {
+          let currentFoo = this.get('foo') || '';
+          this.set('foo', currentFoo + 'more foo ');
+        });
+      }
+    })
+  });
+
+  this.render('{{my-component foo=foo}}');
+  equal(this.get('foo'), 'more foo ', 'precond - renders initially');
+  this.clearRender();
+
+  this.render('{{my-component foo=foo}}');
+  equal(this.get('foo'), 'more foo more foo ', 'uses the previously rendered value');
+  this.clearRender();
+});
+
 var origDeprecate;
 moduleForComponent('Component Integration Tests: implicit views are not deprecated', {
   integration: true,
@@ -549,12 +619,16 @@ test('can inject a service directly into test context', function() {
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
+
   this.register('service:unicorn', Ember.Component.extend({
     sparkliness: 'extreme'
   }));
+
   this.inject.service('unicorn');
   this.render("{{x-foo}}");
+
   equal(this.$('.x-foo').text().trim(), "extreme");
+
   this.set('unicorn.sparkliness', 'amazing');
   equal(this.$('.x-foo').text().trim(), "amazing");
 });
@@ -591,8 +665,8 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 });
 
 test('still in DOM in willDestroyElement', function() {
-    expect(1);
-    this.render("{{my-component}}");
+  expect(1);
+  this.render("{{my-component}}");
 });
 
 test('is destroyed when rendered twice', function() {

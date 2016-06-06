@@ -262,8 +262,7 @@ moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
           var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
           ok((actuallyInDOM === true) && (stateIndicatesInDOM === true), 'component should still be in the DOM');
-      }
-
+        }
       })
     });
   }
@@ -272,7 +271,6 @@ moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
 test('still in DOM in willDestroyElement', function() {
     expect(1);
     this.render("{{my-component}}");
-
 });
 
 moduleForIntegration('TestModuleForIntegration: force willDestroyElement via clearRender', {
