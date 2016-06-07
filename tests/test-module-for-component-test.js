@@ -698,6 +698,33 @@ test('still in DOM in willDestroyElement', function() {
   ok(willDestroyCalled, 'can add assertions after willDestroyElement is called');
 });
 
+
+moduleForComponent('Component Integration Tests: DOM', {
+  integration: true,
+  beforeSetup: function() {
+  }
+});
+
+test('it can set and get properties', function() {
+  let instance;
+
+  setResolverRegistry({
+    'component:my-component': Ember.Component.extend({
+      init() {
+        this._super(...arguments);
+        instance = this;
+      },
+      layout: Ember.Handlebars.compile('<span class="foo"></span>')
+    })
+  });
+  this.render('{{my-component}}');
+
+  let testElement = this.$()[0];
+  let instanceElement = instance.element;
+
+  ok(testElement.children[0] === instanceElement, 'the first child of the test harness is whatever is rendered');
+});
+
 if (!hasEmberVersion(2,0)) {
   moduleForComponent('my-component', 'Component Integration Tests', {
     integration: 'legacy',
