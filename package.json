@@ -21,16 +21,16 @@
   "license": "(MIT OR Apache-2.0)",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "broccoli-babel-transpiler": "^5.4.5",
-    "broccoli-funnel": "^0.2.13",
-    "broccoli-jshint": "^1.1.1",
-    "broccoli-merge-trees": "^0.1.4",
-    "broccoli-sourcemap-concat": "^0.4.3",
+    "broccoli-babel-transpiler": "^5.5.0",
+    "broccoli-funnel": "^0.2.15",
+    "broccoli-jshint": "^1.1.2",
+    "broccoli-merge-trees": "^0.2.4",
+    "broccoli-sourcemap-concat": "^0.4.4",
     "ember-cli": "1.13.13",
     "ember-cli-release": "^1.0.0-beta.1",
-    "ember-try": "^0.2.2",
+    "ember-try": "0.2.2",
     "exists-sync": "0.0.3",
-    "loader.js": "^4.0.4"
+    "loader.js": "^4.0.10"
   },
   "dependencies": {
     "klassy": "^0.1.3"
