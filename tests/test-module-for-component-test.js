@@ -7,8 +7,15 @@ import { setResolverRegistry } from 'tests/test-support/resolver';
 
 var $ = Ember.$;
 
+var Service = Ember.Service || Ember.Object;
+
 function moduleForComponent(name, description, callbacks) {
   var module = new TestModuleForComponent(name, description, callbacks);
+  if (module.isIntegration) {
+    module.name += ' [INTEGRATION]';
+  } else {
+    module.name += ' [UNIT]';
+  }
   qunitModuleFor(module);
 }
 
@@ -567,29 +574,6 @@ test('rendering after calling clearRender', function() {
   this.clearRender();
 });
 
-var origDeprecate;
-moduleForComponent('Component Integration Tests: implicit views are not deprecated', {
-  integration: true,
-  setup: function () {
-    origDeprecate = Ember.deprecate;
-    Ember.deprecate = function(msg, check) {
-      if (!check) {
-        throw new Error("unexpected deprecation: " + msg);
-      }
-    };
-  },
-  teardown: function () {
-    Ember.deprecate = origDeprecate;
-  }
-});
-
-test('the toplevel view is not deprecated', function () {
-  expect(0);
-  this.register('component:my-toplevel', this.container.lookupFactory('view:toplevel'));
-  this.render("{{my-toplevel}}");
-});
-
-
 moduleForComponent('Component Integration Tests: register and inject', {
   integration: true
 });
@@ -607,7 +591,7 @@ test('can register a service', function() {
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
   this.render("{{x-foo}}");
@@ -620,7 +604,7 @@ test('can inject a service directly into test context', function() {
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
 
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
 
@@ -638,7 +622,7 @@ test('can inject a service directly into test context, with aliased name', funct
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
   this.inject.service('unicorn', { as: 'hornedBeast' });
