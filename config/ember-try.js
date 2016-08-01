@@ -187,6 +187,26 @@ module.exports = {
       }
     },
     {
+      name: 'ember-alpha',
+      allowedToFail: true,
+      bower: {
+        dependencies: {
+          "ember": "alpha"
+        },
+        devDependencies: {
+          "ember-cli-shims": "ember-cli/ember-cli-shims#0.1.0"
+        },
+        resolutions: {
+          "ember": "alpha"
+        }
+      },
+      npm: {
+        devDependencies: {
+          "ember-data": "^2.5.0"
+        }
+      }
+    },
+    {
       name: 'ember-data-2.3',
       bower: {
         dependencies: {
