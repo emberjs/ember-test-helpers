@@ -17,7 +17,7 @@ var resolver = Resolver.create({registry: {}, namespace: {}});
 setResolver(resolver);
 
 export function setResolverRegistry(registry) {
-  resolver.set('registry', registry);
+  Ember.run(resolver, 'set', 'registry', registry);
 }
 
 export default {

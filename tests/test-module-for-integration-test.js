@@ -179,28 +179,6 @@ test('it can setProperties and getProperties', function() {
   equal(this.$('.bar').text(), '2');
 });
 
-var origDeprecate;
-moduleForIntegration('TestModuleForIntegration | implicit views are not deprecated', {
-  setup: function () {
-    origDeprecate = Ember.deprecate;
-    Ember.deprecate = function(msg, check) {
-      if (!check) {
-        throw new Error("unexpected deprecation: " + msg);
-      }
-    };
-  },
-  teardown: function () {
-    Ember.deprecate = origDeprecate;
-  }
-});
-
-test('the toplevel view is not deprecated', function () {
-  expect(0);
-  this.register('component:my-toplevel', this.container.lookupFactory('view:toplevel'));
-  this.render("{{my-toplevel}}");
-});
-
-
 moduleForIntegration('TestModuleForIntegration | register and inject', {});
 
 test('can register a component', function() {
