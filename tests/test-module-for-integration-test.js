@@ -5,6 +5,8 @@ import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
 
+const Service = Ember.Service || Ember.Object;
+
 function moduleForIntegration(description, callbacks) {
   var module = new TestModuleForIntegration(description, callbacks);
   qunitModuleFor(module);
@@ -194,7 +196,7 @@ test('can register a service', function() {
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
   this.render("{{x-foo}}");
@@ -206,7 +208,7 @@ test('can inject a service directly into test context', function() {
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
   this.inject.service('unicorn');
@@ -221,7 +223,7 @@ test('can inject a service directly into test context, with aliased name', funct
     unicorn: Ember.inject.service(),
     layout: Ember.Handlebars.compile('<span class="x-foo">{{unicorn.sparkliness}}</span>')
   }));
-  this.register('service:unicorn', Ember.Component.extend({
+  this.register('service:unicorn', Service.extend({
     sparkliness: 'extreme'
   }));
   this.inject.service('unicorn', { as: 'hornedBeast' });
