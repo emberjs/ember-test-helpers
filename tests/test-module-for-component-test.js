@@ -189,6 +189,13 @@ test("$", function(){
   equal($.trim(this.$().text()), 'Pretty Color: green');
 });
 
+test('it can access the element', function() {
+  this.subject({name: 'green'});
+  this.render();
+
+  equal(this._element.textContent, 'Pretty Color: green');
+});
+
 moduleForComponent('pretty-color', 'component:pretty-color -- this.render in setup', {
   unit: true,
   beforeSetup: function() {
@@ -345,6 +352,11 @@ moduleForComponent('Component Integration Tests', {
 test('it can render a template', function() {
   this.render("<span>Hello</span>");
   equal(this.$('span').text(), 'Hello');
+});
+
+test('it can access the element', function() {
+  this.render("<span>Hello</span>");
+  equal(this._element.textContent, 'Hello');
 });
 
 if (hasEmberVersion(1,11)) {
