@@ -3,7 +3,7 @@ import { TestModule, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
-import { setResolverRegistry } from 'tests/test-support/resolver';
+import { setResolverRegistry, createCustomResolver } from 'tests/test-support/resolver';
 
 function moduleFor(fullName, description, callbacks) {
   var module = new TestModule(fullName, description, callbacks);
@@ -334,4 +334,16 @@ QUnit.module('context can be provided to TestModule', {
 
 test('noop', function() {
   contexts.push(this);
+});
+
+moduleFor('component:y-foo', 'Custom resolver', {
+  resolver: createCustomResolver({
+    'component:y-foo': Ember.Component.extend({
+      name: 'Y u no foo?!'
+    })
+  })
+});
+
+test('subject created using custom resolver', function() {
+  equal(this.subject().name, 'Y u no foo?!');
 });
