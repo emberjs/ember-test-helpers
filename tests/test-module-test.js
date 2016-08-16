@@ -304,3 +304,34 @@ if (hasEmberVersion(2, 3)) {
     ok(otherThing.fromDefaultRegistry, 'was able to use `getOwner` on test context and lookup an instance');
   });
 }
+
+var contexts, module;
+QUnit.module('context can be provided to TestModule', {
+  beforeEach: function() {
+    contexts = [this];
+    module = new TestModule('component:x-foo', 'Foo', {
+      setup() {
+        contexts.push(this);
+      },
+      teardown() {
+        contexts.push(this);
+      }
+    });
+
+    module.setContext(this);
+    return module.setup(...arguments);
+  },
+
+  afterEach: function(assert) {
+    return module.teardown(...arguments)
+      .then(() => {
+        contexts.forEach((context) => {
+          assert.ok(context === this, 'contexts should equal');
+        });
+      });
+  }
+});
+
+test('noop', function() {
+  contexts.push(this);
+});
