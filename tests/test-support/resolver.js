@@ -25,3 +25,19 @@ export default {
     return resolver;
   }
 };
+
+export function createCustomResolver(registry) {
+  var Resolver = Ember.DefaultResolver.extend({
+    registry: null,
+
+    resolve(fullName) {
+      return this.registry[fullName];
+    },
+
+    normalize(fullName) {
+      return Ember.String.dasherize(fullName);
+    }
+  });
+
+  return Resolver.create({ registry, namespace: {} });
+}

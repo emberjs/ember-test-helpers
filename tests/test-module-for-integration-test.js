@@ -3,7 +3,7 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { TestModuleForIntegration } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
-import { setResolverRegistry } from 'tests/test-support/resolver';
+import { setResolverRegistry, createCustomResolver } from 'tests/test-support/resolver';
 
 const Service = Ember.Service || Ember.Object;
 
@@ -273,4 +273,20 @@ test('still in DOM in willDestroyElement', function() {
   this.clearRender();
 
   ok(willDestroyCalled, 'can add assertions after willDestroyElement is called');
+});
+
+moduleForIntegration('TestModuleForIntegration | custom resolver', {
+  resolver: createCustomResolver({
+    'component:y-foo': Ember.Component.extend({
+      name: 'Y u no foo?!'
+    }),
+    'template:components/y-foo': Ember.Handlebars.compile(
+      '<span class="name">{{name}}</span>'
+    )
+  })
+});
+
+test('can render with a custom resolver', function() {
+  this.render('{{y-foo}}');
+  equal(this.$('.name').text(), 'Y u no foo?!', 'rendered properly');
 });
