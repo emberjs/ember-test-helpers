@@ -229,7 +229,7 @@ moduleForComponent('boring-color', 'component:boring-color -- still in DOM in wi
   }
 });
 
-test("className", function(){
+QUnit.skip("className", function(){
   expect(1);
   // the assertion is in the willDestroyElement() hook of the component
 });
