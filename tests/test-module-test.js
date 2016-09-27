@@ -5,6 +5,9 @@ import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry, createCustomResolver } from 'tests/test-support/resolver';
 
+// The fixture reset tests are order dependent
+QUnit.config.reorder = false;
+
 function moduleFor(fullName, description, callbacks) {
   var module = new TestModule(fullName, description, callbacks);
   qunitModuleFor(module);
@@ -346,4 +349,41 @@ moduleFor('component:y-foo', 'Custom resolver', {
 
 test('subject created using custom resolver', function() {
   equal(this.subject().name, 'Y u no foo?!');
+});
+
+moduleFor('component:x-foo', 'ember-testing resets to empty value');
+
+test('sets ember-testing content to "foobar"', function() {
+  expect(0);
+  document.getElementById('ember-testing').innerHTML = 'foobar';
+});
+
+test('ember-testing content should be reset to ""', function() {
+  expect(1);
+  equal(document.getElementById('ember-testing').innerHTML, '');
+});
+
+QUnit.module('ember-testing resets to non-empty value');
+
+test('sets ember-testing content to "<div>foobar</div>"', function() {
+  expect(0);
+  document.getElementById('ember-testing').innerHTML = '<div>foobar</div>';
+});
+
+test('sets ember-testing content to ""', function() {
+  expect(0);
+
+  module = new TestModule('component:x-foo', 'Foo');
+  module.setContext(this);
+  return module.setup(...arguments).then(() => {
+    document.getElementById('ember-testing').innerHTML = '';
+
+    return module.teardown(...arguments);
+  });
+});
+
+test('ember-testing content should be reset to "<div>foobar</div>"', function() {
+  expect(1);
+  equal(document.getElementById('ember-testing').innerHTML, '<div>foobar</div>');
+  document.getElementById('ember-testing').innerHTML = '';
 });
