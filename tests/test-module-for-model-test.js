@@ -80,6 +80,11 @@ test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for mode
   ok(!(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter));
 });
 
+test("`toString` returns the test subject", function(){
+  equal(this.toString(), 'test for: model:whazzit', 'toString returns `test for: subjectName`');
+});
+
+
 moduleForModel('whazzit', 'subject does not share the store', {
   beforeSetup: function() {
     setupRegistry();

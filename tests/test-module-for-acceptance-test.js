@@ -70,3 +70,7 @@ test('Basic acceptance test using global test helpers', function() {
     equal(Ember.$('#ember-testing').text(), 'This is the index page.');
   });
 });
+
+test("`toString` returns the test name", function(){
+  equal(this.toString(), 'test for: TestModuleForAcceptance | Basic acceptance tests', 'toString returns `test for: name`');
+});

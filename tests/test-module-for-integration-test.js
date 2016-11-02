@@ -114,6 +114,10 @@ test('it supports dom triggered focus events', function() {
   equal(this.$('input').val(), 'focusout');
 });
 
+test("`toString` returns the test name", function(){
+  equal(this.toString(), 'test for: Component Integration Tests', 'toString returns `test for: name`');
+});
+
 moduleForIntegration('TestModuleForIntegration | render during setup', {
   beforeSetup: function() {
     setResolverRegistry({
