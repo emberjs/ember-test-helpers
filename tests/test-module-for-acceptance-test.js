@@ -72,5 +72,5 @@ test('Basic acceptance test using global test helpers', function() {
 });
 
 test("`toString` returns the test name", function(){
-  equal(this.toString(), 'test for: TestModuleForAcceptance | Basic acceptance tests', 'toString returns `test for: name`');
+  equal(this.toString(), 'test context for: TestModuleForAcceptance | Basic acceptance tests', 'toString returns `test context for: name`');
 });

@@ -81,7 +81,7 @@ test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for mode
 });
 
 test("`toString` returns the test subject", function(){
-  equal(this.toString(), 'test for: model:whazzit', 'toString returns `test for: subjectName`');
+  equal(this.toString(), 'test context for: model:whazzit', 'toString returns `test context for: subjectName`');
 });
 
 

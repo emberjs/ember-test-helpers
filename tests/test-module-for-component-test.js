@@ -219,7 +219,7 @@ test("className", function(){
 });
 
 test("`toString` returns the test subject", function(){
-  equal(this.toString(), 'test for: component:pretty-color', 'toString returns `test for: subjectName`');
+  equal(this.toString(), 'test context for: component:pretty-color', 'toString returns `test context for: subjectName`');
 });
 
 moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {

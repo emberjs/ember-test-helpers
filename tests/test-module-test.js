@@ -93,7 +93,7 @@ test("can lookup factory registered in setup", function() {
 });
 
 test("overrides `toString` to return the test subject", function(){
-  equal(this.toString(), 'test for: component:x-foo', 'toString returns `test for: subjectName`');
+  equal(this.toString(), 'test context for: component:x-foo', 'toString returns `test context for: subjectName`');
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- callback context', {
@@ -356,7 +356,7 @@ test('subject created using custom resolver', function() {
 });
 
 test("`toString` returns the test subject", function(){
-  equal(this.toString(), 'test for: component:y-foo', 'toString returns `test for: subjectName`');
+  equal(this.toString(), 'test context for: component:y-foo', 'toString returns `test context for: subjectName`');
 });
 
 moduleFor('component:x-foo', 'ember-testing resets to empty value');
