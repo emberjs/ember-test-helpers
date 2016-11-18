@@ -92,6 +92,10 @@ test("can lookup factory registered in setup", function() {
   equal(Ember.get(this, 'blah.purpose'), 'blabering');
 });
 
+test("overrides `toString` to return the test subject", function(){
+  equal(this.toString(), 'test context for: component:x-foo', 'toString returns `test context for: subjectName`');
+});
+
 moduleFor('component:x-foo', 'component:x-foo -- callback context', {
   beforeSetup: function() {
     setupRegistry();
@@ -349,6 +353,10 @@ moduleFor('component:y-foo', 'Custom resolver', {
 
 test('subject created using custom resolver', function() {
   equal(this.subject().name, 'Y u no foo?!');
+});
+
+test("`toString` returns the test subject", function(){
+  equal(this.toString(), 'test context for: component:y-foo', 'toString returns `test context for: subjectName`');
 });
 
 moduleFor('component:x-foo', 'ember-testing resets to empty value');

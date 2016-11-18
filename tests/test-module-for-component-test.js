@@ -218,6 +218,10 @@ test("className", function(){
   equal($.trim($('#ember-testing').text()), 'Pretty Color: red');
 });
 
+test("`toString` returns the test subject", function(){
+  equal(this.toString(), 'test context for: component:pretty-color', 'toString returns `test context for: subjectName`');
+});
+
 moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {
   unit: true,
   beforeSetup: function() {
