@@ -13,7 +13,7 @@ function moduleForIntegration(description, callbacks) {
 }
 
 moduleForIntegration('Component Integration Tests', {
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'template:components/my-component': Ember.Handlebars.compile(
         '<span>{{name}}</span>'
@@ -96,10 +96,10 @@ test('it supports dom triggered focus events', function() {
       _onInit: Ember.on('init', function() {
         this.set('value', 'init');
       }),
-      focusIn: function() {
+      focusIn() {
         this.set('value', 'focusin');
       },
-      focusOut: function() {
+      focusOut() {
         this.set('value', 'focusout');
       }
     })
@@ -119,7 +119,7 @@ test("`toString` returns the test name", function(){
 });
 
 moduleForIntegration('TestModuleForIntegration | render during setup', {
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
         value: 0,
@@ -130,7 +130,7 @@ moduleForIntegration('TestModuleForIntegration | render during setup', {
       })
     });
   },
-  setup: function() {
+  setup() {
     this.render('{{my-component}}');
   }
 });
@@ -141,7 +141,7 @@ test('it has working events', function() {
 });
 
 moduleForIntegration('TestModuleForIntegration | context', {
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
         layout: Ember.Handlebars.compile('<span class="foo">{{foo}}</span><span class="bar">{{bar}}</span>')
@@ -238,10 +238,10 @@ test('can inject a service directly into test context, with aliased name', funct
 });
 
 moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
-        willDestroyElement: function() {
+        willDestroyElement() {
           var stateIndicatesInDOM = (this._state === 'inDOM');
           var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
@@ -258,7 +258,7 @@ test('still in DOM in willDestroyElement', function() {
 });
 
 moduleForIntegration('TestModuleForIntegration: force willDestroyElement via clearRender', {
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({});
   }
 });
@@ -268,7 +268,7 @@ test('still in DOM in willDestroyElement', function() {
 
   let willDestroyCalled = false;
   this.register('component:x-button', Ember.Component.extend({
-    willDestroyElement: function() {
+    willDestroyElement() {
       willDestroyCalled = true;
     }
   }));

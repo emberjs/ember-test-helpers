@@ -26,7 +26,7 @@ var PrettyColor = Ember.Component.extend({
     return new Ember.Handlebars.SafeString('color: ' + this.get('name') + ';');
   }.property('name'),
 
-  click: function() {
+  click() {
     ok(true, 'pretty-color was clicked');
   }
 });
@@ -45,7 +45,7 @@ var ColorController = Ember.Controller.extend({
 });
 
 var BoringColor = Ember.Component.extend({
-  willDestroyElement: function(){
+  willDestroyElement(){
     var stateIndicatesInDOM = (this._state === 'inDOM');
     var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
@@ -54,7 +54,7 @@ var BoringColor = Ember.Component.extend({
 });
 
 var ChangingColor = Ember.Component.extend({
-  didInsertElement: function() {
+  didInsertElement() {
     this.attrs.change('foo');
   }
 });
@@ -76,15 +76,15 @@ var originalDeprecate;
 moduleForComponent('x-foo', {
   needs: ['controller:color'],
 
-  setup: function() {
+  setup() {
     originalDeprecate = Ember.deprecate;
   },
 
-  teardown: function() {
+  teardown() {
     Ember.deprecate = originalDeprecate;
   },
 
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 });
@@ -160,7 +160,7 @@ test('clears out views from test to test', function() {
 
 moduleForComponent('pretty-color', {
   unit: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 });
@@ -198,11 +198,11 @@ test('it can access the element', function() {
 
 moduleForComponent('pretty-color', 'component:pretty-color -- this.render in setup', {
   unit: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     this.subject({
       name: 'red'
     });
@@ -224,11 +224,11 @@ test("`toString` returns the test subject", function(){
 
 moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {
   unit: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     this.render();
   }
 });
@@ -240,7 +240,7 @@ QUnit.skip("className", function(){
 
 moduleForComponent('pretty-color', 'component:pretty-color - event dispatching works in unit tests', {
   unit: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 });
@@ -260,7 +260,7 @@ test('can handle click', function() {
 moduleForComponent('changing-color', 'component:changing-color -- handles closure actions', {
   integration: true,
 
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 });
@@ -281,14 +281,14 @@ if (hasEmberVersion(1,13)) {
 
 var testModule;
 QUnit.module('moduleForComponent: can be invoked with only the component name', {
-  beforeEach: function(assert) {
+  beforeEach(assert) {
     var done = assert.async();
     setupRegistry();
     testModule = new TestModuleForComponent('pretty-color', { unit: true });
     testModule.setup()['finally'](done);
   },
 
-  afterEach: function(assert) {
+  afterEach(assert) {
     var done = assert.async();
     testModule.teardown()['finally'](done);
   }
@@ -300,13 +300,13 @@ test('it allows missing callbacks', function() {
 
 var testModule;
 QUnit.module('moduleForComponent: can be invoked with the component name and description', {
-  beforeEach: function(assert) {
+  beforeEach(assert) {
     var done = assert.async();
     testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', { unit: true });
     testModule.setup()['finally'](done);
   },
 
-  afterEach: function(assert) {
+  afterEach(assert) {
     var done = assert.async();
     testModule.teardown()['finally'](done);
   }
@@ -317,12 +317,12 @@ test('it allows missing callbacks', function() {
 });
 
 QUnit.module('moduleForComponent: handles errors thrown during setup', {
-  beforeEach: function(assert) {
+  beforeEach(assert) {
     var done = assert.async();
     testModule = new TestModuleForComponent('x-bad', {
       needs: ['mis:sing'],
 
-      beforeEach: function(assert) {
+      beforeEach(assert) {
         // won't be called because of setup error
         var done = assert.async();
         assert.ok(true);
@@ -344,7 +344,7 @@ test('it happens', function() {
 
 moduleForComponent('Component Integration Tests', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'template:components/my-component': Ember.Handlebars.compile(
         '<span>{{name}}</span>'
@@ -439,10 +439,10 @@ test('it supports dom triggered focus events', function() {
       _onInit: Ember.on('init', function() {
         this.set('value', 'init');
       }),
-      focusIn: function() {
+      focusIn() {
         this.set('value', 'focusin');
       },
-      focusOut: function() {
+      focusOut() {
         this.set('value', 'focusout');
       }
     })
@@ -459,7 +459,7 @@ test('it supports dom triggered focus events', function() {
 
 moduleForComponent('Component Integration Tests: render during setup', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
         value: 0,
@@ -470,7 +470,7 @@ moduleForComponent('Component Integration Tests: render during setup', {
       })
     });
   },
-  setup: function() {
+  setup() {
     this.render('{{my-component}}');
   }
 });
@@ -482,7 +482,7 @@ test('it has working events', function() {
 
 moduleForComponent('Component Integration Tests: context', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
         layout: Ember.Handlebars.compile('<span class="foo">{{foo}}</span><span class="bar">{{bar}}</span>')
@@ -530,11 +530,11 @@ test('two way bound arguments are updated', function() {
   var instance;
   setResolverRegistry({
     'component:my-component': Ember.Component.extend({
-      init: function() {
+      init() {
         this._super();
         instance = this;
       },
-      didInsertElement: function() {
+      didInsertElement() {
         Ember.run.schedule('afterRender', () => {
           this.set('foo', 'updated!');
         });
@@ -552,7 +552,7 @@ test('two way bound arguments are updated', function() {
 test('two way bound arguments are available after clearRender is called', function() {
   setResolverRegistry({
     'component:my-component': Ember.Component.extend({
-      didInsertElement: function() {
+      didInsertElement() {
         Ember.run.schedule('afterRender', () => {
           this.set('foo', 'updated!');
           this.set('bar', 'updated bar!');
@@ -572,7 +572,7 @@ test('two way bound arguments are available after clearRender is called', functi
 test('rendering after calling clearRender', function() {
   setResolverRegistry({
     'component:my-component': Ember.Component.extend({
-      didInsertElement: function() {
+      didInsertElement() {
         Ember.run.schedule('afterRender', () => {
           let currentFoo = this.get('foo') || '';
           this.set('foo', currentFoo + 'more foo ');
@@ -650,10 +650,10 @@ test('can inject a service directly into test context, with aliased name', funct
 
 moduleForComponent('Component Integration Tests: willDestoryElement', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({
       'component:my-component': Ember.Component.extend({
-        willDestroyElement: function() {
+        willDestroyElement() {
           var stateIndicatesInDOM = (this._state === 'inDOM');
           var actuallyInDOM = Ember.$.contains(document, this.$()[0]);
 
@@ -677,7 +677,7 @@ test('is destroyed when rendered twice', function() {
 
 moduleForComponent('Component Integration Tests: force willDestroyElement via clearRender', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
     setResolverRegistry({});
   }
 });
@@ -687,7 +687,7 @@ test('still in DOM in willDestroyElement', function() {
 
   let willDestroyCalled = false;
   this.register('component:x-button', Ember.Component.extend({
-    willDestroyElement: function() {
+    willDestroyElement() {
       willDestroyCalled = true;
     }
   }));
@@ -701,7 +701,7 @@ test('still in DOM in willDestroyElement', function() {
 
 moduleForComponent('Component Integration Tests: DOM', {
   integration: true,
-  beforeSetup: function() {
+  beforeSetup() {
   }
 });
 
@@ -728,7 +728,7 @@ test('it can set and get properties', function() {
 if (!hasEmberVersion(2,0)) {
   moduleForComponent('my-component', 'Component Integration Tests', {
     integration: 'legacy',
-    beforeSetup: function() {
+    beforeSetup() {
       setResolverRegistry({
         'component:my-component': Ember.Component.extend(),
         'template:components/my-component': Ember.Handlebars.compile(

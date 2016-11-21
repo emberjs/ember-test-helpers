@@ -14,11 +14,11 @@ function moduleForComponent(name, description, callbacks) {
 
 moduleForComponent('wait helper tests', {
   integration: true,
-  setup: function() {
+  setup() {
     this.register('component:x-test-1', Ember.Component.extend({
       internalValue: 'initial value',
 
-      init: function() {
+      init() {
         this._super.apply(this, arguments);
 
         Ember.run.later(this, function() {
@@ -32,7 +32,7 @@ moduleForComponent('wait helper tests', {
     this.register('component:x-test-2', Ember.Component.extend({
       internalValue: 'initial value',
 
-      click: function() {
+      click() {
         Ember.run.later(this, function() {
           this.set('internalValue', 'async value');
         }, 10);
@@ -46,7 +46,7 @@ moduleForComponent('wait helper tests', {
     this.register('component:x-test-3', Ember.Component.extend({
       internalValue: '',
 
-      click: function() {
+      click() {
         var component = this;
 
         $.ajax('/whazzits', { cache: false })
@@ -63,7 +63,7 @@ moduleForComponent('wait helper tests', {
     this.register('component:x-test-4', Ember.Component.extend({
       internalValue: '',
 
-      click: function() {
+      click() {
         var component = this;
 
         Ember.run.later(function() {
@@ -133,7 +133,7 @@ moduleForComponent('wait helper tests', {
     });
   },
 
-  teardown: function() {
+  teardown() {
     this.server.shutdown();
   }
 });

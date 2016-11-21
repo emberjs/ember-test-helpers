@@ -4,11 +4,11 @@ import { setResolver } from 'ember-test-helpers';
 var Resolver = Ember.DefaultResolver.extend({
   registry: null,
 
-  resolve: function(fullName) {
+  resolve(fullName) {
     return this.registry[fullName];
   },
 
-  normalize: function(fullName) {
+  normalize(fullName) {
     return Ember.String.dasherize(fullName);
   }
 });
