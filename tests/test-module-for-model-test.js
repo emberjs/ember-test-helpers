@@ -17,7 +17,7 @@ var adapter = DS.JSONAPIAdapter || DS.FixtureAdapter;
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
 var whazzitAdapterFindAllCalled = false;
 var WhazzitAdapter = adapter.extend({
-  findAll: function() {
+  findAll() {
     whazzitAdapterFindAllCalled = true;
     return this._super.apply(this, arguments);
   }
@@ -37,15 +37,15 @@ function setupRegistry() {
 
 var store1, store2;
 moduleForModel('whazzit', 'model:whazzit without adapter', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     Whazzit.FIXTURES = [];
   },
 
-  teardown: function() {
+  teardown() {
     if (store1 && store2) {
       notEqual(store1, store2, 'store should be separate between tests');
     }
@@ -86,11 +86,11 @@ test("`toString` returns the test subject", function(){
 
 
 moduleForModel('whazzit', 'subject does not share the store', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  teardown: function() {
+  teardown() {
     var model = this.subject();
     var store = this.store();
 
@@ -106,11 +106,11 @@ test('second subject test', function() { });
 moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   needs: ['adapter:whazzit'],
 
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     Whazzit.FIXTURES = [];
 
     if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
@@ -124,7 +124,7 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
     whazzitAdapterFindAllCalled = false;
   },
 
-  teardown: function() {
+  teardown() {
     if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
       server.shutdown();
     }
@@ -156,11 +156,11 @@ test('WhazzitAdapter is used for `findAll`', function() {
 moduleForModel('whazzit', 'model:whazzit with application adapter', {
   needs: ['adapter:application'],
 
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     Whazzit.FIXTURES = [];
   }
 });
@@ -179,7 +179,7 @@ moduleForModel('whazzit', 'model:whazzit when using integration:true', {
 
   integration: true,
 
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 

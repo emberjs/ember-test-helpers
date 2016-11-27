@@ -25,12 +25,6 @@ module.exports = function(options) {
     destDir: '/assets'
   });
 
-  var klassy = new Funnel('node_modules', {
-    srcDir: '/klassy/lib',
-    files: ['klassy.js'],
-    destDir: '/'
-  });
-
   // --- Project Files  ---
 
   var lib = new Funnel('lib', {
@@ -48,7 +42,7 @@ module.exports = function(options) {
   var libJSHint = new JSHint(lib);
   var testJSHint = new JSHint(tests);
 
-  var mainTrees = [klassy, lib, tests, libJSHint, testJSHint];
+  var mainTrees = [lib, tests, libJSHint, testJSHint];
   var addonTree = mergeTrees(addonTreesFor('addon'));
   var addonModulesTree = new Funnel(addonTree, {
     srcDir: 'modules',

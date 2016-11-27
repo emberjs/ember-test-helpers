@@ -30,21 +30,21 @@ function setupRegistry() {
 var callbackOrder, setupContext, teardownContext, beforeSetupContext, afterTeardownContext, originalDeprecate;
 
 moduleFor('component:x-foo', 'TestModule callbacks', {
-  beforeSetup: function() {
+  beforeSetup() {
     beforeSetupContext = this;
     callbackOrder = [ 'beforeSetup' ];
 
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     setupContext = this;
     callbackOrder.push('setup');
 
     ok(setupContext !== beforeSetupContext);
   },
 
-  teardown: function() {
+  teardown() {
     teardownContext = this;
     callbackOrder.push('teardown');
 
@@ -52,7 +52,7 @@ moduleFor('component:x-foo', 'TestModule callbacks', {
     equal(setupContext, teardownContext);
   },
 
-  afterTeardown: function() {
+  afterTeardown() {
     afterTeardownContext = this;
     callbackOrder.push('afterTeardown');
     equal(this.context, undefined, "don't leak the this.context");
@@ -68,11 +68,11 @@ test("setup callbacks called in the correct order", function() {
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- setup context', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     this.subject({
       name: 'Max'
     });
@@ -97,23 +97,23 @@ test("overrides `toString` to return the test subject", function(){
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- callback context', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  setup: function() {
+  setup() {
     originalDeprecate = Ember.deprecate;
   },
 
-  teardown: function() {
+  teardown() {
     Ember.deprecate = originalDeprecate;
   },
 
-  getSubjectName: function() {
+  getSubjectName() {
     return this.subjectName;
   },
 
-  getFoo: function() {
+  getFoo() {
     return this.foo;
   }
 });
@@ -143,11 +143,11 @@ test("can access test context properties from a callback's 'this' and not raise 
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- created subjects are cleaned up', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   },
 
-  afterTeardown: function() {
+  afterTeardown() {
     var subject = this.cache.subject;
 
     ok(subject.isDestroyed);
@@ -159,7 +159,7 @@ test("subject's created in a test are destroyed", function() {
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- uncreated subjects do not error', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
   }
 });
@@ -188,7 +188,7 @@ test("needs gets us the component we need", function() {
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- `integration`', {
-  beforeSetup: function() {
+  beforeSetup() {
     setupRegistry();
     ok(!this.callbacks.integration, "integration property should be removed from callbacks");
     ok(this.isIntegration, "isIntegration should be set when we set `integration: true` in callbacks");
@@ -236,7 +236,7 @@ test("throws an error when declaring integration: 'legacy' in `moduleFor` test",
 
 if (hasEmberVersion(1,11)) {
   moduleFor('component:x-foo', 'should be able to override factories in integration mode', {
-    beforeSetup: function() {
+    beforeSetup() {
       setupRegistry();
     },
 
@@ -289,7 +289,7 @@ if (hasEmberVersion(1,11)) {
 
 if (hasEmberVersion(2, 3)) {
   moduleFor('foo:thing', 'should be able to use `getOwner` on instances', {
-    beforeSetup: function() {
+    beforeSetup() {
       setupRegistry();
     },
 
@@ -314,7 +314,7 @@ if (hasEmberVersion(2, 3)) {
 
 var contexts, module;
 QUnit.module('context can be provided to TestModule', {
-  beforeEach: function() {
+  beforeEach() {
     contexts = [this];
     module = new TestModule('component:x-foo', 'Foo', {
       setup() {
@@ -329,7 +329,7 @@ QUnit.module('context can be provided to TestModule', {
     return module.setup(...arguments);
   },
 
-  afterEach: function(assert) {
+  afterEach(assert) {
     return module.teardown(...arguments)
       .then(() => {
         contexts.forEach((context) => {

@@ -33,6 +33,5 @@
     "loader.js": "^4.0.10"
   },
   "dependencies": {
-    "klassy": "^0.1.3"
   }
 }
