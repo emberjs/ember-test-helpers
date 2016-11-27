@@ -1,6 +1,6 @@
 {
   "name": "ember-test-helpers",
-  "version": "0.5.34",
+  "version": "0.6.0-beta.1",
   "description": "Helpers for testing Ember.js applications",
   "main": "lib/ember-test-helpers.js",
   "repository": {
@@ -32,6 +32,5 @@
     "exists-sync": "0.0.3",
     "loader.js": "^4.0.10"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
