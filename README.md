@@ -28,10 +28,10 @@ function moduleFor(name, description, callbacks) {
   var module = new TestModule(name, description, callbacks);
 
   QUnit.module(module.name, {
-    setup: function() {
+    beforeEach() {
       module.setup();
     },
-    teardown: function() {
+    afterEach() {
       module.teardown();
     }
   });
