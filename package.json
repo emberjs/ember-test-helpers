@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "ember serve",
-    "test": "ember test"
+    "test": "ember try:each"
   },
   "authors": [
     "Dan Gebhardt",
