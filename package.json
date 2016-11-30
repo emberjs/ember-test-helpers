@@ -26,7 +26,7 @@
     "broccoli-funnel": "^1.0.5",
     "broccoli-jshint": "^1.1.2",
     "broccoli-merge-trees": "^1.1.5",
-    "ember-cli": "1.13.13",
+    "ember-cli": "^2.10.0",
     "ember-cli-release": "^1.0.0-beta.1",
     "ember-try": "0.2.2",
     "exists-sync": "0.0.3",
