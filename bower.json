@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "qunit": "^1.23.1",
-    "pretender": "~0.10.1",
+    "pretender": "^1.4.1",
     "ember-cli-shims": "0.0.6",
     "ember-cli-test-loader": "0.0.4",
     "jquery": "~2.1.4"
