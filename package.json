@@ -22,10 +22,10 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "broccoli-babel-transpiler": "^5.5.0",
+    "broccoli-concat": "^3.0.5",
     "broccoli-funnel": "^1.0.5",
     "broccoli-jshint": "^1.1.2",
     "broccoli-merge-trees": "^1.1.5",
-    "broccoli-sourcemap-concat": "^0.4.4",
     "ember-cli": "1.13.13",
     "ember-cli-release": "^1.0.0-beta.1",
     "ember-try": "0.2.2",
