@@ -22,7 +22,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "broccoli-babel-transpiler": "^5.5.0",
-    "broccoli-funnel": "^0.2.15",
+    "broccoli-funnel": "^1.0.5",
     "broccoli-jshint": "^1.1.2",
     "broccoli-merge-trees": "^0.2.4",
     "broccoli-sourcemap-concat": "^0.4.4",

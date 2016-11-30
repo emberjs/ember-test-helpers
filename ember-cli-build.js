@@ -46,7 +46,8 @@ module.exports = function(options) {
   var addonTree = mergeTrees(addonTreesFor('addon'));
   var addonModulesTree = new Funnel(addonTree, {
     srcDir: 'modules',
-    destDir: '/'
+    destDir: '/',
+    allowEmpty: true,
   });
 
   var main = mergeTrees(mainTrees.concat(addonModulesTree));
