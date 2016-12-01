@@ -11,7 +11,7 @@
     "start": "ember serve",
     "test": "ember try:each"
   },
-  "authors": [
+  "contributors": [
     "Dan Gebhardt",
     "Robert Jackson",
     "Stefan Penner",
