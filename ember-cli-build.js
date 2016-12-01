@@ -1,7 +1,7 @@
 var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
-var concat   = require('broccoli-sourcemap-concat');
+var concat   = require('broccoli-concat');
 var JSHint = require('broccoli-jshint');
 var existsSync = require('exists-sync');
 
@@ -46,7 +46,8 @@ module.exports = function(options) {
   var addonTree = mergeTrees(addonTreesFor('addon'));
   var addonModulesTree = new Funnel(addonTree, {
     srcDir: 'modules',
-    destDir: '/'
+    destDir: '/',
+    allowEmpty: true,
   });
 
   var main = mergeTrees(mainTrees.concat(addonModulesTree));
@@ -77,7 +78,7 @@ module.exports = function(options) {
   }
 
   var vendor = concat('bower_components', {
-    inputFiles: inputFiles,
+    headerFiles: inputFiles,
     outputFile: '/assets/vendor.js'
   });
 
@@ -94,7 +95,7 @@ module.exports = function(options) {
   });
 
   var testSupport = concat('bower_components', {
-    inputFiles: ['ember-cli-shims/app-shims.js',
+    headerFiles: ['ember-cli-shims/app-shims.js',
                  'ember-cli-test-loader/test-loader.js'],
     outputFile: '/assets/test-support.js'
   });

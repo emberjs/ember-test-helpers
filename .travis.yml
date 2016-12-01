@@ -8,6 +8,3 @@ install:
   - npm install -g bower
   - npm install --no-optional
   - bower install
-
-script:
-  - ./node_modules/.bin/ember try:each
