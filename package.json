@@ -2,24 +2,28 @@
   "name": "ember-test-helpers",
   "version": "0.6.0-beta.1",
   "description": "Helpers for testing Ember.js applications",
-  "main": "lib/ember-test-helpers.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/switchfly/ember-test-helpers.git"
+  "homepage": "https://github.com/switchfly/ember-test-helpers#readme",
+  "bugs": {
+    "url": "https://github.com/switchfly/ember-test-helpers/issues"
   },
-  "scripts": {
-    "start": "ember serve",
-    "test": "ember try:each"
-  },
-  "authors": [
+  "license": "(MIT OR Apache-2.0)",
+  "contributors": [
     "Dan Gebhardt",
     "Robert Jackson",
     "Stefan Penner",
     "Ryan Florence",
     "Adolfo Builes"
   ],
-  "license": "(MIT OR Apache-2.0)",
-  "readmeFilename": "README.md",
+  "main": "lib/ember-test-helpers.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/switchfly/ember-test-helpers.git"
+  },
+  "scripts": {
+    "start": "ember serve",
+    "test": "ember try:each"
+  },
+  "dependencies": {},
   "devDependencies": {
     "broccoli-babel-transpiler": "^5.5.0",
     "broccoli-concat": "^3.0.5",
@@ -30,6 +34,5 @@
     "ember-cli-release": "^1.0.0-beta.1",
     "exists-sync": "0.0.3",
     "loader.js": "^4.0.10"
-  },
-  "dependencies": {}
+  }
 }
