@@ -2,6 +2,14 @@
   "name": "ember-test-helpers",
   "version": "0.6.0-beta.1",
   "description": "Helpers for testing Ember.js applications",
+  "license": "(MIT OR Apache-2.0)",
+  "contributors": [
+    "Dan Gebhardt",
+    "Robert Jackson",
+    "Stefan Penner",
+    "Ryan Florence",
+    "Adolfo Builes"
+  ],
   "main": "lib/ember-test-helpers.js",
   "repository": {
     "type": "git",
@@ -11,14 +19,7 @@
     "start": "ember serve",
     "test": "ember try:each"
   },
-  "contributors": [
-    "Dan Gebhardt",
-    "Robert Jackson",
-    "Stefan Penner",
-    "Ryan Florence",
-    "Adolfo Builes"
-  ],
-  "license": "(MIT OR Apache-2.0)",
+  "dependencies": {},
   "devDependencies": {
     "broccoli-babel-transpiler": "^5.5.0",
     "broccoli-concat": "^3.0.5",
@@ -29,6 +30,5 @@
     "ember-cli-release": "^1.0.0-beta.1",
     "exists-sync": "0.0.3",
     "loader.js": "^4.0.10"
-  },
-  "dependencies": {}
+  }
 }
