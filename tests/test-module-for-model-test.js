@@ -1,3 +1,5 @@
+/* global Pretender */
+
 import { TestModuleForModel } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
