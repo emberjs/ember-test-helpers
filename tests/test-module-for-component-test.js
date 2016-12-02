@@ -298,7 +298,6 @@ test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
 
-var testModule;
 QUnit.module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach(assert) {
     var done = assert.async();
