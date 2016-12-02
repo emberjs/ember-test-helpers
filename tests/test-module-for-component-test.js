@@ -298,7 +298,6 @@ test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
 
-var testModule;
 QUnit.module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach(assert) {
     var done = assert.async();
@@ -740,7 +739,7 @@ if (!hasEmberVersion(2,0)) {
 
   test('it can render components semantically equivalent to v0.4.3', function() {
     this.subject({
-      name: 'Charles XII',
+      name: 'Charles XII'
     });
     this.render();
 

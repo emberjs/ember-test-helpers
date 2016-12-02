@@ -1,3 +1,5 @@
+/* global Pretender */
+
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import test from 'tests/test-support/qunit-test';

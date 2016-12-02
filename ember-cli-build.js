@@ -2,7 +2,7 @@ var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var Babel = require('broccoli-babel-transpiler');
 var concat   = require('broccoli-concat');
-var JSHint = require('broccoli-jshint');
+var eslint = require('broccoli-lint-eslint');
 var existsSync = require('exists-sync');
 
 module.exports = function(options) {
@@ -39,10 +39,10 @@ module.exports = function(options) {
     destDir: '/tests'
   });
 
-  var libJSHint = new JSHint(lib);
-  var testJSHint = new JSHint(tests);
+  var libESLint = eslint(lib, { testGenerator: 'qunit' });
+  var testESLint = eslint(tests, { testGenerator: 'qunit' });
 
-  var mainTrees = [lib, tests, libJSHint, testJSHint];
+  var mainTrees = [lib, tests, libESLint, testESLint];
   var addonTree = mergeTrees(addonTreesFor('addon'));
   var addonModulesTree = new Funnel(addonTree, {
     srcDir: 'modules',
