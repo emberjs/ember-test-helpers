@@ -28,7 +28,7 @@
     "broccoli-babel-transpiler": "^5.5.0",
     "broccoli-concat": "^3.0.5",
     "broccoli-funnel": "^1.0.5",
-    "broccoli-jshint": "^1.1.2",
+    "broccoli-lint-eslint": "^2.7.0",
     "broccoli-merge-trees": "^1.1.5",
     "ember-cli": "^2.10.0",
     "ember-cli-release": "^1.0.0-beta.1",
