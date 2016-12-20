@@ -1,12 +1,12 @@
-# ember-test-helpers [![Build Status](https://secure.travis-ci.org/switchfly/ember-test-helpers.png?branch=master)](http://travis-ci.org/switchfly/ember-test-helpers)
+# ember-test-helpers [![Build Status](https://secure.travis-ci.org/emberjs/ember-test-helpers.png?branch=master)](http://travis-ci.org/emberjs/ember-test-helpers)
 
 A test-framework-agnostic set of helpers for testing Ember.js applications.
 
 ## Usage
 
 This library is best used in conjunction with a test-framework-specific
-wrapper, such as [ember-qunit](https://github.com/rwjblue/ember-qunit) or
-[ember-mocha](https://github.com/switchfly/ember-mocha).
+wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
+[ember-mocha](https://github.com/emberjs/ember-mocha).
 
 This library was written using ES6 modules, which are contained in `lib/`.
 These modules must be transpiled for pre-ES6 compatibility.
