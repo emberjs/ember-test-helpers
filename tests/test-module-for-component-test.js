@@ -298,6 +298,27 @@ test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
 });
 
+let deprecations = [];
+QUnit.module('moduleForComponent: will not raise deprecation if needs is specified', {
+  beforeEach() {
+    originalDeprecate = Ember.deprecate;
+    Ember.deprecate = function() {
+      deprecations.push(arguments);
+    }
+  },
+  afterEach() {
+    Ember.deprecate = originalDeprecate;
+    deprecations = [];
+  }
+});
+
+test('deprecation is not raised', function() {
+  setupRegistry();
+  testModule = new TestModuleForComponent('pretty-color', { needs: ['x:foo'] });
+  equal(deprecations.length, 0);
+  ok(testModule.isUnitTest);
+});
+
 QUnit.module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach(assert) {
     var done = assert.async();
