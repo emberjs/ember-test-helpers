@@ -313,9 +313,12 @@ QUnit.module('moduleForComponent: will not raise deprecation if needs is specifi
 });
 
 test('deprecation is not raised', function() {
+  let deprecationId = 'ember-test-helpers.test-module-for-component.test-type';
   setupRegistry();
   testModule = new TestModuleForComponent('pretty-color', { needs: ['x:foo'] });
-  equal(deprecations.length, 0);
+  notOk(deprecations.find(function(deprecation) {
+    return deprecation.length === 3 && deprecation[2].id === deprecationId;
+  }), `deprecation with id "${deprecationId}" should not be raised if needs is provided`);
   ok(testModule.isUnitTest);
 });
 
