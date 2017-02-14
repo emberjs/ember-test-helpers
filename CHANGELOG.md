@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased](https://github.com/emberjs/ember-test-helpers/tree/HEAD)
+
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.1...HEAD)
+
+**Fixed bugs:**
+
+- Deprecation Warning thrown Even when `needs:\[\]` is passed [\#195](https://github.com/emberjs/ember-test-helpers/issues/195)
+
+**Merged pull requests:**
+
+- Deprecation Warning thrown with `needs:\[\]` [\#196](https://github.com/emberjs/ember-test-helpers/pull/196) ([canufeel](https://github.com/canufeel))
+
 ## [v0.6.1](https://github.com/emberjs/ember-test-helpers/tree/v0.6.1) (2017-01-24)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.0...v0.6.1)
 
