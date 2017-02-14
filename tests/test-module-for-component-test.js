@@ -9,6 +9,8 @@ var $ = Ember.$;
 
 var Service = Ember.Service || Ember.Object;
 
+const TEST_TYPE_DEPRECATION_ID = 'ember-test-helpers.test-module-for-component.test-type';
+
 function moduleForComponent(name, description, callbacks) {
   var module = new TestModuleForComponent(name, description, callbacks);
   if (module.isIntegration) {
@@ -296,6 +298,29 @@ QUnit.module('moduleForComponent: can be invoked with only the component name', 
 
 test('it allows missing callbacks', function() {
   ok(true, 'no errors are thrown');
+});
+
+let deprecations = [];
+QUnit.module('moduleForComponent: will not raise deprecation if needs is specified', {
+  beforeEach() {
+    originalDeprecate = Ember.deprecate;
+    Ember.deprecate = function() {
+      if (arguments.length === 3) {
+        deprecations.push(arguments[2].id);
+      }
+    }
+  },
+  afterEach() {
+    Ember.deprecate = originalDeprecate;
+    deprecations = [];
+  }
+});
+
+test('deprecation is not raised', function() {
+  setupRegistry();
+  testModule = new TestModuleForComponent('pretty-color', { needs: ['x:foo'] });
+  ok(deprecations.indexOf(TEST_TYPE_DEPRECATION_ID) === -1, `deprecation with id "${TEST_TYPE_DEPRECATION_ID}" should not be raised if needs is provided`);
+  ok(testModule.isUnitTest);
 });
 
 QUnit.module('moduleForComponent: can be invoked with the component name and description', {
