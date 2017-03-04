@@ -1,6 +1,6 @@
 {
   "name": "ember-test-helpers",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Helpers for testing Ember.js applications",
   "homepage": "https://github.com/switchfly/ember-test-helpers#readme",
   "bugs": {
