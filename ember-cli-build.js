@@ -9,13 +9,25 @@ module.exports = function(options) {
   var project = options.project;
   project.initializeAddons();
 
-  function addonTreesFor(type) {
+  function eachAddonInvoke(method, args) {
     return project.addons.map(function(addon) {
-      if (addon.treeFor) {
-        return addon.treeFor(type);
+      if (addon[method]) {
+        return addon[method].apply(addon, args);
       }
-    }).filter(Boolean);
+    });
   }
+
+  function addonTreesFor(type) {
+    return eachAddonInvoke('treeFor', [type]).filter(Boolean);
+  }
+
+  var fakeApp = {
+    import() { }
+  };
+
+  project.addons.map(function(addon) { addon.app = fakeApp; });
+
+  eachAddonInvoke('included', [{ import() { }}]);
 
   // --- Dependencies ---
   var addonVendorTrees = mergeTrees(addonTreesFor('vendor'));
@@ -44,13 +56,8 @@ module.exports = function(options) {
 
   var mainTrees = [lib, tests, libESLint, testESLint];
   var addonTree = mergeTrees(addonTreesFor('addon'));
-  var addonModulesTree = new Funnel(addonTree, {
-    srcDir: 'modules',
-    destDir: '/',
-    allowEmpty: true,
-  });
 
-  var main = mergeTrees(mainTrees.concat(addonModulesTree));
+  var main = mergeTrees(mainTrees);
   // --- Compile ES6 modules ---
 
   main = new Babel(main, {
@@ -58,6 +65,8 @@ module.exports = function(options) {
     moduleIds: true,
     modules: 'amdStrict'
   });
+
+  main = mergeTrees([main, addonTree]);
 
   main = concat(main, {
     inputFiles: ['**/*.js'],
