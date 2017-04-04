@@ -4,6 +4,7 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import test from 'tests/test-support/qunit-test';
 import qunitModuleFor from 'tests/test-support/qunit-module-for';
 import { setResolverRegistry } from 'tests/test-support/resolver';
+import wait from 'ember-test-helpers/wait';
 
 var $ = Ember.$;
 
@@ -771,3 +772,32 @@ if (!hasEmberVersion(2,0)) {
     equal(this.$('span').text(), 'Charles XII');
   });
 }
+
+moduleForComponent('RSVP integration', {
+  integration: true
+})
+
+test('does not require manual run wrapping', function() {
+  let instance;
+  this.register('component:x-test-1', Ember.Component.extend({
+    internalValue: 'initial value',
+
+    init() {
+      this._super.apply(this, arguments);
+      instance = this;
+    }
+  }));
+
+  this.register('template:components/x-test-1', Ember.Handlebars.compile("{{internalValue}}"));
+
+  this.render(Ember.Handlebars.compile('{{x-test-1}}'));
+
+  return new Ember.RSVP.resolve()
+    .then(() => {
+      instance.set('internalValue', 'async value');
+      return wait();
+    })
+    .then(() => {
+      equal(this.$().text(), 'async value');
+    });
+});
