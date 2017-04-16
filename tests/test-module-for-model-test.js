@@ -192,3 +192,21 @@ test('the store still exists', function() {
 
   ok(store instanceof DS.Store);
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+moduleForModel('whazzit', 'model:whazzit when using integration:true', {
+
+  integration: true,
+
+  beforeSetup: function() {
+    setupRegistry();
+  }
+
+});
+
+test('the store still exists', function() {
+  var store = this.store();
+  equal(123, Ember.inspect(store));
+  ok(store instanceof DS.Store);
+});
