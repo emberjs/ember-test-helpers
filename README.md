@@ -51,6 +51,9 @@ displayed in test output. If omitted, defaults to `name`.
 * `callbacks` (optional) - an object that may include setup and teardown steps
 as well as the other units needed by tests.
 
+* `callbacks.resolver` (optional) - a Resolver instance to be used for the test
+module. Takes precedence over the globally set Resolver.
+
 ### TestModuleForComponent
 
 `TestModuleForComponent` extends `TestModule` to allow unit testing of Ember
@@ -79,8 +82,8 @@ Models.
 
 * `getContext` / `setContext` - access the context to be used in each test.
 
-* `setResolver` - sets the resolver which will be used to look up objects from
-each test's container.
+* `setResolver` - sets a Resolver globally which will be used to look up objects
+from each test's container.
 
 * `isolatedContainer` - creates a new isolated container for unit testing.
 
