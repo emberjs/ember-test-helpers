@@ -34,5 +34,6 @@
     "ember-cli-release": "^1.0.0-beta.1",
     "exists-sync": "0.0.3",
     "loader.js": "^4.0.10"
+    "ember-data": "^2.5.0"
   }
 }
