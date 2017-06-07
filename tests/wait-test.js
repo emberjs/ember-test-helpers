@@ -13,7 +13,6 @@ function moduleForComponent(name, description, callbacks) {
   qunitModuleFor(module);
 }
 
-
 moduleForComponent('wait helper tests', {
   integration: true,
   setup() {
