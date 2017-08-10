@@ -64,7 +64,7 @@ var ChangingColor = Ember.Component.extend({
 
 // A component which throws an error during render:
 var BadComponent = Ember.Component.extend({
-  layout: Ember.Handlebars.compile('<input type="text" onfocus=(action "focus")>'),
+  layout: Ember.Handlebars.compile('<input type="text" onfocus={{action "focus"}}>'),
   didInsertElement() {
     this.set('input', this.element.querySelector('input'));
   },
