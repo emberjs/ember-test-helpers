@@ -62,6 +62,22 @@ var ChangingColor = Ember.Component.extend({
   }
 });
 
+// A component which throws an error during render:
+var BadComponent = Ember.Component.extend({
+  layout: Ember.Handlebars.compile('<input type="text" onfocus={{action "focus"}}>'),
+  didInsertElement() {
+    this.set('input', this.element.querySelector('input'));
+  },
+  didRender() {
+    this.get('input').focus();
+  },
+  actions: {
+    focus() {
+      this.get('unexistedMethod')();
+    }
+  }
+});
+
 function setupRegistry() {
   setResolverRegistry({
     'component:x-foo': Ember.Component.extend(),
@@ -373,7 +389,8 @@ moduleForComponent('Component Integration Tests', {
     setResolverRegistry({
       'template:components/my-component': Ember.Handlebars.compile(
         '<span>{{name}}</span>'
-      )
+      ),
+      'component:bad-component': BadComponent
     });
   }
 });
@@ -394,6 +411,13 @@ if (hasEmberVersion(1,11)) {
     ok(true, 'it renders without fail');
   });
 }
+
+test('it correctly handles uncaught errors when rendering a component', function() {
+  var self = this;
+  throws(function() {
+    self.render('{{bad-component}}');
+  });
+});
 
 test('it complains if you try to use bare render', function() {
   var self = this;
