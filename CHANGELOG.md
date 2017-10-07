@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.7.0-beta.2](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.2) (2017-10-07)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.1...v0.7.0-beta.2)
+
+**Merged pull requests:**
+
+- Autoregister event dispatcher in unit tests [\#205](https://github.com/emberjs/ember-test-helpers/pull/205) ([cibernox](https://github.com/cibernox))
+
 ## [v0.7.0-beta.1](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.1) (2017-10-07)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.3...v0.7.0-beta.1)
 
