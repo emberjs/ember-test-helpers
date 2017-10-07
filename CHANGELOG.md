@@ -1,8 +1,28 @@
 # Change Log
 
-## [Unreleased](https://github.com/emberjs/ember-test-helpers/tree/HEAD)
+## [v0.7.0-beta.1](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.1) (2017-10-07)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.3...v0.7.0-beta.1)
 
-[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.1...HEAD)
+**Closed issues:**
+
+- Document `resolver` option for modules [\#208](https://github.com/emberjs/ember-test-helpers/issues/208)
+
+**Merged pull requests:**
+
+- Migrate to an addon. [\#213](https://github.com/emberjs/ember-test-helpers/pull/213) ([rwjblue](https://github.com/rwjblue))
+- Document ability to set module-specific resolver [\#209](https://github.com/emberjs/ember-test-helpers/pull/209) ([trentmwillis](https://github.com/trentmwillis))
+- Ensure RSVP promises do not need manual Ember.run wrapping. [\#201](https://github.com/emberjs/ember-test-helpers/pull/201) ([rwjblue](https://github.com/rwjblue))
+- Updates to ensure ember-data from npm works properly. [\#200](https://github.com/emberjs/ember-test-helpers/pull/200) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.6.3](https://github.com/emberjs/ember-test-helpers/tree/v0.6.3) (2017-03-04)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.2...v0.6.3)
+
+**Merged pull requests:**
+
+- Import `require` \(avoid using global require\). [\#198](https://github.com/emberjs/ember-test-helpers/pull/198) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.6.2](https://github.com/emberjs/ember-test-helpers/tree/v0.6.2) (2017-02-14)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.1...v0.6.2)
 
 **Fixed bugs:**
 
