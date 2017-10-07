@@ -1,10 +1,13 @@
 {
   "name": "ember-test-helpers",
-  "version": "0.6.3",
+  "version": "0.7.0-alpha.0",
   "description": "Helpers for testing Ember.js applications",
-  "homepage": "https://github.com/switchfly/ember-test-helpers#readme",
+  "keywords": [
+    "ember-addon"
+  ],
+  "homepage": "https://github.com/emberjs/ember-test-helpers#readme",
   "bugs": {
-    "url": "https://github.com/switchfly/ember-test-helpers/issues"
+    "url": "https://github.com/emberjs/ember-test-helpers/issues"
   },
   "license": "(MIT OR Apache-2.0)",
   "contributors": [
@@ -14,25 +17,52 @@
     "Ryan Florence",
     "Adolfo Builes"
   ],
-  "main": "lib/ember-test-helpers.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/switchfly/ember-test-helpers.git"
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
   },
+  "repository": "https://github.com/emberjs/ember-test-helpers",
   "scripts": {
-    "start": "ember serve",
+    "build": "ember build",
+    "start": "ember server",
     "test": "ember try:each"
   },
-  "dependencies": {},
+  "dependencies": {
+    "broccoli-funnel": "^2.0.1",
+    "ember-cli-babel": "^6.8.1"
+  },
   "devDependencies": {
-    "broccoli-babel-transpiler": "^5.5.0",
-    "broccoli-concat": "^3.0.5",
-    "broccoli-funnel": "^1.0.5",
-    "broccoli-lint-eslint": "^2.7.0",
-    "broccoli-merge-trees": "^1.1.5",
-    "ember-cli": "^2.10.0",
-    "ember-cli-release": "^1.0.0-beta.1",
-    "exists-sync": "0.0.3",
-    "loader.js": "^4.0.10"
+    "broccoli-asset-rev": "^2.4.5",
+    "ember-ajax": "^3.0.0",
+    "ember-cli": "~2.15.1",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-eslint": "^4.0.0",
+    "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
+    "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-pretender": "^1.0.1",
+    "ember-cli-shims": "^1.1.0",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-test-loader": "^2.2.0",
+    "ember-cli-uglify": "^1.2.0",
+    "ember-data": "~2.15.0",
+    "ember-debug-handlers-polyfill": "^1.0.3",
+    "ember-disable-prototype-extensions": "^1.1.2",
+    "ember-export-application-global": "^2.0.0",
+    "ember-load-initializers": "^1.0.0",
+    "ember-resolver": "^4.0.0",
+    "ember-source": "~2.15.0",
+    "ember-welcome-page": "^3.0.0",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "loader.js": "^4.2.3",
+    "prettier": "^1.7.4",
+    "qunitjs": "^2.4.0"
+  },
+  "engines": {
+    "node": "^4.5 || 6.* || >= 7.*"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
   }
 }

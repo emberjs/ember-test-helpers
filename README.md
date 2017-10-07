@@ -4,12 +4,9 @@ A test-framework-agnostic set of helpers for testing Ember.js applications.
 
 ## Usage
 
-This library is best used in conjunction with a test-framework-specific
+This library is best used by way of a test-framework-specific
 wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
 [ember-mocha](https://github.com/emberjs/ember-mocha).
-
-This library was written using ES6 modules, which are contained in `lib/`.
-These modules must be transpiled for pre-ES6 compatibility.
 
 ## Test Helpers
 
@@ -25,14 +22,14 @@ a method such as:
 
 ```javascript
 function moduleFor(name, description, callbacks) {
-  var module = new TestModule(name, description, callbacks);
+  let module = new TestModule(name, description, callbacks);
 
   QUnit.module(module.name, {
     beforeEach() {
-      module.setup();
+      return module.setup();
     },
     afterEach() {
-      module.teardown();
+      return module.teardown();
     }
   });
 }
@@ -87,33 +84,30 @@ from each test's container.
 
 * `isolatedContainer` - creates a new isolated container for unit testing.
 
-## Contributing
-
-Contributions are welcome. Please follow the instructions below to install and
-test this library.
+## Collaborating
 
 ### Installation
 
-```sh
-$ npm install
-$ bower install
-```
+* `git clone <repository-url>` this repository
+* `cd ember-test-helpers`
+* `npm install`
 
-### Testing
+### Running
 
-In order to test in the browser:
+* `ember serve`
+* Visit your app at [http://localhost:4200](http://localhost:4200).
 
-```sh
-$ npm start
-```
+### Running Tests
 
-... and then visit [http://localhost:4200/tests](http://localhost:4200/tests).
+* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
+* `ember test`
+* `ember test --server`
 
-In order to perform a CI test:
+### Building
 
-```sh
-$ npm test
-```
+* `ember build`
+
+For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
 ## Attribution
 
