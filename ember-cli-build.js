@@ -1,113 +1,31 @@
-var Funnel = require('broccoli-funnel');
-var mergeTrees = require('broccoli-merge-trees');
-var Babel = require('broccoli-babel-transpiler');
-var concat   = require('broccoli-concat');
-var eslint = require('broccoli-lint-eslint');
-var existsSync = require('exists-sync');
+/* eslint-env node */
+'use strict';
 
-module.exports = function(options) {
-  var project = options.project;
-  project.initializeAddons();
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-  function eachAddonInvoke(method, args) {
-    return project.addons.map(function(addon) {
-      if (addon[method]) {
-        return addon[method].apply(addon, args);
-      }
-    });
-  }
-
-  function addonTreesFor(type) {
-    return eachAddonInvoke('treeFor', [type]).filter(Boolean);
-  }
-
-  var fakeApp = {
-    import() { }
-  };
-
-  project.addons.map(function(addon) { addon.app = fakeApp; });
-
-  eachAddonInvoke('included', [{ import() { }}]);
-
-  // --- Dependencies ---
-  var addonVendorTrees = mergeTrees(addonTreesFor('vendor'));
-  var loader = new Funnel(addonVendorTrees, {
-    srcDir: 'loader',
-    files: ['loader.js'],
-    destDir: '/assets'
+module.exports = function(defaults) {
+  let app = new EmberAddon(defaults, {
+    eslint: {
+      testGenerator: 'qunit',
+    },
   });
 
-  // --- Project Files  ---
+  /*
+    This build file specifies the options for the dummy test app of this
+    addon, located in `/tests/dummy`
+    This build file does *not* influence how the addon or the app using it
+    behave. You most likely want to be modifying `./index.js` or app's build file
+  */
 
-  var lib = new Funnel('lib', {
-    srcDir: '/',
-    include: ['**/*.js'],
-    destDir: '/'
+  app.import('node_modules/qunitjs/qunit/qunit.js', {
+    type: 'test',
   });
 
-  var tests = new Funnel('tests', {
-    srcDir: '/',
-    include: ['**/*.js'],
-    destDir: '/tests'
+  app.import('node_modules/qunitjs/qunit/qunit.css', {
+    type: 'test',
   });
 
-  var libESLint = eslint(lib, { testGenerator: 'qunit' });
-  var testESLint = eslint(tests, { testGenerator: 'qunit' });
+  app.import('vendor/shims/qunit.js', { type: 'test' });
 
-  var mainTrees = [lib, tests, libESLint, testESLint];
-  var addonTree = mergeTrees(addonTreesFor('addon'));
-
-  var main = mergeTrees(mainTrees);
-  // --- Compile ES6 modules ---
-
-  main = new Babel(main, {
-    loose: true,
-    moduleIds: true,
-    modules: 'amdStrict'
-  });
-
-  main = mergeTrees([main, addonTree]);
-
-  main = concat(main, {
-    inputFiles: ['**/*.js'],
-    outputFile: '/assets/ember-test-helpers-tests.amd.js'
-  });
-
-  // --- Select and concat vendor / support files ---
-
-  var inputFiles = ['jquery/dist/jquery.js',
-                    'ember/ember-template-compiler.js',
-                    'ember/ember.debug.js',
-                    'FakeXMLHttpRequest/fake_xml_http_request.js',
-                    'route-recognizer/dist/route-recognizer.js',
-                    'pretender/pretender.js'];
-
-  if (existsSync('bower_components/ember-data/ember-data.js')) {
-    inputFiles.push('ember-data/ember-data.js');
-  }
-
-  var vendor = concat('bower_components', {
-    headerFiles: inputFiles,
-    outputFile: '/assets/vendor.js'
-  });
-
-  var qunit = new Funnel('bower_components', {
-    srcDir: '/qunit/qunit',
-    files: ['qunit.js', 'qunit.css'],
-    destDir: '/assets'
-  });
-
-  var testIndex = new Funnel('tests', {
-    srcDir: '/',
-    files: ['index.html'],
-    destDir: '/tests'
-  });
-
-  var testSupport = concat('bower_components', {
-    headerFiles: ['ember-cli-shims/app-shims.js',
-                 'ember-cli-test-loader/test-loader.js'],
-    outputFile: '/assets/test-support.js'
-  });
-
-  return mergeTrees([main, vendor, testIndex, qunit, loader, testSupport]);
+  return app.toTree();
 };

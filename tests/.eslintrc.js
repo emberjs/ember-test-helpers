@@ -1,5 +1,9 @@
 module.exports = {
-  env: {
-    qunit: true
+  parserOptions: {
+    sourceType: 'module'
   },
+  env: {
+    browser: true,
+    embertest: true
+  }
 };
