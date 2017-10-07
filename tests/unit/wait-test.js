@@ -1,4 +1,4 @@
-import { registerWaiter, unregisterWaiter } from '@ember/test';
+import Ember from 'ember';
 import { later, run } from '@ember/runloop';
 import Component from '@ember/component';
 import $ from 'jquery';
@@ -123,7 +123,14 @@ module('wait helper tests', function(hooks) {
 
             init() {
               this._super.apply(this, arguments);
-              registerWaiter(this, this.isReady);
+              // In Ember < 2.8 `registerWaiter` expected to be bound to
+              // `Ember.Test` 😭
+              //
+              // Once we have dropped support for < 2.8 we should swap this to
+              // use:
+              //
+              // import { registerWaiter } from '@ember/test';
+              Ember.Test.registerWaiter(this, this.isReady);
               later(() => {
                 this.setProperties({
                   internalValue: 'async value',
@@ -134,7 +141,8 @@ module('wait helper tests', function(hooks) {
 
             willDestroy() {
               this._super.apply(this, arguments);
-              unregisterWaiter(this, this.isReady);
+              // must be called with `Ember.Test` as context for Ember < 2.8
+              Ember.Test.unregisterWaiter(this, this.isReady);
             },
           })
         );
