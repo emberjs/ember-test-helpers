@@ -111,6 +111,10 @@ export default class extends TestModule {
       thingToRegisterWith.register(layoutName, layout);
       thingToRegisterWith.injection(this.subjectName, 'layout', layoutName);
     }
+    var eventDispatcher = resolver.resolve('event_dispatcher:main');
+    if (eventDispatcher) {
+      thingToRegisterWith.register('event_dispatcher:main', eventDispatcher);
+    }
 
     context.dispatcher =
       this.container.lookup('event_dispatcher:main') ||
