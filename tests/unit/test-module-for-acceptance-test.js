@@ -1,5 +1,4 @@
 import { test } from 'qunit';
-import $ from 'jquery';
 import EmberRouter from '@ember/routing/router';
 import EmberApplication from '@ember/application';
 import { TestModuleForAcceptance } from 'ember-test-helpers';
@@ -40,7 +39,8 @@ moduleForAcceptance('TestModuleForAcceptance | Lifecycle', {
 
   afterTeardown(assert) {
     assert.strictEqual(getContext(), undefined);
-    assert.strictEqual($('#ember-testing').children().length, 0);
+    let testingElement = document.getElementById('ember-testing');
+    assert.strictEqual(testingElement.children.length, 0);
   },
 });
 
@@ -63,7 +63,8 @@ test('Basic acceptance test using instance test helpers', function(assert) {
   this.application.testHelpers.visit('/');
 
   this.application.testHelpers.andThen(function() {
-    assert.equal($('#ember-testing').text(), 'This is the index page.');
+    let testingElement = document.getElementById('ember-testing');
+    assert.equal(testingElement.textContent, 'This is the index page.');
   });
 });
 
@@ -71,7 +72,8 @@ test('Basic acceptance test using global test helpers', function(assert) {
   window.visit('/');
 
   window.andThen(function() {
-    assert.equal($('#ember-testing').text(), 'This is the index page.');
+    let testingElement = document.getElementById('ember-testing');
+    assert.equal(testingElement.textContent, 'This is the index page.');
   });
 });
 

@@ -1,5 +1,4 @@
 import QUnit, { test } from 'qunit';
-import $ from 'jquery';
 import TextField from '@ember/component/text-field';
 import { on } from '@ember/object/evented';
 import Component from '@ember/component';
@@ -28,7 +27,8 @@ moduleForIntegration('Component Integration Tests', {
 
 test('it can render a template', function(assert) {
   this.render(hbs`<span>Hello</span>`);
-  assert.equal(this.$('span').text(), 'Hello');
+  let actual = this._element.querySelector('span').textContent;
+  assert.equal(actual, 'Hello');
 });
 
 if (hasEmberVersion(1, 11)) {
@@ -48,9 +48,10 @@ test('it complains if you try to use bare render', function(assert) {
 test('it can access the full container', function(assert) {
   this.set('myColor', 'red');
   this.render(hbs`{{my-component name=myColor}}`);
-  assert.equal(this.$('span').text(), 'red');
+
+  assert.equal(this._element.querySelector('span').textContent, 'red');
   this.set('myColor', 'blue');
-  assert.equal(this.$('span').text(), 'blue');
+  assert.equal(this._element.querySelector('span').textContent, 'blue');
 });
 
 test('it can handle actions', function(assert) {
@@ -59,13 +60,13 @@ test('it can handle actions', function(assert) {
   this.on('didFoo', function(thing) {
     handlerArg = thing;
   });
-  this.$('button').click();
+  this._element.querySelector('button').click();
   assert.equal(handlerArg, 42);
 });
 
 test('it accepts precompiled templates', function(assert) {
   this.render(hbs`<span>Hello</span>`);
-  assert.equal(this.$('span').text(), 'Hello');
+  assert.equal(this._element.querySelector('span').textContent, 'Hello');
 });
 
 test('it supports DOM events', function(assert) {
@@ -79,8 +80,8 @@ test('it supports DOM events', function(assert) {
     }),
   });
   this.render(hbs`{{my-component}}`);
-  this.$('.target').click();
-  assert.equal(this.$('.value').text(), '1');
+  this._element.querySelector('.target').click();
+  assert.equal(this._element.querySelector('.value').textContent, '1');
 });
 
 test('it supports updating an input', function(assert) {
@@ -146,8 +147,8 @@ moduleForIntegration('TestModuleForIntegration | render during setup', {
 });
 
 test('it has working events', function(assert) {
-  this.$('.target').click();
-  assert.equal(this.$('.value').text(), '1');
+  this._element.querySelector('.target').click();
+  assert.equal(this._element.querySelector('.value').textContent, '1');
 });
 
 moduleForIntegration('TestModuleForIntegration | context', {
@@ -171,7 +172,7 @@ test('it can set and get properties', function(assert) {
 
   this.render(hbs`{{my-component foo=foo}}`);
   assert.equal(this.get('foo'), '1');
-  assert.equal(this.$('.foo').text(), '1');
+  assert.equal(this._element.querySelector('.foo').textContent, '1');
 });
 
 test('it can setProperties and getProperties', function(assert) {
@@ -191,8 +192,9 @@ test('it can setProperties and getProperties', function(assert) {
   var properties = this.getProperties('foo', 'bar');
   assert.equal(properties.foo, '1');
   assert.equal(properties.bar, '2');
-  assert.equal(this.$('.foo').text(), '1');
-  assert.equal(this.$('.bar').text(), '2');
+  let element = this._element;
+  assert.equal(element.querySelector('.foo').textContent, '1');
+  assert.equal(element.querySelector('.bar').textContent, '2');
 });
 
 moduleForIntegration('TestModuleForIntegration | register and inject', {});
@@ -205,7 +207,11 @@ test('can register a component', function(assert) {
     })
   );
   this.render(hbs`{{x-foo}}`);
-  assert.equal(this.$('.i-am-x-foo').length, 1, 'found i-am-x-foo');
+  assert.equal(
+    this._element.querySelectorAll('.i-am-x-foo').length,
+    1,
+    'found i-am-x-foo'
+  );
 });
 
 test('can register a service', function(assert) {
@@ -223,12 +229,7 @@ test('can register a service', function(assert) {
     })
   );
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
 });
 
 test('can inject a service directly into test context', function(assert) {
@@ -247,19 +248,9 @@ test('can inject a service directly into test context', function(assert) {
   );
   this.inject.service('unicorn');
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
   this.set('unicorn.sparkliness', 'amazing');
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'amazing'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'amazing');
 });
 
 test('can inject a service directly into test context, with aliased name', function(
@@ -280,19 +271,10 @@ test('can inject a service directly into test context, with aliased name', funct
   );
   this.inject.service('unicorn', { as: 'hornedBeast' });
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
+
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
   this.set('hornedBeast.sparkliness', 'amazing');
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'amazing'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'amazing');
 });
 
 moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
@@ -300,12 +282,16 @@ moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
     setResolverRegistry({
       'component:my-component': Component.extend({
         willDestroyElement() {
-          var stateIndicatesInDOM = this._state === 'inDOM';
-          var actuallyInDOM = $.contains(document, this.$()[0]);
+          let { assert } = QUnit.config.current;
 
-          QUnit.config.current.assert.ok(
-            actuallyInDOM === true && stateIndicatesInDOM === true,
-            'component should still be in the DOM'
+          assert.equal(
+            this._state,
+            'inDOM',
+            'still in dom during willDestroyElement'
+          );
+          assert.ok(
+            document.contains(this.element),
+            'component element still contained within `document`'
           );
         },
       }),
@@ -314,7 +300,7 @@ moduleForIntegration('TestModuleForIntegration | willDestoryElement', {
 });
 
 test('still in DOM in willDestroyElement', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
   this.render(hbs`{{my-component}}`);
 });
 
@@ -360,5 +346,5 @@ moduleForIntegration('TestModuleForIntegration | custom resolver', {
 
 test('can render with a custom resolver', function(assert) {
   this.render(hbs`{{y-foo}}`);
-  assert.equal(this.$('.name').text(), 'Y u no foo?!', 'rendered properly');
+  assert.equal(this._element.textContent, 'Y u no foo?!', 'rendered properly');
 });
