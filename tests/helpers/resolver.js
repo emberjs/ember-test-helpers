@@ -1,17 +1,19 @@
 import Ember from 'ember';
 import { run } from '@ember/runloop';
 import { dasherize } from '@ember/string';
-import Resolver from '../../resolver';
+import AppResolver from '../../resolver';
 import config from '../../config/environment';
 import { setResolver } from 'ember-test-helpers';
 
-const resolver = Resolver.create({
+const Resolver = AppResolver.extend({
   registry: {},
 
   resolve(fullName) {
-    return this.registry[fullName];
+    return this.registry[fullName] || this._super(...arguments);
   },
 });
+
+const resolver = Resolver.create();
 
 resolver.namespace = {
   modulePrefix: config.modulePrefix,
