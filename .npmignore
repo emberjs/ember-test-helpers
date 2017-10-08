@@ -1,8 +1,20 @@
-/bower_components
-/config/ember-try.js
+# compiled output
 /dist
-/tests
 /tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log*
+yarn-error.log
+testem.log
+/tests
 **/.gitkeep
 .bowerrc
 .editorconfig
@@ -14,3 +26,9 @@
 bower.json
 ember-cli-build.js
 testem.js
+
+# ember-try
+.node_modules.ember-try/
+bower.json.ember-try
+package.json.ember-try
+/config/ember-try.js
