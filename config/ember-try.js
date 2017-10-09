@@ -13,6 +13,7 @@ module.exports = {
         devDependencies: {
           'ember-source': null,
           'ember-native-dom-event-dispatcher': null,
+          'ember-fetch': null,
         },
       },
     },
@@ -30,6 +31,7 @@ module.exports = {
         devDependencies: {
           'ember-source': null,
           'ember-native-dom-event-dispatcher': null,
+          'ember-fetch': null,
         },
       },
     },
@@ -47,6 +49,7 @@ module.exports = {
         devDependencies: {
           'ember-source': null,
           'ember-native-dom-event-dispatcher': null,
+          'ember-fetch': null,
         },
       },
     },
@@ -119,6 +122,7 @@ module.exports = {
       npm: {
         devDependencies: {
           'ember-native-dom-event-dispatcher': null,
+          'ember-fetch': null,
         },
       },
     },

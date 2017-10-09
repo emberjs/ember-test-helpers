@@ -6,6 +6,7 @@ import { TestModuleForModel } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import DS from 'ember-data';
 import qunitModuleFor from '../helpers/qunit-module-for';
+import require from 'require';
 
 function moduleForModel(name, description, callbacks) {
   var module = new TestModuleForModel(name, description, callbacks);
@@ -14,18 +15,25 @@ function moduleForModel(name, description, callbacks) {
 
 var server;
 
-var adapter = DS.JSONAPIAdapter || DS.FixtureAdapter;
+var Adapter = DS.JSONAPIAdapter || DS.FixtureAdapter;
+var ApplicationAdapter = (() => {
+  if (require.has('ember-fetch/mixins/adapter-fetch')) {
+    const AdapterFetch = require('ember-fetch/mixins/adapter-fetch').default;
+    return Adapter.extend(AdapterFetch);
+  } else {
+    return Adapter.extend();
+  }
+})();
 
 var Whazzit = DS.Model.extend({ gear: DS.attr('string') });
+
 var whazzitAdapterFindAllCalled = false;
-var WhazzitAdapter = adapter.extend({
+var WhazzitAdapter = ApplicationAdapter.extend({
   findAll() {
     whazzitAdapterFindAllCalled = true;
     return this._super.apply(this, arguments);
   },
 });
-
-var ApplicationAdapter = adapter.extend();
 
 function setupRegistry() {
   setResolverRegistry({
@@ -80,7 +88,7 @@ test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for mode
   var model = this.subject(),
     store = this.store();
 
-  assert.ok(store.adapterFor(model.constructor.modelName) instanceof adapter);
+  assert.ok(store.adapterFor(model.constructor.modelName) instanceof Adapter);
   assert.ok(
     !(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter)
   );
@@ -126,7 +134,7 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   setup() {
     Whazzit.FIXTURES = [];
 
-    if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
+    if (DS.JSONAPIAdapter && Adapter === DS.JSONAPIAdapter) {
       server = new Pretender(function() {
         this.get('/whazzits', function() {
           return [
@@ -142,7 +150,7 @@ moduleForModel('whazzit', 'model:whazzit with custom adapter', {
   },
 
   teardown() {
-    if (DS.JSONAPIAdapter && adapter === DS.JSONAPIAdapter) {
+    if (DS.JSONAPIAdapter && Adapter === DS.JSONAPIAdapter) {
       server.shutdown();
     }
   },
