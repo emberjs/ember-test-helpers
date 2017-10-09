@@ -1,14 +1,24 @@
 import Ember from 'ember';
+import $ from 'jquery'; // FYI - not present in all scenarios
 import { later, run } from '@ember/runloop';
 import Component from '@ember/component';
-import $ from 'jquery';
-
 import { TestModuleForComponent } from 'ember-test-helpers';
 import wait from 'ember-test-helpers/wait';
-
 import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
+import { fireEvent } from '../helpers/events';
+import hasjQuery from '../helpers/has-jquery';
+import require from 'require';
+
+function ajax(url) {
+  if (hasjQuery()) {
+    return $.ajax(url, { cache: false });
+  } else {
+    let fetch = require('fetch').default;
+    return fetch(url).then(response => response.text());
+  }
+}
 
 module('wait helper tests', function(hooks) {
   hooks.beforeEach(function(assert) {
@@ -64,7 +74,7 @@ module('wait helper tests', function(hooks) {
             click() {
               var component = this;
 
-              $.ajax('/whazzits', { cache: false }).then(function(data) {
+              ajax('/whazzits').then(function(data) {
                 var value = component.get('internalValue');
 
                 run(component, 'set', 'internalValue', value + data);
@@ -87,13 +97,13 @@ module('wait helper tests', function(hooks) {
                 run(component, 'set', 'internalValue', 'Local Data!');
               }, 10);
 
-              $.ajax('/whazzits', { cache: false }).then(function(data) {
+              ajax('/whazzits').then(function(data) {
                 var value = component.get('internalValue');
 
                 run(component, 'set', 'internalValue', value + data);
 
                 later(function() {
-                  $.ajax('/whazzits', { cache: false }).then(function(data) {
+                  ajax('/whazzits').then(function(data) {
                     if (component.isDestroyed) {
                       return;
                     }
@@ -174,36 +184,32 @@ module('wait helper tests', function(hooks) {
   });
 
   test('it works when async exists in `init`', function(assert) {
-    var testContext = this;
-
     this.render(hbs`{{x-test-1}}`);
 
-    return wait().then(function() {
-      assert.equal(testContext.$().text(), 'async value');
+    return wait().then(() => {
+      assert.equal(this._element.textContent, 'async value');
     });
   });
 
   test('it works when async exists in an event/action', function(assert) {
-    var testContext = this;
-
     this.render(hbs`{{x-test-2}}`);
 
-    assert.equal(this.$().text(), 'initial value');
+    assert.equal(this._element.textContent, 'initial value');
 
-    this.$('div').click();
+    fireEvent(this._element.querySelector('div'), 'click');
 
-    return wait().then(function() {
-      assert.equal(testContext.$().text(), 'async value');
+    return wait().then(() => {
+      assert.equal(this._element.textContent, 'async value');
     });
   });
 
   test('it waits for AJAX requests to finish', function(assert) {
     this.render(hbs`{{x-test-3}}`);
 
-    this.$('div').click();
+    fireEvent(this._element.querySelector('div'), 'click');
 
     return wait().then(() => {
-      assert.equal(this.$().text(), 'Remote Data!');
+      assert.equal(this._element.textContent, 'Remote Data!');
     });
   });
 
@@ -214,11 +220,11 @@ module('wait helper tests', function(hooks) {
 
     this.render(hbs`{{x-test-4}}`);
 
-    this.$('div').click();
+    fireEvent(this._element.querySelector('div'), 'click');
 
     return wait().then(function() {
       assert.equal(
-        testContext.$().text(),
+        testContext._element.textContent,
         'Local Data!Remote Data!Remote Data!'
       );
     });
@@ -229,30 +235,37 @@ module('wait helper tests', function(hooks) {
 
     this.render(hbs`{{x-test-4}}`);
 
-    this.$('div').click();
+    fireEvent(this._element.querySelector('div'), 'click');
 
     return wait({ waitForTimers: false }).then(function() {
-      assert.equal(testContext.$().text(), 'Local Data!Remote Data!');
+      assert.equal(testContext._element.textContent, 'Local Data!Remote Data!');
     });
   });
 
-  test('it can wait only for timers', function(assert) {
-    var testContext = this;
+  if (hasjQuery()) {
+    // in the wait utility we specific listen for artificial jQuery events
+    // to start/stop waiting, but when using ember-fetch those events are not
+    // emitted and instead test waiters are used
+    //
+    // therefore, this test is only valid when using jQuery.ajax
+    test('it can wait only for timers', function(assert) {
+      var testContext = this;
 
-    this.render(hbs`{{x-test-4}}`);
+      this.render(hbs`{{x-test-4}}`);
 
-    this.$('div').click();
+      fireEvent(this._element.querySelector('div'), 'click');
 
-    return wait({ waitForAJAX: false }).then(function() {
-      assert.equal(testContext.$().text(), 'Local Data!');
+      return wait({ waitForAJAX: false }).then(function() {
+        assert.equal(testContext._element.textContent, 'Local Data!');
+      });
     });
-  });
+  }
 
   test('it waits for Ember test waiters', function(assert) {
     this.render(hbs`{{x-test-5}}`);
 
     return wait({ waitForTimers: false }).then(() => {
-      assert.equal(this.$().text(), 'async value');
+      assert.equal(this._element.textContent, 'async value');
     });
   });
 });

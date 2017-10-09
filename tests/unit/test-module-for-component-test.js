@@ -8,14 +8,15 @@ import Controller from '@ember/controller';
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
 import EmberService, { inject as service } from '@ember/service';
-import $ from 'jquery';
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import wait from 'ember-test-helpers/wait';
 import qunitModuleFor from '../helpers/qunit-module-for';
+import hasjQuery from '../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
+import { fireEvent, focus, blur } from '../helpers/events';
 
 var Service = EmberService || EmberObject;
 
@@ -57,7 +58,7 @@ var ColorController = Controller.extend({
 var BoringColor = Component.extend({
   willDestroyElement() {
     var stateIndicatesInDOM = this._state === 'inDOM';
-    var actuallyInDOM = $.contains(document, this.$()[0]);
+    var actuallyInDOM = document.contains(this.element);
 
     QUnit.config.current.assert.ok(
       actuallyInDOM === true && actuallyInDOM === stateIndicatesInDOM,
@@ -101,22 +102,24 @@ test('renders', function(assert) {
   assert.equal(component._state, 'inDOM');
 });
 
-test('append', function(assert) {
-  assert.expect(4);
+if (hasjQuery()) {
+  test('append', function(assert) {
+    assert.expect(4);
 
-  var $el;
-  var component;
+    var $el;
+    var component;
 
-  component = this.subject();
-  assert.equal(component._state, 'preRender');
-  $el = this.append();
-  assert.equal(component._state, 'inDOM');
-  assert.ok($el && $el.length, 'append returns $el');
+    component = this.subject();
+    assert.equal(component._state, 'preRender');
+    $el = this.append();
+    assert.equal(component._state, 'inDOM');
+    assert.ok($el && $el.length, 'append returns $el');
 
-  assert.deprecationsInclude(
-    'this.append() is deprecated. Please use this.render() or this.$() instead.'
-  );
-});
+    assert.deprecationsInclude(
+      'this.append() is deprecated. Please use this.render() or this.$() instead.'
+    );
+  });
+}
 
 test('yields', function(assert) {
   assert.expect(2);
@@ -168,27 +171,21 @@ moduleForComponent('pretty-color', {
 });
 
 test('className', function(assert) {
-  // first call to this.$() renders the component.
-  assert.ok(this.$().is('.pretty-color'));
+  this.render();
+  assert.ok(this._element.matches('.pretty-color'));
 });
 
 test('template', function(assert) {
   var component = this.subject();
 
-  assert.equal($.trim(this.$().text()), 'Pretty Color:');
+  this.render();
+  assert.equal(this._element.textContent, 'Pretty Color: ');
 
   run(function() {
     component.set('name', 'green');
   });
 
-  assert.equal($.trim(this.$().text()), 'Pretty Color: green');
-});
-
-test('$', function(assert) {
-  this.subject({ name: 'green' });
-
-  assert.equal($.trim(this.$('.color-name').text()), 'green');
-  assert.equal($.trim(this.$().text()), 'Pretty Color: green');
+  assert.equal(this._element.textContent, 'Pretty Color: green');
 });
 
 test('it can access the element', function(assert) {
@@ -197,6 +194,15 @@ test('it can access the element', function(assert) {
 
   assert.equal(this._element.textContent, 'Pretty Color: green');
 });
+
+if (hasjQuery()) {
+  test('$', function(assert) {
+    this.subject({ name: 'green' });
+
+    assert.equal(this.$('.color-name').text(), 'green');
+    assert.equal(this.$().text(), 'Pretty Color: green');
+  });
+}
 
 moduleForComponent(
   'pretty-color',
@@ -221,7 +227,8 @@ test('className', function(assert) {
   // calling `this.$` or `this.subject.$` would
   // force it to `render` initially, so we access the `ember-testing`
   // div contents directly
-  assert.equal($.trim($('#ember-testing').text()), 'Pretty Color: red');
+  let testingElement = document.getElementById('ember-testing');
+  assert.equal(testingElement.textContent, 'Pretty Color: red');
 });
 
 test('`toString` returns the test subject', function(assert) {
@@ -271,7 +278,7 @@ test('can handle click', function(assert) {
   this.render();
 
   run(function() {
-    component.$().click();
+    component.element.click();
   });
 });
 
@@ -404,7 +411,8 @@ moduleForComponent('Component Integration Tests', {
 
 test('it can render a template', function(assert) {
   this.render(hbs`<span>Hello</span>`);
-  assert.equal(this.$('span').text(), 'Hello');
+  let actual = this._element.querySelector('span').textContent;
+  assert.equal(actual, 'Hello');
 });
 
 test('it can access the element', function(assert) {
@@ -436,9 +444,10 @@ test('it complains if you try to use subject()', function(assert) {
 test('it can access the full container', function(assert) {
   this.set('myColor', 'red');
   this.render(hbs`{{my-component name=myColor}}`);
-  assert.equal(this.$('span').text(), 'red');
+
+  assert.equal(this._element.querySelector('span').textContent, 'red');
   this.set('myColor', 'blue');
-  assert.equal(this.$('span').text(), 'blue');
+  assert.equal(this._element.querySelector('span').textContent, 'blue');
 });
 
 test('it can handle actions', function(assert) {
@@ -447,13 +456,13 @@ test('it can handle actions', function(assert) {
   this.on('didFoo', function(thing) {
     handlerArg = thing;
   });
-  this.$('button').click();
+  this._element.querySelector('button').click();
   assert.equal(handlerArg, 42);
 });
 
 test('it accepts precompiled templates', function(assert) {
   this.render(hbs`<span>Hello</span>`);
-  assert.equal(this.$('span').text(), 'Hello');
+  assert.equal(this._element.querySelector('span').textContent, 'Hello');
 });
 
 test('it supports DOM events', function(assert) {
@@ -467,8 +476,8 @@ test('it supports DOM events', function(assert) {
     }),
   });
   this.render(hbs`{{my-component}}`);
-  this.$('.target').click();
-  assert.equal(this.$('.value').text(), '1');
+  this._element.querySelector('.target').click();
+  assert.equal(this._element.querySelector('.value').textContent, '1');
 });
 
 test('it supports updating an input', function(assert) {
@@ -478,9 +487,10 @@ test('it supports updating an input', function(assert) {
     }),
   });
   this.render(hbs`{{my-input value=value}}`);
-  this.$('input')
-    .val('1')
-    .change();
+  let input = this._element.querySelector('input');
+  input.value = '1';
+
+  fireEvent(input, 'change');
   assert.equal(this.get('value'), '1');
 });
 
@@ -499,13 +509,15 @@ test('it supports dom triggered focus events', function(assert) {
     }),
   });
   this.render(hbs`{{my-input}}`);
-  assert.equal(this.$('input').val(), 'init');
 
-  this.$('input').trigger('focusin');
-  assert.equal(this.$('input').val(), 'focusin');
+  let input = this._element.querySelector('input');
+  assert.equal(input.value, 'init');
 
-  this.$('input').trigger('focusout');
-  assert.equal(this.$('input').val(), 'focusout');
+  focus(input);
+  assert.equal(input.value, 'focusin');
+
+  blur(input);
+  assert.equal(input.value, 'focusout');
 });
 
 moduleForComponent('Component Integration Tests: render during setup', {
@@ -527,8 +539,8 @@ moduleForComponent('Component Integration Tests: render during setup', {
 });
 
 test('it has working events', function(assert) {
-  this.$('.target').click();
-  assert.equal(this.$('.value').text(), '1');
+  this._element.querySelector('.target').click();
+  assert.equal(this._element.querySelector('.value').textContent, '1');
 });
 
 moduleForComponent('Component Integration Tests: context', {
@@ -553,7 +565,7 @@ test('it can set and get properties', function(assert) {
 
   this.render(hbs`{{my-component foo=foo}}`);
   assert.equal(this.get('foo'), '1');
-  assert.equal(this.$('.foo').text(), '1');
+  assert.equal(this._element.querySelector('.foo').textContent, '1');
 });
 
 test('it can setProperties and getProperties', function(assert) {
@@ -573,8 +585,9 @@ test('it can setProperties and getProperties', function(assert) {
   var properties = this.getProperties('foo', 'bar');
   assert.equal(properties.foo, '1');
   assert.equal(properties.bar, '2');
-  assert.equal(this.$('.foo').text(), '1');
-  assert.equal(this.$('.bar').text(), '2');
+  let element = this._element;
+  assert.equal(element.querySelector('.foo').textContent, '1');
+  assert.equal(element.querySelector('.bar').textContent, '2');
 });
 
 test('two way bound arguments are updated', function(assert) {
@@ -659,7 +672,11 @@ test('can register a component', function(assert) {
     })
   );
   this.render(hbs`{{x-foo}}`);
-  assert.equal(this.$('.i-am-x-foo').length, 1, 'found i-am-x-foo');
+  assert.equal(
+    this._element.querySelectorAll('.i-am-x-foo').length,
+    1,
+    'found i-am-x-foo'
+  );
 });
 
 test('can register a service', function(assert) {
@@ -677,12 +694,7 @@ test('can register a service', function(assert) {
     })
   );
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
 });
 
 test('can inject a service directly into test context', function(assert) {
@@ -704,20 +716,9 @@ test('can inject a service directly into test context', function(assert) {
   this.inject.service('unicorn');
   this.render(hbs`{{x-foo}}`);
 
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
-
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
   this.set('unicorn.sparkliness', 'amazing');
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'amazing'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'amazing');
 });
 
 test('can inject a service directly into test context, with aliased name', function(
@@ -738,19 +739,10 @@ test('can inject a service directly into test context, with aliased name', funct
   );
   this.inject.service('unicorn', { as: 'hornedBeast' });
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'extreme'
-  );
+
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'extreme');
   this.set('hornedBeast.sparkliness', 'amazing');
-  assert.equal(
-    this.$('.x-foo')
-      .text()
-      .trim(),
-    'amazing'
-  );
+  assert.equal(this._element.querySelector('.x-foo').textContent, 'amazing');
 });
 
 moduleForComponent('Component Integration Tests: willDestoryElement', {
@@ -759,12 +751,16 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
     setResolverRegistry({
       'component:my-component': Component.extend({
         willDestroyElement() {
-          var stateIndicatesInDOM = this._state === 'inDOM';
-          var actuallyInDOM = $.contains(document, this.$()[0]);
+          let { assert } = QUnit.config.current;
 
-          QUnit.config.current.assert.ok(
-            actuallyInDOM === true && actuallyInDOM === stateIndicatesInDOM,
-            'component should still be in the DOM'
+          assert.equal(
+            this._state,
+            'inDOM',
+            'still in dom during willDestroyElement'
+          );
+          assert.ok(
+            document.contains(this.element),
+            'component element still contained within `document`'
           );
         },
       }),
@@ -773,12 +769,12 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 });
 
 test('still in DOM in willDestroyElement', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
   this.render(hbs`{{my-component}}`);
 });
 
 test('is destroyed when rendered twice', function(assert) {
-  assert.expect(2);
+  assert.expect(4);
   this.render(hbs`{{my-component}}`);
   this.render(hbs`{{my-component}}`);
 });
@@ -834,7 +830,7 @@ test('it can set and get properties', function(assert) {
   });
   this.render(hbs`{{my-component}}`);
 
-  let testElement = this.$()[0];
+  let testElement = this._element;
   let instanceElement = instance.element;
 
   assert.ok(
@@ -894,6 +890,6 @@ test('does not require manual run wrapping', function(assert) {
       return wait();
     })
     .then(() => {
-      assert.equal(this.$().text(), 'async value');
+      assert.equal(this._element.textContent, 'async value');
     });
 });
