@@ -42,3 +42,16 @@ script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+
+before_deploy:
+  - npm install -g auto-dist-tag
+  - auto-dist-tag --write
+
+deploy:
+  provider: npm
+  email: stefan.penner+ember-cli@gmail.com
+  api_key:
+    secure: rKej7q7tP+K3XUsKftqVhw8/Tgx6pn30OzV0g39RGVTRjWKvLu36UlF3LtP0AfofIKqsnPcvy+VaV9uCOOFiG6xBlXtVjxtqbplBmvKU1SjBHrwtlK61SdlXNKwIagWxBSbCUNxj+ka0d8gpIxS+sNw4sKGWHufH0CoAjpkerog=
+  on:
+    tags: true
+    repo: emberjs/ember-test-helpers
