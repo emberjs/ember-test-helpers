@@ -9,6 +9,7 @@ import { TestModuleForIntegration } from 'ember-test-helpers';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
 import qunitModuleFor from '../helpers/qunit-module-for';
 import hbs from 'htmlbars-inline-precompile';
+import { fireEvent } from '../helpers/events';
 
 const Service = EmberService || EmberObject;
 
@@ -91,9 +92,10 @@ test('it supports updating an input', function(assert) {
     }),
   });
   this.render(hbs`{{my-input value=value}}`);
-  this.$('input')
-    .val('1')
-    .change();
+
+  let input = this._element.querySelector('input');
+  input.value = '1';
+  fireEvent(input, 'change');
   assert.equal(this.get('value'), '1');
 });
 
@@ -112,13 +114,14 @@ test('it supports dom triggered focus events', function(assert) {
     }),
   });
   this.render(hbs`{{my-input}}`);
-  assert.equal(this.$('input').val(), 'init');
+  let input = this._element.querySelector('input');
+  assert.equal(input.value, 'init');
 
-  this.$('input').trigger('focusin');
-  assert.equal(this.$('input').val(), 'focusin');
+  fireEvent(input, 'focusin');
+  assert.equal(input.value, 'focusin');
 
-  this.$('input').trigger('focusout');
-  assert.equal(this.$('input').val(), 'focusout');
+  fireEvent(input, 'focusout');
+  assert.equal(input.value, 'focusout');
 });
 
 test('`toString` returns the test name', function(assert) {
