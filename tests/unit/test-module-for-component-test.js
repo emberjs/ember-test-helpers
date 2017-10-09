@@ -14,6 +14,7 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import wait from 'ember-test-helpers/wait';
 import qunitModuleFor from '../helpers/qunit-module-for';
+import hasjQuery from '../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
 
 var Service = EmberService || EmberObject;
@@ -100,22 +101,31 @@ test('renders', function(assert) {
   assert.equal(component._state, 'inDOM');
 });
 
-test('append', function(assert) {
-  assert.expect(4);
+if (hasjQuery()) {
+  test('append', function(assert) {
+    assert.expect(4);
 
-  var $el;
-  var component;
+    var $el;
+    var component;
 
-  component = this.subject();
-  assert.equal(component._state, 'preRender');
-  $el = this.append();
-  assert.equal(component._state, 'inDOM');
-  assert.ok($el && $el.length, 'append returns $el');
+    component = this.subject();
+    assert.equal(component._state, 'preRender');
+    $el = this.append();
+    assert.equal(component._state, 'inDOM');
+    assert.ok($el && $el.length, 'append returns $el');
 
-  assert.deprecationsInclude(
-    'this.append() is deprecated. Please use this.render() or this.$() instead.'
-  );
-});
+    assert.deprecationsInclude(
+      'this.append() is deprecated. Please use this.render() or this.$() instead.'
+    );
+  });
+
+  test('$', function(assert) {
+    this.subject({ name: 'green' });
+
+    assert.equal(this.$('.color-name').text(), 'green');
+    assert.equal(this.$().text(), 'Pretty Color: green');
+  });
+}
 
 test('yields', function(assert) {
   assert.expect(2);
@@ -182,13 +192,6 @@ test('template', function(assert) {
   });
 
   assert.equal(this._element.textContent, 'Pretty Color: green');
-});
-
-test('$', function(assert) {
-  this.subject({ name: 'green' });
-
-  assert.equal(this.$('.color-name').text(), 'green');
-  assert.equal(this.$().text(), 'Pretty Color: green');
 });
 
 test('it can access the element', function(assert) {
