@@ -28,23 +28,61 @@ export function matches(el, selector) {
   return elMatches.call(el, selector);
 }
 
+function isFocusable(el) {
+  let focusableTags = ['INPUT', 'BUTTON', 'LINK', 'SELECT', 'A', 'TEXTAREA'];
+  let { tagName, type } = el;
+
+  if (type === 'hidden') {
+    return false;
+  }
+
+  return focusableTags.indexOf(tagName) > -1 || el.contentEditable === 'true';
+}
+
 export function focus(el) {
   if (!el) {
     return;
   }
-  if (matches(el, 'input, textarea, select, button, [contenteditable=true]')) {
-    let type = el.type;
-    if (type !== 'checkbox' && type !== 'radio' && type !== 'hidden') {
-      run(function() {
-        // Firefox does not trigger the `focusin` event if the window
-        // does not have focus. If the document doesn't have focus just
-        // use trigger('focusin') instead.
+  if (isFocusable(el)) {
+    run(null, function() {
+      let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
-        if (!document.hasFocus || document.hasFocus()) {
-          el.focus();
-        }
-      });
-    }
+      // Firefox does not trigger the `focusin` event if the window
+      // does not have focus. If the document doesn't have focus just
+      // use trigger('focusin') instead.
+      if (browserIsNotFocused) {
+        fireEvent(el, 'focusin');
+      }
+
+      // makes `document.activeElement` be `el`. If the browser is focused, it also fires a focus event
+      el.focus();
+
+      // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
+      if (browserIsNotFocused) {
+        fireEvent(el, 'focus');
+      }
+    });
+  }
+}
+
+export function blur(el) {
+  if (isFocusable(el)) {
+    run(null, function() {
+      let browserIsNotFocused = document.hasFocus && !document.hasFocus();
+
+      fireEvent(el, 'focusout');
+
+      // makes `document.activeElement` be `body`.
+      // If the browser is focused, it also fires a blur event
+      el.blur();
+
+      // Chrome/Firefox does not trigger the `blur` event if the window
+      // does not have focus. If the document does not have focus then
+      // fire `blur` event via native event.
+      if (browserIsNotFocused) {
+        fireEvent(el, 'blur');
+      }
+    });
   }
 }
 

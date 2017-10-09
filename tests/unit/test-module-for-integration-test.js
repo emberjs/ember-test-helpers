@@ -9,7 +9,7 @@ import { TestModuleForIntegration } from 'ember-test-helpers';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
 import qunitModuleFor from '../helpers/qunit-module-for';
 import hbs from 'htmlbars-inline-precompile';
-import { fireEvent } from '../helpers/events';
+import { fireEvent, focus, blur } from '../helpers/events';
 
 const Service = EmberService || EmberObject;
 
@@ -117,10 +117,10 @@ test('it supports dom triggered focus events', function(assert) {
   let input = this._element.querySelector('input');
   assert.equal(input.value, 'init');
 
-  fireEvent(input, 'focusin');
+  focus(input);
   assert.equal(input.value, 'focusin');
 
-  fireEvent(input, 'focusout');
+  blur(input);
   assert.equal(input.value, 'focusout');
 });
 

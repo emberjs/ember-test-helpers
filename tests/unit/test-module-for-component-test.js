@@ -16,7 +16,7 @@ import wait from 'ember-test-helpers/wait';
 import qunitModuleFor from '../helpers/qunit-module-for';
 import hasjQuery from '../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
-import { fireEvent } from '../helpers/events';
+import { fireEvent, focus, blur } from '../helpers/events';
 
 var Service = EmberService || EmberObject;
 
@@ -119,13 +119,6 @@ if (hasjQuery()) {
       'this.append() is deprecated. Please use this.render() or this.$() instead.'
     );
   });
-
-  test('$', function(assert) {
-    this.subject({ name: 'green' });
-
-    assert.equal(this.$('.color-name').text(), 'green');
-    assert.equal(this.$().text(), 'Pretty Color: green');
-  });
 }
 
 test('yields', function(assert) {
@@ -201,6 +194,15 @@ test('it can access the element', function(assert) {
 
   assert.equal(this._element.textContent, 'Pretty Color: green');
 });
+
+if (hasjQuery()) {
+  test('$', function(assert) {
+    this.subject({ name: 'green' });
+
+    assert.equal(this.$('.color-name').text(), 'green');
+    assert.equal(this.$().text(), 'Pretty Color: green');
+  });
+}
 
 moduleForComponent(
   'pretty-color',
@@ -507,13 +509,14 @@ test('it supports dom triggered focus events', function(assert) {
     }),
   });
   this.render(hbs`{{my-input}}`);
+
   let input = this._element.querySelector('input');
   assert.equal(input.value, 'init');
 
-  fireEvent(input, 'focusin');
+  focus(input);
   assert.equal(input.value, 'focusin');
 
-  fireEvent(input, 'focusout');
+  blur(input);
   assert.equal(input.value, 'focusout');
 });
 
