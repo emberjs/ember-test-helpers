@@ -5,8 +5,11 @@ import EmberObject, { get } from '@ember/object';
 import Component from '@ember/component';
 import { TestModule, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
-import qunitModuleFor from '../helpers/qunit-module-for';
+import {
+  setResolverRegistry,
+  createCustomResolver,
+} from '../../helpers/resolver';
+import qunitModuleFor from '../../helpers/qunit-module-for';
 
 function moduleFor(fullName, description, callbacks) {
   let module = new TestModule(fullName, description, callbacks);

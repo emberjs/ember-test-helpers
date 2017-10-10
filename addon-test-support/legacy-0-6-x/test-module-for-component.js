@@ -7,7 +7,7 @@ import { deprecate } from '@ember/application/deprecations';
 import { getOwner } from '@ember/application';
 import TestModule from './test-module';
 import Ember from 'ember';
-import hasEmberVersion from './has-ember-version';
+import hasEmberVersion from '../has-ember-version';
 import { preGlimmerSetupIntegrationForComponent } from './-legacy-overrides';
 
 let ACTION_KEY;

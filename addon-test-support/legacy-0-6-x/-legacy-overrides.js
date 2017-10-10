@@ -4,7 +4,7 @@ import { isArray } from '@ember/array';
 import Component from '@ember/component';
 import Ember from 'ember';
 
-import hasEmberVersion from './has-ember-version';
+import hasEmberVersion from '../has-ember-version';
 
 export function preGlimmerSetupIntegrationForComponent() {
   var module = this;

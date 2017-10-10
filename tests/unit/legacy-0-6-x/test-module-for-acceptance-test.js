@@ -1,12 +1,11 @@
 import { test } from 'qunit';
 import EmberRouter from '@ember/routing/router';
 import EmberApplication from '@ember/application';
-import { TestModuleForAcceptance } from 'ember-test-helpers';
-import { getContext } from 'ember-test-helpers/test-context';
+import { TestModuleForAcceptance, getContext } from 'ember-test-helpers';
 
 import hbs from 'htmlbars-inline-precompile';
-import Resolver, { setResolverRegistry } from '../helpers/resolver';
-import qunitModuleFor from '../helpers/qunit-module-for';
+import Resolver, { setResolverRegistry } from '../../helpers/resolver';
+import qunitModuleFor from '../../helpers/qunit-module-for';
 
 function moduleForAcceptance(description, callbacks) {
   qunitModuleFor(new TestModuleForAcceptance(description, callbacks));
