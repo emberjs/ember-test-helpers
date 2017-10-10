@@ -3,9 +3,9 @@
 import { test } from 'qunit';
 import { run } from '@ember/runloop';
 import { TestModuleForModel } from 'ember-test-helpers';
-import { setResolverRegistry } from '../helpers/resolver';
+import { setResolverRegistry } from '../../helpers/resolver';
 import DS from 'ember-data';
-import qunitModuleFor from '../helpers/qunit-module-for';
+import qunitModuleFor from '../../helpers/qunit-module-for';
 import require from 'require';
 
 function moduleForModel(name, description, callbacks) {

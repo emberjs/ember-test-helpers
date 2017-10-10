@@ -11,12 +11,12 @@ import EmberService, { inject as service } from '@ember/service';
 import Ember from 'ember';
 import { TestModuleForComponent } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import { setResolverRegistry } from '../helpers/resolver';
+import { setResolverRegistry } from '../../helpers/resolver';
 import wait from 'ember-test-helpers/wait';
-import qunitModuleFor from '../helpers/qunit-module-for';
-import hasjQuery from '../helpers/has-jquery';
+import qunitModuleFor from '../../helpers/qunit-module-for';
+import hasjQuery from '../../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
-import { fireEvent, focus, blur } from '../helpers/events';
+import { fireEvent, focus, blur } from '../../helpers/events';
 
 var Service = EmberService || EmberObject;
 
