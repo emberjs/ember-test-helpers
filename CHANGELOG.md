@@ -1,14 +1,38 @@
 # Change Log
 
+## [v0.7.0-beta.4](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.4) (2017-10-09)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.3...v0.7.0-beta.4)
+
+**Closed issues:**
+
+- Release via TravisCI [\#214](https://github.com/emberjs/ember-test-helpers/issues/214)
+
+**Merged pull requests:**
+
+- Remove `TestModuleForIntegration`. [\#217](https://github.com/emberjs/ember-test-helpers/pull/217) ([rwjblue](https://github.com/rwjblue))
+- Travis: Automatically publish tags to npm [\#216](https://github.com/emberjs/ember-test-helpers/pull/216) ([Turbo87](https://github.com/Turbo87))
+- Reduce direct jQuery usage in tests. [\#215](https://github.com/emberjs/ember-test-helpers/pull/215) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.7.0-beta.3](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.3) (2017-10-08)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.2...v0.7.0-beta.3)
+
+**Closed issues:**
+
+- Convert to Ember addon [\#210](https://github.com/emberjs/ember-test-helpers/issues/210)
+
 ## [v0.7.0-beta.2](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.2) (2017-10-07)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.1...v0.7.0-beta.2)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
 - Autoregister event dispatcher in unit tests [\#205](https://github.com/emberjs/ember-test-helpers/pull/205) ([cibernox](https://github.com/cibernox))
 
 ## [v0.7.0-beta.1](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.1) (2017-10-07)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.3...v0.7.0-beta.1)
+
+**Implemented enhancements:**
+
+- Migrate to an addon. [\#213](https://github.com/emberjs/ember-test-helpers/pull/213) ([rwjblue](https://github.com/rwjblue))
 
 **Closed issues:**
 
@@ -16,7 +40,6 @@
 
 **Merged pull requests:**
 
-- Migrate to an addon. [\#213](https://github.com/emberjs/ember-test-helpers/pull/213) ([rwjblue](https://github.com/rwjblue))
 - Document ability to set module-specific resolver [\#209](https://github.com/emberjs/ember-test-helpers/pull/209) ([trentmwillis](https://github.com/trentmwillis))
 - Ensure RSVP promises do not need manual Ember.run wrapping. [\#201](https://github.com/emberjs/ember-test-helpers/pull/201) ([rwjblue](https://github.com/rwjblue))
 - Updates to ensure ember-data from npm works properly. [\#200](https://github.com/emberjs/ember-test-helpers/pull/200) ([rwjblue](https://github.com/rwjblue))
