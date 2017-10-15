@@ -18,6 +18,8 @@ export {
 export { setResolver } from './resolver';
 export { default as setupContext } from './setup-context';
 export { default as teardownContext } from './teardown-context';
+export { default as setupRenderingContext } from './setup-rendering-context';
+export { default as teardownRenderingContext } from './teardown-rendering-context';
 
 import Ember from 'ember';
 Ember.testing = true;
