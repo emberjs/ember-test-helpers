@@ -9,10 +9,19 @@ import require from 'require';
 import Ember from 'ember';
 import { getResolver } from './resolver';
 
-const Owner = EmberObject.extend(
-  Ember._RegistryProxyMixin,
-  Ember._ContainerProxyMixin
-);
+const Owner = (function() {
+  // this module only supports Ember 2.4+ but is evaluated
+  // on older Ember versions (which we support via the legacy-0-6 API)
+  // and calling `.extend` with undefined is an issue
+  if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
+    return EmberObject.extend(
+      Ember._RegistryProxyMixin,
+      Ember._ContainerProxyMixin
+    );
+  }
+
+  return EmberObject.extend();
+})();
 
 // different than the legacy-0-6-x version (build-registry.js)
 // in the following ways:
