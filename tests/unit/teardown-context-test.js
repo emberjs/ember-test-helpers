@@ -2,8 +2,13 @@ import { module, test } from 'qunit';
 import Service from '@ember/service';
 import { setupContext, teardownContext } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 module('teardownContext', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   hooks.before(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),

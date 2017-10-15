@@ -5,6 +5,10 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
 
 module('setupContext', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   hooks.before(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
