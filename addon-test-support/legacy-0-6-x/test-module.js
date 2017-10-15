@@ -7,7 +7,7 @@ import { run } from '@ember/runloop';
 import { setOwner } from '@ember/application';
 import AbstractTestModule from './abstract-test-module';
 import { getResolver } from '../resolver';
-import buildRegistry from '../build-registry';
+import buildRegistry from './build-registry';
 import hasEmberVersion from '../has-ember-version';
 
 export default class extends AbstractTestModule {
