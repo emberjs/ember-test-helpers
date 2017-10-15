@@ -14,6 +14,7 @@ export {
   unsetContext,
 } from './legacy-0-6-x/test-context';
 export { setResolver } from './resolver';
+export { default as setupContext } from './setup-context';
 
 import Ember from 'ember';
 Ember.testing = true;
