@@ -1,6 +1,42 @@
 # Change Log
 
-## [v0.7.0-beta.4](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.4) (2017-10-09)
+## [v0.7.0-beta.5](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.5) (2017-10-16)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.4...v0.7.0-beta.5)
+
+**Implemented enhancements:**
+
+- Expose `element` in component integration tests [\#184](https://github.com/emberjs/ember-test-helpers/issues/184)
+- Deprecate `this.container` and `this.registry` when using Ember 2.3.0. [\#120](https://github.com/emberjs/ember-test-helpers/issues/120)
+- Way to use extended EventDispatcher [\#20](https://github.com/emberjs/ember-test-helpers/issues/20)
+- Expose test helpers for component unit tests [\#3](https://github.com/emberjs/ember-test-helpers/issues/3)
+- Basic implementation for new testing API. [\#220](https://github.com/emberjs/ember-test-helpers/pull/220) ([rwjblue](https://github.com/rwjblue))
+
+**Fixed bugs:**
+
+- Tests fail after upgrading to 0.5.17 - unable to find custom store [\#130](https://github.com/emberjs/ember-test-helpers/issues/130)
+- Document "integration: true" and "needs" [\#55](https://github.com/emberjs/ember-test-helpers/issues/55)
+
+**Closed issues:**
+
+- Simplify support matrix. [\#206](https://github.com/emberjs/ember-test-helpers/issues/206)
+- contextualizeCallbacks prevents custom test instance helpers [\#204](https://github.com/emberjs/ember-test-helpers/issues/204)
+- 0.6.3 is breaking existing tests [\#203](https://github.com/emberjs/ember-test-helpers/issues/203)
+- initializers affect component integration tests if there is an acceptance test [\#146](https://github.com/emberjs/ember-test-helpers/issues/146)
+- Service injection fails in integration tests [\#109](https://github.com/emberjs/ember-test-helpers/issues/109)
+- Integration test with router injected into component [\#103](https://github.com/emberjs/ember-test-helpers/issues/103)
+- Failing test suite under 0.5.9 [\#97](https://github.com/emberjs/ember-test-helpers/issues/97)
+- Inject integration test helpers into component integration tests. [\#67](https://github.com/emberjs/ember-test-helpers/issues/67)
+- add-ons unit tests fail to retrieve custom factories [\#54](https://github.com/emberjs/ember-test-helpers/issues/54)
+- View-rendering with `{{outlet}}` in views template fails [\#36](https://github.com/emberjs/ember-test-helpers/issues/36)
+- If ED is being used and integration:true then I should be able to access the store [\#31](https://github.com/emberjs/ember-test-helpers/issues/31)
+- Working with new Container/Registry Implementation [\#7](https://github.com/emberjs/ember-test-helpers/issues/7)
+
+**Merged pull requests:**
+
+- Use yarn instead of npm [\#219](https://github.com/emberjs/ember-test-helpers/pull/219) ([Turbo87](https://github.com/Turbo87))
+- Reorganize repo internals to prepare for RFC 232 implementation. [\#218](https://github.com/emberjs/ember-test-helpers/pull/218) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.7.0-beta.4](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.4) (2017-10-10)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.3...v0.7.0-beta.4)
 
 **Closed issues:**
@@ -33,6 +69,8 @@
 **Implemented enhancements:**
 
 - Migrate to an addon. [\#213](https://github.com/emberjs/ember-test-helpers/pull/213) ([rwjblue](https://github.com/rwjblue))
+- Ensure RSVP promises do not need manual Ember.run wrapping. [\#201](https://github.com/emberjs/ember-test-helpers/pull/201) ([rwjblue](https://github.com/rwjblue))
+- Updates to ensure ember-data from npm works properly. [\#200](https://github.com/emberjs/ember-test-helpers/pull/200) ([rwjblue](https://github.com/rwjblue))
 
 **Closed issues:**
 
@@ -41,13 +79,11 @@
 **Merged pull requests:**
 
 - Document ability to set module-specific resolver [\#209](https://github.com/emberjs/ember-test-helpers/pull/209) ([trentmwillis](https://github.com/trentmwillis))
-- Ensure RSVP promises do not need manual Ember.run wrapping. [\#201](https://github.com/emberjs/ember-test-helpers/pull/201) ([rwjblue](https://github.com/rwjblue))
-- Updates to ensure ember-data from npm works properly. [\#200](https://github.com/emberjs/ember-test-helpers/pull/200) ([rwjblue](https://github.com/rwjblue))
 
 ## [v0.6.3](https://github.com/emberjs/ember-test-helpers/tree/v0.6.3) (2017-03-04)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.2...v0.6.3)
 
-**Merged pull requests:**
+**Fixed bugs:**
 
 - Import `require` \(avoid using global require\). [\#198](https://github.com/emberjs/ember-test-helpers/pull/198) ([rwjblue](https://github.com/rwjblue))
 
@@ -65,14 +101,14 @@
 ## [v0.6.1](https://github.com/emberjs/ember-test-helpers/tree/v0.6.1) (2017-01-24)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.0...v0.6.1)
 
+**Implemented enhancements:**
+
+- Ember 2.12: Use factoryFor instead of lookupFactory, if available [\#194](https://github.com/emberjs/ember-test-helpers/pull/194) ([bwbuchanan](https://github.com/bwbuchanan))
+
 **Closed issues:**
 
 - Release v0.6.0 [\#192](https://github.com/emberjs/ember-test-helpers/issues/192)
 - Integration component test issues after v0.5.31 [\#176](https://github.com/emberjs/ember-test-helpers/issues/176)
-
-**Merged pull requests:**
-
-- Ember 2.12: Use factoryFor instead of lookupFactory, if available [\#194](https://github.com/emberjs/ember-test-helpers/pull/194) ([bwbuchanan](https://github.com/bwbuchanan))
 
 ## [v0.6.0](https://github.com/emberjs/ember-test-helpers/tree/v0.6.0) (2016-12-21)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.6.0-beta.1...v0.6.0)
