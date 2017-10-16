@@ -14,10 +14,7 @@ const Owner = (function() {
   // on older Ember versions (which we support via the legacy-0-6 API)
   // and calling `.extend` with undefined is an issue
   if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
-    return EmberObject.extend(
-      Ember._RegistryProxyMixin,
-      Ember._ContainerProxyMixin
-    );
+    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
   }
 
   return EmberObject.extend();
@@ -42,11 +39,7 @@ export default function(resolver = getResolver()) {
   function register(name, factory) {
     let thingToRegisterWith = registry || container;
 
-    if (
-      !(container.factoryFor
-        ? container.factoryFor(name)
-        : container.lookupFactory(name))
-    ) {
+    if (!(container.factoryFor ? container.factoryFor(name) : container.lookupFactory(name))) {
       thingToRegisterWith.register(name, factory);
     }
   }
@@ -83,8 +76,7 @@ export default function(resolver = getResolver()) {
   // running the applications `initializers` to ensure the container is
   // properly setup, this would only need to be done once per test suite
   if (
-    (typeof require.has === 'function' &&
-      require.has('ember-data/setup-container')) ||
+    (typeof require.has === 'function' && require.has('ember-data/setup-container')) ||
     requirejs.entries['ember-data/setup-container']
   ) {
     // ember-data is a proper ember-cli addon since 2.3; if no 'import

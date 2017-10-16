@@ -5,10 +5,7 @@ import EmberObject, { get } from '@ember/object';
 import Component from '@ember/component';
 import { TestModule, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import {
-  setResolverRegistry,
-  createCustomResolver,
-} from '../../helpers/resolver';
+import { setResolverRegistry, createCustomResolver } from '../../helpers/resolver';
 import qunitModuleFor from '../../helpers/qunit-module-for';
 
 function moduleFor(fullName, description, callbacks) {
@@ -29,11 +26,7 @@ function setupRegistry() {
   });
 }
 
-var callbackOrder,
-  setupContext,
-  teardownContext,
-  beforeSetupContext,
-  afterTeardownContext;
+var callbackOrder, setupContext, teardownContext, beforeSetupContext, afterTeardownContext;
 
 moduleFor('component:x-foo', 'TestModule callbacks', {
   beforeSetup() {
@@ -64,12 +57,7 @@ moduleFor('component:x-foo', 'TestModule callbacks', {
     let assert = QUnit.config.current.assert;
     assert.equal(this.context, undefined, "don't leak the this.context");
     assert.equal(getContext(), undefined, "don't leak the internal context");
-    assert.deepEqual(callbackOrder, [
-      'beforeSetup',
-      'setup',
-      'teardown',
-      'afterTeardown',
-    ]);
+    assert.deepEqual(callbackOrder, ['beforeSetup', 'setup', 'teardown', 'afterTeardown']);
     assert.equal(afterTeardownContext, beforeSetupContext);
     assert.ok(afterTeardownContext !== teardownContext);
   },
@@ -129,9 +117,7 @@ moduleFor('component:x-foo', 'component:x-foo -- callback context', {
   },
 });
 
-test('can access TestModule properties from a callback but raises a deprecation', function(
-  assert
-) {
+test('can access TestModule properties from a callback but raises a deprecation', function(assert) {
   assert.equal(this.getSubjectName(), 'component:x-foo');
   assert.deprecationsInclude(
     'Accessing the test module property "subjectName" from a callback is deprecated.'
@@ -148,72 +134,49 @@ test("can access test context properties from a callback's 'this' and not raise 
   });
 });
 
-moduleFor(
-  'component:x-foo',
-  'component:x-foo -- created subjects are cleaned up',
-  {
-    beforeSetup() {
-      setupRegistry();
-    },
+moduleFor('component:x-foo', 'component:x-foo -- created subjects are cleaned up', {
+  beforeSetup() {
+    setupRegistry();
+  },
 
-    afterTeardown() {
-      var subject = this.cache.subject;
+  afterTeardown() {
+    var subject = this.cache.subject;
 
-      QUnit.config.current.assert.ok(subject.isDestroyed);
-    },
-  }
-);
+    QUnit.config.current.assert.ok(subject.isDestroyed);
+  },
+});
 
 test("subject's created in a test are destroyed", function() {
   this.subject();
 });
 
-moduleFor(
-  'component:x-foo',
-  'component:x-foo -- uncreated subjects do not error',
-  {
-    beforeSetup() {
-      setupRegistry();
-    },
-  }
-);
+moduleFor('component:x-foo', 'component:x-foo -- uncreated subjects do not error', {
+  beforeSetup() {
+    setupRegistry();
+  },
+});
 
 test("subject's created in a test are destroyed", function(assert) {
   assert.expect(0);
 });
 
-moduleFor(
-  'component:x-foo',
-  'component:x-foo -- without needs or `integration: true`',
-  {
-    beforeSetup: setupRegistry(),
-  }
-);
+moduleFor('component:x-foo', 'component:x-foo -- without needs or `integration: true`', {
+  beforeSetup: setupRegistry(),
+});
 
 test('knows nothing about our non-subject component', function(assert) {
   var otherComponent = this.container.lookup('component:not-the-subject');
-  assert.equal(
-    null,
-    otherComponent,
-    "We shouldn't know about a non-subject component"
-  );
+  assert.equal(null, otherComponent, "We shouldn't know about a non-subject component");
 });
 
-moduleFor(
-  'component:x-foo',
-  'component:x-foo -- when needing another component',
-  {
-    beforeSetup: setupRegistry(),
-    needs: ['component:not-the-subject'],
-  }
-);
+moduleFor('component:x-foo', 'component:x-foo -- when needing another component', {
+  beforeSetup: setupRegistry(),
+  needs: ['component:not-the-subject'],
+});
 
 test('needs gets us the component we need', function(assert) {
   var otherComponent = this.container.lookup('component:not-the-subject');
-  assert.ok(
-    otherComponent,
-    "another component can be resolved when it's in our needs array"
-  );
+  assert.ok(otherComponent, "another component can be resolved when it's in our needs array");
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- `integration`', {
@@ -231,14 +194,9 @@ moduleFor('component:x-foo', 'component:x-foo -- `integration`', {
   integration: true,
 });
 
-test('needs is not needed (pun intended) when integration is true', function(
-  assert
-) {
+test('needs is not needed (pun intended) when integration is true', function(assert) {
   var otherComponent = this.container.lookup('component:not-the-subject');
-  assert.ok(
-    otherComponent,
-    'another component can be resolved when integration is true'
-  );
+  assert.ok(otherComponent, 'another component can be resolved when integration is true');
 });
 
 test('throws an error when declaring integration: true and needs in the same module', function(
@@ -257,15 +215,10 @@ test('throws an error when declaring integration: true and needs in the same mod
     result = true;
   }
 
-  assert.ok(
-    result,
-    'should throw an Error when integration: true and needs are provided'
-  );
+  assert.ok(result, 'should throw an Error when integration: true and needs are provided');
 });
 
-test("throws an error when declaring integration: 'legacy' in `moduleFor` test", function(
-  assert
-) {
+test("throws an error when declaring integration: 'legacy' in `moduleFor` test", function(assert) {
   assert.expect(3);
 
   var result = false;
@@ -285,17 +238,13 @@ test("throws an error when declaring integration: 'legacy' in `moduleFor` test",
 });
 
 if (hasEmberVersion(1, 11)) {
-  moduleFor(
-    'component:x-foo',
-    'should be able to override factories in integration mode',
-    {
-      beforeSetup() {
-        setupRegistry();
-      },
+  moduleFor('component:x-foo', 'should be able to override factories in integration mode', {
+    beforeSetup() {
+      setupRegistry();
+    },
 
-      integration: true,
-    }
-  );
+    integration: true,
+  });
 
   test('gets the default by default', function(assert) {
     var thing = this.container.lookup('foo:thing');
@@ -312,16 +261,11 @@ if (hasEmberVersion(1, 11)) {
     );
     var thing = this.container.lookup('foo:thing');
 
-    assert.ok(
-      !thing.fromDefaultRegistry,
-      'should not be found from the default registry'
-    );
+    assert.ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
     assert.ok(thing.notTheDefault, 'found from the overridden factory');
   });
 
-  test('gets the default with fullName normalization by default', function(
-    assert
-  ) {
+  test('gets the default with fullName normalization by default', function(assert) {
     this.register(
       'foo:needs-service',
       EmberObject.extend({
@@ -335,9 +279,7 @@ if (hasEmberVersion(1, 11)) {
     assert.ok(thing.fromDefaultRegistry, 'found from the default registry');
   });
 
-  test('can override the default with fullName normalization', function(
-    assert
-  ) {
+  test('can override the default with fullName normalization', function(assert) {
     this.register(
       'service:other-thing',
       EmberObject.extend({
@@ -355,10 +297,7 @@ if (hasEmberVersion(1, 11)) {
     var foo = this.container.lookup('foo:needs-service');
     var thing = foo.get('otherThing');
 
-    assert.ok(
-      !thing.fromDefaultRegistry,
-      'should not be found from the default registry'
-    );
+    assert.ok(!thing.fromDefaultRegistry, 'should not be found from the default registry');
     assert.ok(thing.notTheDefault, 'found from the overridden factory');
   });
 }
@@ -475,13 +414,8 @@ test('sets ember-testing content to ""', function(assert) {
   });
 });
 
-test('ember-testing content should be reset to "<div>foobar</div>"', function(
-  assert
-) {
+test('ember-testing content should be reset to "<div>foobar</div>"', function(assert) {
   assert.expect(1);
-  assert.equal(
-    document.getElementById('ember-testing').innerHTML,
-    '<div>foobar</div>'
-  );
+  assert.equal(document.getElementById('ember-testing').innerHTML, '<div>foobar</div>');
   document.getElementById('ember-testing').innerHTML = '';
 });

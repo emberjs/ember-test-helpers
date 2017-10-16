@@ -27,8 +27,7 @@ export default function(context) {
 
   let { owner } = context;
 
-  let dispatcher =
-    owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
+  let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
   dispatcher.setup({}, '#ember-testing');
 
   let OutletView = owner.factoryFor
@@ -128,9 +127,7 @@ export default function(context) {
     context.$ = function $(selector) {
       // emulates Ember internal behavor of `this.$` in a component
       // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-      return selector
-        ? global.jQuery(selector, element)
-        : global.jQuery(element);
+      return selector ? global.jQuery(selector, element) : global.jQuery(element);
     };
   }
 

@@ -117,8 +117,7 @@ export default class extends TestModule {
     }
 
     context.dispatcher =
-      this.container.lookup('event_dispatcher:main') ||
-      Ember.EventDispatcher.create();
+      this.container.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
     context.dispatcher.setup({}, '#ember-testing');
 
     context._element = null;
@@ -205,8 +204,7 @@ export function setupComponentIntegrationTest() {
 
   this.actionHooks = context[ACTION_KEY] = {};
   context.dispatcher =
-    this.container.lookup('event_dispatcher:main') ||
-    Ember.EventDispatcher.create();
+    this.container.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
   context.dispatcher.setup({}, '#ember-testing');
 
   var hasRendered = false;
@@ -241,9 +239,7 @@ export function setupComponentIntegrationTest() {
 
   context.render = function(template) {
     if (!template) {
-      throw new Error(
-        'in a component integration test you must pass a template to `render()`'
-      );
+      throw new Error('in a component integration test you must pass a template to `render()`');
     }
     if (isArray(template)) {
       template = template.join('');
@@ -285,9 +281,7 @@ export function setupComponentIntegrationTest() {
     // ensure the element is based on the wrapping toplevel view
     // Ember still wraps the main application template with a
     // normal tagged view
-    context._element = element = document.querySelector(
-      '#ember-testing > .ember-view'
-    );
+    context._element = element = document.querySelector('#ember-testing > .ember-view');
   };
 
   context.$ = function(selector) {
@@ -332,9 +326,7 @@ export function setupComponentIntegrationTest() {
   context.send = function(actionName) {
     var hook = module.actionHooks[actionName];
     if (!hook) {
-      throw new Error(
-        'integration testing template received unexpected action ' + actionName
-      );
+      throw new Error('integration testing template received unexpected action ' + actionName);
     }
     hook.apply(module.context, Array.prototype.slice.call(arguments, 1));
   };

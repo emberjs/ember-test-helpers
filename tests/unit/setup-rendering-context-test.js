@@ -58,11 +58,7 @@ module('setupRenderingContext', function(hooks) {
   });
 
   test('render does not run sync', function(assert) {
-    assert.equal(
-      this.element,
-      undefined,
-      'precond - this.element is not set before this.render'
-    );
+    assert.equal(this.element, undefined, 'precond - this.element is not set before this.render');
 
     let renderPromise = this.render(hbs`<p>Hello!</p>`).then(() => {
       assert.equal(this.element.textContent, 'Hello!');
@@ -79,23 +75,13 @@ module('setupRenderingContext', function(hooks) {
     });
   });
 
-  test('clearRender can be used to clear the previously rendered template', function(
-    assert
-  ) {
+  test('clearRender can be used to clear the previously rendered template', function(assert) {
     let testingRootElement = document.getElementById('ember-testing');
 
     return this.render(hbs`<p>Hello!</p>`)
       .then(() => {
-        assert.equal(
-          this.element.textContent,
-          'Hello!',
-          'has rendered content'
-        );
-        assert.equal(
-          testingRootElement.textContent,
-          'Hello!',
-          'has rendered content'
-        );
+        assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
+        assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
 
         return this.clearRender();
       })
@@ -123,10 +109,7 @@ module('setupRenderingContext', function(hooks) {
 
   test('can invoke JS only components', function(assert) {
     return this.render(hbs`{{js-only}}`).then(() => {
-      assert.ok(
-        this.element.querySelector('.js-only'),
-        'element found for js-only component'
-      );
+      assert.ok(this.element.querySelector('.js-only'), 'element found for js-only component');
     });
   });
 
@@ -144,9 +127,7 @@ module('setupRenderingContext', function(hooks) {
     });
   });
 
-  test('can render a component that renders other components', function(
-    assert
-  ) {
+  test('can render a component that renders other components', function(assert) {
     return this.render(hbs`{{outer-comp}}`).then(() => {
       assert.equal(this.element.textContent, 'outerinnerouter');
     });

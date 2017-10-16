@@ -13,24 +13,18 @@ export function preGlimmerSetupIntegrationForComponent() {
   this.actionHooks = {};
 
   context.dispatcher =
-    this.container.lookup('event_dispatcher:main') ||
-    Ember.EventDispatcher.create();
+    this.container.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
   context.dispatcher.setup({}, '#ember-testing');
   context.actions = module.actionHooks;
 
-  (this.registry || this.container).register(
-    'component:-test-holder',
-    Component.extend()
-  );
+  (this.registry || this.container).register('component:-test-holder', Component.extend());
 
   context.render = function(template) {
     // in case `this.render` is called twice, make sure to teardown the first invocation
     module.teardownComponent();
 
     if (!template) {
-      throw new Error(
-        'in a component integration test you must pass a template to `render()`'
-      );
+      throw new Error('in a component integration test you must pass a template to `render()`');
     }
     if (isArray(template)) {
       template = template.join('');
@@ -38,11 +32,9 @@ export function preGlimmerSetupIntegrationForComponent() {
     if (typeof template === 'string') {
       template = Ember.Handlebars.compile(template);
     }
-    module.component = module.container
-      .lookupFactory('component:-test-holder')
-      .create({
-        layout: template,
-      });
+    module.component = module.container.lookupFactory('component:-test-holder').create({
+      layout: template,
+    });
 
     module.component.set('context', context);
     module.component.set('controller', context);
@@ -94,9 +86,7 @@ export function preGlimmerSetupIntegrationForComponent() {
   context.send = function(actionName) {
     var hook = module.actionHooks[actionName];
     if (!hook) {
-      throw new Error(
-        'integration testing template received unexpected action ' + actionName
-      );
+      throw new Error('integration testing template received unexpected action ' + actionName);
     }
     hook.apply(module, Array.prototype.slice.call(arguments, 1));
   };

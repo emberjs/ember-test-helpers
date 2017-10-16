@@ -10,11 +10,15 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'prettier/prettier': ['error', { singleQuote: true, trailingComma: 'es5' }],
+    'prettier/prettier': ['error', {
+      singleQuote: true,
+      trailingComma: 'es5',
+      printWidth: 100,
+    }],
   },
   overrides: [
     {
-      files: ['index.js'],
+      files: ['./index.js'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -24,7 +28,7 @@ module.exports = {
       }
     },
     {
-      files: ['tests/**/*.js'],
+      files: ['./tests/**/*.js'],
       env: {
         qunit: true
       }

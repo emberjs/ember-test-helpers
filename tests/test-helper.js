@@ -53,11 +53,7 @@ QUnit.assert.deprecations = function(callback, expectedDeprecations) {
   deprecations = [];
 
   callback();
-  this.deepEqual(
-    deprecations,
-    expectedDeprecations,
-    'Expected deprecations during test.'
-  );
+  this.deepEqual(deprecations, expectedDeprecations, 'Expected deprecations during test.');
 
   deprecations = originalDeprecations;
 };
