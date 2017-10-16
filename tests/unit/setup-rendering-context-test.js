@@ -39,95 +39,81 @@ module('setupRenderingContext', function(hooks) {
     teardownRenderingContext(this);
   });
 
-  test('render exposes an `.element` property', function(assert) {
-    return this.render(hbs`<p>Hello!</p>`).then(() => {
-      assert.equal(this.element.textContent, 'Hello!');
-    });
+  test('render exposes an `.element` property', async function(assert) {
+    await this.render(hbs`<p>Hello!</p>`);
+
+    assert.equal(this.element.textContent, 'Hello!');
   });
 
-  test('render can be used multiple times', function(assert) {
-    return this.render(hbs`<p>Hello!</p>`)
-      .then(() => {
-        assert.equal(this.element.textContent, 'Hello!');
+  test('render can be used multiple times', async function(assert) {
+    await this.render(hbs`<p>Hello!</p>`);
 
-        return this.render(hbs`<p>World!</p>`);
-      })
-      .then(() => {
-        assert.equal(this.element.textContent, 'World!');
-      });
+    assert.equal(this.element.textContent, 'Hello!');
+
+    await this.render(hbs`<p>World!</p>`);
+    assert.equal(this.element.textContent, 'World!');
   });
 
-  test('render does not run sync', function(assert) {
+  test('render does not run sync', async function(assert) {
     assert.equal(this.element, undefined, 'precond - this.element is not set before this.render');
 
-    let renderPromise = this.render(hbs`<p>Hello!</p>`).then(() => {
-      assert.equal(this.element.textContent, 'Hello!');
-    });
+    let renderPromise = this.render(hbs`<p>Hello!</p>`);
 
-    assert.equal(
-      this.element,
-      undefined,
-      'precond - this.element is not set sync after this.render'
-    );
+    assert.equal(this.element, undefined, 'precond - this.element is not set sync');
 
-    return renderPromise.then(() => {
-      assert.equal(this.element.textContent, 'Hello!');
-    });
+    await renderPromise;
+    assert.equal(this.element.textContent, 'Hello!');
   });
 
-  test('clearRender can be used to clear the previously rendered template', function(assert) {
+  test('clearRender can be used to clear the previously rendered template', async function(assert) {
     let testingRootElement = document.getElementById('ember-testing');
 
-    return this.render(hbs`<p>Hello!</p>`)
-      .then(() => {
-        assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
-        assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
+    await this.render(hbs`<p>Hello!</p>`);
 
-        return this.clearRender();
-      })
-      .then(() => {
-        assert.equal(this.element, undefined, 'this.element is reset');
+    assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
+    assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
 
-        let testingRootElement = document.getElementById('ember-testing');
-        assert.equal(testingRootElement.textContent, '', 'content is cleared');
-      });
+    await this.clearRender();
+    assert.equal(this.element, undefined, 'this.element is reset');
+
+    assert.equal(testingRootElement.textContent, '', 'content is cleared');
   });
 
-  (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', function(assert) {
-    return this.render(hbs`<p>Hello!</p>`).then(() => {
-      assert.equal(this.$().text(), 'Hello!');
-    });
+  (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', async function(assert) {
+    await this.render(hbs`<p>Hello!</p>`);
+
+    assert.equal(this.$().text(), 'Hello!');
   });
 
-  test('can invoke template only components', function(assert) {
-    return this.render(hbs`{{template-only}}`).then(() => {
-      assert.equal(this.element.textContent, 'template-only component here');
-    });
+  test('can invoke template only components', async function(assert) {
+    await this.render(hbs`{{template-only}}`);
+
+    assert.equal(this.element.textContent, 'template-only component here');
   });
 
-  test('can invoke JS only components', function(assert) {
-    return this.render(hbs`{{js-only}}`).then(() => {
-      assert.ok(this.element.querySelector('.js-only'), 'element found for js-only component');
-    });
+  test('can invoke JS only components', async function(assert) {
+    await this.render(hbs`{{js-only}}`);
+
+    assert.ok(this.element.querySelector('.js-only'), 'element found for js-only component');
   });
 
-  test('can invoke helper', function(assert) {
-    return this.render(hbs`{{jax "max"}}`).then(() => {
-      assert.equal(this.element.textContent, 'max-jax');
-    });
+  test('can invoke helper', async function(assert) {
+    await this.render(hbs`{{jax "max"}}`);
+
+    assert.equal(this.element.textContent, 'max-jax');
   });
 
-  test('can pass arguments to helper from context', function(assert) {
+  test('can pass arguments to helper from context', async function(assert) {
     this.set('name', 'james');
 
-    return this.render(hbs`{{jax name}}`).then(() => {
-      assert.equal(this.element.textContent, 'james-jax');
-    });
+    await this.render(hbs`{{jax name}}`);
+
+    assert.equal(this.element.textContent, 'james-jax');
   });
 
-  test('can render a component that renders other components', function(assert) {
-    return this.render(hbs`{{outer-comp}}`).then(() => {
-      assert.equal(this.element.textContent, 'outerinnerouter');
-    });
+  test('can render a component that renders other components', async function(assert) {
+    await this.render(hbs`{{outer-comp}}`);
+
+    assert.equal(this.element.textContent, 'outerinnerouter');
   });
 });
