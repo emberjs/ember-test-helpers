@@ -37,7 +37,7 @@ export default function(context) {
   let toplevelView = OutletView.create();
   RENDERING_CLEANUP[guid].push(() => toplevelView.destroy());
 
-  let hasOutletTemplate = !!OutletTemplate;
+  let hasOutletTemplate = Boolean(OutletTemplate);
   let outletState = {
     render: {
       owner,
