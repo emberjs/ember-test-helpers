@@ -2,7 +2,7 @@ import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
-import { _setupAJAXHooks } from './wait';
+import { _setupAJAXHooks } from './settled';
 
 let __test_context__;
 
