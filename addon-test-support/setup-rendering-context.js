@@ -2,7 +2,7 @@ import { guidFor } from '@ember/object/internals';
 import { run, next } from '@ember/runloop';
 import { Promise, resolve } from 'rsvp';
 import Ember from 'ember';
-import jQuery from 'jquery';
+import global from './global';
 
 export const RENDERING_CLEANUP = Object.create(null);
 
@@ -124,11 +124,13 @@ export default function(context) {
     },
   });
 
-  if (jQuery) {
+  if (global.jQuery) {
     context.$ = function $(selector) {
       // emulates Ember internal behavor of `this.$` in a component
       // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-      return selector ? jQuery(selector, element) : $(element);
+      return selector
+        ? global.jQuery(selector, element)
+        : global.jQuery(element);
     };
   }
 
