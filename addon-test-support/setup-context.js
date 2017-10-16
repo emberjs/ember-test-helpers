@@ -1,12 +1,16 @@
 import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
+import { _setupPromiseListeners } from './ext/rsvp';
+import { _setupAJAXHooks } from './wait';
 
 /*
  * Responsible for:
  *
  * * create an owner object and set it on the provided context (e.g. this.owner)
  * * setup this.set, this.setProperties, this.get, and this.getProperties to the provided context
+ * * setting up AJAX listeners
+ * * setting up RSVP promise integration
  */
 export default function(context, options = {}) {
   let resolver = options.resolver;
@@ -37,4 +41,7 @@ export default function(context, options = {}) {
   context.getProperties = function(...args) {
     return getProperties(context, args);
   };
+
+  _setupAJAXHooks();
+  _setupPromiseListeners();
 }
