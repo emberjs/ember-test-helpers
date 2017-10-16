@@ -38,8 +38,11 @@ export default function(resolver = getResolver()) {
 
   function register(name, factory) {
     let thingToRegisterWith = registry || container;
+    let existingFactory = container.factoryFor
+      ? container.factoryFor(name)
+      : container.lookupFactory(name);
 
-    if (!(container.factoryFor ? container.factoryFor(name) : container.lookupFactory(name))) {
+    if (!existingFactory) {
       thingToRegisterWith.register(name, factory);
     }
   }
