@@ -213,9 +213,7 @@ module('wait helper tests', function(hooks) {
     });
   });
 
-  test('it waits for interleaved AJAX and run loops to finish', function(
-    assert
-  ) {
+  test('it waits for interleaved AJAX and run loops to finish', function(assert) {
     var testContext = this;
 
     this.render(hbs`{{x-test-4}}`);
@@ -223,10 +221,7 @@ module('wait helper tests', function(hooks) {
     fireEvent(this._element.querySelector('div'), 'click');
 
     return wait().then(function() {
-      assert.equal(
-        testContext._element.textContent,
-        'Local Data!Remote Data!Remote Data!'
-      );
+      assert.equal(testContext._element.textContent, 'Local Data!Remote Data!Remote Data!');
     });
   });
 

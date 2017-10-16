@@ -26,10 +26,7 @@ function exposeRegistryMethodsWithoutDeprecations(container) {
   function exposeRegistryMethod(container, method) {
     if (method in container) {
       container[method] = function() {
-        return container._registry[method].apply(
-          container._registry,
-          arguments
-        );
+        return container._registry[method].apply(container._registry, arguments);
       };
     }
   }
@@ -41,10 +38,7 @@ function exposeRegistryMethodsWithoutDeprecations(container) {
 
 var Owner = (function() {
   if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
-    return EmberObject.extend(
-      Ember._RegistryProxyMixin,
-      Ember._ContainerProxyMixin
-    );
+    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
   }
 
   return EmberObject.extend();
@@ -63,11 +57,7 @@ export default function(resolver) {
   function register(name, factory) {
     var thingToRegisterWith = registry || container;
 
-    if (
-      !(container.factoryFor
-        ? container.factoryFor(name)
-        : container.lookupFactory(name))
-    ) {
+    if (!(container.factoryFor ? container.factoryFor(name) : container.lookupFactory(name))) {
       thingToRegisterWith.register(name, factory);
     }
   }

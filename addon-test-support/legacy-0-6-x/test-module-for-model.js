@@ -41,9 +41,7 @@ export default class extends TestModule {
 
     callbacks.store = function() {
       var container = this.container;
-      return (
-        container.lookup('service:store') || container.lookup('store:main')
-      );
+      return container.lookup('service:store') || container.lookup('store:main');
     };
 
     if (callbacks.subject === defaultSubject) {
@@ -51,8 +49,7 @@ export default class extends TestModule {
         var container = this.container;
 
         return run(function() {
-          var store =
-            container.lookup('service:store') || container.lookup('store:main');
+          var store = container.lookup('service:store') || container.lookup('store:main');
           return store.createRecord(modelName, options);
         });
       };

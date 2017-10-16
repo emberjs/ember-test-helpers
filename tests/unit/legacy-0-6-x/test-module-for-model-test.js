@@ -89,9 +89,7 @@ test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for mode
     store = this.store();
 
   assert.ok(store.adapterFor(model.constructor.modelName) instanceof Adapter);
-  assert.ok(
-    !(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter)
-  );
+  assert.ok(!(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter));
 });
 
 test('`toString` returns the test subject', function(assert) {
@@ -111,11 +109,7 @@ moduleForModel('whazzit', 'subject does not share the store', {
     var model = this.subject();
     var store = this.store();
 
-    assert.equal(
-      model.store,
-      store,
-      'is created from the correct store instance'
-    );
+    assert.equal(model.store, store, 'is created from the correct store instance');
   },
 });
 
@@ -160,17 +154,12 @@ test('WhazzitAdapter is registered for model', function(assert) {
   var model = this.subject(),
     store = this.store();
 
-  assert.ok(
-    store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter
-  );
+  assert.ok(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter);
 });
 
 test('WhazzitAdapter is used for `findAll`', function(assert) {
   assert.expect(2);
-  assert.ok(
-    !whazzitAdapterFindAllCalled,
-    'precond - custom adapter has not yet been called'
-  );
+  assert.ok(!whazzitAdapterFindAllCalled, 'precond - custom adapter has not yet been called');
 
   var store = this.store();
 
@@ -199,12 +188,8 @@ test('ApplicationAdapter is registered for model', function(assert) {
   var model = this.subject(),
     store = this.store();
 
-  assert.ok(
-    store.adapterFor(model.constructor.modelName) instanceof ApplicationAdapter
-  );
-  assert.ok(
-    !(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter)
-  );
+  assert.ok(store.adapterFor(model.constructor.modelName) instanceof ApplicationAdapter);
+  assert.ok(!(store.adapterFor(model.constructor.modelName) instanceof WhazzitAdapter));
 });
 
 ///////////////////////////////////////////////////////////////////////////////

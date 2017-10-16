@@ -6,9 +6,7 @@ export function setResolver(resolver) {
 
 export function getResolver() {
   if (__resolver__ == null) {
-    throw new Error(
-      'you must set a resolver with `testResolver.set(resolver)`'
-    );
+    throw new Error('you must set a resolver with `testResolver.set(resolver)`');
   }
 
   return __resolver__;

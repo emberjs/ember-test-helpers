@@ -7,7 +7,7 @@ import { run } from '@ember/runloop';
 import { setOwner } from '@ember/application';
 import AbstractTestModule from './abstract-test-module';
 import { getResolver } from '../resolver';
-import buildRegistry from '../build-registry';
+import buildRegistry from './build-registry';
 import hasEmberVersion from '../has-ember-version';
 
 export default class extends AbstractTestModule {
@@ -26,9 +26,7 @@ export default class extends AbstractTestModule {
     this.resolver = this.callbacks.resolver || getResolver();
 
     if (this.callbacks.integration && this.callbacks.needs) {
-      throw new Error(
-        "cannot declare 'integration: true' and 'needs' in the same module"
-      );
+      throw new Error("cannot declare 'integration: true' and 'needs' in the same module");
     }
 
     if (this.callbacks.integration) {
@@ -42,9 +40,7 @@ export default class extends AbstractTestModule {
 
   initIntegration(options) {
     if (options.integration === 'legacy') {
-      throw new Error(
-        "`integration: 'legacy'` is only valid for component tests."
-      );
+      throw new Error("`integration: 'legacy'` is only valid for component tests.");
     }
     this.isIntegration = true;
   }
@@ -240,9 +236,7 @@ export default class extends AbstractTestModule {
       Object.defineProperty(proxy, key, {
         get() {
           deprecate(
-            'Accessing the test module property "' +
-              key +
-              '" from a callback is deprecated.',
+            'Accessing the test module property "' + key + '" from a callback is deprecated.',
             false,
             {
               id: 'ember-test-helpers.test-module.callback-context',
@@ -288,10 +282,7 @@ export default class extends AbstractTestModule {
     for (var i = this.needs.length; i > 0; i--) {
       var fullName = this.needs[i - 1];
       var normalizedFullName = resolver.normalize(fullName);
-      thingToRegisterWith.register(
-        fullName,
-        resolver.resolve(normalizedFullName)
-      );
+      thingToRegisterWith.register(fullName, resolver.resolve(normalizedFullName));
     }
 
     if (!this.registry) {

@@ -25,20 +25,12 @@ export default class {
   setup(assert) {
     return this.invokeSteps(this.setupSteps, this, assert).then(() => {
       this.contextualizeCallbacks();
-      return this.invokeSteps(
-        this.contextualizedSetupSteps,
-        this.context,
-        assert
-      );
+      return this.invokeSteps(this.contextualizedSetupSteps, this.context, assert);
     });
   }
 
   teardown(assert) {
-    return this.invokeSteps(
-      this.contextualizedTeardownSteps,
-      this.context,
-      assert
-    )
+    return this.invokeSteps(this.contextualizedTeardownSteps, this.context, assert)
       .then(() => {
         return this.invokeSteps(this.teardownSteps, this, assert);
       })

@@ -204,24 +204,20 @@ if (hasjQuery()) {
   });
 }
 
-moduleForComponent(
-  'pretty-color',
-  'component:pretty-color -- this.render in setup',
-  {
-    unit: true,
-    beforeSetup() {
-      setupRegistry();
-    },
+moduleForComponent('pretty-color', 'component:pretty-color -- this.render in setup', {
+  unit: true,
+  beforeSetup() {
+    setupRegistry();
+  },
 
-    setup() {
-      this.subject({
-        name: 'red',
-      });
+  setup() {
+    this.subject({
+      name: 'red',
+    });
 
-      this.render();
-    },
-  }
-);
+    this.render();
+  },
+});
 
 test('className', function(assert) {
   // calling `this.$` or `this.subject.$` would
@@ -239,20 +235,16 @@ test('`toString` returns the test subject', function(assert) {
   );
 });
 
-moduleForComponent(
-  'boring-color',
-  'component:boring-color -- still in DOM in willDestroyElement',
-  {
-    unit: true,
-    beforeSetup() {
-      setupRegistry();
-    },
+moduleForComponent('boring-color', 'component:boring-color -- still in DOM in willDestroyElement', {
+  unit: true,
+  beforeSetup() {
+    setupRegistry();
+  },
 
-    setup() {
-      this.render();
-    },
-  }
-);
+  setup() {
+    this.render();
+  },
+});
 
 QUnit.skip('className', function(assert) {
   assert.expect(1);
@@ -282,17 +274,13 @@ test('can handle click', function(assert) {
   });
 });
 
-moduleForComponent(
-  'changing-color',
-  'component:changing-color -- handles closure actions',
-  {
-    integration: true,
+moduleForComponent('changing-color', 'component:changing-color -- handles closure actions', {
+  integration: true,
 
-    beforeSetup() {
-      setupRegistry();
-    },
-  }
-);
+  beforeSetup() {
+    setupRegistry();
+  },
+});
 
 if (hasEmberVersion(1, 13)) {
   test('handles a closure actions', function(assert) {
@@ -303,9 +291,7 @@ if (hasEmberVersion(1, 13)) {
     this.render(hbs`{{changing-color change=(action 'colorChange')}}`);
   });
 
-  test('handles a closure actions when set on the test context', function(
-    assert
-  ) {
+  test('handles a closure actions when set on the test context', function(assert) {
     assert.expect(1);
     this.set('colorChange', function(arg) {
       assert.equal(arg, 'foo');
@@ -315,22 +301,19 @@ if (hasEmberVersion(1, 13)) {
 }
 
 var testModule;
-QUnit.module(
-  'moduleForComponent: can be invoked with only the component name',
-  {
-    beforeEach(assert) {
-      var done = assert.async();
-      setupRegistry();
-      testModule = new TestModuleForComponent('pretty-color', { unit: true });
-      testModule.setup()['finally'](done);
-    },
+QUnit.module('moduleForComponent: can be invoked with only the component name', {
+  beforeEach(assert) {
+    var done = assert.async();
+    setupRegistry();
+    testModule = new TestModuleForComponent('pretty-color', { unit: true });
+    testModule.setup()['finally'](done);
+  },
 
-    afterEach(assert) {
-      var done = assert.async();
-      testModule.teardown()['finally'](done);
-    },
-  }
-);
+  afterEach(assert) {
+    var done = assert.async();
+    testModule.teardown()['finally'](done);
+  },
+});
 
 test('it allows missing callbacks', function(assert) {
   assert.ok(true, 'no errors are thrown');
@@ -348,23 +331,20 @@ test('deprecation is not raised', function(assert) {
   assert.ok(testModule.isUnitTest);
 });
 
-module(
-  'moduleForComponent: can be invoked with the component name and description',
-  {
-    beforeEach(assert) {
-      var done = assert.async();
-      testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', {
-        unit: true,
-      });
-      testModule.setup()['finally'](done);
-    },
+module('moduleForComponent: can be invoked with the component name and description', {
+  beforeEach(assert) {
+    var done = assert.async();
+    testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', {
+      unit: true,
+    });
+    testModule.setup()['finally'](done);
+  },
 
-    afterEach(assert) {
-      var done = assert.async();
-      testModule.teardown()['finally'](done);
-    },
-  }
-);
+  afterEach(assert) {
+    var done = assert.async();
+    testModule.teardown()['finally'](done);
+  },
+});
 
 test('it allows missing callbacks', function(assert) {
   assert.ok(true, 'no errors are thrown');
@@ -613,9 +593,7 @@ test('two way bound arguments are updated', function(assert) {
   assert.equal(this.get('foo'), 'updated!');
 });
 
-test('two way bound arguments are available after clearRender is called', function(
-  assert
-) {
+test('two way bound arguments are available after clearRender is called', function(assert) {
   setResolverRegistry({
     'component:my-component': Component.extend({
       didInsertElement() {
@@ -652,11 +630,7 @@ test('rendering after calling clearRender', function(assert) {
   this.clearRender();
 
   this.render(hbs`{{my-component foo=foo}}`);
-  assert.equal(
-    this.get('foo'),
-    'more foo more foo ',
-    'uses the previously rendered value'
-  );
+  assert.equal(this.get('foo'), 'more foo more foo ', 'uses the previously rendered value');
   this.clearRender();
 });
 
@@ -672,11 +646,7 @@ test('can register a component', function(assert) {
     })
   );
   this.render(hbs`{{x-foo}}`);
-  assert.equal(
-    this._element.querySelectorAll('.i-am-x-foo').length,
-    1,
-    'found i-am-x-foo'
-  );
+  assert.equal(this._element.querySelectorAll('.i-am-x-foo').length, 1, 'found i-am-x-foo');
 });
 
 test('can register a service', function(assert) {
@@ -721,9 +691,7 @@ test('can inject a service directly into test context', function(assert) {
   assert.equal(this._element.querySelector('.x-foo').textContent, 'amazing');
 });
 
-test('can inject a service directly into test context, with aliased name', function(
-  assert
-) {
+test('can inject a service directly into test context, with aliased name', function(assert) {
   this.register(
     'component:x-foo',
     Component.extend({
@@ -753,11 +721,7 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
         willDestroyElement() {
           let { assert } = QUnit.config.current;
 
-          assert.equal(
-            this._state,
-            'inDOM',
-            'still in dom during willDestroyElement'
-          );
+          assert.equal(this._state, 'inDOM', 'still in dom during willDestroyElement');
           assert.ok(
             document.contains(this.element),
             'component element still contained within `document`'
@@ -779,15 +743,12 @@ test('is destroyed when rendered twice', function(assert) {
   this.render(hbs`{{my-component}}`);
 });
 
-moduleForComponent(
-  'Component Integration Tests: force willDestroyElement via clearRender',
-  {
-    integration: true,
-    beforeSetup() {
-      setResolverRegistry({});
-    },
-  }
-);
+moduleForComponent('Component Integration Tests: force willDestroyElement via clearRender', {
+  integration: true,
+  beforeSetup() {
+    setResolverRegistry({});
+  },
+});
 
 test('still in DOM in willDestroyElement', function(assert) {
   assert.expect(1);
@@ -805,10 +766,7 @@ test('still in DOM in willDestroyElement', function(assert) {
   this.render(hbs`{{x-button}}`);
   this.clearRender();
 
-  assert.ok(
-    willDestroyCalled,
-    'can add assertions after willDestroyElement is called'
-  );
+  assert.ok(willDestroyCalled, 'can add assertions after willDestroyElement is called');
 });
 
 moduleForComponent('Component Integration Tests: DOM', {
@@ -850,9 +808,7 @@ if (!hasEmberVersion(2, 0)) {
     },
   });
 
-  test('it can render components semantically equivalent to v0.4.3', function(
-    assert
-  ) {
+  test('it can render components semantically equivalent to v0.4.3', function(assert) {
     this.subject({
       name: 'Charles XII',
     });

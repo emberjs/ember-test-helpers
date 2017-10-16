@@ -8,6 +8,8 @@
       default: self.QUnit,
       module: self.QUnit.module,
       test: self.QUnit.test,
+      todo: self.QUnit.todo,
+      skip: self.QUnit.skip,
       __esModule: true,
     };
   }
