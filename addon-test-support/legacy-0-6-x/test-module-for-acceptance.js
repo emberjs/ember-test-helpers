@@ -1,6 +1,6 @@
 import { run } from '@ember/runloop';
 import AbstractTestModule from './abstract-test-module';
-import { getContext } from './test-context';
+import { getContext } from '../setup-context';
 
 export default class extends AbstractTestModule {
   setupContext() {

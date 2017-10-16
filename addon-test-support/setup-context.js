@@ -4,15 +4,32 @@ import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks } from './wait';
 
+let __test_context__;
+
+export function setContext(context) {
+  __test_context__ = context;
+}
+
+export function getContext() {
+  return __test_context__;
+}
+
+export function unsetContext() {
+  __test_context__ = undefined;
+}
+
 /*
  * Responsible for:
  *
+ * - sets the "global testing context" to the provided context
  * - create an owner object and set it on the provided context (e.g. this.owner)
  * - setup this.set, this.setProperties, this.get, and this.getProperties to the provided context
  * - setting up AJAX listeners
  * - setting up RSVP promise integration
  */
 export default function(context, options = {}) {
+  setContext(context);
+
   let resolver = options.resolver;
   let owner = buildOwner(resolver);
 

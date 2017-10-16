@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { setupContext } from 'ember-test-helpers';
+import { setupContext, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
 
@@ -74,6 +74,10 @@ module('setupContext', function(hooks) {
         },
         'getProperties reads content from context'
       );
+    });
+
+    test('it calls setContext with the provided context', function(assert) {
+      assert.equal(getContext(), context);
     });
   });
 
