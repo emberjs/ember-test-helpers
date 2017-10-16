@@ -1,6 +1,6 @@
 import { guidFor } from '@ember/object/internals';
 import { run, next } from '@ember/runloop';
-import { Promise, resolve } from 'rsvp';
+import { Promise } from 'rsvp';
 import Ember from 'ember';
 import global from './global';
 
@@ -69,58 +69,56 @@ export default function(context) {
     // ensure context.element is reset until after rendering has completed
     element = undefined;
 
-    // manually enter async land, so that rendering itself is always async (even though
-    // Ember <= 2.18 do not require async rendering)
-    return resolve().then(function asyncRenderSetup() {
-      templateId += 1;
-      let templateFullName = `template:-undertest-${templateId}`;
-      owner.register(templateFullName, template);
-      let stateToRender = {
-        owner,
-        into: undefined,
-        outlet: 'main',
-        name: 'index',
-        controller: context,
-        ViewClass: undefined,
-        template: owner.lookup(templateFullName),
-        outlets: {},
-      };
+    return new Promise(function asyncRender(resolve) {
+      // manually enter async land, so that rendering itself is always async (even though
+      // Ember <= 2.18 do not require async rendering)
+      next(function asyncRenderSetup() {
+        templateId += 1;
+        let templateFullName = `template:-undertest-${templateId}`;
+        owner.register(templateFullName, template);
+        let stateToRender = {
+          owner,
+          into: undefined,
+          outlet: 'main',
+          name: 'index',
+          controller: context,
+          ViewClass: undefined,
+          template: owner.lookup(templateFullName),
+          outlets: {},
+        };
 
-      if (hasOutletTemplate) {
-        stateToRender.name = 'index';
-        outletState.outlets.main = { render: stateToRender, outlets: {} };
-      } else {
-        stateToRender.name = 'application';
-        outletState = { render: stateToRender, outlets: {} };
-      }
+        if (hasOutletTemplate) {
+          stateToRender.name = 'index';
+          outletState.outlets.main = { render: stateToRender, outlets: {} };
+        } else {
+          stateToRender.name = 'application';
+          outletState = { render: stateToRender, outlets: {} };
+        }
 
-      return new Promise(function asyncRender(resolve) {
-        run.join(() => {
-          toplevelView.setOutletState(outletState);
-          if (!hasRendered) {
-            // TODO: make this id configurable
-            run(toplevelView, 'appendTo', '#ember-testing');
-            hasRendered = true;
-          }
+        toplevelView.setOutletState(outletState);
+        if (!hasRendered) {
+          // TODO: make this id configurable
+          run(toplevelView, 'appendTo', '#ember-testing');
+          hasRendered = true;
+        }
 
-          // using next here because the actual rendering does not happen until
-          // the renderer detects it is dirty (which happens on backburner's end
-          // hook), see the following implementation details:
+        // using next here because the actual rendering does not happen until
+        // the renderer detects it is dirty (which happens on backburner's end
+        // hook), see the following implementation details:
+        //
+        // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
+        // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
+        next(function asyncUpdateElementAfterRender() {
+          // ensure the element is based on the wrapping toplevel view
+          // Ember still wraps the main application template with a
+          // normal tagged view
           //
-          // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
-          // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
-          next(function asyncUpdateElementAfterRender() {
-            // ensure the element is based on the wrapping toplevel view
-            // Ember still wraps the main application template with a
-            // normal tagged view
-            //
-            // In older Ember versions (2.4) the element itself is not stable,
-            // and therefore we cannot update the `this.element` until after the
-            // rendering is completed
-            element = document.querySelector('#ember-testing > .ember-view');
+          // In older Ember versions (2.4) the element itself is not stable,
+          // and therefore we cannot update the `this.element` until after the
+          // rendering is completed
+          element = document.querySelector('#ember-testing > .ember-view');
 
-            resolve();
-          });
+          resolve();
         });
       });
     });
@@ -144,7 +142,9 @@ export default function(context) {
 
   context.clearRender = function clearRender() {
     return new Promise(function async_clearRender(resolve) {
-      run.join(function() {
+      element = undefined;
+
+      next(function async_clearRender() {
         toplevelView.setOutletState({
           render: {
             owner,
@@ -158,7 +158,6 @@ export default function(context) {
           outlets: {},
         });
 
-        element = undefined;
         // RE: next usage, see detailed comment above
         next(resolve);
       });
