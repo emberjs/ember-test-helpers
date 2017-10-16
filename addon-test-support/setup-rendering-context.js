@@ -66,6 +66,11 @@ export default function(context) {
       throw new Error('you must pass a template to `render()`');
     }
 
+    // ensure context.element is reset until after rendering has completed
+    element = undefined;
+
+    // manually enter async land, so that rendering itself is always async (even though
+    // Ember <= 2.18 do not require async rendering)
     return resolve().then(function asyncRenderSetup() {
       templateId += 1;
       let templateFullName = `template:-undertest-${templateId}`;
@@ -98,18 +103,24 @@ export default function(context) {
             hasRendered = true;
           }
 
-          // ensure the element is based on the wrapping toplevel view
-          // Ember still wraps the main application template with a
-          // normal tagged view
-          element = document.querySelector('#ember-testing > .ember-view');
-
           // using next here because the actual rendering does not happen until
           // the renderer detects it is dirty (which happens on backburner's end
           // hook), see the following implementation details:
           //
           // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
           // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
-          next(resolve);
+          next(function asyncUpdateElementAfterRender() {
+            // ensure the element is based on the wrapping toplevel view
+            // Ember still wraps the main application template with a
+            // normal tagged view
+            //
+            // In older Ember versions (2.4) the element itself is not stable,
+            // and therefore we cannot update the `this.element` until after the
+            // rendering is completed
+            element = document.querySelector('#ember-testing > .ember-view');
+
+            resolve();
+          });
         });
       });
     });

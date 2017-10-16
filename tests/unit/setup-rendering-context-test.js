@@ -47,7 +47,6 @@ module('setupRenderingContext', function(hooks) {
 
   test('render can be used multiple times', async function(assert) {
     await this.render(hbs`<p>Hello!</p>`);
-
     assert.equal(this.element.textContent, 'Hello!');
 
     await this.render(hbs`<p>World!</p>`);
