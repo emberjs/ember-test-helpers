@@ -6,6 +6,7 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
+  teardownRenderingContext,
 } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
@@ -17,7 +18,7 @@ module('setupRenderingContext', function(hooks) {
     return;
   }
 
-  hooks.before(function() {
+  hooks.beforeEach(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
       'template:components/template-only': hbs`template-only component here`,
@@ -28,15 +29,14 @@ module('setupRenderingContext', function(hooks) {
       'template:components/outer-comp': hbs`outer{{inner-comp}}outer`,
       'template:components/inner-comp': hbs`inner`,
     });
-  });
 
-  hooks.beforeEach(function() {
     setupContext(this);
     setupRenderingContext(this);
   });
 
   hooks.afterEach(function() {
     teardownContext(this);
+    teardownRenderingContext(this);
   });
 
   test('render exposes an `.element` property', function(assert) {
@@ -82,14 +82,28 @@ module('setupRenderingContext', function(hooks) {
   test('clearRender can be used to clear the previously rendered template', function(
     assert
   ) {
+    let testingRootElement = document.getElementById('ember-testing');
+
     return this.render(hbs`<p>Hello!</p>`)
       .then(() => {
-        assert.equal(this.element.textContent, 'Hello!');
+        assert.equal(
+          this.element.textContent,
+          'Hello!',
+          'has rendered content'
+        );
+        assert.equal(
+          testingRootElement.textContent,
+          'Hello!',
+          'has rendered content'
+        );
 
         return this.clearRender();
       })
       .then(() => {
-        assert.equal(this.element.textContent, '');
+        assert.equal(this.element, undefined, 'this.element is reset');
+
+        let testingRootElement = document.getElementById('ember-testing');
+        assert.equal(testingRootElement.textContent, '', 'content is cleared');
       });
   });
 

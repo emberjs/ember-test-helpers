@@ -1,9 +1,23 @@
+import { guidFor } from '@ember/object/internals';
 import { run, next } from '@ember/runloop';
 import { Promise, resolve } from 'rsvp';
 import Ember from 'ember';
 import jQuery from 'jquery';
 
+export const RENDERING_CLEANUP = Object.create(null);
+
 export default function(context) {
+  let guid = guidFor(context);
+
+  let rootTestElement = document.getElementById('ember-testing');
+  let fixtureResetValue = rootTestElement.innerHTML;
+
+  RENDERING_CLEANUP[guid] = [
+    () => {
+      rootTestElement.innerHTML = fixtureResetValue;
+    },
+  ];
+
   let { owner } = context;
 
   let dispatcher =
@@ -14,7 +28,9 @@ export default function(context) {
     ? owner.factoryFor('view:-outlet')
     : owner._lookupFactory('view:-outlet');
   let OutletTemplate = owner.lookup('template:-outlet');
-  let toplevelView = OutletView.create(); // TODO: stash this somewhere?
+  let toplevelView = OutletView.create();
+  RENDERING_CLEANUP[guid].push(() => toplevelView.destroy());
+
   let hasOutletTemplate = !!OutletTemplate;
   let outletState = {
     render: {
@@ -127,6 +143,7 @@ export default function(context) {
           outlets: {},
         });
 
+        element = undefined;
         // RE: next usage, see detailed comment above
         next(resolve);
       });
