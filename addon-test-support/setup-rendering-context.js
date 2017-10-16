@@ -6,6 +6,13 @@ import jQuery from 'jquery';
 
 export const RENDERING_CLEANUP = Object.create(null);
 
+/*
+ * Responsible for:
+ *
+ * - Creating a basic rendering setup (e.g. setting up the main outlet view)
+ * - Adding `this.render` to the provided context
+ * - Adding `this.clearRender` to the provided context
+ */
 export default function(context) {
   let guid = guidFor(context);
 

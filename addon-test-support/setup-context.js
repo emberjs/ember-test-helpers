@@ -7,10 +7,10 @@ import { _setupAJAXHooks } from './wait';
 /*
  * Responsible for:
  *
- * * create an owner object and set it on the provided context (e.g. this.owner)
- * * setup this.set, this.setProperties, this.get, and this.getProperties to the provided context
- * * setting up AJAX listeners
- * * setting up RSVP promise integration
+ * - create an owner object and set it on the provided context (e.g. this.owner)
+ * - setup this.set, this.setProperties, this.get, and this.getProperties to the provided context
+ * - setting up AJAX listeners
+ * - setting up RSVP promise integration
  */
 export default function(context, options = {}) {
   let resolver = options.resolver;
