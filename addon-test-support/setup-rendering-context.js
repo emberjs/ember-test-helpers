@@ -68,7 +68,8 @@ export default function(context) {
     }
 
     return resolve().then(function asyncRenderSetup() {
-      let templateFullName = 'template:-undertest-' + ++templateId;
+      templateId += 1;
+      let templateFullName = `template:-undertest-${templateId}`;
       owner.register(templateFullName, template);
       let stateToRender = {
         owner,
