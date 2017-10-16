@@ -1,4 +1,4 @@
-import { module, test } from 'qunit';
+import { module, test, skip } from 'qunit';
 import Service from '@ember/service';
 import Component from '@ember/component';
 import { helper } from '@ember/component/helper';
@@ -93,13 +93,11 @@ module('setupRenderingContext', function(hooks) {
       });
   });
 
-  if (hasjQuery()) {
-    test('this.$ is exposed when jQuery is present', function(assert) {
-      return this.render(hbs`<p>Hello!</p>`).then(() => {
-        assert.equal(this.$().text(), 'Hello!');
-      });
+  (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', function(assert) {
+    return this.render(hbs`<p>Hello!</p>`).then(() => {
+      assert.equal(this.$().text(), 'Hello!');
     });
-  }
+  });
 
   test('can invoke template only components', function(assert) {
     return this.render(hbs`{{template-only}}`).then(() => {
