@@ -3,8 +3,33 @@ import { run, next } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 import global from './global';
+import { getContext } from './setup-context';
 
 export const RENDERING_CLEANUP = Object.create(null);
+
+export function render(template) {
+  let context = getContext();
+
+  if (!context || typeof context.render !== 'function') {
+    throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
+  }
+
+  return context.render(template);
+}
+
+export function clearRender() {
+  let context = getContext();
+
+  if (!context || typeof context.clearRender !== 'function') {
+    throw new Error(
+      'Cannot call `clearRender` without having first called `setupRenderingContext`.'
+    );
+  }
+
+  return context.clearRender();
+}
+
+export let element = undefined;
 
 /*
  * Responsible for:
@@ -22,6 +47,7 @@ export default function(context) {
   RENDERING_CLEANUP[guid] = [
     () => {
       rootTestElement.innerHTML = fixtureResetValue;
+      element = undefined;
     },
   ];
 
@@ -52,7 +78,7 @@ export default function(context) {
     outlets: {},
   };
 
-  let element, hasRendered;
+  let hasRendered;
   let templateId = 0;
 
   if (hasOutletTemplate) {

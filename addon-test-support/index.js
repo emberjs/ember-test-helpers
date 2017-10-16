@@ -7,7 +7,12 @@ export { default as TestModuleForModel } from './legacy-0-6-x/test-module-for-mo
 export { setResolver } from './resolver';
 export { default as setupContext, getContext, setContext, unsetContext } from './setup-context';
 export { default as teardownContext } from './teardown-context';
-export { default as setupRenderingContext } from './setup-rendering-context';
+export {
+  default as setupRenderingContext,
+  render,
+  clearRender,
+  element,
+} from './setup-rendering-context';
 export { default as teardownRenderingContext } from './teardown-rendering-context';
 
 import Ember from 'ember';

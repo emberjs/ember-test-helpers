@@ -8,6 +8,9 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
+  render,
+  clearRender,
+  element,
 } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
@@ -302,5 +305,32 @@ module('setupRenderingContext', function(hooks) {
 
     assert.equal(this.get('foo'), 'updated!');
     assert.equal(this.get('bar'), 'updated bar!');
+  });
+
+  test('imported `render` can be used instead of this.render', async function(assert) {
+    await render(hbs`yippie!!`);
+
+    assert.equal(this.element.textContent, 'yippie!!');
+  });
+
+  test('imported `element` can be used instead of this.element', async function(assert) {
+    await this.render(hbs`yippie!!`);
+
+    assert.equal(element.textContent, 'yippie!!');
+    assert.equal(element, this.element);
+  });
+
+  test('imported clearRender can be used instead of this.clearRender', async function(assert) {
+    let testingRootElement = document.getElementById('ember-testing');
+
+    await this.render(hbs`<p>Hello!</p>`);
+
+    assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
+    assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
+
+    await clearRender();
+    assert.equal(this.element, undefined, 'this.element is reset');
+
+    assert.equal(testingRootElement.textContent, '', 'content is cleared');
   });
 });
