@@ -185,8 +185,8 @@ module('settle', function(hooks) {
     this.server.shutdown();
     await settled();
 
-    teardownContext(this);
     teardownRenderingContext(this);
+    teardownContext(this);
   });
 
   test('it works when async exists in `init`', async function(assert) {
