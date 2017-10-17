@@ -79,6 +79,21 @@ module('setupContext', function(hooks) {
     test('it calls setContext with the provided context', function(assert) {
       assert.equal(getContext(), context);
     });
+
+    test('can be used for unit style testing', function(assert) {
+      context.owner.register(
+        'service:foo',
+        Service.extend({
+          someMethod() {
+            return 'hello thar!';
+          },
+        })
+      );
+
+      let subject = context.owner.lookup('service:Foo');
+
+      assert.equal(subject.someMethod(), 'hello thar!');
+    });
   });
 
   module('with custom options', function() {
