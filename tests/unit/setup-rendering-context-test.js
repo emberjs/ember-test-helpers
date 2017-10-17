@@ -1,6 +1,7 @@
 import { module, test, skip } from 'qunit';
 import Service from '@ember/service';
 import Component from '@ember/component';
+import TextField from '@ember/component/text-field';
 import { helper } from '@ember/component/helper';
 import {
   setupContext,
@@ -11,6 +12,7 @@ import {
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
 import { setResolverRegistry } from '../helpers/resolver';
+import { focus, blur, fireEvent, click } from '../helpers/events';
 import hbs from 'htmlbars-inline-precompile';
 
 module('setupRenderingContext', function(hooks) {
@@ -114,5 +116,191 @@ module('setupRenderingContext', function(hooks) {
     await this.render(hbs`{{outer-comp}}`);
 
     assert.equal(this.element.textContent, 'outerinnerouter');
+  });
+
+  test('can use the component helper in its layout', async function(assert) {
+    this.owner.register('template:components/x-foo', hbs`x-foo here`);
+
+    await this.render(hbs`{{component 'x-foo'}}`);
+
+    assert.equal(this.element.textContent, 'x-foo here');
+  });
+
+  test('can create a component instance for direct testing without a template', function(assert) {
+    this.owner.register(
+      'component:foo-bar',
+      Component.extend({
+        someMethod() {
+          return 'hello thar!';
+        },
+      })
+    );
+
+    let subject;
+    if (hasEmberVersion(2, 12)) {
+      subject = this.owner.lookup('component:foo-bar');
+    } else {
+      subject = this.owner._lookupFactory('component:foo-bar').create();
+    }
+
+    assert.equal(subject.someMethod(), 'hello thar!');
+  });
+
+  test('can handle a click event', async function(assert) {
+    assert.expect(2);
+
+    this.owner.register(
+      'component:x-foo',
+      Component.extend({
+        click() {
+          assert.ok(true, 'click was fired');
+        },
+      })
+    );
+    this.owner.register('template:components/x-foo', hbs`<button>Click me!</button>`);
+
+    await this.render(hbs`{{x-foo}}`);
+
+    assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+    click(this.element.querySelector('button'));
+  });
+
+  test('can use action based event handling', async function(assert) {
+    assert.expect(2);
+
+    this.owner.register(
+      'component:x-foo',
+      Component.extend({
+        actions: {
+          clicked() {
+            assert.ok(true, 'click was fired');
+          },
+        },
+      })
+    );
+    this.owner.register(
+      'template:components/x-foo',
+      hbs`<button {{action 'clicked'}}>Click me!</button>`
+    );
+
+    await this.render(hbs`{{x-foo}}`);
+
+    assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+    click(this.element.querySelector('button'));
+  });
+
+  test('can pass function to be used as a "closure action"', async function(assert) {
+    assert.expect(2);
+
+    this.owner.register(
+      'template:components/x-foo',
+      hbs`<button onclick={{action clicked}}>Click me!</button>`
+    );
+
+    this.set('clicked', () => assert.ok(true, 'action was triggered'));
+    await this.render(hbs`{{x-foo clicked=clicked}}`);
+
+    assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+    click(this.element.querySelector('button'));
+  });
+
+  test('can update a passed in argument with an <input>', async function(assert) {
+    this.owner.register('component:my-input', TextField.extend({}));
+
+    await this.render(hbs`{{my-input value=value}}`);
+
+    let input = this.element.querySelector('input');
+
+    assert.strictEqual(this.get('value'), undefined, 'precond - property is initially null');
+    assert.equal(input.value, '', 'precond - element value is initially empty');
+
+    // trigger the change
+    input.value = '1';
+    fireEvent(input, 'change');
+
+    assert.equal(this.get('value'), '1');
+  });
+
+  test('it supports dom triggered focus events', async function(assert) {
+    this.owner.register(
+      'component:my-input',
+      TextField.extend({
+        init() {
+          this._super(...arguments);
+
+          this.set('value', 'init');
+        },
+        focusIn() {
+          this.set('value', 'focusin');
+        },
+        focusOut() {
+          this.set('value', 'focusout');
+        },
+      })
+    );
+    await this.render(hbs`{{my-input}}`);
+
+    let input = this.element.querySelector('input');
+    assert.equal(input.value, 'init');
+
+    focus(input);
+    assert.equal(input.value, 'focusin');
+
+    blur(input);
+    assert.equal(input.value, 'focusout');
+  });
+
+  test('two way bound arguments are updated', async function(assert) {
+    this.owner.register(
+      'component:my-component',
+      Component.extend({
+        actions: {
+          clicked() {
+            this.set('foo', 'updated!');
+          },
+        },
+      })
+    );
+    this.owner.register(
+      'template:components/my-component',
+      hbs`<button {{action 'clicked'}}>{{foo}}</button>`
+    );
+
+    this.set('foo', 'original');
+    await this.render(hbs`{{my-component foo=foo}}`);
+    assert.equal(this.element.textContent, 'original', 'value after initial render');
+
+    click(this.element.querySelector('button'));
+    assert.equal(this.element.textContent, 'updated!', 'value after updating');
+    assert.equal(this.get('foo'), 'updated!');
+  });
+
+  test('two way bound arguments are available after clearRender is called', async function(assert) {
+    this.owner.register(
+      'component:my-component',
+      Component.extend({
+        actions: {
+          clicked() {
+            this.set('foo', 'updated!');
+            this.set('bar', 'updated bar!');
+          },
+        },
+      })
+    );
+    this.owner.register(
+      'template:components/my-component',
+      hbs`<button {{action 'clicked'}}>{{foo}}</button>`
+    );
+
+    // using two arguments here to ensure the two way binding
+    // works both for things rendered in the component's layout
+    // and those only used in the components JS file
+    await this.render(hbs`{{my-component foo=foo bar=bar}}`);
+    click(this.element.querySelector('button'));
+
+    await this.clearRender();
+
+    assert.equal(this.get('foo'), 'updated!');
+    assert.equal(this.get('bar'), 'updated bar!');
   });
 });

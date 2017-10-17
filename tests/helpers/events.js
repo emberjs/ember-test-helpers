@@ -39,6 +39,13 @@ function isFocusable(el) {
   return focusableTags.indexOf(tagName) > -1 || el.contentEditable === 'true';
 }
 
+export function click(el, options = {}) {
+  run(() => fireEvent(el, 'mousedown', options));
+  focus(el);
+  run(() => fireEvent(el, 'mouseup', options));
+  run(() => fireEvent(el, 'click', options));
+}
+
 export function focus(el) {
   if (!el) {
     return;
