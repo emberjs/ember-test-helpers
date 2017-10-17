@@ -39,8 +39,8 @@ module('setupRenderingContext', function(hooks) {
   });
 
   hooks.afterEach(function() {
-    teardownContext(this);
     teardownRenderingContext(this);
+    teardownContext(this);
   });
 
   test('render exposes an `.element` property', async function(assert) {

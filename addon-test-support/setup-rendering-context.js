@@ -39,13 +39,12 @@ export function clearRender() {
 export default function(context) {
   let guid = guidFor(context);
 
-  let rootTestElement = document.getElementById('ember-testing');
-  let fixtureResetValue = rootTestElement.innerHTML;
+  let testElementContainer = document.getElementById('ember-testing-container');
+  let fixtureResetValue = testElementContainer.outerHTML;
 
   RENDERING_CLEANUP[guid] = [
     () => {
-      rootTestElement.innerHTML = fixtureResetValue;
-      element = undefined;
+      testElementContainer.innerHTML = fixtureResetValue;
     },
   ];
 
