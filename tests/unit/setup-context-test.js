@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import Service from '@ember/service';
+import Service, { inject as injectService } from '@ember/service';
 import { setupContext, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
@@ -90,9 +90,33 @@ module('setupContext', function(hooks) {
         })
       );
 
-      let subject = context.owner.lookup('service:Foo');
+      let subject = context.owner.lookup('service:foo');
 
       assert.equal(subject.someMethod(), 'hello thar!');
+    });
+
+    test('can access a service instance (instead of this.inject.service("thing") in 0.6)', function(
+      assert
+    ) {
+      context.owner.register('service:bar', Service.extend());
+      context.owner.register(
+        'service:foo',
+        Service.extend({
+          bar: injectService(),
+          someMethod() {
+            this.set('bar.someProp', 'derp');
+          },
+        })
+      );
+
+      let subject = context.owner.lookup('service:foo');
+      let bar = context.owner.lookup('service:bar');
+
+      assert.notOk(bar.get('someProp'), 'precond - initially undefined');
+
+      subject.someMethod();
+
+      assert.equal(bar.get('someProp'), 'derp', 'property updated');
     });
   });
 
