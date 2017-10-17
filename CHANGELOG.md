@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.7.0-beta.7](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.7) (2017-10-17)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.6...v0.7.0-beta.7)
+
+**Merged pull requests:**
+
+- Ensure testing elements are properly reset/cleared. [\#226](https://github.com/emberjs/ember-test-helpers/pull/226) ([rwjblue](https://github.com/rwjblue))
+
 ## [v0.7.0-beta.6](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.6) (2017-10-17)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.5...v0.7.0-beta.6)
 
