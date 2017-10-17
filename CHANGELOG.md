@@ -1,5 +1,19 @@
 # Change Log
 
+## [v0.7.0-beta.6](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.6) (2017-10-17)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.5...v0.7.0-beta.6)
+
+**Implemented enhancements:**
+
+- Expose `settled` helper function. [\#223](https://github.com/emberjs/ember-test-helpers/pull/223) ([rwjblue](https://github.com/rwjblue))
+- Expose importable helper functions. [\#222](https://github.com/emberjs/ember-test-helpers/pull/222) ([rwjblue](https://github.com/rwjblue))
+
+**Merged pull requests:**
+
+- Update README for new API iteration. [\#225](https://github.com/emberjs/ember-test-helpers/pull/225) ([rwjblue](https://github.com/rwjblue))
+- Continue to flesh out more tests for new API's. [\#224](https://github.com/emberjs/ember-test-helpers/pull/224) ([rwjblue](https://github.com/rwjblue))
+- Move `setContext` into `setupContext`. [\#221](https://github.com/emberjs/ember-test-helpers/pull/221) ([rwjblue](https://github.com/rwjblue))
+
 ## [v0.7.0-beta.5](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.5) (2017-10-16)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.4...v0.7.0-beta.5)
 
