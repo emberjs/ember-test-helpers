@@ -10,79 +10,25 @@ wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
 
 ## Test Helpers
 
-### TestModule
+The exports of this library are intended to be utility functions that can be used to bring the
+standard Ember testing experience to any testing framework.
 
-The `TestModule` class is used to configure modules for unit testing
-different aspects of your Ember application. This class can be extended to
-create modules focused on particular types of unit tests.
+A quick summary of the exports from the `ember-test-helpers` module:
 
-`TestModule` is intended to be used in conjunction with modules specific to
-a test framework. For instance, you could create QUnit-compatible modules with
-a method such as:
-
-```javascript
-function moduleFor(name, description, callbacks) {
-  let module = new TestModule(name, description, callbacks);
-
-  QUnit.module(module.name, {
-    beforeEach() {
-      return module.setup();
-    },
-    afterEach() {
-      return module.teardown();
-    }
-  });
-}
-```
-
-------
-
-`TestModule(name [, description [, callbacks]])`
-
-* `name` - the full name of the test subject as it is registered in a container
-(e.g. 'controller:application', 'route:index', etc.).
-
-* `description` (optional) - the description of the test module as it should be
-displayed in test output. If omitted, defaults to `name`.
-
-* `callbacks` (optional) - an object that may include setup and teardown steps
-as well as the other units needed by tests.
-
-* `callbacks.resolver` (optional) - a Resolver instance to be used for the test
-module. Takes precedence over the globally set Resolver.
-
-### TestModuleForComponent
-
-`TestModuleForComponent` extends `TestModule` to allow unit testing of Ember
-Components.
-
-------
-
-`TestModuleForComponent(name [, description [, callbacks]])`
-
-* `name` - the short name of the component that you'd use in a template
-(e.g. 'x-foo', 'color-picker', etc.).
-
-### TestModuleForModel
-
-`TestModuleForModel` extends `TestModule` to allow unit testing of Ember Data
-Models.
-
-------
-
-`TestModuleForModel(name [, description [, callbacks]])`
-
-* `name` - the short name of the model that you'd use in store operations
-(e.g. 'user', 'assignmentGroup', etc.).
-
-### Miscellaneous Helpers
-
-* `getContext` / `setContext` - access the context to be used in each test.
-
-* `setResolver` - sets a Resolver globally which will be used to look up objects
-from each test's container.
-
-* `isolatedContainer` - creates a new isolated container for unit testing.
+* `setResolver` - This function is used to allow the other functions build a valid
+  container/registry that is able to look objects up from your application (just as a running Ember
+  application would).
+* `setContext` - Invoked by the host testing framework to set the current testing context (generally
+  the `this` within a running test).
+* `getContext` - Used to retrieve the current testing context.
+* `unsetContext` - Used to ensure that all handles on the testing context are released (allowing GC).
+* `setupContext` - Sets up a given testing context with `owner`, `get`, `set`, etc properties.
+* `teardownContext` - Cleans up any objects created as part of the owner created in `setupContext`.
+* `setupRenderingContext` - Sets up the provided context with the ability to render template
+  snippets by adding `render`, `clearRender`, etc.
+* `teardownRenderingContext` - Cleans up any work done in a rendering test.
+* `settled` - Returns a promise which will resolve when all async from AJAX, test waiters, and 
+  scheduled timers have completed.
 
 ## Collaborating
 
