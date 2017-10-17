@@ -1,11 +1,10 @@
-/* globals self */
-
 import { run } from '@ember/runloop';
 
 import { Promise as EmberPromise } from 'rsvp';
 import jQuery from 'jquery';
 
 import Ember from 'ember';
+import global from './global';
 
 let requests;
 function incrementAjaxPendingRequests(_, xhr) {
@@ -75,7 +74,7 @@ export default function settled(_options) {
   let waitForWaiters = options.hasOwnProperty('waitForWaiters') ? options.waitForWaiters : true;
 
   return new EmberPromise(function(resolve) {
-    let watcher = self.setInterval(function() {
+    let watcher = global.setInterval(function() {
       if (waitForTimers && (run.hasScheduledTimers() || run.currentRunLoop)) {
         return;
       }
@@ -89,7 +88,7 @@ export default function settled(_options) {
       }
 
       // Stop polling
-      self.clearInterval(watcher);
+      global.clearInterval(watcher);
 
       // Synchronously resolve the promise
       run(null, resolve);
