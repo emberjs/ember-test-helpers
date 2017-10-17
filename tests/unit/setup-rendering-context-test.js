@@ -10,7 +10,6 @@ import {
   teardownRenderingContext,
   render,
   clearRender,
-  element,
 } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
@@ -311,13 +310,6 @@ module('setupRenderingContext', function(hooks) {
     await render(hbs`yippie!!`);
 
     assert.equal(this.element.textContent, 'yippie!!');
-  });
-
-  test('imported `element` can be used instead of this.element', async function(assert) {
-    await this.render(hbs`yippie!!`);
-
-    assert.equal(element.textContent, 'yippie!!');
-    assert.equal(element, this.element);
   });
 
   test('imported clearRender can be used instead of this.clearRender', async function(assert) {

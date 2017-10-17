@@ -29,8 +29,6 @@ export function clearRender() {
   return context.clearRender();
 }
 
-export let element = undefined;
-
 /*
  * Responsible for:
  *
@@ -78,7 +76,7 @@ export default function(context) {
     outlets: {},
   };
 
-  let hasRendered;
+  let element, hasRendered;
   let templateId = 0;
 
   if (hasOutletTemplate) {
