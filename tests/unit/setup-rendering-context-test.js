@@ -205,19 +205,19 @@ module('setupRenderingContext', function(hooks) {
   });
 
   test('can update a passed in argument with an <input>', async function(assert) {
-    this.owner.register(
-      'component:my-input',
-      TextField.extend({
-        value: null,
-      })
-    );
+    this.owner.register('component:my-input', TextField.extend({}));
 
     await this.render(hbs`{{my-input value=value}}`);
 
     let input = this.element.querySelector('input');
-    input.value = '1';
 
+    assert.strictEqual(this.get('value'), undefined, 'precond - property is initially null');
+    assert.equal(input.value, '', 'precond - element value is initially empty');
+
+    // trigger the change
+    input.value = '1';
     fireEvent(input, 'change');
+
     assert.equal(this.get('value'), '1');
   });
 
