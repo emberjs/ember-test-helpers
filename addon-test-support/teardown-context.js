@@ -1,6 +1,6 @@
 import { run } from '@ember/runloop';
 import { _teardownPromiseListeners } from './ext/rsvp';
-import { _teardownAJAXHooks } from './wait';
+import { _teardownAJAXHooks } from './settled';
 
 export default function(context) {
   let { owner } = context;

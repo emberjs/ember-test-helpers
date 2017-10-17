@@ -7,8 +7,8 @@ import wait from 'ember-test-helpers/wait';
 import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
-import { fireEvent } from '../helpers/events';
-import hasjQuery from '../helpers/has-jquery';
+import { fireEvent } from '../../helpers/events';
+import hasjQuery from '../../helpers/has-jquery';
 import require from 'require';
 
 function ajax(url) {
