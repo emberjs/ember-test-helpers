@@ -292,6 +292,9 @@ module('setupRenderingContext', function(hooks) {
       hbs`<button {{action 'clicked'}}>{{foo}}</button>`
     );
 
+    // using two arguments here to ensure the two way binding
+    // works both for things rendered in the component's layout
+    // and those only used in the components JS file
     await this.render(hbs`{{my-component foo=foo bar=bar}}`);
     click(this.element.querySelector('button'));
 
