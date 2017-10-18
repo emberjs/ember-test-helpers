@@ -23,6 +23,7 @@ export default class {
   }
 
   setup(assert) {
+    Ember.testing = true;
     return this.invokeSteps(this.setupSteps, this, assert).then(() => {
       this.contextualizeCallbacks();
       return this.invokeSteps(this.contextualizedSetupSteps, this.context, assert);
@@ -37,6 +38,9 @@ export default class {
       .then(() => {
         this.cache = null;
         this.cachedCalls = null;
+      })
+      .finally(function() {
+        Ember.testing = false;
       });
   }
 

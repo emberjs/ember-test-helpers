@@ -2,10 +2,12 @@ import { resolve } from 'rsvp';
 import { module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
+import Ember from 'ember';
 
 export default function(name, options = {}) {
   module(name, {
     beforeEach() {
+      Ember.testing = true;
       this.application = startApp();
 
       if (options.beforeEach) {
@@ -15,7 +17,9 @@ export default function(name, options = {}) {
 
     afterEach() {
       let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
-      return resolve(afterEach).then(() => destroyApp(this.application));
+      return resolve(afterEach)
+        .then(() => destroyApp(this.application))
+        .finally(() => (Ember.testing = false));
     },
   });
 }

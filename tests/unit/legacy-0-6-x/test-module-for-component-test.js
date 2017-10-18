@@ -372,7 +372,10 @@ QUnit.module('moduleForComponent: handles errors thrown during setup', {
           'correct error was thrown from module setup'
         );
       })
-      .finally(done);
+      .finally(() => {
+        done();
+        Ember.testing = false;
+      });
   },
 });
 

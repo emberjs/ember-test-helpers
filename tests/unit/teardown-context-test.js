@@ -3,6 +3,7 @@ import Service from '@ember/service';
 import { setupContext, teardownContext } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import Ember from 'ember';
 
 module('teardownContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -30,5 +31,13 @@ module('teardownContext', function(hooks) {
 
     assert.ok(instance.isDestroyed, 'destroyed');
     assert.ok(instance.isDestroying, 'destroying');
+  });
+
+  test('it sets Ember.testing to false', function(assert) {
+    assert.ok(Ember.testing, 'precond - Ember.testing is truthy');
+
+    teardownContext(context);
+
+    assert.notOk(Ember.testing, 'Ember.testing is falsey after teardown');
   });
 });
