@@ -1,22 +1,30 @@
 import { module, test } from 'qunit';
 import Service, { inject as injectService } from '@ember/service';
-import { setupContext, getContext } from 'ember-test-helpers';
+import { setupContext, teardownContext, getContext } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
+import Ember from 'ember';
 
 module('setupContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
 
+  let context;
   hooks.before(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
   });
 
+  hooks.afterEach(function() {
+    if (context) {
+      teardownContext(context);
+      context = undefined;
+    }
+  });
+
   module('without options', function(hooks) {
-    let context;
     hooks.beforeEach(function() {
       context = {};
       setupContext(context);
@@ -122,7 +130,7 @@ module('setupContext', function(hooks) {
 
   module('with custom options', function() {
     test('it can specify a custom resolver', function(assert) {
-      let context = {};
+      context = {};
       let resolver = createCustomResolver({
         'service:foo': Service.extend({ isFoo: 'maybe?' }),
       });
@@ -131,5 +139,14 @@ module('setupContext', function(hooks) {
       let instance = owner.lookup('service:foo');
       assert.equal(instance.isFoo, 'maybe?', 'uses the custom resolver');
     });
+  });
+
+  test('Ember.testing', function(assert) {
+    assert.notOk(Ember.testing, 'precond - Ember.testing is falsey before setup');
+
+    context = {};
+    setupContext(context);
+
+    assert.ok(Ember.testing, 'Ember.testing is truthy after setup');
   });
 });

@@ -1,6 +1,7 @@
 import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
+import Ember from 'ember';
 
 let moduleLoadFailures = [];
 
@@ -36,6 +37,15 @@ registerDeprecationHandler((message, options, next) => {
 
 QUnit.testStart(function() {
   deprecations = [];
+});
+
+QUnit.testDone(function({ module, name }) {
+  // this is used to ensure that no tests accidentally leak `Ember.testing` state
+  if (Ember.testing) {
+    throw new Error(
+      `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`
+    );
+  }
 });
 
 QUnit.assert.noDeprecations = function(callback) {

@@ -3,6 +3,7 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks } from './settled';
+import Ember from 'ember';
 
 let __test_context__;
 
@@ -28,6 +29,7 @@ export function unsetContext() {
  * - setting up RSVP promise integration
  */
 export default function(context, options = {}) {
+  Ember.testing = true;
   setContext(context);
 
   let resolver = options.resolver;

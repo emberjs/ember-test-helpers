@@ -10,6 +10,3 @@ export { default as teardownContext } from './teardown-context';
 export { default as setupRenderingContext, render, clearRender } from './setup-rendering-context';
 export { default as teardownRenderingContext } from './teardown-rendering-context';
 export { default as settled } from './settled';
-
-import Ember from 'ember';
-Ember.testing = true;
