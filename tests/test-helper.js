@@ -46,6 +46,16 @@ QUnit.testDone(function({ module, name }) {
       `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`
     );
   }
+
+  // this is used to ensure that the testing container is always reset properly
+  let testElementContainer = document.getElementById('ember-testing-container');
+  let actual = testElementContainer.innerHTML;
+  let expected = `<div id="ember-testing"></div>`;
+  if (actual !== expected) {
+    throw new Error(
+      `Expected #ember-testing-container to be reset after ${module}: ${name}, but was \`${actual}\``
+    );
+  }
 });
 
 QUnit.assert.noDeprecations = function(callback) {

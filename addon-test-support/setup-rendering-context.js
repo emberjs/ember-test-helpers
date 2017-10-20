@@ -40,7 +40,7 @@ export default function(context) {
   let guid = guidFor(context);
 
   let testElementContainer = document.getElementById('ember-testing-container');
-  let fixtureResetValue = testElementContainer.outerHTML;
+  let fixtureResetValue = testElementContainer.innerHTML;
 
   RENDERING_CLEANUP[guid] = [
     () => {
