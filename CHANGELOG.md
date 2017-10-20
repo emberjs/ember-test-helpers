@@ -1,9 +1,22 @@
 # Change Log
 
+## [v0.7.0-beta.8](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.8) (2017-10-20)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.7...v0.7.0-beta.8)
+
+**Fixed bugs:**
+
+- New `setupRenderingTest` seems to recreate the `\#ember-testing-container` for every test [\#228](https://github.com/emberjs/ember-test-helpers/issues/228)
+- Ensure ember-testing-container is reset properly. [\#229](https://github.com/emberjs/ember-test-helpers/pull/229) ([rwjblue](https://github.com/rwjblue))
+- Set Ember.testing only while actually running a test. [\#227](https://github.com/emberjs/ember-test-helpers/pull/227) ([rwjblue](https://github.com/rwjblue))
+
+**Closed issues:**
+
+- TypeError: Cannot read property 'resolveRegistration' of undefined [\#230](https://github.com/emberjs/ember-test-helpers/issues/230)
+
 ## [v0.7.0-beta.7](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.7) (2017-10-17)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.6...v0.7.0-beta.7)
 
-**Merged pull requests:**
+**Fixed bugs:**
 
 - Ensure testing elements are properly reset/cleared. [\#226](https://github.com/emberjs/ember-test-helpers/pull/226) ([rwjblue](https://github.com/rwjblue))
 
