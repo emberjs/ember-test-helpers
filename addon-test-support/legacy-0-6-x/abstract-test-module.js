@@ -104,15 +104,22 @@ export default class {
   }
 
   setupTestElements() {
+    let testElementContainer = document.querySelector('#ember-testing-container');
+    if (!testElementContainer) {
+      testElementContainer = document.createElement('div');
+      testElementContainer.setAttribute('id', 'ember-testing-container');
+      document.body.appendChild(testElementContainer);
+    }
+
     let testEl = document.querySelector('#ember-testing');
     if (!testEl) {
       let element = document.createElement('div');
       element.setAttribute('id', 'ember-testing');
 
-      document.body.appendChild(element);
+      testElementContainer.appendChild(element);
       this.fixtureResetValue = '';
     } else {
-      this.fixtureResetValue = testEl.innerHTML;
+      this.fixtureResetValue = testElementContainer.innerHTML;
     }
   }
 
@@ -171,7 +178,7 @@ export default class {
   }
 
   teardownTestElements() {
-    document.getElementById('ember-testing').innerHTML = this.fixtureResetValue;
+    document.getElementById('ember-testing-container').innerHTML = this.fixtureResetValue;
 
     // Ember 2.0.0 removed Ember.View as public API, so only do this when
     // Ember.View is present

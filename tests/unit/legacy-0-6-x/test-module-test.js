@@ -398,24 +398,20 @@ test('ember-testing content should be reset to ""', function(assert) {
 QUnit.module('ember-testing resets to non-empty value');
 
 test('sets ember-testing content to "<div>foobar</div>"', function(assert) {
-  assert.expect(0);
+  assert.expect(1);
   document.getElementById('ember-testing').innerHTML = '<div>foobar</div>';
-});
-
-test('sets ember-testing content to ""', function(assert) {
-  assert.expect(0);
 
   testModule = new TestModule('component:x-foo', 'Foo');
   testModule.setContext(this);
-  return testModule.setup(...arguments).then(() => {
-    document.getElementById('ember-testing').innerHTML = '';
+  return testModule
+    .setup(...arguments)
+    .then(() => {
+      document.getElementById('ember-testing').innerHTML = '';
 
-    return testModule.teardown(...arguments);
-  });
-});
-
-test('ember-testing content should be reset to "<div>foobar</div>"', function(assert) {
-  assert.expect(1);
-  assert.equal(document.getElementById('ember-testing').innerHTML, '<div>foobar</div>');
-  document.getElementById('ember-testing').innerHTML = '';
+      return testModule.teardown(...arguments);
+    })
+    .then(() => {
+      assert.equal(document.getElementById('ember-testing').innerHTML, '<div>foobar</div>');
+      document.getElementById('ember-testing').innerHTML = '';
+    });
 });
