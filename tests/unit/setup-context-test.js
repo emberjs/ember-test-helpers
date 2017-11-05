@@ -23,9 +23,9 @@ module('setupContext', function(hooks) {
     });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(async function() {
     if (context) {
-      teardownContext(context);
+      await teardownContext(context);
       context = undefined;
     }
   });
@@ -33,7 +33,7 @@ module('setupContext', function(hooks) {
   module('without options', function(hooks) {
     hooks.beforeEach(function() {
       context = {};
-      setupContext(context);
+      return setupContext(context);
     });
 
     test('it sets up this.owner', function(assert) {
@@ -205,24 +205,28 @@ module('setupContext', function(hooks) {
   });
 
   module('with custom options', function() {
-    test('it can specify a custom resolver', function(assert) {
+    test('it can specify a custom resolver', async function(assert) {
       context = {};
       let resolver = createCustomResolver({
         'service:foo': Service.extend({ isFoo: 'maybe?' }),
       });
-      setupContext(context, { resolver });
+      await setupContext(context, { resolver });
       let { owner } = context;
       let instance = owner.lookup('service:foo');
       assert.equal(instance.isFoo, 'maybe?', 'uses the custom resolver');
     });
   });
 
-  test('Ember.testing', function(assert) {
+  test('Ember.testing', async function(assert) {
     assert.notOk(Ember.testing, 'precond - Ember.testing is falsey before setup');
 
     context = {};
-    setupContext(context);
+    let promise = setupContext(context);
 
-    assert.ok(Ember.testing, 'Ember.testing is truthy after setup');
+    assert.ok(Ember.testing, 'Ember.testing is truthy sync after setup');
+
+    await promise;
+
+    assert.ok(Ember.testing, 'Ember.testing is truthy async after setup');
   });
 });

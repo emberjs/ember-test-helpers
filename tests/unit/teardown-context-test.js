@@ -19,24 +19,24 @@ module('teardownContext', function(hooks) {
   let context;
   hooks.beforeEach(function() {
     context = {};
-    setupContext(context);
+    return setupContext(context);
   });
 
-  test('it destroys any instances created', function(assert) {
+  test('it destroys any instances created', async function(assert) {
     let instance = context.owner.lookup('service:foo');
     assert.notOk(instance.isDestroyed, 'precond - not destroyed');
     assert.notOk(instance.isDestroying, 'precond - not destroying');
 
-    teardownContext(context);
+    await teardownContext(context);
 
     assert.ok(instance.isDestroyed, 'destroyed');
     assert.ok(instance.isDestroying, 'destroying');
   });
 
-  test('it sets Ember.testing to false', function(assert) {
+  test('it sets Ember.testing to false', async function(assert) {
     assert.ok(Ember.testing, 'precond - Ember.testing is truthy');
 
-    teardownContext(context);
+    await teardownContext(context);
 
     assert.notOk(Ember.testing, 'Ember.testing is falsey after teardown');
   });

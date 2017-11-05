@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { run, next } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
@@ -59,51 +59,58 @@ export default function(context, options = {}) {
   Ember.testing = true;
   setContext(context);
 
-  let resolver = options.resolver;
-  let owner = buildOwner(resolver);
+  return new Promise(resolve => {
+    // ensure "real" async and not "fake" RSVP based async
+    next(() => {
+      let resolver = options.resolver;
+      let owner = buildOwner(resolver);
 
-  context.owner = owner;
+      context.owner = owner;
 
-  context.set = function(key, value) {
-    let ret = run(function() {
-      return set(context, key, value);
+      context.set = function(key, value) {
+        let ret = run(function() {
+          return set(context, key, value);
+        });
+
+        return ret;
+      };
+
+      context.setProperties = function(hash) {
+        let ret = run(function() {
+          return setProperties(context, hash);
+        });
+
+        return ret;
+      };
+
+      context.get = function(key) {
+        return get(context, key);
+      };
+
+      context.getProperties = function(...args) {
+        return getProperties(context, args);
+      };
+
+      let resume;
+      context.resumeTest = function resumeTest() {
+        assert('Testing has not been paused. There is nothing to resume.', resume);
+        resume();
+        global.resumeTest = resume = undefined;
+      };
+
+      context.pauseTest = function pauseTest() {
+        console.info('Testing paused. Use `resumeTest()` to continue.'); // eslint-disable-line no-console
+
+        return new Promise(resolve => {
+          resume = resolve;
+          global.resumeTest = resumeTest;
+        }, 'TestAdapter paused promise');
+      };
+
+      _setupAJAXHooks();
+      _setupPromiseListeners();
+
+      resolve(context);
     });
-
-    return ret;
-  };
-
-  context.setProperties = function(hash) {
-    let ret = run(function() {
-      return setProperties(context, hash);
-    });
-
-    return ret;
-  };
-
-  context.get = function(key) {
-    return get(context, key);
-  };
-
-  context.getProperties = function(...args) {
-    return getProperties(context, args);
-  };
-
-  let resume;
-  context.resumeTest = function resumeTest() {
-    assert('Testing has not been paused. There is nothing to resume.', resume);
-    resume();
-    global.resumeTest = resume = undefined;
-  };
-
-  context.pauseTest = function pauseTest() {
-    console.info('Testing paused. Use `resumeTest()` to continue.'); // eslint-disable-line no-console
-
-    return new Promise(resolve => {
-      resume = resolve;
-      global.resumeTest = resumeTest;
-    }, 'TestAdapter paused promise');
-  };
-
-  _setupAJAXHooks();
-  _setupPromiseListeners();
+  });
 }

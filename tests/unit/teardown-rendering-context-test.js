@@ -12,16 +12,16 @@ module('setupRenderingContext', function(hooks) {
     return;
   }
 
-  hooks.beforeEach(function() {
-    setupContext(this);
-    setupRenderingContext(this);
+  hooks.beforeEach(async function() {
+    await setupContext(this);
+    await setupRenderingContext(this);
   });
 
   hooks.afterEach(function() {
-    teardownContext(this);
+    return teardownContext(this);
   });
 
-  test('clears any attributes added to the ember-testing div', function(assert) {
+  test('clears any attributes added to the ember-testing div', async function(assert) {
     let beforeTeardownEl = document.getElementById('ember-testing');
     beforeTeardownEl.setAttribute('data-was-set', '');
 
@@ -31,7 +31,7 @@ module('setupRenderingContext', function(hooks) {
     );
     assert.ok(document.contains(beforeTeardownEl), 'precond - ember-testing element is in DOM');
 
-    teardownRenderingContext(this);
+    await teardownRenderingContext(this);
 
     let afterTeardownEl = document.getElementById('ember-testing');
 
