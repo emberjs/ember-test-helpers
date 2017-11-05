@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.7.0-beta.9](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.9) (2017-11-04)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.8...v0.7.0-beta.9)
+
+**Implemented enhancements:**
+
+- Add pauseTest and resumeTest functionality. [\#233](https://github.com/emberjs/ember-test-helpers/pull/233) ([rwjblue](https://github.com/rwjblue))
+
+**Fixed bugs:**
+
+- Broken tests in v0.7.0-beta.8 [\#231](https://github.com/emberjs/ember-test-helpers/issues/231)
+
+**Closed issues:**
+
+- this.on\(\) no longer supported in rendering tests? [\#232](https://github.com/emberjs/ember-test-helpers/issues/232)
+
 ## [v0.7.0-beta.8](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.8) (2017-10-20)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.7...v0.7.0-beta.8)
 
