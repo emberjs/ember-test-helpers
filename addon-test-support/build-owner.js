@@ -4,29 +4,37 @@ import global from './global';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
+import { Promise } from 'rsvp';
 
 import require from 'require';
 import Ember from 'ember';
-import { getResolver } from './resolver';
 
-const Owner = (function() {
-  // this module only supports Ember 2.4+ but is evaluated
-  // on older Ember versions (which we support via the legacy-0-6 API)
-  // and calling `.extend` with undefined is an issue
-  if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
-    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
-  }
-
-  return EmberObject.extend();
-})();
+let Owner;
 
 // different than the legacy-0-6-x version (build-registry.js)
 // in the following ways:
 //
+// * Accepts an application to _actually_ boot if possible
+// * falls back to "fake owner" if application is not present
 // * fewer fallbacks (supports only Ember 2.4+)
 // * returns "owner" (instead of a POJO with registry/container)
-// * directly calls getResolver if one was not provided
-export default function(resolver = getResolver()) {
+export default function({ application, resolver }) {
+  if (application) {
+    return application.boot().then(app => app.buildInstance().boot());
+  }
+
+  if (!resolver) {
+    throw new Error(
+      'You must set up the ember-test-helpers environment with either `setResolver` or `setApplication` before running any tests.'
+    );
+  }
+
+  if (Owner === undefined) {
+    Owner = EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin, {
+      _emberTestHelpersMockOwner: true,
+    });
+  }
+
   let fallbackRegistry, registry, container;
   let namespace = EmberObject.create({
     Resolver: {
@@ -104,5 +112,5 @@ export default function(resolver = getResolver()) {
     }
   }
 
-  return owner;
+  return Promise.resolve().then(() => owner);
 }

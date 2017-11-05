@@ -1,20 +1,12 @@
 import Ember from 'ember';
-import { run } from '@ember/runloop';
 import { dasherize } from '@ember/string';
-import AppResolver from '../../resolver';
+import AppResolver, { setRegistry } from '../../resolver';
 import config from '../../config/environment';
-import { setResolver } from 'ember-test-helpers';
+import { setResolver, setApplication } from 'ember-test-helpers';
 import require from 'require';
+import App from '../../app';
 
-const Resolver = AppResolver.extend({
-  registry: {},
-
-  resolve(fullName) {
-    return this.registry[fullName] || this._super(...arguments);
-  },
-});
-
-const resolver = Resolver.create();
+const resolver = AppResolver.create();
 
 resolver.namespace = {
   modulePrefix: config.modulePrefix,
@@ -22,9 +14,10 @@ resolver.namespace = {
 };
 
 setResolver(resolver);
+setApplication(App.create({ autoboot: false }));
 
 export function setResolverRegistry(registry) {
-  run(resolver, 'set', 'registry', registry);
+  setRegistry(registry);
 }
 
 export default {

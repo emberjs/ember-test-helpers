@@ -5,6 +5,7 @@ export { default as TestModuleForComponent } from './legacy-0-6-x/test-module-fo
 export { default as TestModuleForModel } from './legacy-0-6-x/test-module-for-model';
 
 export { setResolver } from './resolver';
+export { setApplication } from './application';
 export {
   default as setupContext,
   getContext,

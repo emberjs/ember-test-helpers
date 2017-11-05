@@ -7,6 +7,8 @@ import Ember from 'ember';
 import { Promise } from 'rsvp';
 import { assert } from '@ember/debug';
 import global from './global';
+import { getResolver } from './resolver';
+import { getApplication } from './application';
 
 let __test_context__;
 
@@ -61,10 +63,30 @@ export default function(context, options = {}) {
 
   return new Promise(resolve => {
     // ensure "real" async and not "fake" RSVP based async
-    next(() => {
-      let resolver = options.resolver;
-      let owner = buildOwner(resolver);
+    next(resolve);
+  })
+    .then(() => {
+      let { resolver } = options;
+      let buildOwnerOptions;
 
+      // This handles precendence, specifying a specific option of
+      // resolver always trumps whatever is auto-detected, then we fallback to
+      // the suite-wide registrations
+      //
+      // At some later time this can be extended to support specifying a custom
+      // engine or application...
+      if (resolver) {
+        buildOwnerOptions = { resolver };
+      } else {
+        buildOwnerOptions = {
+          resolver: getResolver(),
+          application: getApplication(),
+        };
+      }
+
+      return buildOwner(buildOwnerOptions);
+    })
+    .then(owner => {
       context.owner = owner;
 
       context.set = function(key, value) {
@@ -110,7 +132,6 @@ export default function(context, options = {}) {
       _setupAJAXHooks();
       _setupPromiseListeners();
 
-      resolve(context);
+      return context;
     });
-  });
 }
