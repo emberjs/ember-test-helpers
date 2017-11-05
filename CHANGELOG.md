@@ -1,6 +1,17 @@
 # Change Log
 
-## [v0.7.0-beta.9](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.9) (2017-11-04)
+## [v0.7.0-beta.10](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.10) (2017-11-05)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.9...v0.7.0-beta.10)
+
+**Implemented enhancements:**
+
+- Make `setupContext` / `teardownContext` async [\#235](https://github.com/emberjs/ember-test-helpers/issues/235)
+
+**Merged pull requests:**
+
+- Make setup and teardown of new API async. [\#236](https://github.com/emberjs/ember-test-helpers/pull/236) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.7.0-beta.9](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.9) (2017-11-05)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.8...v0.7.0-beta.9)
 
 **Implemented enhancements:**
