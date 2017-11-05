@@ -1,6 +1,12 @@
 import { module, test } from 'qunit';
 import Service, { inject as injectService } from '@ember/service';
-import { setupContext, teardownContext, getContext } from 'ember-test-helpers';
+import {
+  setupContext,
+  teardownContext,
+  getContext,
+  pauseTest,
+  resumeTest,
+} from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry, createCustomResolver } from '../helpers/resolver';
 import Ember from 'ember';
@@ -125,6 +131,76 @@ module('setupContext', function(hooks) {
       subject.someMethod();
 
       assert.equal(bar.get('someProp'), 'derp', 'property updated');
+    });
+
+    test('can pauseTest to be resumed "later"', async function(assert) {
+      assert.expect(5);
+
+      let promise = context.pauseTest();
+
+      // do some random things while "paused"
+      setTimeout(function() {
+        assert.step('5 ms');
+      }, 5);
+
+      setTimeout(function() {
+        assert.step('20 ms');
+      }, 20);
+
+      setTimeout(function() {
+        assert.step('30 ms');
+      }, 30);
+
+      setTimeout(function() {
+        assert.step('50 ms');
+        context.resumeTest();
+      }, 50);
+
+      await promise;
+
+      assert.verifySteps(['5 ms', '20 ms', '30 ms', '50 ms']);
+    });
+
+    test('imported pauseTest and resumeTest allow customizations by test frameworks', async function(
+      assert
+    ) {
+      assert.expect(2);
+
+      let originalPauseTest = context.pauseTest;
+      context.pauseTest = () => {
+        assert.ok(true, 'contexts pauseTest was called');
+        return originalPauseTest();
+      };
+
+      let originalResumeTest = context.resumeTest;
+      context.resumeTest = () => {
+        assert.ok(true, 'customized resumeTest was called');
+        return originalResumeTest();
+      };
+
+      let promise = pauseTest();
+
+      resumeTest();
+
+      await promise;
+    });
+
+    test('pauseTest sets up a window.resumeTest to easily resume', async function(assert) {
+      assert.equal(window.resumeTest, undefined, 'precond - starts out as undefined');
+
+      let promise = context.pauseTest();
+
+      assert.equal(
+        resumeTest,
+        window.resumeTest,
+        'window.resumeTest is the same as this.resumeTest'
+      );
+
+      context.resumeTest();
+
+      assert.equal(window.resumeTest, undefined, 'window.resumeTest is cleared after invocation');
+
+      await promise;
     });
   });
 

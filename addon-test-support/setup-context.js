@@ -4,6 +4,9 @@ import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks } from './settled';
 import Ember from 'ember';
+import { Promise } from 'rsvp';
+import { assert } from '@ember/debug';
+import global from './global';
 
 let __test_context__;
 
@@ -17,6 +20,30 @@ export function getContext() {
 
 export function unsetContext() {
   __test_context__ = undefined;
+}
+
+export function pauseTest() {
+  let context = getContext();
+
+  if (!context || typeof context.pauseTest !== 'function') {
+    throw new Error(
+      'Cannot call `pauseTest` without having first called `setupTest` or `setupRenderingTest`.'
+    );
+  }
+
+  return context.pauseTest();
+}
+
+export function resumeTest() {
+  let context = getContext();
+
+  if (!context || typeof context.resumeTest !== 'function') {
+    throw new Error(
+      'Cannot call `resumeTest` without having first called `setupTest` or `setupRenderingTest`.'
+    );
+  }
+
+  return context.resumeTest();
 }
 
 /*
@@ -59,6 +86,22 @@ export default function(context, options = {}) {
 
   context.getProperties = function(...args) {
     return getProperties(context, args);
+  };
+
+  let resume;
+  context.resumeTest = function resumeTest() {
+    assert('Testing has not been paused. There is nothing to resume.', resume);
+    resume();
+    global.resumeTest = resume = undefined;
+  };
+
+  context.pauseTest = function pauseTest() {
+    console.info('Testing paused. Use `resumeTest()` to continue.'); // eslint-disable-line no-console
+
+    return new Promise(resolve => {
+      resume = resolve;
+      global.resumeTest = resumeTest;
+    }, 'TestAdapter paused promise');
   };
 
   _setupAJAXHooks();
