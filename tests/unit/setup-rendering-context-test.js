@@ -22,7 +22,7 @@ module('setupRenderingContext', function(hooks) {
     return;
   }
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
       'template:components/template-only': hbs`template-only component here`,
@@ -34,13 +34,13 @@ module('setupRenderingContext', function(hooks) {
       'template:components/inner-comp': hbs`inner`,
     });
 
-    setupContext(this);
-    setupRenderingContext(this);
+    await setupContext(this);
+    await setupRenderingContext(this);
   });
 
-  hooks.afterEach(function() {
-    teardownRenderingContext(this);
-    teardownContext(this);
+  hooks.afterEach(async function() {
+    await teardownRenderingContext(this);
+    await teardownContext(this);
   });
 
   test('render exposes an `.element` property', async function(assert) {

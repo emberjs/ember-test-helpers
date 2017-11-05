@@ -31,9 +31,9 @@ module('settle', function(hooks) {
     return;
   }
 
-  hooks.beforeEach(function() {
-    setupContext(this);
-    setupRenderingContext(this);
+  hooks.beforeEach(async function() {
+    await setupContext(this);
+    await setupRenderingContext(this);
 
     let { owner } = this;
 
@@ -185,8 +185,8 @@ module('settle', function(hooks) {
     this.server.shutdown();
     await settled();
 
-    teardownRenderingContext(this);
-    teardownContext(this);
+    await teardownRenderingContext(this);
+    await teardownContext(this);
   });
 
   test('it works when async exists in `init`', async function(assert) {
