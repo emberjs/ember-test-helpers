@@ -1,5 +1,5 @@
 import { guidFor } from '@ember/object/internals';
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 import global from './global';
@@ -50,7 +50,7 @@ export default function(context) {
 
   return new Promise(resolve => {
     // ensure "real" async and not "fake" RSVP based async
-    next(() => {
+    setTimeout(() => {
       let { owner } = context;
 
       let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
@@ -98,7 +98,7 @@ export default function(context) {
         return new Promise(function asyncRender(resolve) {
           // manually enter async land, so that rendering itself is always async (even though
           // Ember <= 2.18 do not require async rendering)
-          next(function asyncRenderSetup() {
+          setTimeout(function asyncRenderSetup() {
             templateId += 1;
             let templateFullName = `template:-undertest-${templateId}`;
             owner.register(templateFullName, template);
@@ -134,7 +134,7 @@ export default function(context) {
             //
             // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
             // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
-            next(function asyncUpdateElementAfterRender() {
+            setTimeout(function asyncUpdateElementAfterRender() {
               // ensure the element is based on the wrapping toplevel view
               // Ember still wraps the main application template with a
               // normal tagged view
@@ -145,8 +145,8 @@ export default function(context) {
               element = document.querySelector('#ember-testing > .ember-view');
 
               resolve();
-            });
-          });
+            }, 0);
+          }, 0);
         });
       };
 
@@ -170,7 +170,7 @@ export default function(context) {
         return new Promise(function async_clearRender(resolve) {
           element = undefined;
 
-          next(function async_clearRender() {
+          setTimeout(function async_clearRender() {
             toplevelView.setOutletState({
               render: {
                 owner,
@@ -185,12 +185,12 @@ export default function(context) {
             });
 
             // RE: next usage, see detailed comment above
-            next(resolve);
-          });
+            setTimeout(resolve, 0);
+          }, 0);
         });
       };
 
       resolve(context);
-    });
+    }, 0);
   });
 }
