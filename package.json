@@ -54,7 +54,7 @@
     "eslint-plugin-prettier": "^2.3.1",
     "loader.js": "^4.2.3",
     "prettier": "^1.7.4",
-    "qunitjs": "^2.4.0"
+    "qunit": "^2.4.1"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
