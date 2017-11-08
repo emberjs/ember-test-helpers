@@ -43,7 +43,9 @@ QUnit.testDone(function({ module, name }) {
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
   if (Ember.testing) {
     throw new Error(
-      `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`
+      `Ember.testing should be reset after test has completed. ${module}: ${
+        name
+      } did not reset Ember.testing`
     );
   }
 
@@ -53,7 +55,9 @@ QUnit.testDone(function({ module, name }) {
   let expected = `<div id="ember-testing"></div>`;
   if (actual !== expected) {
     throw new Error(
-      `Expected #ember-testing-container to be reset after ${module}: ${name}, but was \`${actual}\``
+      `Expected #ember-testing-container to be reset after ${module}: ${name}, but was \`${
+        actual
+      }\``
     );
   }
 });
