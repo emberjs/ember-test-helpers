@@ -1,12 +1,12 @@
 import { guidFor } from '@ember/object/internals';
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import { RENDERING_CLEANUP } from './setup-rendering-context';
 
 export default function(context) {
   return new Promise(resolve => {
     // ensure "real" async and not "fake" RSVP based async
-    next(() => {
+    setTimeout(() => {
       let guid = guidFor(context);
       let destroyables = RENDERING_CLEANUP[guid];
 
@@ -16,6 +16,6 @@ export default function(context) {
 
       delete RENDERING_CLEANUP[guid];
       resolve(context);
-    });
+    }, 0);
   });
 }

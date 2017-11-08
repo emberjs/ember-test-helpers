@@ -1,4 +1,4 @@
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
@@ -61,7 +61,7 @@ export default function(context, options = {}) {
 
   return new Promise(resolve => {
     // ensure "real" async and not "fake" RSVP based async
-    next(() => {
+    setTimeout(() => {
       let resolver = options.resolver;
       let owner = buildOwner(resolver);
 
@@ -111,6 +111,6 @@ export default function(context, options = {}) {
       _setupPromiseListeners();
 
       resolve(context);
-    });
+    }, 0);
   });
 }
