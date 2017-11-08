@@ -38,10 +38,14 @@ function exposeRegistryMethodsWithoutDeprecations(container) {
 
 var Owner = (function() {
   if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
-    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
+    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin, {
+      _emberTestHelpersMockOwner: true,
+    });
   }
 
-  return EmberObject.extend();
+  return EmberObject.extend({
+    _emberTestHelpersMockOwner: true,
+  });
 })();
 
 export default function(resolver) {
@@ -136,7 +140,8 @@ export default function(resolver) {
   }
 
   return {
-    registry: registry,
-    container: container,
+    registry,
+    container,
+    owner,
   };
 }
