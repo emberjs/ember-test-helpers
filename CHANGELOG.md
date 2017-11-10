@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.7.0-beta.11](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.11) (2017-11-10)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.10...v0.7.0-beta.11)
+
+**Implemented enhancements:**
+
+- Use `Application.buildInstance` if possible to create `owner` for use in tests. [\#234](https://github.com/emberjs/ember-test-helpers/issues/234)
+
+**Merged pull requests:**
+
+- Random cleanup... [\#238](https://github.com/emberjs/ember-test-helpers/pull/238) ([rwjblue](https://github.com/rwjblue))
+- Use `Application.create\(\).buildInstance\(\)` if possible. [\#237](https://github.com/emberjs/ember-test-helpers/pull/237) ([rwjblue](https://github.com/rwjblue))
+
 ## [v0.7.0-beta.10](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.10) (2017-11-05)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.9...v0.7.0-beta.10)
 
