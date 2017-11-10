@@ -53,8 +53,15 @@ export default function(context) {
     next(() => {
       let { owner } = context;
 
-      let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
-      dispatcher.setup({}, '#ember-testing');
+      // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
+      // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
+      // `setResolver` (instead of `setApplication`) a "mock owner" is created by extending
+      // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
+      // manually start the event dispatcher.
+      if (owner._emberTestHelpersMockOwner) {
+        let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
+        dispatcher.setup({}, '#ember-testing');
+      }
 
       let OutletView = owner.factoryFor
         ? owner.factoryFor('view:-outlet')
