@@ -6,7 +6,8 @@ import { setResolver, setApplication } from 'ember-test-helpers';
 import require from 'require';
 import App from '../../app';
 
-const resolver = AppResolver.create();
+export const resolver = AppResolver.create();
+export const application = App.create({ autoboot: false });
 
 resolver.namespace = {
   modulePrefix: config.modulePrefix,
@@ -14,7 +15,7 @@ resolver.namespace = {
 };
 
 setResolver(resolver);
-setApplication(App.create({ autoboot: false }));
+setApplication(application);
 
 export function setResolverRegistry(registry) {
   setRegistry(registry);
