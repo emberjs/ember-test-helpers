@@ -1,18 +1,15 @@
 import Ember from 'ember';
 import { dasherize } from '@ember/string';
-import AppResolver, { setRegistry } from '../../resolver';
-import config from '../../config/environment';
+import { setRegistry } from '../../resolver';
 import { setResolver, setApplication } from 'ember-test-helpers';
 import require from 'require';
 import App from '../../app';
 
-export const resolver = AppResolver.create();
 export const application = App.create({ autoboot: false });
-
-resolver.namespace = {
-  modulePrefix: config.modulePrefix,
-  podModulePrefix: config.podModulePrefix,
-};
+export const resolver = application.Resolver.create({
+  namespace: application,
+  isResolverFromTestHelpers: true,
+});
 
 setResolver(resolver);
 setApplication(application);
