@@ -1,7 +1,14 @@
 # Change Log
 
-## [v0.7.0-beta.12](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.12) (2017-11-11)
-[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.11...v0.7.0-beta.12)
+## [v0.7.1](https://github.com/emberjs/ember-test-helpers/tree/v0.7.1) (2017-11-11)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0...v0.7.1)
+
+**Implemented enhancements:**
+
+- Automatically set resolver when `setApplication` is called. [\#242](https://github.com/emberjs/ember-test-helpers/pull/242) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.7.0](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0) (2017-11-11)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.11...v0.7.0)
 
 **Implemented enhancements:**
 
