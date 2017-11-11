@@ -4,4 +4,4 @@ export {
   _setupPromiseListeners,
   _teardownAJAXHooks,
   _teardownPromiseListeners,
-} from './settled';
+} from '@ember/test-helpers/settled';

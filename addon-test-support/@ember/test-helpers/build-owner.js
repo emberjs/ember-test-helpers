@@ -1,6 +1,6 @@
 import { Promise } from 'rsvp';
 
-import legacyBuildRegistry from './legacy-0-6-x/build-registry';
+import legacyBuildRegistry from 'ember-test-helpers/legacy-0-6-x/build-registry';
 
 export default function({ application, resolver }) {
   if (application) {
