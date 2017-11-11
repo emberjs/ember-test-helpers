@@ -1,9 +1,9 @@
 import { run } from '@ember/runloop';
 import { Promise as EmberPromise, resolve } from 'rsvp';
 import { assign, merge as emberMerge } from '@ember/polyfills';
-import { _setupPromiseListeners, _teardownPromiseListeners } from '../ext/rsvp';
-import { _setupAJAXHooks, _teardownAJAXHooks } from '../settled';
-import { getContext, setContext, unsetContext } from '../setup-context';
+import { _setupPromiseListeners, _teardownPromiseListeners } from '@ember/test-helpers/ext/rsvp';
+import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
+import { getContext, setContext, unsetContext } from '@ember/test-helpers';
 
 import Ember from 'ember';
 
