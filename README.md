@@ -15,9 +15,12 @@ standard Ember testing experience to any testing framework.
 
 A quick summary of the exports from the `ember-test-helpers` module:
 
-* `setResolver` - This function is used to allow the other functions build a valid
-  container/registry that is able to look objects up from your application (just as a running Ember
-  application would).
+* `setApplication` - This function is used to allow the rest of the setup
+  functions to build a valid container/registry which can be used to lookup
+  instances and factories from your application.
+* `setResolver` - When `setApplication` has not been ran, this function is used to allow the other
+  functions build a valid container/registry that is able to look objects up
+  from your application (just as a running Ember application would).
 * `setContext` - Invoked by the host testing framework to set the current testing context (generally
   the `this` within a running test).
 * `getContext` - Used to retrieve the current testing context.
