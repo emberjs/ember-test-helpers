@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.7.0-beta.12](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.12) (2017-11-11)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.11...v0.7.0-beta.12)
+
+**Implemented enhancements:**
+
+- Rename to `@ember/test-helpers` [\#240](https://github.com/emberjs/ember-test-helpers/issues/240)
+
+**Merged pull requests:**
+
+- Rename to @ember/test-helpers. [\#241](https://github.com/emberjs/ember-test-helpers/pull/241) ([rwjblue](https://github.com/rwjblue))
+
 ## [v0.7.0-beta.11](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.11) (2017-11-10)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0-beta.10...v0.7.0-beta.11)
 
