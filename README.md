@@ -32,6 +32,7 @@ A quick summary of the exports from the `ember-test-helpers` module:
 * `teardownRenderingContext` - Cleans up any work done in a rendering test.
 * `settled` - Returns a promise which will resolve when all async from AJAX, test waiters, and 
   scheduled timers have completed.
+* `validateErrorHandler` - Used to ensure that the `Ember.onerror` error handler properly re-throws any errors during testing.
 
 ## Collaborating
 
