@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.7.2](https://github.com/emberjs/ember-test-helpers/tree/v0.7.2) (2017-11-28)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.1...v0.7.2)
+
+**Implemented enhancements:**
+
+- Implement `validateErrorHandler` utility. [\#247](https://github.com/emberjs/ember-test-helpers/pull/247) ([rwjblue](https://github.com/rwjblue))
+
+**Closed issues:**
+
+- Leaking states between tests \(because of acceptance tests\) [\#243](https://github.com/emberjs/ember-test-helpers/issues/243)
+- Allowing rejected promises in integration tests [\#197](https://github.com/emberjs/ember-test-helpers/issues/197)
+
 ## [v0.7.1](https://github.com/emberjs/ember-test-helpers/tree/v0.7.1) (2017-11-11)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.0...v0.7.1)
 
