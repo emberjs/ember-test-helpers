@@ -67,31 +67,43 @@ function checkWaiters() {
   return false;
 }
 
-export default function settled(_options) {
-  let options = _options || {};
-  let waitForTimers = options.hasOwnProperty('waitForTimers') ? options.waitForTimers : true;
-  let waitForAJAX = options.hasOwnProperty('waitForAJAX') ? options.waitForAJAX : true;
-  let waitForWaiters = options.hasOwnProperty('waitForWaiters') ? options.waitForWaiters : true;
+export function isSettled(options) {
+  let waitForTimers = true;
+  let waitForAJAX = true;
+  let waitForWaiters = true;
 
+  if (options !== undefined) {
+    waitForTimers = 'waitForTimers' in options ? options.waitForTimers : true;
+    waitForAJAX = 'waitForAJAX' in options ? options.waitForAJAX : true;
+    waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
+  }
+
+  if (waitForTimers && (run.hasScheduledTimers() || run.currentRunLoop)) {
+    return false;
+  }
+
+  if (waitForAJAX && requests && requests.length > 0) {
+    return false;
+  }
+
+  if (waitForWaiters && checkWaiters()) {
+    return false;
+  }
+
+  return true;
+}
+
+export default function settled(options) {
   return new EmberPromise(function(resolve) {
     let watcher = global.setInterval(function() {
-      if (waitForTimers && (run.hasScheduledTimers() || run.currentRunLoop)) {
-        return;
+      let settled = isSettled(options);
+      if (settled) {
+        // Stop polling
+        global.clearInterval(watcher);
+
+        // Synchronously resolve the promise
+        run(null, resolve);
       }
-
-      if (waitForAJAX && requests && requests.length > 0) {
-        return;
-      }
-
-      if (waitForWaiters && checkWaiters()) {
-        return;
-      }
-
-      // Stop polling
-      global.clearInterval(watcher);
-
-      // Synchronously resolve the promise
-      run(null, resolve);
     }, 10);
   });
 }
