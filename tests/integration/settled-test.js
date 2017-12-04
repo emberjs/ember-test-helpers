@@ -26,7 +26,7 @@ function ajax(url) {
   }
 }
 
-module('settle', function(hooks) {
+module('settled real-world scenarios', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
