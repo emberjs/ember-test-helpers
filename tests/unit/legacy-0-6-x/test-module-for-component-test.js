@@ -334,6 +334,7 @@ test('deprecation is not raised', function(assert) {
 module('moduleForComponent: can be invoked with the component name and description', {
   beforeEach(assert) {
     var done = assert.async();
+    setupRegistry();
     testModule = new TestModuleForComponent('pretty-color', 'PrettyColor', {
       unit: true,
     });
