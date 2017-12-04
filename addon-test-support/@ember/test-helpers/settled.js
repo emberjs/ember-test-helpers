@@ -67,6 +67,18 @@ function checkWaiters() {
   return false;
 }
 
+export function getState() {
+  let pendingRequestCount = requests !== undefined ? requests.length : 0;
+
+  return {
+    hasPendingTimers: Boolean(run.hasScheduledTimers()),
+    hasRunLoop: Boolean(run.currentRunLoop),
+    hasPendingWaiters: checkWaiters(),
+    hasPendingRequests: pendingRequestCount > 0,
+    pendingRequestCount,
+  };
+}
+
 export function isSettled(options) {
   let waitForTimers = true;
   let waitForAJAX = true;
@@ -78,15 +90,17 @@ export function isSettled(options) {
     waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
   }
 
-  if (waitForTimers && (run.hasScheduledTimers() || run.currentRunLoop)) {
+  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getState();
+
+  if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
     return false;
   }
 
-  if (waitForAJAX && requests && requests.length > 0) {
+  if (waitForAJAX && hasPendingRequests) {
     return false;
   }
 
-  if (waitForWaiters && checkWaiters()) {
+  if (waitForWaiters && hasPendingWaiters) {
     return false;
   }
 
