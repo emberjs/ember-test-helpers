@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import $ from 'jquery'; // FYI - not present in all scenarios
 import { later, run } from '@ember/runloop';
 import Component from '@ember/component';
 import {
@@ -15,16 +14,7 @@ import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
 import { fireEvent } from '../helpers/events';
 import hasjQuery from '../helpers/has-jquery';
-import require from 'require';
-
-function ajax(url) {
-  if (hasjQuery()) {
-    return $.ajax(url, { cache: false });
-  } else {
-    let fetch = require('fetch').default;
-    return fetch(url).then(response => response.text());
-  }
-}
+import ajax from '../helpers/ajax';
 
 module('settled real-world scenarios', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
