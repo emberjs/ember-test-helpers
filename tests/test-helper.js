@@ -3,6 +3,10 @@ import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 
+if (QUnit.config.seed) {
+  QUnit.config.reorder = false;
+}
+
 let moduleLoadFailures = [];
 
 QUnit.done(function() {
