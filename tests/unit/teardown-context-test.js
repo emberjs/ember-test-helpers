@@ -10,14 +10,11 @@ module('teardownContext', function(hooks) {
     return;
   }
 
-  hooks.before(function() {
+  let context;
+  hooks.beforeEach(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
-  });
-
-  let context;
-  hooks.beforeEach(function() {
     context = {};
     return setupContext(context);
   });
