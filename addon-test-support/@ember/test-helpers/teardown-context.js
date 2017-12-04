@@ -1,6 +1,7 @@
 import { run, next } from '@ember/runloop';
 import { _teardownPromiseListeners } from './ext/rsvp';
 import { _teardownAJAXHooks } from './settled';
+import { unsetContext } from './setup-context';
 import { Promise } from 'rsvp';
 import Ember from 'ember';
 
@@ -16,6 +17,7 @@ export default function(context) {
       run(owner, 'destroy');
       Ember.testing = false;
 
+      unsetContext();
       resolve(context);
     });
   });
