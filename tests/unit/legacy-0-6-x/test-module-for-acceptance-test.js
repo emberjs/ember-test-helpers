@@ -21,7 +21,7 @@ moduleForAcceptance('TestModuleForAcceptance | Lifecycle', {
 
   beforeSetup(assert) {
     assert.expect(6);
-    assert.strictEqual(getContext(), undefined);
+    assert.ok(getContext() === undefined, 'precond - getContext() was reset');
 
     setResolverRegistry({
       'router:main': EmberRouter.extend({ location: 'none' }),

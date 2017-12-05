@@ -161,7 +161,7 @@ test("subject's created in a test are destroyed", function(assert) {
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- without needs or `integration: true`', {
-  beforeSetup: setupRegistry(),
+  beforeSetup: () => setupRegistry(),
 });
 
 test('knows nothing about our non-subject component', function(assert) {
@@ -170,7 +170,7 @@ test('knows nothing about our non-subject component', function(assert) {
 });
 
 moduleFor('component:x-foo', 'component:x-foo -- when needing another component', {
-  beforeSetup: setupRegistry(),
+  beforeSetup: () => setupRegistry(),
   needs: ['component:not-the-subject'],
 });
 
@@ -337,6 +337,7 @@ var contexts, testModule;
 QUnit.module('context can be provided to TestModule', {
   beforeEach() {
     contexts = [this];
+    setupRegistry();
     testModule = new TestModule('component:x-foo', 'Foo', {
       setup() {
         contexts.push(this);
@@ -383,7 +384,9 @@ test('`toString` returns the test subject', function(assert) {
   );
 });
 
-moduleFor('component:x-foo', 'ember-testing resets to empty value');
+moduleFor('component:x-foo', 'ember-testing resets to empty value', {
+  beforeSetup: setupRegistry,
+});
 
 test('sets ember-testing content to "foobar"', function(assert) {
   assert.expect(0);
@@ -401,7 +404,7 @@ test('sets ember-testing content to "<div>foobar</div>"', function(assert) {
   assert.expect(1);
   document.getElementById('ember-testing').innerHTML = '<div>foobar</div>';
 
-  testModule = new TestModule('component:x-foo', 'Foo');
+  testModule = new TestModule('component:x-foo', 'Foo', { beforeSetup: setupRegistry });
   testModule.setContext(this);
   return testModule
     .setup(...arguments)

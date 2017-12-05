@@ -23,7 +23,7 @@ module('setupContext', function(hooks) {
     return;
   }
 
-  hooks.before(function() {
+  hooks.beforeEach(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
@@ -35,9 +35,7 @@ module('setupContext', function(hooks) {
       await teardownContext(context);
       context = undefined;
     }
-  });
 
-  hooks.after(function() {
     setApplication(application);
     setResolver(resolver);
   });

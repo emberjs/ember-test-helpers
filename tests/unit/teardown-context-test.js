@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { setupContext, teardownContext } from 'ember-test-helpers';
+import { getContext, setupContext, teardownContext } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import Ember from 'ember';
@@ -10,14 +10,11 @@ module('teardownContext', function(hooks) {
     return;
   }
 
-  hooks.before(function() {
+  let context;
+  hooks.beforeEach(function() {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
-  });
-
-  let context;
-  hooks.beforeEach(function() {
     context = {};
     return setupContext(context);
   });
@@ -39,5 +36,13 @@ module('teardownContext', function(hooks) {
     await teardownContext(context);
 
     assert.notOk(Ember.testing, 'Ember.testing is falsey after teardown');
+  });
+
+  test('it unsets the context', async function(assert) {
+    assert.strictEqual(getContext(), context, 'precond');
+
+    await teardownContext(context);
+
+    assert.strictEqual(getContext(), undefined, 'context is unset');
   });
 });
