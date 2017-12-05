@@ -13,3 +13,4 @@ export { default as setupRenderingContext, render, clearRender } from './setup-r
 export { default as teardownRenderingContext } from './teardown-rendering-context';
 export { default as settled, isSettled, getState as getSettledState } from './settled';
 export { default as validateErrorHandler } from './validate-error-handler';
+export { default as waitUntil } from './helpers/wait-until';
