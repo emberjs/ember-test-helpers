@@ -172,8 +172,9 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   hooks.afterEach(async function() {
-    this.server.shutdown();
     await settled();
+
+    this.server.shutdown();
 
     await teardownRenderingContext(this);
     await teardownContext(this);
