@@ -25,10 +25,10 @@ jobs:
   include:
     # runs tests with current locked deps and linting
     - stage: test
-      env: NAME=lint                  # used only to make Travis UI show description
-      script: yarn lint
-    - env: NAME=test                  # used only to make Travis UI show description
-      script: yarn test
+      env: NAME=test                  # used only to make Travis UI show description
+      script:
+        - yarn lint
+        - yarn test
     - env: NAME=floating dependencies # used only to make Travis UI show description
       install: yarn install --no-lockfile
       script: yarn test
