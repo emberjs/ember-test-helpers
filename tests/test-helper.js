@@ -51,9 +51,7 @@ QUnit.testStart(function() {
 QUnit.testDone(function({ module, name }) {
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
   if (Ember.testing) {
-    let message = `Ember.testing should be reset after test has completed. ${module}: ${
-      name
-    } did not reset Ember.testing`;
+    let message = `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`;
     cleanupFailures.push(message);
 
     // eslint-disable-next-line
@@ -66,9 +64,7 @@ QUnit.testDone(function({ module, name }) {
   let actual = testElementContainer.innerHTML;
   let expected = `<div id="ember-testing"></div>`;
   if (actual !== expected) {
-    let message = `Expected #ember-testing-container to be reset after ${module}: ${
-      name
-    }, but was \`${actual}\``;
+    let message = `Expected #ember-testing-container to be reset after ${module}: ${name}, but was \`${actual}\``;
     cleanupFailures.push(message);
 
     // eslint-disable-next-line

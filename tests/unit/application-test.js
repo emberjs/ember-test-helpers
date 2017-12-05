@@ -28,9 +28,7 @@ module('application', function(hooks) {
     );
   });
 
-  test('calling setApplication when a resolver is set does not clobber existing resolver', function(
-    assert
-  ) {
+  test('calling setApplication when a resolver is set does not clobber existing resolver', function(assert) {
     setResolver(resolver);
     setApplication(application);
 

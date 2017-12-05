@@ -124,9 +124,7 @@ test('can access TestModule properties from a callback but raises a deprecation'
   );
 });
 
-test("can access test context properties from a callback's 'this' and not raise a deprecation", function(
-  assert
-) {
+test("can access test context properties from a callback's 'this' and not raise a deprecation", function(assert) {
   assert.noDeprecations(() => {
     this.foo = 'bar';
 
@@ -199,9 +197,7 @@ test('needs is not needed (pun intended) when integration is true', function(ass
   assert.ok(otherComponent, 'another component can be resolved when integration is true');
 });
 
-test('throws an error when declaring integration: true and needs in the same module', function(
-  assert
-) {
+test('throws an error when declaring integration: true and needs in the same module', function(assert) {
   assert.expect(3);
 
   var result = false;
