@@ -1,6 +1,34 @@
 # Change Log
 
-## [v0.7.2](https://github.com/emberjs/ember-test-helpers/tree/v0.7.2) (2017-11-28)
+## [v0.7.3](https://github.com/emberjs/ember-test-helpers/tree/v0.7.3) (2017-12-05)
+[Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.2...v0.7.3)
+
+**Implemented enhancements:**
+
+- Refactor `isSettled` to allow better insight into current state. [\#251](https://github.com/emberjs/ember-test-helpers/pull/251) ([rwjblue](https://github.com/rwjblue))
+- Expose `isSettled` utility function. [\#248](https://github.com/emberjs/ember-test-helpers/pull/248) ([rwjblue](https://github.com/rwjblue))
+
+**Fixed bugs:**
+
+- Fix order dependence in tests. [\#252](https://github.com/emberjs/ember-test-helpers/pull/252) ([rwjblue](https://github.com/rwjblue))
+
+**Closed issues:**
+
+- Remove `ember-beta` from allowed failures. [\#249](https://github.com/emberjs/ember-test-helpers/issues/249)
+- moduleForModel doesn't play nicely with application serializer. [\#165](https://github.com/emberjs/ember-test-helpers/issues/165)
+- Unit testing components with new attrs hash [\#63](https://github.com/emberjs/ember-test-helpers/issues/63)
+- Support non ember-data models [\#29](https://github.com/emberjs/ember-test-helpers/issues/29)
+- Generated controller test fails to lookup another controller factory \(through needs\) [\#8](https://github.com/emberjs/ember-test-helpers/issues/8)
+- Unit test for model requires inclusion of any other "referenced" model into needs. [\#6](https://github.com/emberjs/ember-test-helpers/issues/6)
+
+**Merged pull requests:**
+
+- CI: Use Node 4 for tests [\#256](https://github.com/emberjs/ember-test-helpers/pull/256) ([Turbo87](https://github.com/Turbo87))
+- Use build stages to fail early... [\#255](https://github.com/emberjs/ember-test-helpers/pull/255) ([rwjblue](https://github.com/rwjblue))
+- Upgrade default Ember version to 2.17. [\#254](https://github.com/emberjs/ember-test-helpers/pull/254) ([rwjblue](https://github.com/rwjblue))
+- Remove usage of Ember.Handlebars.SafeString. [\#253](https://github.com/emberjs/ember-test-helpers/pull/253) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.7.2](https://github.com/emberjs/ember-test-helpers/tree/v0.7.2) (2017-11-30)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.1...v0.7.2)
 
 **Implemented enhancements:**
@@ -25,9 +53,6 @@
 **Implemented enhancements:**
 
 - Rename to `@ember/test-helpers` [\#240](https://github.com/emberjs/ember-test-helpers/issues/240)
-
-**Merged pull requests:**
-
 - Rename to @ember/test-helpers. [\#241](https://github.com/emberjs/ember-test-helpers/pull/241) ([rwjblue](https://github.com/rwjblue))
 
 ## [v0.7.0-beta.11](https://github.com/emberjs/ember-test-helpers/tree/v0.7.0-beta.11) (2017-11-10)
