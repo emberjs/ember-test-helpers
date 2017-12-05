@@ -1,174 +1,41 @@
 import Ember from 'ember';
-import $ from 'jquery'; // FYI - not present in all scenarios
-import { later, run } from '@ember/runloop';
-import Component from '@ember/component';
-import {
-  settled,
-  setupContext,
-  setupRenderingContext,
-  teardownContext,
-  teardownRenderingContext,
-} from 'ember-test-helpers';
+import { module, test } from 'qunit';
+import { isSettled, getSettledState } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import { module, test, skip } from 'qunit';
-import hbs from 'htmlbars-inline-precompile';
+import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
+import { next, later, run, schedule } from '@ember/runloop';
 import Pretender from 'pretender';
-import { fireEvent } from '../helpers/events';
 import hasjQuery from '../helpers/has-jquery';
-import require from 'require';
+import ajax from '../helpers/ajax';
 
-function ajax(url) {
-  if (hasjQuery()) {
-    return $.ajax(url, { cache: false });
-  } else {
-    let fetch = require('fetch').default;
-    return fetch(url).then(response => response.text());
-  }
-}
-
-module('settle', function(hooks) {
+module('settled', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
 
-  hooks.beforeEach(async function() {
-    await setupContext(this);
-    await setupRenderingContext(this);
+  hooks.beforeEach(function(assert) {
+    _setupAJAXHooks();
 
-    let { owner } = this;
-
-    owner.register(
-      'component:x-test-1',
-      Component.extend({
-        internalValue: 'initial value',
-
-        init() {
-          this._super.apply(this, arguments);
-
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
+    this.confirmSettles = done => {
+      return function() {
+        setTimeout(() => {
+          assert.strictEqual(isSettled(), true, 'post cond - isSettled');
+          assert.deepEqual(
+            getSettledState(),
+            {
+              hasPendingRequests: false,
+              hasPendingTimers: false,
+              hasPendingWaiters: false,
+              hasRunLoop: false,
+              pendingRequestCount: 0,
             },
-            10
+            'post cond - getSettledState'
           );
-        },
-      })
-    );
 
-    owner.register('template:components/x-test-1', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-2',
-      Component.extend({
-        internalValue: 'initial value',
-
-        click() {
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
-            },
-            10
-          );
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-2', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-3',
-      Component.extend({
-        internalValue: '',
-
-        click() {
-          var component = this;
-
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
-
-            run(component, 'set', 'internalValue', value + data);
-          });
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-3', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-4',
-      Component.extend({
-        internalValue: '',
-
-        click() {
-          var component = this;
-
-          later(function() {
-            run(component, 'set', 'internalValue', 'Local Data!');
-          }, 10);
-
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
-
-            run(component, 'set', 'internalValue', value + data);
-
-            later(function() {
-              ajax('/whazzits').then(function(data) {
-                if (component.isDestroyed) {
-                  return;
-                }
-
-                var value = component.get('internalValue');
-
-                run(component, 'set', 'internalValue', value + data);
-              });
-            }, 15);
-          });
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-4', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-5',
-      Component.extend({
-        internalValue: 'initial value',
-
-        ready: false,
-
-        isReady() {
-          return this.get('ready');
-        },
-
-        init() {
-          this._super.apply(this, arguments);
-          // In Ember < 2.8 `registerWaiter` expected to be bound to
-          // `Ember.Test` 😭
-          //
-          // Once we have dropped support for < 2.8 we should swap this to
-          // use:
-          //
-          // import { registerWaiter } from '@ember/test';
-          Ember.Test.registerWaiter(this, this.isReady);
-          later(() => {
-            this.setProperties({
-              internalValue: 'async value',
-              ready: true,
-            });
-          }, 25);
-        },
-
-        willDestroy() {
-          this._super.apply(this, arguments);
-          // must be called with `Ember.Test` as context for Ember < 2.8
-          Ember.Test.unregisterWaiter(this, this.isReady);
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-5', hbs`{{internalValue}}`);
+          done();
+        });
+      };
+    };
 
     this.server = new Pretender(function() {
       this.get(
@@ -179,92 +46,277 @@ module('settle', function(hooks) {
         25
       );
     });
+
+    this._waiter = () => {
+      return !this.isWaiterPending;
+    };
+
+    // In Ember < 2.8 `registerWaiter` expected to be bound to
+    // `Ember.Test` 😭
+    //
+    // Once we have dropped support for < 2.8 we should swap this to
+    // use:
+    //
+    // import { registerWaiter } from '@ember/test';
+    Ember.Test.registerWaiter(this._waiter);
   });
 
-  hooks.afterEach(async function() {
+  hooks.afterEach(function() {
+    Ember.Test.unregisterWaiter(this._waiter);
     this.server.shutdown();
-    await settled();
-
-    await teardownRenderingContext(this);
-    await teardownContext(this);
+    _teardownAJAXHooks();
   });
 
-  test('it works when async exists in `init`', async function(assert) {
-    await this.render(hbs`{{x-test-1}}`);
+  module('isSettled', function() {
+    test('when no work is scheduled, no requests, waiters completed', function(assert) {
+      assert.strictEqual(isSettled(), true);
+    });
 
-    await settled();
+    test('when work is scheduled via run.schedule', function(assert) {
+      assert.expect(4);
+      let done = assert.async();
 
-    assert.equal(this.element.textContent, 'async value');
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      schedule('actions', this.confirmSettles(done));
+
+      assert.strictEqual(isSettled(), false);
+    });
+
+    test('when work is scheduled via run.next', function(assert) {
+      assert.expect(4);
+
+      let done = assert.async();
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      next(this.confirmSettles(done));
+
+      assert.strictEqual(isSettled(), false);
+    });
+
+    test('when work is scheduled via run.later', function(assert) {
+      assert.expect(4);
+
+      let done = assert.async();
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      later(this.confirmSettles(done), 15);
+
+      assert.strictEqual(isSettled(), false);
+    });
+
+    test('when invocation is within a run loop', function(assert) {
+      assert.expect(3);
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      run(() => {
+        assert.strictEqual(isSettled(), false);
+      });
+
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
+
+    test('when AJAX requests are pending', function(assert) {
+      assert.expect(4);
+
+      let done = assert.async();
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      ajax('/whazzits').then(this.confirmSettles(done));
+
+      assert.strictEqual(isSettled(), false);
+    });
+
+    test('when waiters are pending', function(assert) {
+      assert.expect(3);
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      this.isWaiterPending = true;
+
+      assert.strictEqual(isSettled(), false);
+
+      this.isWaiterPending = false;
+
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
   });
 
-  test('it works when async exists in an event/action', async function(assert) {
-    await this.render(hbs`{{x-test-2}}`);
+  module('getSettledState', function() {
+    test('when no work is scheduled, no requests, waiters completed', function(assert) {
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: false,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+    });
 
-    assert.equal(this.element.textContent, 'initial value');
+    test('when work is scheduled via run.schedule', function(assert) {
+      assert.expect(4);
+      let done = assert.async();
 
-    fireEvent(this.element.querySelector('div'), 'click');
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    await settled();
+      schedule('actions', this.confirmSettles(done));
 
-    assert.equal(this.element.textContent, 'async value');
-  });
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: true,
+        hasPendingWaiters: false,
+        hasRunLoop: true,
+        pendingRequestCount: 0,
+      });
+    });
 
-  test('it waits for AJAX requests to finish', async function(assert) {
-    await this.render(hbs`{{x-test-3}}`);
+    test('when work is scheduled via run.next', function(assert) {
+      assert.expect(4);
 
-    fireEvent(this.element.querySelector('div'), 'click');
+      let done = assert.async();
 
-    await settled();
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    assert.equal(this.element.textContent, 'Remote Data!');
-  });
+      next(this.confirmSettles(done));
 
-  test('it waits for interleaved AJAX and run loops to finish', async function(assert) {
-    var testContext = this;
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: true,
+        hasPendingWaiters: false,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+    });
 
-    await this.render(hbs`{{x-test-4}}`);
+    test('when work is scheduled via run.later', function(assert) {
+      assert.expect(4);
 
-    fireEvent(this.element.querySelector('div'), 'click');
+      let done = assert.async();
 
-    await settled();
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!Remote Data!');
-  });
+      later(this.confirmSettles(done), 15);
 
-  test('it can wait only for AJAX', async function(assert) {
-    var testContext = this;
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: true,
+        hasPendingWaiters: false,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+    });
 
-    await this.render(hbs`{{x-test-4}}`);
+    test('when invocation is within a run loop', function(assert) {
+      assert.expect(3);
 
-    fireEvent(this.element.querySelector('div'), 'click');
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    await settled({ waitForTimers: false });
+      run(() => {
+        assert.deepEqual(getSettledState(), {
+          hasPendingRequests: false,
+          hasPendingTimers: false,
+          hasPendingWaiters: false,
+          hasRunLoop: true,
+          pendingRequestCount: 0,
+        });
+      });
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!');
-  });
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
 
-  // in the wait utility we specific listen for artificial jQuery events
-  // to start/stop waiting, but when using ember-fetch those events are not
-  // emitted and instead test waiters are used
-  //
-  // therefore, this test is only valid when using jQuery.ajax
-  (hasjQuery() ? test : skip)('it can wait only for timers', async function(assert) {
-    var testContext = this;
+    test('when AJAX requests are pending', function(assert) {
+      assert.expect(4);
 
-    await this.render(hbs`{{x-test-4}}`);
+      let done = assert.async();
 
-    fireEvent(this.element.querySelector('div'), 'click');
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    await settled({ waitForAJAX: false });
+      ajax('/whazzits').then(this.confirmSettles(done));
 
-    assert.equal(testContext.element.textContent, 'Local Data!');
-  });
+      /*
+        When testing without jQuery `ajax` is provided by ember-fetch which uses a test waiter
+        to ensure tests wait for pending `fetch` requests, but under jQuery.ajax we use global
+        ajax start/stop timers
+      */
+      if (hasjQuery()) {
+        assert.deepEqual(getSettledState(), {
+          hasPendingRequests: true,
+          hasPendingTimers: false,
+          hasPendingWaiters: false,
+          hasRunLoop: false,
+          pendingRequestCount: 1,
+        });
+      } else {
+        assert.deepEqual(getSettledState(), {
+          hasPendingRequests: false,
+          hasPendingTimers: false,
+          hasPendingWaiters: true,
+          hasRunLoop: false,
+          pendingRequestCount: 0,
+        });
+      }
+    });
 
-  test('it waits for Ember test waiters', async function(assert) {
-    await this.render(hbs`{{x-test-5}}`);
+    test('when waiters are pending', function(assert) {
+      assert.expect(3);
 
-    await settled({ waitForTimers: false });
+      assert.strictEqual(isSettled(), true, 'precond');
 
-    assert.equal(this.element.textContent, 'async value');
+      this.isWaiterPending = true;
+
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: true,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+
+      this.isWaiterPending = false;
+
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
+
+    test('all the things!', function(assert) {
+      assert.expect(6);
+      let done = assert.async();
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      this.isWaiterPending = true;
+
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: true,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+
+      run(() => {
+        assert.deepEqual(getSettledState(), {
+          hasPendingRequests: false,
+          hasPendingTimers: false,
+          hasPendingWaiters: true,
+          hasRunLoop: true,
+          pendingRequestCount: 0,
+        });
+
+        next(this.confirmSettles(done));
+
+        assert.deepEqual(getSettledState(), {
+          hasPendingRequests: false,
+          hasPendingTimers: true,
+          hasPendingWaiters: true,
+          hasRunLoop: true,
+          pendingRequestCount: 0,
+        });
+
+        this.isWaiterPending = false;
+      });
+    });
   });
 });

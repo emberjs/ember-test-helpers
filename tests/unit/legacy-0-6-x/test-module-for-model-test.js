@@ -82,9 +82,7 @@ test('model exists as subject', function(assert) {
   assert.ok(model instanceof Whazzit);
 });
 
-test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for model', function(
-  assert
-) {
+test('JSONAPIAdapter (ED >= 2) or FixtureAdapter (ED < 2) is registered for model', function(assert) {
   var model = this.subject(),
     store = this.store();
 

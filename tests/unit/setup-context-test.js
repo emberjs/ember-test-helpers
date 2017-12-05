@@ -120,9 +120,7 @@ module('setupContext', function(hooks) {
         assert.equal(subject.someMethod(), 'hello thar!');
       });
 
-      test('can access a service instance (instead of this.inject.service("thing") in 0.6)', function(
-        assert
-      ) {
+      test('can access a service instance (instead of this.inject.service("thing") in 0.6)', function(assert) {
         context.owner.register('service:bar', Service.extend());
         context.owner.register(
           'service:foo',
@@ -172,9 +170,7 @@ module('setupContext', function(hooks) {
         assert.verifySteps(['5 ms', '20 ms', '30 ms', '50 ms']);
       });
 
-      test('imported pauseTest and resumeTest allow customizations by test frameworks', async function(
-        assert
-      ) {
+      test('imported pauseTest and resumeTest allow customizations by test frameworks', async function(assert) {
         assert.expect(2);
 
         let originalPauseTest = context.pauseTest;

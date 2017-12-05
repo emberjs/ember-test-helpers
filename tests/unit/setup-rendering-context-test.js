@@ -76,9 +76,7 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(this.element.textContent, 'Hello!');
     });
 
-    test('clearRender can be used to clear the previously rendered template', async function(
-      assert
-    ) {
+    test('clearRender can be used to clear the previously rendered template', async function(assert) {
       let testingRootElement = document.getElementById('ember-testing');
 
       await this.render(hbs`<p>Hello!</p>`);
@@ -287,9 +285,7 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(this.get('foo'), 'updated!');
     });
 
-    test('two way bound arguments are available after clearRender is called', async function(
-      assert
-    ) {
+    test('two way bound arguments are available after clearRender is called', async function(assert) {
       this.owner.register(
         'component:my-component',
         Component.extend({
