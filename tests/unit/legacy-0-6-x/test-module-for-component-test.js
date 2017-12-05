@@ -17,6 +17,7 @@ import qunitModuleFor from '../../helpers/qunit-module-for';
 import hasjQuery from '../../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
 import { fireEvent, focus, blur } from '../../helpers/events';
+import { htmlSafe } from '@ember/string';
 
 var Service = EmberService || EmberObject;
 
@@ -34,7 +35,7 @@ var PrettyColor = Component.extend({
   classNames: ['pretty-color'],
   attributeBindings: ['style'],
   style: computed('name', function() {
-    return new Ember.Handlebars.SafeString('color: ' + this.get('name') + ';');
+    return htmlSafe('color: ' + this.get('name') + ';');
   }),
 
   click() {
