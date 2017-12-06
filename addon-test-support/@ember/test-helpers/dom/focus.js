@@ -2,8 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-
-const nextTick = setTimeout;
+import { nextTick } from '../-utils';
 
 export function _focus(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();

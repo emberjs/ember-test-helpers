@@ -3,8 +3,7 @@ import fireEvent from './fire-event';
 import { _focus } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-
-const nextTick = setTimeout;
+import { nextTick } from '../-utils';
 
 /**
   @method click
