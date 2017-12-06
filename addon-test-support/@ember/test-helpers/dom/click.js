@@ -2,6 +2,9 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { _focus } from './focus';
 import settled from '../settled';
+import isFocusable from './-is-focusable';
+
+const nextTick = setTimeout;
 
 /**
   @method click
@@ -15,10 +18,12 @@ export default function click(selector) {
     throw new Error(`Element not found when calling \`click('${selector}')\`.`);
   }
 
-  fireEvent(element, 'mousedown');
-  _focus(element);
-  fireEvent(element, 'mouseup');
-  fireEvent(element, 'click');
+  nextTick(() => {
+    fireEvent(element, 'mousedown');
+    _focus(element);
+    fireEvent(element, 'mouseup');
+    fireEvent(element, 'click');
+  });
 
   return settled();
 }
