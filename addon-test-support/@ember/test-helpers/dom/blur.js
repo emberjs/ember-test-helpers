@@ -9,11 +9,7 @@ import isFocusable from './-is-focusable';
   @return {RSVP.Promise}
   @public
 */
-export default function blur(selectorOrElement) {
-  if (!selectorOrElement) {
-    throw new Error('Must pass an element or selector to `blur`.');
-  }
-
+export default function blur(selectorOrElement = document.activeElement) {
   let element = getElement(selectorOrElement);
 
   if (isFocusable(element)) {
