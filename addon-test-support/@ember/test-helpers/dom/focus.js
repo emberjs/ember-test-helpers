@@ -1,21 +1,7 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-
-const FOCUSABLE_TAGS = ['INPUT', 'BUTTON', 'LINK', 'SELECT', 'A', 'TEXTAREA'];
-function isFocusable(el) {
-  let { tagName, type } = el;
-
-  if (type === 'hidden') {
-    return false;
-  }
-
-  if (FOCUSABLE_TAGS.indexOf(tagName) > -1 || el.contentEditable === 'true') {
-    return true;
-  }
-
-  return el.hasAttribute('tabindex');
-}
+import isFocusable from './-is-focusable';
 
 /*
   @method focus

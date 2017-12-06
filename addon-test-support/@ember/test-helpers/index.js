@@ -18,3 +18,4 @@ export { default as validateErrorHandler } from './validate-error-handler';
 // DOM Helpers
 export { default as click } from './dom/click';
 export { default as focus } from './dom/focus';
+export { default as blur } from './dom/blur';
