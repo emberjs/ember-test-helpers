@@ -8,9 +8,12 @@ export default function getElement(selectorOrElement) {
     selectorOrElement instanceof SVGElement
   ) {
     return selectorOrElement;
+  } else if (typeof selectorOrElement === 'string') {
+    let rootElement = getContext().element;
+
+    return rootElement.querySelector(selectorOrElement);
+  } else {
+    throw new Error('Must use an element or a selector string');
   }
 
-  let rootElement = getContext().element;
-
-  return rootElement.querySelector(selectorOrElement);
 }
