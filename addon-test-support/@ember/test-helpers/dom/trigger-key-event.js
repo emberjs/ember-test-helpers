@@ -2,14 +2,14 @@ import { merge } from '@ember/polyfills';
 import triggerEvent from './trigger-event';
 
 /**
- * @public
- * @param selector
- * @param type
- * @param keyCode
- * @param modifiers
- * @return {*}
- */
-export function keyEvent(
+  @public
+  @param selector
+  @param type
+  @param keyCode
+  @param modifiers
+  @return {*}
+*/
+export default function keyEvent(
   selectorOrElement,
   type,
   keyCode,

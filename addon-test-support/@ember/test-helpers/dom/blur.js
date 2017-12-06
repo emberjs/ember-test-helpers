@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 
-/*
+/**
   @method blur
   @param {String|HTMLElement} selector
   @return {RSVP.Promise}

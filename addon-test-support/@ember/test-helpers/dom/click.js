@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import focus from './focus';
 import settled from '../settled';
 
-/*
+/**
   @method click
   @param {String|HTMLElement} selector
   @return {RSVP.Promise}

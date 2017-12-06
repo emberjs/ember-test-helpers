@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 
-/*
+/**
   @method triggerEvent
   @param {String|HTMLElement} selector
   @param {String} type

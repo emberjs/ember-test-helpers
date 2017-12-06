@@ -15,7 +15,7 @@ const MOUSE_EVENT_TYPES = [
 ];
 const FILE_SELECTION_EVENT_TYPES = ['change'];
 
-/*
+/**
   @method fireEvent
   @param {HTMLElement} element
   @param {String} type

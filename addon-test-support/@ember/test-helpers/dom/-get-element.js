@@ -15,5 +15,4 @@ export default function getElement(selectorOrElement) {
   } else {
     throw new Error('Must use an element or a selector string');
   }
-
 }
