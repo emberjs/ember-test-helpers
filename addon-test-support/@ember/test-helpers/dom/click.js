@@ -1,6 +1,6 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
-import focus from './focus';
+import { _focus } from './focus';
 import settled from '../settled';
 
 /**
@@ -13,7 +13,7 @@ export default function click(selector) {
   let element = getElement(selector);
 
   fireEvent(element, 'mousedown');
-  focus(element);
+  _focus(element);
   fireEvent(element, 'mouseup');
   fireEvent(element, 'click');
 
