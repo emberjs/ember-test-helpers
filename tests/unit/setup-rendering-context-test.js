@@ -253,7 +253,7 @@ module('setupRenderingContext', function(hooks) {
       let input = this.element.querySelector('input');
       assert.equal(input.value, 'init');
 
-      focus(input);
+      await focus(input);
       assert.equal(input.value, 'focusin');
 
       blur(input);

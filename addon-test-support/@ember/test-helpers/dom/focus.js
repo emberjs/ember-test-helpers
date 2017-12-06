@@ -3,33 +3,25 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 
-// Use Symbol here #someday...
-const FOCUS_SUCCESSFUL = Object.freeze({});
-const FOCUS_UNSUCCESSFUL = Object.freeze({});
+const nextTick = setTimeout;
 
 export function _focus(element) {
-  if (isFocusable(element)) {
-    let browserIsNotFocused = document.hasFocus && !document.hasFocus();
+  let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
-    // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
-    element.focus();
+  // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
+  element.focus();
 
-    // Firefox does not trigger the `focusin` event if the window
-    // does not have focus. If the document does not have focus then
-    // fire `focusin` event as well.
-    if (browserIsNotFocused) {
-      // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
-      fireEvent(element, 'focus', {
-        bubbles: false,
-      });
+  // Firefox does not trigger the `focusin` event if the window
+  // does not have focus. If the document does not have focus then
+  // fire `focusin` event as well.
+  if (browserIsNotFocused) {
+    // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
+    fireEvent(element, 'focus', {
+      bubbles: false,
+    });
 
-      fireEvent(element, 'focusin');
-    }
-
-    return FOCUS_SUCCESSFUL;
+    fireEvent(element, 'focusin');
   }
-
-  return FOCUS_UNSUCCESSFUL;
 }
 
 /**
@@ -44,11 +36,15 @@ export default function focus(selectorOrElement) {
   }
 
   let element = getElement(selectorOrElement);
-  let focusResult = _focus(element);
+  if (!element) {
+    throw new Error(`Element not found when calling \`focus('${selectorOrElement}')\`.`);
+  }
 
-  if (focusResult !== FOCUS_SUCCESSFUL) {
+  if (!isFocusable(element)) {
     throw new Error(`${selectorOrElement} is not focusable`);
   }
+
+  nextTick(() => _focus(element));
 
   return settled();
 }

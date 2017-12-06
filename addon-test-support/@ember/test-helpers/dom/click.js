@@ -20,7 +20,9 @@ export default function click(selector) {
 
   nextTick(() => {
     fireEvent(element, 'mousedown');
-    _focus(element);
+    if (isFocusable(element)) {
+      _focus(element);
+    }
     fireEvent(element, 'mouseup');
     fireEvent(element, 'click');
   });

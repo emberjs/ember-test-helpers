@@ -498,11 +498,14 @@ test('it supports dom triggered focus events', function(assert) {
   let input = this._element.querySelector('input');
   assert.equal(input.value, 'init');
 
-  focus(input);
-  assert.equal(input.value, 'focusin');
-
-  blur(input);
-  assert.equal(input.value, 'focusout');
+  return focus(input)
+    .then(() => {
+      assert.equal(input.value, 'focusin');
+      return blur(input);
+    })
+    .then(() => {
+      assert.equal(input.value, 'focusout');
+    });
 });
 
 moduleForComponent('Component Integration Tests: render during setup', {
