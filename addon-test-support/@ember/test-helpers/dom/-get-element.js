@@ -9,7 +9,11 @@ export default function getElement(selectorOrElement) {
   ) {
     return selectorOrElement;
   } else if (typeof selectorOrElement === 'string') {
-    let rootElement = getContext().element;
+    let context = getContext();
+    let rootElement = context && context.element;
+    if (!rootElement) {
+      throw new Error(`Must setup rendering context before attempting to interact with elements.`);
+    }
 
     return rootElement.querySelector(selectorOrElement);
   } else {

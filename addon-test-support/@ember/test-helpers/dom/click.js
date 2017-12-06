@@ -11,6 +11,9 @@ import settled from '../settled';
 */
 export default function click(selector) {
   let element = getElement(selector);
+  if (!element) {
+    throw new Error(`Element not found when calling \`click('${selector}')\`.`);
+  }
 
   fireEvent(element, 'mousedown');
   _focus(element);
