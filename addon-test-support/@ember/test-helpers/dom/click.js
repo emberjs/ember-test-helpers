@@ -6,7 +6,7 @@ import settled from '../settled';
 /**
   @method click
   @param {String|HTMLElement} selector
-  @return {RSVP.Promise}
+  @return {Promise<void>}
   @public
 */
 export default function click(selector) {

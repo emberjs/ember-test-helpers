@@ -20,7 +20,7 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   @param {HTMLElement} element
   @param {String} type
   @param {Object} (optional) options
-  @return {Event} The dispatched event
+
   @private
 */
 export default function fireEvent(element, type, options = {}) {

@@ -7,7 +7,7 @@ import settled from '../settled';
   @param {String|HTMLElement} selector
   @param {String} type
   @param {Object} options
-  @return {RSVP.Promise}
+  @return {Promise<void>}
   @public
 */
 export default function triggerEvent(selectorOrElement, type, options) {

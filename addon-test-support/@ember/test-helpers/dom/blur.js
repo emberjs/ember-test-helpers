@@ -6,7 +6,7 @@ import isFocusable from './-is-focusable';
 /**
   @method blur
   @param {String|HTMLElement} selector
-  @return {RSVP.Promise}
+  @return {Promise<void>}
   @public
 */
 export default function blur(selectorOrElement = document.activeElement) {

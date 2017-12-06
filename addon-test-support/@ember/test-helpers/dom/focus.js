@@ -37,7 +37,7 @@ export function _focus(element) {
 /**
   @method focus
   @param {String|HTMLElement} selector
-  @return {RSVP.Promise}
+  @return {Promise<void>}
   @public
 */
 export default function focus(selectorOrElement) {
