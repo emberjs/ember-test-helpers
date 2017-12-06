@@ -12,7 +12,7 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { module, test, skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
-import { fireEvent } from '../helpers/events';
+import { click } from '@ember/test-helpers';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 
@@ -162,9 +162,7 @@ module('settled real-world scenarios', function(hooks) {
 
     assert.equal(this.element.textContent, 'initial value');
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'async value');
   });
@@ -174,9 +172,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-3}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'Remote Data!');
   });
@@ -186,9 +182,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-4}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
   });
@@ -198,7 +192,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-4}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
+    click('div');
 
     await settled({ waitForTimers: false });
 
@@ -215,7 +209,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-4}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
+    click('div');
 
     await settled({ waitForAJAX: false });
 

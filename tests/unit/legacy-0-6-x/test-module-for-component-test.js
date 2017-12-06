@@ -16,7 +16,7 @@ import wait from 'ember-test-helpers/wait';
 import qunitModuleFor from '../../helpers/qunit-module-for';
 import hasjQuery from '../../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
-import { fireEvent, focus, blur } from '../../helpers/events';
+import { triggerEvent, focus, blur } from '@ember/test-helpers';
 import { htmlSafe } from '@ember/string';
 
 var Service = EmberService || EmberObject;
@@ -475,7 +475,7 @@ test('it supports updating an input', function(assert) {
   let input = this._element.querySelector('input');
   input.value = '1';
 
-  fireEvent(input, 'change');
+  triggerEvent(input, 'change');
   assert.equal(this.get('value'), '1');
 });
 

@@ -16,7 +16,7 @@ import {
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
-import { focus, blur, fireEvent, click } from '../helpers/events';
+import { triggerEvent, focus, blur, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('setupRenderingContext', function(hooks) {
@@ -226,7 +226,7 @@ module('setupRenderingContext', function(hooks) {
 
       // trigger the change
       input.value = '1';
-      fireEvent(input, 'change');
+      triggerEvent(input, 'change');
 
       assert.equal(this.get('value'), '1');
     });
