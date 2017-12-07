@@ -1,14 +1,15 @@
-const FOCUSABLE_TAGS = ['INPUT', 'BUTTON', 'LINK', 'SELECT', 'A', 'TEXTAREA'];
-export default function isFocusable(el) {
-  let { tagName, type } = el;
+import isFormControl from './-is-form-control';
+import isContentEditable from './-is-content-editable';
 
-  if (type === 'hidden') {
-    return false;
-  }
-
-  if (FOCUSABLE_TAGS.indexOf(tagName) > -1 || el.contentEditable === 'true') {
+const FOCUSABLE_TAGS = ['LINK', 'A'];
+export default function isFocusable(element) {
+  if (
+    isFormControl(element) ||
+    isContentEditable(element) ||
+    FOCUSABLE_TAGS.indexOf(element.tagName) > -1
+  ) {
     return true;
   }
 
-  return el.hasAttribute('tabindex');
+  return element.hasAttribute('tabindex');
 }
