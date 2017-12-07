@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import { _focus } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import { nextTick } from '../-utils';
+import { nextTickPromise } from '../-utils';
 
 /**
   @method click
@@ -17,14 +17,16 @@ export default function click(selector) {
     throw new Error(`Element not found when calling \`click('${selector}')\`.`);
   }
 
-  nextTick(() => {
+  return nextTickPromise().then(() => {
     fireEvent(element, 'mousedown');
+
     if (isFocusable(element)) {
       _focus(element);
     }
+
     fireEvent(element, 'mouseup');
     fireEvent(element, 'click');
-  });
 
-  return settled();
+    return settled();
+  });
 }

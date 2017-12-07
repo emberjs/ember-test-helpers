@@ -1,6 +1,7 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
+import { nextTickPromise } from '../-utils';
 
 /**
   @method triggerEvent
@@ -12,6 +13,10 @@ import settled from '../settled';
 */
 export default function triggerEvent(selectorOrElement, type, options) {
   let element = getElement(selectorOrElement);
-  fireEvent(element, type, options);
-  return settled();
+
+  return nextTickPromise().then(() => {
+    fireEvent(element, type, options);
+
+    return settled();
+  });
 }

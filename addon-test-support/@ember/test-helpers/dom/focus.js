@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import { nextTick } from '../-utils';
+import { nextTickPromise } from '../-utils';
 
 export function _focus(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
@@ -43,7 +43,9 @@ export default function focus(selectorOrElement) {
     throw new Error(`${selectorOrElement} is not focusable`);
   }
 
-  nextTick(() => _focus(element));
+  return nextTickPromise().then(() => {
+    _focus(element);
 
-  return settled();
+    return settled();
+  });
 }

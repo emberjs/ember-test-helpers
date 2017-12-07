@@ -20,8 +20,8 @@ const DEFAULT_MODIFIERS = Object.freeze({
   @param {Boolean} modifiers.metaKey
   @return {Promise<void>}
 */
-export default function keyEvent(selectorOrElement, type, keyCode, modifiers = DEFAULT_MODIFIERS) {
+export default function triggerKeyEvent(selector, type, keyCode, modifiers = DEFAULT_MODIFIERS) {
   let options = merge({ keyCode, which: keyCode, key: keyCode }, modifiers);
 
-  return triggerEvent(selectorOrElement, type, options);
+  return triggerEvent(selector, type, options);
 }
