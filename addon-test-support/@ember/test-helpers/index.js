@@ -21,3 +21,4 @@ export { default as focus } from './dom/focus';
 export { default as blur } from './dom/blur';
 export { default as triggerEvent } from './dom/trigger-event';
 export { default as triggerKeyEvent } from './dom/trigger-key-event';
+export { default as fillIn } from './dom/fill-in';
