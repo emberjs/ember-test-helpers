@@ -226,7 +226,7 @@ module('setupRenderingContext', function(hooks) {
 
       // trigger the change
       input.value = '1';
-      triggerEvent(input, 'change');
+      await triggerEvent(input, 'change');
 
       assert.equal(this.get('value'), '1');
     });
@@ -256,7 +256,7 @@ module('setupRenderingContext', function(hooks) {
       await focus(input);
       assert.equal(input.value, 'focusin');
 
-      blur(input);
+      await blur(input);
       assert.equal(input.value, 'focusout');
     });
 

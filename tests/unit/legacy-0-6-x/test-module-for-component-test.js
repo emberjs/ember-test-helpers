@@ -475,8 +475,9 @@ test('it supports updating an input', function(assert) {
   let input = this._element.querySelector('input');
   input.value = '1';
 
-  triggerEvent(input, 'change');
-  assert.equal(this.get('value'), '1');
+  return triggerEvent(input, 'change').then(() => {
+    assert.equal(this.get('value'), '1');
+  });
 });
 
 test('it supports dom triggered focus events', function(assert) {
