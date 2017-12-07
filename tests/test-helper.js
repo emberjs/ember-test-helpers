@@ -100,3 +100,11 @@ QUnit.assert.deprecationsInclude = function(expected) {
     message: `expected to find \`${expected}\` deprecation`,
   });
 };
+
+// Monkey patch in the fix from https://github.com/qunitjs/qunit/pull/1233
+// This can be removed after qunit > 2.4.1 has been released
+const ASSERT_VERIFY_STEPS = QUnit.assert.verifySteps;
+QUnit.assert.verifySteps = function() {
+  ASSERT_VERIFY_STEPS.apply(this, arguments);
+  this.test.steps.length = 0;
+};
