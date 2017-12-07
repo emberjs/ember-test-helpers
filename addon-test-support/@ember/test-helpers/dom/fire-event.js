@@ -1,7 +1,7 @@
 import { merge } from '@ember/polyfills';
 
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
-const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
+export const KEYBOARD_EVENT_TYPES = Object.freeze(['keydown', 'keypress', 'keyup']);
 const MOUSE_EVENT_TYPES = [
   'click',
   'mousedown',
