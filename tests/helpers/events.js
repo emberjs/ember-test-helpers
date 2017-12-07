@@ -165,12 +165,15 @@ export const KNOWN_EVENTS = Object.freeze([
 
 let uuid = 0;
 export function buildInstrumentedElement(elementType) {
+  let assert = QUnit.config.current.assert;
+
   let element = document.createElement(elementType);
   element.setAttribute('id', `fixture-${uuid++}`);
 
   KNOWN_EVENTS.forEach(type => {
-    element.addEventListener(type, () => {
-      QUnit.config.current.assert.step(type);
+    element.addEventListener(type, e => {
+      assert.step(type);
+      assert.ok(e instanceof Event, `${type} listener should receive a native event`);
     });
   });
 
