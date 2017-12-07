@@ -19,5 +19,5 @@ export { default as validateErrorHandler } from './validate-error-handler';
 export { default as click } from './dom/click';
 export { default as focus } from './dom/focus';
 export { default as blur } from './dom/blur';
-export { default as triggerEvent } from './dom/blur';
-export { default as triggerKeyEvent } from './dom/blur';
+export { default as triggerEvent } from './dom/trigger-event';
+export { default as triggerKeyEvent } from './dom/trigger-key-event';
