@@ -1,6 +1,5 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
-import isContentEditable from './-is-content-editable';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
@@ -19,7 +18,7 @@ export default function fillIn(target, text) {
     throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
   }
 
-  if (!isFormControl(element) && !isContentEditable(element)) {
+  if (!isFormControl(element) && !element.isContentEditable) {
     throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
   }
 
@@ -30,7 +29,7 @@ export default function fillIn(target, text) {
   return nextTickPromise().then(() => {
     __focus__(element);
 
-    if (isContentEditable(element)) {
+    if (element.isContentEditable) {
       element.innerHTML = text;
     } else {
       element.value = text;
