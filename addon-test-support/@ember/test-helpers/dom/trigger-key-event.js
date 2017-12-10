@@ -15,11 +15,11 @@ const DEFAULT_MODIFIERS = Object.freeze({
   @param {String|HTMLElement} target
   @param {'keydown' | 'keyup' | 'keypress'} eventType
   @param {String} keyCode
-  @param {Object} modifiers
-  @param {Boolean} modifiers.ctrlKey
-  @param {Boolean} modifiers.altKey
-  @param {Boolean} modifiers.shiftKey
-  @param {Boolean} modifiers.metaKey
+  @param {Object} [modifiers]
+  @param {Boolean} [modifiers.ctrlKey=false]
+  @param {Boolean} [modifiers.altKey=false]
+  @param {Boolean} [modifiers.shiftKey=false]
+  @param {Boolean} [modifiers.metaKey=false]
   @return {Promise<void>}
 */
 export default function triggerKeyEvent(target, eventType, keyCode, modifiers = DEFAULT_MODIFIERS) {

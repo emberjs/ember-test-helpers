@@ -27,18 +27,18 @@ export function __blur__(element) {
 
 /**
   @method blur
-  @param {String|HTMLElement} selector
+  @param {String|HTMLElement} [target=document.activeElement] the element to blur
   @return {Promise<void>}
   @public
 */
-export default function blur(selectorOrElement = document.activeElement) {
-  let element = getElement(selectorOrElement);
+export default function blur(target = document.activeElement) {
+  let element = getElement(target);
   if (!element) {
-    throw new Error(`Element not found when calling \`blur('${selectorOrElement}')\`.`);
+    throw new Error(`Element not found when calling \`blur('${target}')\`.`);
   }
 
   if (!isFocusable(element)) {
-    throw new Error(`${selectorOrElement} is not focusable`);
+    throw new Error(`${target} is not focusable`);
   }
 
   return nextTickPromise().then(() => {

@@ -5,22 +5,20 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @method triggerEvent
-  @param {String|HTMLElement} selector
+  @param {String|HTMLElement} target
   @param {String} eventType
   @param {Object} options
   @return {Promise<void>}
   @public
 */
-export default function triggerEvent(selectorOrElement, type, options) {
-  if (!selectorOrElement) {
+export default function triggerEvent(target, type, options) {
+  if (!target) {
     throw new Error('Must pass an element or selector to `triggerEvent`.');
   }
 
-  let element = getElement(selectorOrElement);
+  let element = getElement(target);
   if (!element) {
-    throw new Error(
-      `Element not found when calling \`triggerEvent('${selectorOrElement}', ...)\`.`
-    );
+    throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
   }
 
   if (!type) {

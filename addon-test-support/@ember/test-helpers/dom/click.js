@@ -7,14 +7,14 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @method click
-  @param {String|HTMLElement} selector
+  @param {String|HTMLElement} target
   @return {Promise<void>}
   @public
 */
-export default function click(selector) {
-  let element = getElement(selector);
+export default function click(target) {
+  let element = getElement(target);
   if (!element) {
-    throw new Error(`Element not found when calling \`click('${selector}')\`.`);
+    throw new Error(`Element not found when calling \`click('${target}')\`.`);
   }
 
   return nextTickPromise().then(() => {

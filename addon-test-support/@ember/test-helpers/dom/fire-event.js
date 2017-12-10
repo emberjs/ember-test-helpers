@@ -19,7 +19,7 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   @method fireEvent
   @param {HTMLElement} element
   @param {String} type
-  @param {Object} (optional) options
+  @param {Object} [options]
 
   @private
 */
@@ -65,7 +65,7 @@ export default function fireEvent(element, type, options = {}) {
 /**
   @method buildBasicEvent
   @param {String} type
-  @param {Object} (optional) options
+  @param {Object} [options]
   @return {Event}
   @private
 */
@@ -88,7 +88,7 @@ function buildBasicEvent(type, options = {}) {
 /**
   @method buildMouseEvent
   @param {String} type
-  @param {Object} (optional) options
+  @param {Object} [options]
   @return {Event}
   @private
 */
@@ -198,8 +198,8 @@ function buildKeyboardEvent(type, options = {}) {
 /**
   @method buildFileEvent
   @param {String} type
-  @param {Array} array of flies
   @param {HTMLElement} element
+  @param {Array} [files] array of files
   @return {Event}
   @private
 */
