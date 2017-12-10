@@ -1,6 +1,6 @@
 import isFormControl from './-is-form-control';
 
-const FOCUSABLE_TAGS = ['LINK', 'A'];
+const FOCUSABLE_TAGS = ['A'];
 export default function isFocusable(element) {
   if (
     isFormControl(element) ||
