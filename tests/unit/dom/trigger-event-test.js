@@ -57,6 +57,24 @@ module('DOM Helper: triggerEvent', function(hooks) {
     assert.verifySteps(['mouseenter']);
   });
 
+  test('triggering event via selector without context set', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    let errorThrown;
+
+    try {
+      await triggerEvent(`#${element.id}`, 'mouseenter');
+    } catch (error) {
+      errorThrown = error;
+    }
+
+    assert.equal(
+      errorThrown.message,
+      'Must setup rendering context before attempting to interact with elements.',
+      'valid error was thrown'
+    );
+  });
+
   test('does not run sync', async function(assert) {
     element = buildInstrumentedElement('div');
 

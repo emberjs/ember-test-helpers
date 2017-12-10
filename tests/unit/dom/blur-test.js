@@ -51,6 +51,22 @@ module('DOM Helper: blur', function(hooks) {
     assert.notEqual(document.activeElement, element, 'activeElement updated');
   });
 
+  test('bluring via selector without context set', async function(assert) {
+    let errorThrown;
+
+    try {
+      await blur(`#${element.id}`);
+    } catch (error) {
+      errorThrown = error;
+    }
+
+    assert.equal(
+      errorThrown.message,
+      'Must setup rendering context before attempting to interact with elements.',
+      'valid error was thrown'
+    );
+  });
+
   test('bluring via element with context set', async function(assert) {
     setContext(this);
     await blur(element);

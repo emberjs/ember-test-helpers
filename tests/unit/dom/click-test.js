@@ -65,6 +65,23 @@ module('DOM Helper: click', function(hooks) {
         click(`#foo-bar-baz-not-here-ever-bye-bye`);
       }, /Element not found when calling `click\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
     });
+
+    test('clicking a div via selector without context set', async function(assert) {
+      element = buildInstrumentedElement('div');
+      let errorThrown;
+
+      try {
+        await click(`#${element.id}`);
+      } catch (error) {
+        errorThrown = error;
+      }
+
+      assert.equal(
+        errorThrown.message,
+        'Must setup rendering context before attempting to interact with elements.',
+        'valid error was thrown'
+      );
+    });
   });
 
   module('focusable element types', function() {
@@ -95,6 +112,23 @@ module('DOM Helper: click', function(hooks) {
 
       assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    });
+
+    test('clicking a input via selector without context set', async function(assert) {
+      element = buildInstrumentedElement('input');
+      let errorThrown;
+
+      try {
+        await click(`#${element.id}`);
+      } catch (error) {
+        errorThrown = error;
+      }
+
+      assert.equal(
+        errorThrown.message,
+        'Must setup rendering context before attempting to interact with elements.',
+        'valid error was thrown'
+      );
     });
   });
 });

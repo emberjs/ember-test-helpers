@@ -71,6 +71,24 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     assert.verifySteps(['keydown']);
   });
 
+  test('triggering via selector without context set', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    let errorThrown;
+
+    try {
+      await triggerKeyEvent(`#${element.id}`, 'keydown', 13);
+    } catch (error) {
+      errorThrown = error;
+    }
+
+    assert.equal(
+      errorThrown.message,
+      'Must setup rendering context before attempting to interact with elements.',
+      'valid error was thrown'
+    );
+  });
+
   ['ctrl', 'shift', 'alt', 'meta'].forEach(function(modifierType) {
     test(`triggering passing with ${modifierType} pressed`, async function(assert) {
       element = buildInstrumentedElement('div');
