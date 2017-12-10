@@ -18,7 +18,7 @@ export default function(callback, options = {}) {
       } else if (time < timeout) {
         // using `setTimeout` directly to allow fake timers
         // to intercept
-        setTimeout(tick, 10);
+        nextTick(tick, 10);
       } else {
         reject(waitUntilTimedOut);
       }
