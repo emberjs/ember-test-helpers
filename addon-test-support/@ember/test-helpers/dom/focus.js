@@ -7,7 +7,7 @@ import { nextTickPromise } from '../-utils';
 /**
   @private
   @method __focus__
-  @param {HTMLElement} element
+  @param {Element} element
 */
 export function __focus__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
@@ -30,7 +30,7 @@ export function __focus__(element) {
 
 /**
   @method focus
-  @param {String|HTMLElement} target
+  @param {String|Element} target
   @return {Promise<void>}
   @public
 */

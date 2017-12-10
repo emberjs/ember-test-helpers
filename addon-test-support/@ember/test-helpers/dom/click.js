@@ -7,7 +7,7 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @method click
-  @param {String|HTMLElement} target
+  @param {String|Element} target
   @return {Promise<void>}
   @public
 */

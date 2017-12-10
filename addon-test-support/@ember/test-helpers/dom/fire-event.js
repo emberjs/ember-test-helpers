@@ -17,7 +17,7 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
 
 /**
   @method fireEvent
-  @param {HTMLElement} element
+  @param {Element} element
   @param {String} type
   @param {Object} [options]
 
@@ -37,7 +37,7 @@ export default function fireEvent(element, type, options = {}) {
       rect = element.document.documentElement.getBoundingClientRect();
     } else if (element instanceof Document) {
       rect = element.documentElement.getBoundingClientRect();
-    } else if (element instanceof HTMLElement || element instanceof SVGElement) {
+    } else if (element instanceof Element) {
       rect = element.getBoundingClientRect();
     } else {
       return;
@@ -198,7 +198,7 @@ function buildKeyboardEvent(type, options = {}) {
 /**
   @method buildFileEvent
   @param {String} type
-  @param {HTMLElement} element
+  @param {Element} element
   @param {Array} [files] array of files
   @return {Event}
   @private

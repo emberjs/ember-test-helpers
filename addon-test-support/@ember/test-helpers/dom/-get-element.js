@@ -4,8 +4,7 @@ export default function getElement(selectorOrElement) {
   if (
     selectorOrElement instanceof Window ||
     selectorOrElement instanceof Document ||
-    selectorOrElement instanceof HTMLElement ||
-    selectorOrElement instanceof SVGElement
+    selectorOrElement instanceof Element
   ) {
     return selectorOrElement;
   } else if (typeof selectorOrElement === 'string') {

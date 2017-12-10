@@ -7,7 +7,7 @@ import { nextTickPromise } from '../-utils';
 /**
   @private
   @method __blur__
-  @param {HTMLElement} element
+  @param {Element} element
 */
 export function __blur__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
@@ -27,7 +27,7 @@ export function __blur__(element) {
 
 /**
   @method blur
-  @param {String|HTMLElement} [target=document.activeElement] the element to blur
+  @param {String|Element} [target=document.activeElement] the element to blur
   @return {Promise<void>}
   @public
 */
