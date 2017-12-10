@@ -3,31 +3,33 @@ import { focus, blur, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: blur', function(hooks) {
-  let element;
+  let context, elementWithFocus;
 
   hooks.beforeEach(async function(assert) {
     // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
     // set context.element to the rootElement
-    this.element = document.querySelector('#qunit-fixture');
+    context = {
+      element: document.querySelector('#qunit-fixture'),
+    };
 
     // create the element and focus in preparation for blur testing
-    element = buildInstrumentedElement('input');
-    await focus(element);
+    elementWithFocus = buildInstrumentedElement('input');
+    await focus(elementWithFocus);
 
     // verify that focus was ran, and reset steps
     assert.verifySteps(['focus', 'focusin']);
-    assert.equal(document.activeElement, element, 'activeElement updated');
+    assert.equal(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
   hooks.afterEach(function() {
-    if (element) {
-      element.parentNode.removeChild(element);
+    if (elementWithFocus) {
+      elementWithFocus.parentNode.removeChild(elementWithFocus);
     }
     unsetContext();
   });
 
   test('does not run sync', async function(assert) {
-    let promise = blur(element);
+    let promise = blur(elementWithFocus);
 
     assert.verifySteps([]);
 
@@ -37,25 +39,25 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('throws an error if selector is not found', async function(assert) {
-    setContext(this);
+    setContext(context);
     assert.throws(() => {
       blur(`#foo-bar-baz-not-here-ever-bye-bye`);
     }, /Element not found when calling `blur\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
 
   test('bluring via selector with context set', async function(assert) {
-    setContext(this);
-    await blur(`#${element.id}`);
+    setContext(context);
+    await blur(`#${elementWithFocus.id}`);
 
     assert.verifySteps(['blur', 'focusout']);
-    assert.notEqual(document.activeElement, element, 'activeElement updated');
+    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
   test('bluring via selector without context set', async function(assert) {
     let errorThrown;
 
     try {
-      await blur(`#${element.id}`);
+      await blur(`#${elementWithFocus.id}`);
     } catch (error) {
       errorThrown = error;
     }
@@ -68,17 +70,17 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('bluring via element with context set', async function(assert) {
-    setContext(this);
-    await blur(element);
+    setContext(context);
+    await blur(elementWithFocus);
 
     assert.verifySteps(['blur', 'focusout']);
-    assert.notEqual(document.activeElement, element, 'activeElement updated');
+    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
   test('bluring via element without context set', async function(assert) {
-    await blur(element);
+    await blur(elementWithFocus);
 
     assert.verifySteps(['blur', 'focusout']);
-    assert.notEqual(document.activeElement, element, 'activeElement updated');
+    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 });

@@ -3,12 +3,14 @@ import { focus, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: focus', function(hooks) {
-  let element;
+  let context, element;
 
   hooks.beforeEach(function() {
     // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
     // set context.element to the rootElement
-    this.element = document.querySelector('#qunit-fixture');
+    context = {
+      element: document.querySelector('#qunit-fixture'),
+    };
   });
 
   hooks.afterEach(function() {
@@ -21,7 +23,7 @@ module('DOM Helper: focus', function(hooks) {
   test('focusing a div via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     assert.throws(() => {
       focus(`#${element.id}`);
     }, /is not focusable/);
@@ -30,7 +32,7 @@ module('DOM Helper: focus', function(hooks) {
   test('focusing a div via element with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     assert.throws(() => {
       focus(element);
     }, /is not focusable/);
@@ -52,7 +54,7 @@ module('DOM Helper: focus', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       focus(`#foo-bar-baz-not-here-ever-bye-bye`);
     }, /Element not found when calling `focus\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
@@ -60,7 +62,7 @@ module('DOM Helper: focus', function(hooks) {
   test('focusing a input via selector with context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    setContext(this);
+    setContext(context);
     await focus(`#${element.id}`);
 
     assert.verifySteps(['focus', 'focusin']);
@@ -70,7 +72,7 @@ module('DOM Helper: focus', function(hooks) {
   test('focusing a input via element with context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    setContext(this);
+    setContext(context);
     await focus(element);
 
     assert.verifySteps(['focus', 'focusin']);

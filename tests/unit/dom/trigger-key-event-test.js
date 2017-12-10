@@ -3,12 +3,14 @@ import { triggerKeyEvent, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: triggerKeyEvent', function(hooks) {
-  let element;
+  let context, element;
 
   hooks.beforeEach(function() {
     // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
     // set context.element to the rootElement
-    this.element = document.querySelector('#qunit-fixture');
+    context = {
+      element: document.querySelector('#qunit-fixture'),
+    };
   });
 
   hooks.afterEach(function() {
@@ -22,7 +24,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       triggerKeyEvent(element);
     }, /Must provide an `eventType` to `triggerKeyEvent`/);
   });
@@ -31,7 +33,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       triggerKeyEvent(element, 'mouseenter');
     }, /Must provide an `eventType` of keydown, keypress, keyup to `triggerKeyEvent` but you passed `mouseenter`./);
   });
@@ -40,7 +42,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       triggerKeyEvent(element, 'keypress');
     }, /Must provide a `keyCode` to `triggerKeyEvent`/);
   });
@@ -48,7 +50,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     await triggerKeyEvent(`#${element.id}`, 'keydown', 13);
 
     assert.verifySteps(['keydown']);
@@ -57,7 +59,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   test('triggering via element with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     await triggerKeyEvent(element, 'keydown', 13);
 
     assert.verifySteps(['keydown']);
@@ -96,7 +98,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
         assert.ok(e[`${modifierType}Key`], `has ${modifierType} indicated`);
       });
 
-      setContext(this);
+      setContext(context);
       await triggerKeyEvent(element, 'keypress', 13, { [`${modifierType}Key`]: true });
 
       assert.verifySteps(['keypress']);
@@ -110,7 +112,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
       assert.ok(e.altKey, `has altKey indicated`);
     });
 
-    setContext(this);
+    setContext(context);
     await triggerKeyEvent(element, 'keypress', 13, { altKey: true, ctrlKey: true });
 
     assert.verifySteps(['keypress']);

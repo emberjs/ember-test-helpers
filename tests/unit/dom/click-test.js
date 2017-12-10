@@ -3,12 +3,14 @@ import { click, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: click', function(hooks) {
-  let element;
+  let context, element;
 
   hooks.beforeEach(function() {
     // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
     // set context.element to the rootElement
-    this.element = document.querySelector('#qunit-fixture');
+    context = {
+      element: document.querySelector('#qunit-fixture'),
+    };
   });
 
   hooks.afterEach(function() {
@@ -22,7 +24,7 @@ module('DOM Helper: click', function(hooks) {
     test('clicking a div via selector with context set', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      setContext(this);
+      setContext(context);
       await click(`#${element.id}`);
 
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
@@ -31,7 +33,7 @@ module('DOM Helper: click', function(hooks) {
     test('clicking a div via element with context set', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      setContext(this);
+      setContext(context);
       await click(element);
 
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
@@ -61,7 +63,7 @@ module('DOM Helper: click', function(hooks) {
       element = buildInstrumentedElement('div');
 
       assert.throws(() => {
-        setContext(this);
+        setContext(context);
         click(`#foo-bar-baz-not-here-ever-bye-bye`);
       }, /Element not found when calling `click\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
     });
@@ -88,7 +90,7 @@ module('DOM Helper: click', function(hooks) {
     test('clicking a input via selector with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
-      setContext(this);
+      setContext(context);
       await click(`#${element.id}`);
 
       assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
@@ -98,7 +100,7 @@ module('DOM Helper: click', function(hooks) {
     test('clicking a input via element with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
-      setContext(this);
+      setContext(context);
       await click(element);
 
       assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);

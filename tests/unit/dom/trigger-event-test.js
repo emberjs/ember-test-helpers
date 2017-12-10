@@ -3,12 +3,14 @@ import { triggerEvent, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: triggerEvent', function(hooks) {
-  let element;
+  let context, element;
 
   hooks.beforeEach(function() {
     // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
     // set context.element to the rootElement
-    this.element = document.querySelector('#qunit-fixture');
+    context = {
+      element: document.querySelector('#qunit-fixture'),
+    };
   });
 
   hooks.afterEach(function() {
@@ -25,7 +27,7 @@ module('DOM Helper: triggerEvent', function(hooks) {
       assert.ok(e instanceof Event, `fliberty listener receives a native event`);
     });
 
-    setContext(this);
+    setContext(context);
     await triggerEvent(`#${element.id}`, 'fliberty');
 
     assert.verifySteps(['fliberty']);
@@ -34,7 +36,7 @@ module('DOM Helper: triggerEvent', function(hooks) {
   test('triggering event via selector with context set fires the given event type', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     await triggerEvent(`#${element.id}`, 'mouseenter');
 
     assert.verifySteps(['mouseenter']);
@@ -43,7 +45,7 @@ module('DOM Helper: triggerEvent', function(hooks) {
   test('triggering event via element with context set fires the given event type', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(this);
+    setContext(context);
     await triggerEvent(element, 'mouseenter');
 
     assert.verifySteps(['mouseenter']);
@@ -91,7 +93,7 @@ module('DOM Helper: triggerEvent', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       triggerEvent(`#foo-bar-baz-not-here-ever-bye-bye`, 'mouseenter');
     }, /Element not found when calling `triggerEvent\('#foo-bar-baz-not-here-ever-bye-bye'/);
   });
@@ -100,13 +102,13 @@ module('DOM Helper: triggerEvent', function(hooks) {
     element = buildInstrumentedElement('div');
 
     assert.throws(() => {
-      setContext(this);
+      setContext(context);
       triggerEvent(element);
     }, /Must provide an `eventType` to `triggerEvent`/);
   });
 
   test('events properly bubble upwards', async function(assert) {
-    setContext(this);
+    setContext(context);
     element = buildInstrumentedElement('div');
     element.innerHTML = `
       <div id="outer">
