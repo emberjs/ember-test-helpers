@@ -1,6 +1,6 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
-import { _focus } from './focus';
+import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
@@ -21,7 +21,7 @@ export default function click(selector) {
     fireEvent(element, 'mousedown');
 
     if (isFocusable(element)) {
-      _focus(element);
+      __focus__(element);
     }
 
     fireEvent(element, 'mouseup');

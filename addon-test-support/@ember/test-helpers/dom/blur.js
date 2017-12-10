@@ -4,7 +4,12 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-export function _blur(element) {
+/**
+  @private
+  @method __blur__
+  @param {HTMLElement} element
+*/
+export function __blur__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // makes `document.activeElement` be `body`.
@@ -37,7 +42,7 @@ export default function blur(selectorOrElement = document.activeElement) {
   }
 
   return nextTickPromise().then(() => {
-    _blur(element);
+    __blur__(element);
 
     return settled();
   });

@@ -4,7 +4,12 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-export function _focus(element) {
+/**
+  @private
+  @method __focus__
+  @param {HTMLElement} element
+*/
+export function __focus__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
@@ -44,7 +49,7 @@ export default function focus(selectorOrElement) {
   }
 
   return nextTickPromise().then(() => {
-    _focus(element);
+    __focus__(element);
 
     return settled();
   });

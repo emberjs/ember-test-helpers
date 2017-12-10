@@ -1,7 +1,7 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
 import isContentEditable from './-is-content-editable';
-import { _focus } from './focus';
+import { __focus__ } from './focus';
 import settled from '../settled';
 import { fireEvent } from './fire-event';
 import { nextTickPromise } from '../-utils';
@@ -24,7 +24,7 @@ export function fillIn(target, text) {
   }
 
   return nextTickPromise().then(() => {
-    _focus(element);
+    __focus__(element);
 
     if (isContentEditable(element)) {
       element.innerHTML = text;
