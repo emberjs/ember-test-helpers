@@ -466,6 +466,8 @@ test('it supports DOM events', function(assert) {
 });
 
 test('it supports updating an input', function(assert) {
+  assert.expect(1);
+
   setResolverRegistry({
     'component:my-input': TextField.extend({
       value: null,
