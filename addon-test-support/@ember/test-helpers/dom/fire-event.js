@@ -60,6 +60,7 @@ export default function fireEvent(element, type, options = {}) {
   }
 
   element.dispatchEvent(event);
+  return event;
 }
 
 /**

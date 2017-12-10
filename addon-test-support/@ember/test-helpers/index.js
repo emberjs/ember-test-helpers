@@ -17,6 +17,7 @@ export { default as validateErrorHandler } from './validate-error-handler';
 
 // DOM Helpers
 export { default as click } from './dom/click';
+export { default as tap } from './dom/tap';
 export { default as focus } from './dom/focus';
 export { default as blur } from './dom/blur';
 export { default as triggerEvent } from './dom/trigger-event';
