@@ -6,6 +6,22 @@ import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
 /**
+  @private
+  @method __click__
+  @param {Element} element
+*/
+export function __click__(element) {
+  fireEvent(element, 'mousedown');
+
+  if (isFocusable(element)) {
+    __focus__(element);
+  }
+
+  fireEvent(element, 'mouseup');
+  fireEvent(element, 'click');
+}
+
+/**
   @method click
   @param {String|Element} target
   @return {Promise<void>}
@@ -18,15 +34,7 @@ export default function click(target) {
   }
 
   return nextTickPromise().then(() => {
-    fireEvent(element, 'mousedown');
-
-    if (isFocusable(element)) {
-      __focus__(element);
-    }
-
-    fireEvent(element, 'mouseup');
-    fireEvent(element, 'click');
-
+    __click__(element);
     return settled();
   });
 }
