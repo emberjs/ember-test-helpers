@@ -62,7 +62,7 @@ export default function fireEvent(element, type, options = {}) {
   element.dispatchEvent(event);
 }
 
-/*
+/**
   @method buildBasicEvent
   @param {String} type
   @param {Object} (optional) options
@@ -85,7 +85,7 @@ function buildBasicEvent(type, options = {}) {
   return event;
 }
 
-/*
+/**
   @method buildMouseEvent
   @param {String} type
   @param {Object} (optional) options
@@ -120,7 +120,7 @@ function buildMouseEvent(type, options = {}) {
   return event;
 }
 
-/*
+/**
   @method buildKeyboardEvent
   @param {String} type
   @param {Object} (optional) options
@@ -195,7 +195,7 @@ function buildKeyboardEvent(type, options = {}) {
   return event;
 }
 
-/*
+/**
   @method buildFileEvent
   @param {String} type
   @param {Array} array of flies
