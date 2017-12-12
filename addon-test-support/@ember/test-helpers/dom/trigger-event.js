@@ -5,7 +5,7 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @method triggerEvent
-  @param {String|HTMLElement} target
+  @param {String|Element} target
   @param {String} eventType
   @param {Object} options
   @return {Promise<void>}

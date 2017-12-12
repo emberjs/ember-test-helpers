@@ -12,7 +12,7 @@ const DEFAULT_MODIFIERS = Object.freeze({
 
 /**
   @public
-  @param {String|HTMLElement} target
+  @param {String|Element} target
   @param {'keydown' | 'keyup' | 'keypress'} eventType
   @param {String} keyCode
   @param {Object} [modifiers]

@@ -20,6 +20,7 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   @param {Element} element
   @param {String} type
   @param {Object} [options]
+  @returns {Event}
 
   @private
 */
