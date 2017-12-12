@@ -107,17 +107,28 @@ export function isSettled(options) {
   return true;
 }
 
+const TIMEOUTS = [0, 1, 2, 5];
+const MAX_TIMEOUT = 10;
+
 export default function settled(options) {
   return new EmberPromise(function(resolve) {
-    let watcher = global.setInterval(function() {
-      let settled = isSettled(options);
-      if (settled) {
-        // Stop polling
-        global.clearInterval(watcher);
-
-        // Synchronously resolve the promise
-        run(null, resolve);
+    function scheduleCheck(counter) {
+      let timeout = TIMEOUTS[counter];
+      if (timeout === undefined) {
+        timeout = MAX_TIMEOUT;
       }
-    }, 10);
+
+      global.setTimeout(function() {
+        let settled = isSettled(options);
+        if (settled) {
+          // Synchronously resolve the promise
+          run(null, resolve);
+        } else {
+          scheduleCheck(counter + 1);
+        }
+      }, timeout);
+    }
+
+    scheduleCheck(0);
   });
 }
