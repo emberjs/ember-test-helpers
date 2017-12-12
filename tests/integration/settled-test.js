@@ -17,6 +17,8 @@ import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 
 const TestComponent1 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
   internalValue: 'initial value',
 
   init() {
@@ -27,6 +29,8 @@ const TestComponent1 = Component.extend({
 });
 
 const TestComponent2 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
   internalValue: 'initial value',
 
   click() {
@@ -35,6 +39,8 @@ const TestComponent2 = Component.extend({
 });
 
 const TestComponent3 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
   internalValue: '',
 
   click() {
@@ -47,6 +53,8 @@ const TestComponent3 = Component.extend({
 });
 
 const TestComponent4 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
   internalValue: '',
 
   click() {
@@ -73,6 +81,8 @@ const TestComponent4 = Component.extend({
 });
 
 const TestComponent5 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
   internalValue: 'initial value',
 
   ready: false,
@@ -118,19 +128,10 @@ module('settled real-world scenarios', function(hooks) {
     let { owner } = this;
 
     owner.register('component:x-test-1', TestComponent1);
-    owner.register('template:components/x-test-1', hbs`{{internalValue}}`);
-
     owner.register('component:x-test-2', TestComponent2);
-    owner.register('template:components/x-test-2', hbs`{{internalValue}}`);
-
     owner.register('component:x-test-3', TestComponent3);
-    owner.register('template:components/x-test-3', hbs`{{internalValue}}`);
-
     owner.register('component:x-test-4', TestComponent4);
-    owner.register('template:components/x-test-4', hbs`{{internalValue}}`);
-
     owner.register('component:x-test-5', TestComponent5);
-    owner.register('template:components/x-test-5', hbs`{{internalValue}}`);
 
     this.server = new Pretender(function() {
       this.get(
