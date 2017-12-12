@@ -74,7 +74,7 @@ module('settled real-world scenarios', function(hooks) {
 
         click() {
           ajax('/whazzits').then(data => {
-            var value = this.get('internalValue');
+            let value = this.get('internalValue');
 
             run(this, 'set', 'internalValue', value + data);
           });
@@ -93,7 +93,7 @@ module('settled real-world scenarios', function(hooks) {
           later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
 
           ajax('/whazzits').then(data => {
-            var value = this.get('internalValue');
+            let value = this.get('internalValue');
 
             run(this, 'set', 'internalValue', value + data);
 
@@ -103,7 +103,7 @@ module('settled real-world scenarios', function(hooks) {
                   return;
                 }
 
-                var value = this.get('internalValue');
+                let value = this.get('internalValue');
 
                 run(this, 'set', 'internalValue', value + data);
               });
