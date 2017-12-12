@@ -73,12 +73,10 @@ module('settled real-world scenarios', function(hooks) {
         internalValue: '',
 
         click() {
-          var component = this;
+          ajax('/whazzits').then(data => {
+            var value = this.get('internalValue');
 
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
-
-            run(component, 'set', 'internalValue', value + data);
+            run(this, 'set', 'internalValue', value + data);
           });
         },
       })
@@ -92,26 +90,22 @@ module('settled real-world scenarios', function(hooks) {
         internalValue: '',
 
         click() {
-          var component = this;
+          later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
 
-          later(function() {
-            run(component, 'set', 'internalValue', 'Local Data!');
-          }, 10);
+          ajax('/whazzits').then(data => {
+            var value = this.get('internalValue');
 
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
+            run(this, 'set', 'internalValue', value + data);
 
-            run(component, 'set', 'internalValue', value + data);
-
-            later(function() {
-              ajax('/whazzits').then(function(data) {
-                if (component.isDestroyed) {
+            later(() => {
+              ajax('/whazzits').then(data => {
+                if (this.isDestroyed) {
                   return;
                 }
 
-                var value = component.get('internalValue');
+                var value = this.get('internalValue');
 
-                run(component, 'set', 'internalValue', value + data);
+                run(this, 'set', 'internalValue', value + data);
               });
             }, 15);
           });
@@ -211,27 +205,23 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for interleaved AJAX and run loops to finish', async function(assert) {
-    var testContext = this;
-
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
 
     await settled();
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!Remote Data!');
+    assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
   });
 
   test('it can wait only for AJAX', async function(assert) {
-    var testContext = this;
-
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
 
     await settled({ waitForTimers: false });
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!');
+    assert.equal(this.element.textContent, 'Local Data!Remote Data!');
   });
 
   // in the wait utility we specific listen for artificial jQuery events
@@ -240,15 +230,13 @@ module('settled real-world scenarios', function(hooks) {
   //
   // therefore, this test is only valid when using jQuery.ajax
   (hasjQuery() ? test : skip)('it can wait only for timers', async function(assert) {
-    var testContext = this;
-
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
 
     await settled({ waitForAJAX: false });
 
-    assert.equal(testContext.element.textContent, 'Local Data!');
+    assert.equal(this.element.textContent, 'Local Data!');
   });
 
   test('it waits for Ember test waiters', async function(assert) {
