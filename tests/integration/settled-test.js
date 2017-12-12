@@ -35,13 +35,7 @@ module('settled real-world scenarios', function(hooks) {
         init() {
           this._super.apply(this, arguments);
 
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
-            },
-            10
-          );
+          later(this, () => this.set('internalValue', 'async value'), 10);
         },
       })
     );
@@ -54,13 +48,7 @@ module('settled real-world scenarios', function(hooks) {
         internalValue: 'initial value',
 
         click() {
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
-            },
-            10
-          );
+          later(this, () => this.set('internalValue', 'async value'), 10);
         },
       })
     );
