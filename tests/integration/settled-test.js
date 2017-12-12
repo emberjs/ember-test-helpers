@@ -125,14 +125,6 @@ module('settled real-world scenarios', function(hooks) {
     await setupContext(this);
     await setupRenderingContext(this);
 
-    let { owner } = this;
-
-    owner.register('component:x-test-1', TestComponent1);
-    owner.register('component:x-test-2', TestComponent2);
-    owner.register('component:x-test-3', TestComponent3);
-    owner.register('component:x-test-4', TestComponent4);
-    owner.register('component:x-test-5', TestComponent5);
-
     this.server = new Pretender(function() {
       this.get(
         '/whazzits',
@@ -154,6 +146,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it works when async exists in `init`', async function(assert) {
+    this.owner.register('component:x-test-1', TestComponent1);
+
     await this.render(hbs`{{x-test-1}}`);
 
     await settled();
@@ -162,6 +156,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it works when async exists in an event/action', async function(assert) {
+    this.owner.register('component:x-test-2', TestComponent2);
+
     await this.render(hbs`{{x-test-2}}`);
 
     assert.equal(this.element.textContent, 'initial value');
@@ -174,6 +170,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for AJAX requests to finish', async function(assert) {
+    this.owner.register('component:x-test-3', TestComponent3);
+
     await this.render(hbs`{{x-test-3}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
@@ -184,6 +182,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for interleaved AJAX and run loops to finish', async function(assert) {
+    this.owner.register('component:x-test-4', TestComponent4);
+
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
@@ -194,6 +194,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it can wait only for AJAX', async function(assert) {
+    this.owner.register('component:x-test-4', TestComponent4);
+
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
@@ -209,6 +211,8 @@ module('settled real-world scenarios', function(hooks) {
   //
   // therefore, this test is only valid when using jQuery.ajax
   (hasjQuery() ? test : skip)('it can wait only for timers', async function(assert) {
+    this.owner.register('component:x-test-4', TestComponent4);
+
     await this.render(hbs`{{x-test-4}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
@@ -219,6 +223,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for Ember test waiters', async function(assert) {
+    this.owner.register('component:x-test-5', TestComponent5);
+
     await this.render(hbs`{{x-test-5}}`);
 
     await settled({ waitForTimers: false });
