@@ -27,119 +27,109 @@ module('settled real-world scenarios', function(hooks) {
 
     let { owner } = this;
 
-    owner.register(
-      'component:x-test-1',
-      Component.extend({
-        internalValue: 'initial value',
+    let TestComponent1 = Component.extend({
+      internalValue: 'initial value',
 
-        init() {
-          this._super.apply(this, arguments);
+      init() {
+        this._super.apply(this, arguments);
 
-          later(this, () => this.set('internalValue', 'async value'), 10);
-        },
-      })
-    );
+        later(this, () => this.set('internalValue', 'async value'), 10);
+      },
+    });
 
+    owner.register('component:x-test-1', TestComponent1);
     owner.register('template:components/x-test-1', hbs`{{internalValue}}`);
 
-    owner.register(
-      'component:x-test-2',
-      Component.extend({
-        internalValue: 'initial value',
+    let TestComponent2 = Component.extend({
+      internalValue: 'initial value',
 
-        click() {
-          later(this, () => this.set('internalValue', 'async value'), 10);
-        },
-      })
-    );
+      click() {
+        later(this, () => this.set('internalValue', 'async value'), 10);
+      },
+    });
 
+    owner.register('component:x-test-2', TestComponent2);
     owner.register('template:components/x-test-2', hbs`{{internalValue}}`);
 
-    owner.register(
-      'component:x-test-3',
-      Component.extend({
-        internalValue: '',
+    let TestComponent3 = Component.extend({
+      internalValue: '',
 
-        click() {
-          ajax('/whazzits').then(data => {
-            let value = this.get('internalValue');
+      click() {
+        ajax('/whazzits').then(data => {
+          let value = this.get('internalValue');
 
-            run(this, 'set', 'internalValue', value + data);
-          });
-        },
-      })
-    );
+          run(this, 'set', 'internalValue', value + data);
+        });
+      },
+    });
 
+    owner.register('component:x-test-3', TestComponent3);
     owner.register('template:components/x-test-3', hbs`{{internalValue}}`);
 
-    owner.register(
-      'component:x-test-4',
-      Component.extend({
-        internalValue: '',
+    let TestComponent4 = Component.extend({
+      internalValue: '',
 
-        click() {
-          later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
+      click() {
+        later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
 
-          ajax('/whazzits').then(data => {
-            let value = this.get('internalValue');
+        ajax('/whazzits').then(data => {
+          let value = this.get('internalValue');
 
-            run(this, 'set', 'internalValue', value + data);
+          run(this, 'set', 'internalValue', value + data);
 
-            later(() => {
-              ajax('/whazzits').then(data => {
-                if (this.isDestroyed) {
-                  return;
-                }
+          later(() => {
+            ajax('/whazzits').then(data => {
+              if (this.isDestroyed) {
+                return;
+              }
 
-                let value = this.get('internalValue');
+              let value = this.get('internalValue');
 
-                run(this, 'set', 'internalValue', value + data);
-              });
-            }, 15);
-          });
-        },
-      })
-    );
+              run(this, 'set', 'internalValue', value + data);
+            });
+          }, 15);
+        });
+      },
+    });
 
+    owner.register('component:x-test-4', TestComponent4);
     owner.register('template:components/x-test-4', hbs`{{internalValue}}`);
 
-    owner.register(
-      'component:x-test-5',
-      Component.extend({
-        internalValue: 'initial value',
+    let TestComponent5 = Component.extend({
+      internalValue: 'initial value',
 
-        ready: false,
+      ready: false,
 
-        isReady() {
-          return this.get('ready');
-        },
+      isReady() {
+        return this.get('ready');
+      },
 
-        init() {
-          this._super.apply(this, arguments);
-          // In Ember < 2.8 `registerWaiter` expected to be bound to
-          // `Ember.Test` 😭
-          //
-          // Once we have dropped support for < 2.8 we should swap this to
-          // use:
-          //
-          // import { registerWaiter } from '@ember/test';
-          Ember.Test.registerWaiter(this, this.isReady);
-          later(() => {
-            this.setProperties({
-              internalValue: 'async value',
-              ready: true,
-            });
-          }, 25);
-        },
+      init() {
+        this._super.apply(this, arguments);
+        // In Ember < 2.8 `registerWaiter` expected to be bound to
+        // `Ember.Test` 😭
+        //
+        // Once we have dropped support for < 2.8 we should swap this to
+        // use:
+        //
+        // import { registerWaiter } from '@ember/test';
+        Ember.Test.registerWaiter(this, this.isReady);
+        later(() => {
+          this.setProperties({
+            internalValue: 'async value',
+            ready: true,
+          });
+        }, 25);
+      },
 
-        willDestroy() {
-          this._super.apply(this, arguments);
-          // must be called with `Ember.Test` as context for Ember < 2.8
-          Ember.Test.unregisterWaiter(this, this.isReady);
-        },
-      })
-    );
+      willDestroy() {
+        this._super.apply(this, arguments);
+        // must be called with `Ember.Test` as context for Ember < 2.8
+        Ember.Test.unregisterWaiter(this, this.isReady);
+      },
+    });
 
+    owner.register('component:x-test-5', TestComponent5);
     owner.register('template:components/x-test-5', hbs`{{internalValue}}`);
 
     this.server = new Pretender(function() {
