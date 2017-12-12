@@ -16,6 +16,106 @@ import { fireEvent } from '../helpers/events';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 
+const TestComponent1 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
+  internalValue: 'initial value',
+
+  init() {
+    this._super.apply(this, arguments);
+
+    later(this, () => this.set('internalValue', 'async value'), 10);
+  },
+});
+
+const TestComponent2 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
+  internalValue: 'initial value',
+
+  click() {
+    later(this, () => this.set('internalValue', 'async value'), 10);
+  },
+});
+
+const TestComponent3 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
+  internalValue: '',
+
+  click() {
+    ajax('/whazzits').then(data => {
+      let value = this.get('internalValue');
+
+      run(this, 'set', 'internalValue', value + data);
+    });
+  },
+});
+
+const TestComponent4 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
+  internalValue: '',
+
+  click() {
+    later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
+
+    ajax('/whazzits').then(data => {
+      let value = this.get('internalValue');
+
+      run(this, 'set', 'internalValue', value + data);
+
+      later(() => {
+        ajax('/whazzits').then(data => {
+          if (this.isDestroyed) {
+            return;
+          }
+
+          let value = this.get('internalValue');
+
+          run(this, 'set', 'internalValue', value + data);
+        });
+      }, 15);
+    });
+  },
+});
+
+const TestComponent5 = Component.extend({
+  layout: hbs`{{internalValue}}`,
+
+  internalValue: 'initial value',
+
+  ready: false,
+
+  isReady() {
+    return this.get('ready');
+  },
+
+  init() {
+    this._super.apply(this, arguments);
+    // In Ember < 2.8 `registerWaiter` expected to be bound to
+    // `Ember.Test` 😭
+    //
+    // Once we have dropped support for < 2.8 we should swap this to
+    // use:
+    //
+    // import { registerWaiter } from '@ember/test';
+    Ember.Test.registerWaiter(this, this.isReady);
+    later(() => {
+      this.setProperties({
+        internalValue: 'async value',
+        ready: true,
+      });
+    }, 25);
+  },
+
+  willDestroy() {
+    this._super.apply(this, arguments);
+    // must be called with `Ember.Test` as context for Ember < 2.8
+    Ember.Test.unregisterWaiter(this, this.isReady);
+  },
+});
+
 module('settled real-world scenarios', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
@@ -24,141 +124,6 @@ module('settled real-world scenarios', function(hooks) {
   hooks.beforeEach(async function() {
     await setupContext(this);
     await setupRenderingContext(this);
-
-    let { owner } = this;
-
-    owner.register(
-      'component:x-test-1',
-      Component.extend({
-        internalValue: 'initial value',
-
-        init() {
-          this._super.apply(this, arguments);
-
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
-            },
-            10
-          );
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-1', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-2',
-      Component.extend({
-        internalValue: 'initial value',
-
-        click() {
-          later(
-            this,
-            function() {
-              this.set('internalValue', 'async value');
-            },
-            10
-          );
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-2', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-3',
-      Component.extend({
-        internalValue: '',
-
-        click() {
-          var component = this;
-
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
-
-            run(component, 'set', 'internalValue', value + data);
-          });
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-3', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-4',
-      Component.extend({
-        internalValue: '',
-
-        click() {
-          var component = this;
-
-          later(function() {
-            run(component, 'set', 'internalValue', 'Local Data!');
-          }, 10);
-
-          ajax('/whazzits').then(function(data) {
-            var value = component.get('internalValue');
-
-            run(component, 'set', 'internalValue', value + data);
-
-            later(function() {
-              ajax('/whazzits').then(function(data) {
-                if (component.isDestroyed) {
-                  return;
-                }
-
-                var value = component.get('internalValue');
-
-                run(component, 'set', 'internalValue', value + data);
-              });
-            }, 15);
-          });
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-4', hbs`{{internalValue}}`);
-
-    owner.register(
-      'component:x-test-5',
-      Component.extend({
-        internalValue: 'initial value',
-
-        ready: false,
-
-        isReady() {
-          return this.get('ready');
-        },
-
-        init() {
-          this._super.apply(this, arguments);
-          // In Ember < 2.8 `registerWaiter` expected to be bound to
-          // `Ember.Test` 😭
-          //
-          // Once we have dropped support for < 2.8 we should swap this to
-          // use:
-          //
-          // import { registerWaiter } from '@ember/test';
-          Ember.Test.registerWaiter(this, this.isReady);
-          later(() => {
-            this.setProperties({
-              internalValue: 'async value',
-              ready: true,
-            });
-          }, 25);
-        },
-
-        willDestroy() {
-          this._super.apply(this, arguments);
-          // must be called with `Ember.Test` as context for Ember < 2.8
-          Ember.Test.unregisterWaiter(this, this.isReady);
-        },
-      })
-    );
-
-    owner.register('template:components/x-test-5', hbs`{{internalValue}}`);
 
     this.server = new Pretender(function() {
       this.get(
@@ -181,6 +146,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it works when async exists in `init`', async function(assert) {
+    this.owner.register('component:x-test-1', TestComponent1);
+
     await this.render(hbs`{{x-test-1}}`);
 
     await settled();
@@ -189,6 +156,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it works when async exists in an event/action', async function(assert) {
+    this.owner.register('component:x-test-2', TestComponent2);
+
     await this.render(hbs`{{x-test-2}}`);
 
     assert.equal(this.element.textContent, 'initial value');
@@ -201,6 +170,8 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for AJAX requests to finish', async function(assert) {
+    this.owner.register('component:x-test-3', TestComponent3);
+
     await this.render(hbs`{{x-test-3}}`);
 
     fireEvent(this.element.querySelector('div'), 'click');
@@ -211,7 +182,7 @@ module('settled real-world scenarios', function(hooks) {
   });
 
   test('it waits for interleaved AJAX and run loops to finish', async function(assert) {
-    var testContext = this;
+    this.owner.register('component:x-test-4', TestComponent4);
 
     await this.render(hbs`{{x-test-4}}`);
 
@@ -219,11 +190,11 @@ module('settled real-world scenarios', function(hooks) {
 
     await settled();
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!Remote Data!');
+    assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
   });
 
   test('it can wait only for AJAX', async function(assert) {
-    var testContext = this;
+    this.owner.register('component:x-test-4', TestComponent4);
 
     await this.render(hbs`{{x-test-4}}`);
 
@@ -231,7 +202,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await settled({ waitForTimers: false });
 
-    assert.equal(testContext.element.textContent, 'Local Data!Remote Data!');
+    assert.equal(this.element.textContent, 'Local Data!Remote Data!');
   });
 
   // in the wait utility we specific listen for artificial jQuery events
@@ -240,7 +211,7 @@ module('settled real-world scenarios', function(hooks) {
   //
   // therefore, this test is only valid when using jQuery.ajax
   (hasjQuery() ? test : skip)('it can wait only for timers', async function(assert) {
-    var testContext = this;
+    this.owner.register('component:x-test-4', TestComponent4);
 
     await this.render(hbs`{{x-test-4}}`);
 
@@ -248,10 +219,12 @@ module('settled real-world scenarios', function(hooks) {
 
     await settled({ waitForAJAX: false });
 
-    assert.equal(testContext.element.textContent, 'Local Data!');
+    assert.equal(this.element.textContent, 'Local Data!');
   });
 
   test('it waits for Ember test waiters', async function(assert) {
+    this.owner.register('component:x-test-5', TestComponent5);
+
     await this.render(hbs`{{x-test-5}}`);
 
     await settled({ waitForTimers: false });
