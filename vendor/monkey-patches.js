@@ -18,7 +18,7 @@
       // This exists to ensure that the AJAX listeners setup by Ember itself
       // (which as of 2.17 are not properly torn down) get cleared and released
       // when the application is destroyed. Without this, any AJAX requests
-      // that happen _between_ when acceptance tests will always share
+      // that happen _between_ acceptance tests will always share
       // `pendingRequests`.
       _Ember.Application.reopen({
         willDestroy() {
