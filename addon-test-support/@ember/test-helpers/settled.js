@@ -6,6 +6,8 @@ import jQuery from 'jquery';
 import Ember from 'ember';
 import global from './global';
 
+// TODO: refactor to use `nextTick` from #258
+const SET_TIMEOUT = global.setTimeout;
 let requests;
 function incrementAjaxPendingRequests(_, xhr) {
   requests.push(xhr);
@@ -17,17 +19,18 @@ function decrementAjaxPendingRequests(_, xhr) {
   // is possible that in the future this changes to use "true" micro-task
   // queues.
   //
-  // The entire point here, is that _whenever_ promises are resolved, this
+  // The entire point here, is that _whenever_ promises are resolved will be
+  // before the next run of the JS event loop. Then in the next event loop this
   // counter will decrement. In the specific case of AJAX, this means that any
   // promises chained off of `$.ajax` will properly have their `.then` called
   // _before_ this is decremented (and testing continues)
-  EmberPromise.resolve().then(() => {
+  SET_TIMEOUT(() => {
     for (let i = 0; i < requests.length; i++) {
       if (xhr === requests[i]) {
         requests.splice(i, 1);
       }
     }
-  });
+  }, 0);
 }
 
 export function _teardownAJAXHooks() {
