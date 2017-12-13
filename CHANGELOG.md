@@ -1,5 +1,21 @@
 # Change Log
 
+## v0.7.4 (2017-12-13)
+
+#### :rocket: Enhancement
+* [#262](https://github.com/emberjs/ember-test-helpers/pull/262) settled: Ramp up timeout values for isSettled() check. ([@Turbo87](https://github.com/Turbo87))
+
+#### :bug: Bug Fix
+* [#263](https://github.com/emberjs/ember-test-helpers/pull/263) Refactor settled to avoid triggering a new run-loop.. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#261](https://github.com/emberjs/ember-test-helpers/pull/261) Cleanup `settle()` integration tests. ([@Turbo87](https://github.com/Turbo87))
+* [#257](https://github.com/emberjs/ember-test-helpers/pull/257) Run `yarn lint` and `yarn test` from the same job in first stage.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+
 ## [v0.7.3](https://github.com/emberjs/ember-test-helpers/tree/v0.7.3) (2017-12-05)
 [Full Changelog](https://github.com/emberjs/ember-test-helpers/compare/v0.7.2...v0.7.3)
 
