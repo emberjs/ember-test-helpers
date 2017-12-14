@@ -2,6 +2,7 @@ import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
+import { Promise } from 'rsvp';
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
@@ -108,3 +109,83 @@ QUnit.assert.verifySteps = function() {
   ASSERT_VERIFY_STEPS.apply(this, arguments);
   this.test.steps.length = 0;
 };
+
+QUnit.assert.rejects = function(callback, expected, message) {
+  this.test.ignoreGlobalErrors = true;
+
+  let actual;
+  let result = false;
+
+  let done = this.async();
+
+  return Promise.resolve()
+    .then(callback)
+    .then(null, reason => {
+      actual = reason;
+    })
+    .finally(() => {
+      if (actual) {
+        const expectedType = typeof expected;
+
+        // We don't want to validate thrown error
+        if (!expected) {
+          result = true;
+          expected = null;
+
+          // Expected is a regexp
+        } else if (expected instanceof RegExp) {
+          result = expected.test(errorString(actual));
+
+          // Expected is a constructor, maybe an Error constructor
+        } else if (expectedType === 'function' && actual instanceof expected) {
+          result = true;
+
+          // Expected is an Error object
+        } else if (expectedType === 'object') {
+          result =
+            actual instanceof expected.constructor &&
+            actual.name === expected.name &&
+            actual.message === expected.message;
+
+          // Expected is a validation function which returns true if validation passed
+        } else if (expectedType === 'function' && expected.call(null, actual) === true) {
+          expected = null;
+          result = true;
+        }
+      }
+
+      this.pushResult({
+        result,
+        actual,
+        expected,
+        message,
+      });
+
+      this.test.ignoreGlobalErrors = false;
+    })
+    .finally(() => {
+      this.test.ignoreGlobalErrors = false;
+      done();
+    });
+};
+
+function errorString(error) {
+  const resultErrorString = error.toString();
+
+  if (resultErrorString.substring(0, 7) === '[object') {
+    const name = error.name ? error.name.toString() : 'Error';
+    const message = error.message ? error.message.toString() : '';
+
+    if (name && message) {
+      return `${name}: ${message}`;
+    } else if (name) {
+      return name;
+    } else if (message) {
+      return message;
+    } else {
+      return 'Error';
+    }
+  } else {
+    return resultErrorString;
+  }
+}
