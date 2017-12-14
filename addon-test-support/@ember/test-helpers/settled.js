@@ -8,7 +8,32 @@ import global from './global';
 
 // TODO: refactor to use `nextTick` from #258
 const SET_TIMEOUT = global.setTimeout;
+
+// Ember internally tracks AJAX requests in the same way that we do here for
+// legacy style "acceptance" tests using the `ember-testing.js` asset provided
+// by emberjs/ember.js itself. When `@ember/test-helpers`'s `settled` utility
+// is used in a legacy acceptance test context any pending AJAX requests are
+// not properly considered during the `isSettled` check below.
+//
+// This utilizes a local utility method present in Ember since around 2.8.0 to
+// properly consider pending AJAX requests done within legacy acceptance tests.
+const _internalPendingRequests = (() => {
+  if (Ember.__loader.registry['ember-testing/test/pending_requests']) {
+    return Ember.__loader.require('ember-testing/test/pending_requests').pendingRequests;
+  }
+
+  return () => 0;
+})();
+
 let requests;
+
+function pendingRequests() {
+  let localRequestsPending = requests !== undefined ? requests.length : 0;
+  let internalRequestsPending = _internalPendingRequests();
+
+  return localRequestsPending + internalRequestsPending;
+}
+
 function incrementAjaxPendingRequests(_, xhr) {
   requests.push(xhr);
 }
@@ -71,7 +96,7 @@ function checkWaiters() {
 }
 
 export function getState() {
-  let pendingRequestCount = requests !== undefined ? requests.length : 0;
+  let pendingRequestCount = pendingRequests();
 
   return {
     hasPendingTimers: Boolean(run.hasScheduledTimers()),

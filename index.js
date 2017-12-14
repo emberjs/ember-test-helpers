@@ -4,6 +4,10 @@
 module.exports = {
   name: 'ember-test-helpers',
 
+  included() {
+    this.import('vendor/monkey-patches.js', { type: 'test' });
+  },
+
   treeForAddonTestSupport(tree) {
     // intentionally not calling _super here
     // so that can have our `import`'s be
