@@ -37,4 +37,12 @@ module('DOM helper: waitUntil', function() {
         ]);
       });
   });
+
+  test('rejects when callback throws', function(assert) {
+    return waitUntil(() => {
+      throw new Error('error goes here');
+    }).catch(reason => {
+      assert.equal(reason.message, 'error goes here', 'valid error was thrown');
+    });
+  });
 });

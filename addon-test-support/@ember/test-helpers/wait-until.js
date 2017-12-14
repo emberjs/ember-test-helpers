@@ -12,7 +12,14 @@ export default function(callback, options = {}) {
     let time = -10;
     function tick() {
       time += 10;
-      let value = callback();
+
+      let value;
+      try {
+        value = callback();
+      } catch (error) {
+        reject(error);
+      }
+
       if (value) {
         resolve(value);
       } else if (time < timeout) {
