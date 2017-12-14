@@ -24,8 +24,8 @@ module('DOM Helper: focus', function(hooks) {
     element = buildInstrumentedElement('div');
 
     setContext(context);
-    assert.throws(() => {
-      focus(`#${element.id}`);
+    assert.rejects(() => {
+      return focus(`#${element.id}`);
     }, /is not focusable/);
   });
 
@@ -33,8 +33,8 @@ module('DOM Helper: focus', function(hooks) {
     element = buildInstrumentedElement('div');
 
     setContext(context);
-    assert.throws(() => {
-      focus(element);
+    assert.rejects(() => {
+      return focus(element);
     }, /is not focusable/);
   });
 
@@ -50,12 +50,12 @@ module('DOM Helper: focus', function(hooks) {
     assert.verifySteps(['focus', 'focusin']);
   });
 
-  test('throws an error if selector is not found', async function(assert) {
+  test('rejects if selector is not found', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.throws(() => {
+    assert.rejects(() => {
       setContext(context);
-      focus(`#foo-bar-baz-not-here-ever-bye-bye`);
+      return focus(`#foo-bar-baz-not-here-ever-bye-bye`);
     }, /Element not found when calling `focus\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
 

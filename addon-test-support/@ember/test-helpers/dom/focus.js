@@ -35,20 +35,20 @@ export function __focus__(element) {
   @public
 */
 export default function focus(target) {
-  if (!target) {
-    throw new Error('Must pass an element or selector to `focus`.');
-  }
-
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`focus('${target}')\`.`);
-  }
-
-  if (!isFocusable(element)) {
-    throw new Error(`${target} is not focusable`);
-  }
-
   return nextTickPromise().then(() => {
+    if (!target) {
+      throw new Error('Must pass an element or selector to `focus`.');
+    }
+
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`focus('${target}')\`.`);
+    }
+
+    if (!isFocusable(element)) {
+      throw new Error(`${target} is not focusable`);
+    }
+
     __focus__(element);
 
     return settled();

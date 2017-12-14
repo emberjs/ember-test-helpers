@@ -12,20 +12,20 @@ import { nextTickPromise } from '../-utils';
   @public
 */
 export default function triggerEvent(target, type, options) {
-  if (!target) {
-    throw new Error('Must pass an element or selector to `triggerEvent`.');
-  }
-
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
-  }
-
-  if (!type) {
-    throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
-  }
-
   return nextTickPromise().then(() => {
+    if (!target) {
+      throw new Error('Must pass an element or selector to `triggerEvent`.');
+    }
+
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
+    }
+
+    if (!type) {
+      throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
+    }
+
     fireEvent(element, type, options);
 
     return settled();

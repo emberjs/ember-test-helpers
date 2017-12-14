@@ -24,25 +24,25 @@ module('DOM Helper: fillIn', function(hooks) {
     element = buildInstrumentedElement('div');
 
     setContext(context);
-    assert.throws(() => {
-      fillIn(`#${element.id}`, 'foo');
+    assert.rejects(() => {
+      return fillIn(`#${element.id}`, 'foo');
     }, /`fillIn` is only usable on form controls or contenteditable elements/);
   });
 
-  test('throws an error if selector is not found', async function(assert) {
+  test('rejects if selector is not found', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.throws(() => {
+    assert.rejects(() => {
       setContext(context);
-      fillIn(`#foo-bar-baz-not-here-ever-bye-bye`, 'foo');
+      return fillIn(`#foo-bar-baz-not-here-ever-bye-bye`, 'foo');
     }, /Element not found when calling `fillIn\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
 
-  test('throws an error if text to fill in is not provided', async function(assert) {
+  test('rejects if text to fill in is not provided', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    assert.throws(() => {
-      fillIn(element);
+    assert.rejects(() => {
+      return fillIn(element);
     }, /Must provide `text` when calling `fillIn`/);
   });
 

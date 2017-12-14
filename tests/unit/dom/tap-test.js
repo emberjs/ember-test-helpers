@@ -59,12 +59,12 @@ module('DOM Helper: tap', function(hooks) {
       assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
     });
 
-    test('throws an error if selector is not found', async function(assert) {
+    test('rejects if selector is not found', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      assert.throws(() => {
+      assert.rejects(() => {
         setContext(context);
-        tap(`#foo-bar-baz-not-here-ever-bye-bye`);
+        return tap(`#foo-bar-baz-not-here-ever-bye-bye`);
       }, /Element not found when calling `tap\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
     });
 

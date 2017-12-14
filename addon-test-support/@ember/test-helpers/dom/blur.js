@@ -32,16 +32,16 @@ export function __blur__(element) {
   @public
 */
 export default function blur(target = document.activeElement) {
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`blur('${target}')\`.`);
-  }
-
-  if (!isFocusable(element)) {
-    throw new Error(`${target} is not focusable`);
-  }
-
   return nextTickPromise().then(() => {
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`blur('${target}')\`.`);
+    }
+
+    if (!isFocusable(element)) {
+      throw new Error(`${target} is not focusable`);
+    }
+
     __blur__(element);
 
     return settled();

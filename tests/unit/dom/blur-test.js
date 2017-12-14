@@ -38,10 +38,11 @@ module('DOM Helper: blur', function(hooks) {
     assert.verifySteps(['blur', 'focusout']);
   });
 
-  test('throws an error if selector is not found', async function(assert) {
+  test('rejects if selector is not found', async function(assert) {
     setContext(context);
-    assert.throws(() => {
-      blur(`#foo-bar-baz-not-here-ever-bye-bye`);
+
+    assert.rejects(() => {
+      return blur(`#foo-bar-baz-not-here-ever-bye-bye`);
     }, /Element not found when calling `blur\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
 

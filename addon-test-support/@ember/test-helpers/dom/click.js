@@ -28,12 +28,12 @@ export function __click__(element) {
   @public
 */
 export default function click(target) {
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`click('${target}')\`.`);
-  }
-
   return nextTickPromise().then(() => {
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`click('${target}')\`.`);
+    }
+
     __click__(element);
     return settled();
   });

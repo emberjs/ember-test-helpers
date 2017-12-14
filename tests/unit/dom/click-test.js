@@ -59,12 +59,12 @@ module('DOM Helper: click', function(hooks) {
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
 
-    test('throws an error if selector is not found', async function(assert) {
+    test('rejects if selector is not found', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      assert.throws(() => {
+      assert.rejects(() => {
         setContext(context);
-        click(`#foo-bar-baz-not-here-ever-bye-bye`);
+        return click(`#foo-bar-baz-not-here-ever-bye-bye`);
       }, /Element not found when calling `click\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
     });
 

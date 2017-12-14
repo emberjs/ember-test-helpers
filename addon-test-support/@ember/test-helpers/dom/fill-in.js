@@ -13,20 +13,20 @@ import { nextTickPromise } from '../-utils';
   @public
 */
 export default function fillIn(target, text) {
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
-  }
-
-  if (!isFormControl(element) && !element.isContentEditable) {
-    throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
-  }
-
-  if (!text) {
-    throw new Error('Must provide `text` when calling `fillIn`.');
-  }
-
   return nextTickPromise().then(() => {
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
+    }
+
+    if (!isFormControl(element) && !element.isContentEditable) {
+      throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
+    }
+
+    if (!text) {
+      throw new Error('Must provide `text` when calling `fillIn`.');
+    }
+
     __focus__(element);
 
     if (element.isContentEditable) {

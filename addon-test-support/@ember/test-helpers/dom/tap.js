@@ -12,12 +12,12 @@ import { nextTickPromise } from '../-utils';
   @public
 */
 export default function tap(target, options = {}) {
-  let element = getElement(target);
-  if (!element) {
-    throw new Error(`Element not found when calling \`tap('${target}')\`.`);
-  }
-
   return nextTickPromise().then(() => {
+    let element = getElement(target);
+    if (!element) {
+      throw new Error(`Element not found when calling \`tap('${target}')\`.`);
+    }
+
     let touchstartEv = fireEvent(element, 'touchstart', options);
     let touchendEv = fireEvent(element, 'touchend', options);
 

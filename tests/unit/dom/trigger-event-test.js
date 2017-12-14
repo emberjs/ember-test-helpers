@@ -89,21 +89,21 @@ module('DOM Helper: triggerEvent', function(hooks) {
     assert.verifySteps(['mouseenter']);
   });
 
-  test('throws an error if selector is not found', async function(assert) {
+  test('rejects if selector is not found', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.throws(() => {
+    assert.rejects(() => {
       setContext(context);
-      triggerEvent(`#foo-bar-baz-not-here-ever-bye-bye`, 'mouseenter');
+      return triggerEvent(`#foo-bar-baz-not-here-ever-bye-bye`, 'mouseenter');
     }, /Element not found when calling `triggerEvent\('#foo-bar-baz-not-here-ever-bye-bye'/);
   });
 
-  test('throws an error if event type is not passed', async function(assert) {
+  test('rejects if event type is not passed', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.throws(() => {
+    assert.rejects(() => {
       setContext(context);
-      triggerEvent(element);
+      return triggerEvent(element);
     }, /Must provide an `eventType` to `triggerEvent`/);
   });
 
