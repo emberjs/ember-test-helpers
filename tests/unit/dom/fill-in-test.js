@@ -48,19 +48,10 @@ module('DOM Helper: fillIn', function(hooks) {
 
   test('filling an input via selector without context set', async function(assert) {
     element = buildInstrumentedElement('input');
-    let errorThrown;
 
-    try {
-      await fillIn(`#${element.id}`, 'foo');
-    } catch (error) {
-      errorThrown = error;
-    }
-
-    assert.equal(
-      errorThrown.message,
-      'Must setup rendering context before attempting to interact with elements.',
-      'valid error was thrown'
-    );
+    assert.rejects(() => {
+      return fillIn(`#${element.id}`, 'foo');
+    }, /Must setup rendering context before attempting to interact with elements/);
   });
 
   test('does not run sync', async function(assert) {

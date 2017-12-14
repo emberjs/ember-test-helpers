@@ -90,18 +90,9 @@ module('DOM Helper: focus', function(hooks) {
 
   test('focusing a input via selector without context set', async function(assert) {
     element = buildInstrumentedElement('input');
-    let errorThrown;
 
-    try {
-      await focus(`#${element.id}`);
-    } catch (error) {
-      errorThrown = error;
-    }
-
-    assert.equal(
-      errorThrown.message,
-      'Must setup rendering context before attempting to interact with elements.',
-      'valid error was thrown'
-    );
+    assert.rejects(() => {
+      return focus(`#${element.id}`);
+    }, /Must setup rendering context before attempting to interact with elements/);
   });
 });

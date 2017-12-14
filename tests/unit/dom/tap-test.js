@@ -70,19 +70,10 @@ module('DOM Helper: tap', function(hooks) {
 
     test('tapping a div via selector without context set', async function(assert) {
       element = buildInstrumentedElement('div');
-      let errorThrown;
 
-      try {
+      assert.rejects(async () => {
         await tap(`#${element.id}`);
-      } catch (error) {
-        errorThrown = error;
-      }
-
-      assert.equal(
-        errorThrown.message,
-        'Must setup rendering context before attempting to interact with elements.',
-        'valid error was thrown'
-      );
+      }, /Must setup rendering context before attempting to interact with elements/);
     });
   });
 
@@ -140,21 +131,12 @@ module('DOM Helper: tap', function(hooks) {
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
-    test('tapping a input via selector without context set', async function(assert) {
+    test('tapping a input via selector without context set', function(assert) {
       element = buildInstrumentedElement('input');
-      let errorThrown;
 
-      try {
+      assert.rejects(async () => {
         await tap(`#${element.id}`);
-      } catch (error) {
-        errorThrown = error;
-      }
-
-      assert.equal(
-        errorThrown.message,
-        'Must setup rendering context before attempting to interact with elements.',
-        'valid error was thrown'
-      );
+      }, /Must setup rendering context before attempting to interact with elements/);
     });
   });
 });
