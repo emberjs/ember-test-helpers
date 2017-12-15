@@ -1,6 +1,13 @@
 import { module, test } from 'qunit';
 import { focus, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
+import isIE from '../../helpers/is-ie';
+
+let focusSteps = ['focus', 'focusin'];
+
+if (isIE) {
+  focusSteps = ['focusin', 'focus'];
+}
 
 module('DOM Helper: focus', function(hooks) {
   let context, element;
@@ -47,7 +54,7 @@ module('DOM Helper: focus', function(hooks) {
 
     await promise;
 
-    assert.verifySteps(['focus', 'focusin']);
+    assert.verifySteps(focusSteps);
   });
 
   test('rejects if selector is not found', async function(assert) {
@@ -65,7 +72,7 @@ module('DOM Helper: focus', function(hooks) {
     setContext(context);
     await focus(`#${element.id}`);
 
-    assert.verifySteps(['focus', 'focusin']);
+    assert.verifySteps(focusSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 
@@ -75,7 +82,7 @@ module('DOM Helper: focus', function(hooks) {
     setContext(context);
     await focus(element);
 
-    assert.verifySteps(['focus', 'focusin']);
+    assert.verifySteps(focusSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 
@@ -84,7 +91,7 @@ module('DOM Helper: focus', function(hooks) {
 
     await focus(element);
 
-    assert.verifySteps(['focus', 'focusin']);
+    assert.verifySteps(focusSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 

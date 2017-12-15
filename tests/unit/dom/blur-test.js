@@ -1,6 +1,15 @@
 import { module, test } from 'qunit';
 import { focus, blur, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
+import isIE from '../../helpers/is-ie';
+
+let focusSteps = ['focus', 'focusin'];
+let blurSteps = ['blur', 'focusout'];
+
+if (isIE) {
+  focusSteps = ['focusin', 'focus'];
+  blurSteps = ['focusout', 'blur'];
+}
 
 module('DOM Helper: blur', function(hooks) {
   let context, elementWithFocus;
@@ -17,7 +26,7 @@ module('DOM Helper: blur', function(hooks) {
     await focus(elementWithFocus);
 
     // verify that focus was ran, and reset steps
-    assert.verifySteps(['focus', 'focusin']);
+    assert.verifySteps(focusSteps);
     assert.equal(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
@@ -35,7 +44,7 @@ module('DOM Helper: blur', function(hooks) {
 
     await promise;
 
-    assert.verifySteps(['blur', 'focusout']);
+    assert.verifySteps(blurSteps);
   });
 
   test('rejects if selector is not found', async function(assert) {
@@ -50,7 +59,7 @@ module('DOM Helper: blur', function(hooks) {
     setContext(context);
     await blur(`#${elementWithFocus.id}`);
 
-    assert.verifySteps(['blur', 'focusout']);
+    assert.verifySteps(blurSteps);
     assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
@@ -64,14 +73,14 @@ module('DOM Helper: blur', function(hooks) {
     setContext(context);
     await blur(elementWithFocus);
 
-    assert.verifySteps(['blur', 'focusout']);
+    assert.verifySteps(blurSteps);
     assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
   test('bluring via element without context set', async function(assert) {
     await blur(elementWithFocus);
 
-    assert.verifySteps(['blur', 'focusout']);
+    assert.verifySteps(blurSteps);
     assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 });

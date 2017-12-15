@@ -173,7 +173,7 @@ moduleForComponent('pretty-color', {
 
 test('className', function(assert) {
   this.render();
-  assert.ok(this._element.matches('.pretty-color'));
+  assert.ok(this._element.classList.contains('pretty-color'));
 });
 
 test('template', function(assert) {
@@ -734,7 +734,7 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 
           assert.equal(this._state, 'inDOM', 'still in dom during willDestroyElement');
           assert.ok(
-            document.contains(this.element),
+            document.body.contains(this.element),
             'component element still contained within `document`'
           );
         },

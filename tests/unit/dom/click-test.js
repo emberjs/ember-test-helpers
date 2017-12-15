@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { click, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
+import isIE from '../../helpers/is-ie';
 
 module('DOM Helper: click', function(hooks) {
   let context, element;
@@ -78,13 +79,19 @@ module('DOM Helper: click', function(hooks) {
   });
 
   module('focusable element types', function() {
+    let clickSteps = ['mousedown', 'focus', 'focusin', 'mouseup', 'click'];
+
+    if (isIE) {
+      clickSteps = ['mousedown', 'focusin', 'mouseup', 'click', 'focus'];
+    }
+
     test('clicking a input via selector with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
       setContext(context);
       await click(`#${element.id}`);
 
-      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
+      assert.verifySteps(clickSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
@@ -94,7 +101,7 @@ module('DOM Helper: click', function(hooks) {
       setContext(context);
       await click(element);
 
-      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
+      assert.verifySteps(clickSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
@@ -103,7 +110,7 @@ module('DOM Helper: click', function(hooks) {
 
       await click(element);
 
-      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
+      assert.verifySteps(clickSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
