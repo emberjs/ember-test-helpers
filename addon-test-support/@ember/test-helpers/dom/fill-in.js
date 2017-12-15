@@ -22,8 +22,8 @@ export default function fillIn(target, text) {
     if (!element) {
       throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
     }
-
-    if (!isFormControl(element) && !element.isContentEditable) {
+    let isControl = isFormControl(element);
+    if (!isControl && !element.isContentEditable) {
       throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
     }
 
@@ -33,10 +33,10 @@ export default function fillIn(target, text) {
 
     __focus__(element);
 
-    if (element.isContentEditable) {
-      element.innerHTML = text;
-    } else {
+    if (isControl) {
       element.value = text;
+    } else {
+      element.innerHTML = text;
     }
 
     fireEvent(element, 'input');

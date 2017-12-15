@@ -173,7 +173,7 @@ moduleForComponent('pretty-color', {
 
 test('className', function(assert) {
   this.render();
-  assert.ok(this._element.matches('.pretty-color'));
+  assert.ok(this._element.classList.contains('pretty-color'));
 });
 
 test('template', function(assert) {

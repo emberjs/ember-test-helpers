@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { tap, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
+import isIE from '../../helpers/is-ie';
 
 module('DOM Helper: tap', function(hooks) {
   let context, element;
@@ -78,21 +79,18 @@ module('DOM Helper: tap', function(hooks) {
   });
 
   module('focusable element types', function() {
+    let tapSteps = ['touchstart', 'touchend', 'mousedown', 'focus', 'focusin', 'mouseup', 'click'];
+
+    if (isIE) {
+      tapSteps = ['touchstart', 'touchend', 'mousedown', 'focusin', 'mouseup', 'click', 'focus'];
+    }
     test('tapping a input via selector with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
       setContext(context);
       await tap(`#${element.id}`);
 
-      assert.verifySteps([
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-      ]);
+      assert.verifySteps(tapSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
@@ -102,15 +100,7 @@ module('DOM Helper: tap', function(hooks) {
       setContext(context);
       await tap(element);
 
-      assert.verifySteps([
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-      ]);
+      assert.verifySteps(tapSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 
@@ -119,15 +109,7 @@ module('DOM Helper: tap', function(hooks) {
 
       await tap(element);
 
-      assert.verifySteps([
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-      ]);
+      assert.verifySteps(tapSteps);
       assert.strictEqual(document.activeElement, element, 'activeElement updated');
     });
 

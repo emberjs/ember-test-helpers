@@ -1,6 +1,13 @@
 import { module, test } from 'qunit';
 import { fillIn, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
+import isIE from '../../helpers/is-ie';
+
+let clickSteps = ['focus', 'focusin', 'input', 'change'];
+
+if (isIE) {
+  clickSteps = ['focusin', 'input', 'change', 'focus'];
+}
 
 module('DOM Helper: fillIn', function(hooks) {
   let context, element;
@@ -63,7 +70,7 @@ module('DOM Helper: fillIn', function(hooks) {
 
     await promise;
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
@@ -74,7 +81,7 @@ module('DOM Helper: fillIn', function(hooks) {
     setContext(context);
     await fillIn(`#${element.id}`, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
@@ -85,7 +92,7 @@ module('DOM Helper: fillIn', function(hooks) {
     setContext(context);
     await fillIn(element, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
@@ -96,7 +103,7 @@ module('DOM Helper: fillIn', function(hooks) {
     setContext(context);
     await fillIn(`#${element.id}`, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
@@ -107,7 +114,7 @@ module('DOM Helper: fillIn', function(hooks) {
     setContext(context);
     await fillIn(element, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
@@ -119,7 +126,7 @@ module('DOM Helper: fillIn', function(hooks) {
     setContext(context);
     await fillIn(element, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.innerHTML, 'foo');
   });
@@ -129,7 +136,7 @@ module('DOM Helper: fillIn', function(hooks) {
 
     await fillIn(element, 'foo');
 
-    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
+    assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
