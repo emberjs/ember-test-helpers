@@ -4,10 +4,7 @@ import { Promise as EmberPromise } from 'rsvp';
 import jQuery from 'jquery';
 
 import Ember from 'ember';
-import global from './global';
-
-// TODO: refactor to use `nextTick` from #258
-const SET_TIMEOUT = global.setTimeout;
+import { nextTick, futureTick } from './-utils';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -49,7 +46,7 @@ function decrementAjaxPendingRequests(_, xhr) {
   // counter will decrement. In the specific case of AJAX, this means that any
   // promises chained off of `$.ajax` will properly have their `.then` called
   // _before_ this is decremented (and testing continues)
-  SET_TIMEOUT(() => {
+  nextTick(() => {
     for (let i = 0; i < requests.length; i++) {
       if (xhr === requests[i]) {
         requests.splice(i, 1);
@@ -146,7 +143,7 @@ export default function settled(options) {
         timeout = MAX_TIMEOUT;
       }
 
-      global.setTimeout(function() {
+      futureTick(function() {
         let settled = isSettled(options);
         if (settled) {
           // Synchronously resolve the promise

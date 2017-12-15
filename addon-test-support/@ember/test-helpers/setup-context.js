@@ -1,4 +1,4 @@
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
@@ -9,6 +9,7 @@ import { assert } from '@ember/debug';
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
+import { nextTickPromise } from './-utils';
 
 let __test_context__;
 
@@ -61,10 +62,7 @@ export default function(context, options = {}) {
   Ember.testing = true;
   setContext(context);
 
-  return new Promise(resolve => {
-    // ensure "real" async and not "fake" RSVP based async
-    next(resolve);
-  })
+  return nextTickPromise()
     .then(() => {
       let { resolver } = options;
       let buildOwnerOptions;

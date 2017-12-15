@@ -1,24 +1,23 @@
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { _teardownPromiseListeners } from './ext/rsvp';
 import { _teardownAJAXHooks } from './settled';
 import { unsetContext } from './setup-context';
-import { Promise } from 'rsvp';
+import { nextTickPromise } from './-utils';
+import settled from './settled';
 import Ember from 'ember';
 
 export default function(context) {
-  return new Promise(resolve => {
-    // ensure "real" async and not "fake" RSVP based async
-    next(() => {
-      let { owner } = context;
+  return nextTickPromise().then(() => {
+    let { owner } = context;
 
-      _teardownPromiseListeners();
-      _teardownAJAXHooks();
+    _teardownPromiseListeners();
+    _teardownAJAXHooks();
 
-      run(owner, 'destroy');
-      Ember.testing = false;
+    run(owner, 'destroy');
+    Ember.testing = false;
 
-      unsetContext();
-      resolve(context);
-    });
+    unsetContext();
+
+    return settled();
   });
 }
