@@ -1,5 +1,20 @@
 # Change Log
 
+## v0.7.5 (2017-12-15)
+
+#### :rocket: Enhancement
+* [#258](https://github.com/emberjs/ember-test-helpers/pull/258) Bring over DOM helper implementation from `ember-native-dom-helpers`. First step towards implementing [emberjs/rfcs#268](https://github.com/emberjs/rfcs/pull/268). ([@rwjblue](https://github.com/rwjblue))
+
+#### :bug: Bug Fix
+* [#264](https://github.com/emberjs/ember-test-helpers/pull/264) Wait for pending AJAX in acceptance tests. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#269](https://github.com/emberjs/ember-test-helpers/pull/269) Use `nextTick` and `nextTickPromise` throughout codebase. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.4 (2017-12-13)
 
 #### :rocket: Enhancement
