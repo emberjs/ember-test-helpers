@@ -16,7 +16,7 @@ import wait from 'ember-test-helpers/wait';
 import qunitModuleFor from '../../helpers/qunit-module-for';
 import hasjQuery from '../../helpers/has-jquery';
 import hbs from 'htmlbars-inline-precompile';
-import { fireEvent, focus, blur } from '../../helpers/events';
+import { triggerEvent, focus, blur } from '@ember/test-helpers';
 import { htmlSafe } from '@ember/string';
 
 var Service = EmberService || EmberObject;
@@ -466,6 +466,8 @@ test('it supports DOM events', function(assert) {
 });
 
 test('it supports updating an input', function(assert) {
+  assert.expect(1);
+
   setResolverRegistry({
     'component:my-input': TextField.extend({
       value: null,
@@ -475,8 +477,9 @@ test('it supports updating an input', function(assert) {
   let input = this._element.querySelector('input');
   input.value = '1';
 
-  fireEvent(input, 'change');
-  assert.equal(this.get('value'), '1');
+  return triggerEvent(input, 'change').then(() => {
+    assert.equal(this.get('value'), '1');
+  });
 });
 
 test('it supports dom triggered focus events', function(assert) {
@@ -498,11 +501,14 @@ test('it supports dom triggered focus events', function(assert) {
   let input = this._element.querySelector('input');
   assert.equal(input.value, 'init');
 
-  focus(input);
-  assert.equal(input.value, 'focusin');
-
-  blur(input);
-  assert.equal(input.value, 'focusout');
+  return focus(input)
+    .then(() => {
+      assert.equal(input.value, 'focusin');
+      return blur(input);
+    })
+    .then(() => {
+      assert.equal(input.value, 'focusout');
+    });
 });
 
 moduleForComponent('Component Integration Tests: render during setup', {

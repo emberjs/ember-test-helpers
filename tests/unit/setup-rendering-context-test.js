@@ -16,7 +16,7 @@ import {
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
-import { focus, blur, fireEvent, click } from '../helpers/events';
+import { triggerEvent, focus, blur, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('setupRenderingContext', function(hooks) {
@@ -172,7 +172,7 @@ module('setupRenderingContext', function(hooks) {
       await this.render(hbs`{{x-foo}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
-      click(this.element.querySelector('button'));
+      await click(this.element.querySelector('button'));
     });
 
     test('can use action based event handling', async function(assert) {
@@ -196,7 +196,7 @@ module('setupRenderingContext', function(hooks) {
       await this.render(hbs`{{x-foo}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
-      click(this.element.querySelector('button'));
+      await click(this.element.querySelector('button'));
     });
 
     test('can pass function to be used as a "closure action"', async function(assert) {
@@ -211,7 +211,7 @@ module('setupRenderingContext', function(hooks) {
       await this.render(hbs`{{x-foo clicked=clicked}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
-      click(this.element.querySelector('button'));
+      await click(this.element.querySelector('button'));
     });
 
     test('can update a passed in argument with an <input>', async function(assert) {
@@ -226,7 +226,7 @@ module('setupRenderingContext', function(hooks) {
 
       // trigger the change
       input.value = '1';
-      fireEvent(input, 'change');
+      await triggerEvent(input, 'change');
 
       assert.equal(this.get('value'), '1');
     });
@@ -253,10 +253,10 @@ module('setupRenderingContext', function(hooks) {
       let input = this.element.querySelector('input');
       assert.equal(input.value, 'init');
 
-      focus(input);
+      await focus(input);
       assert.equal(input.value, 'focusin');
 
-      blur(input);
+      await blur(input);
       assert.equal(input.value, 'focusout');
     });
 
@@ -280,7 +280,7 @@ module('setupRenderingContext', function(hooks) {
       await this.render(hbs`{{my-component foo=foo}}`);
       assert.equal(this.element.textContent, 'original', 'value after initial render');
 
-      click(this.element.querySelector('button'));
+      await click(this.element.querySelector('button'));
       assert.equal(this.element.textContent, 'updated!', 'value after updating');
       assert.equal(this.get('foo'), 'updated!');
     });
@@ -306,7 +306,7 @@ module('setupRenderingContext', function(hooks) {
       // works both for things rendered in the component's layout
       // and those only used in the components JS file
       await this.render(hbs`{{my-component foo=foo bar=bar}}`);
-      click(this.element.querySelector('button'));
+      await click(this.element.querySelector('button'));
 
       await this.clearRender();
 

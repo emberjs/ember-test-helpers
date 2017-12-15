@@ -1,179 +1,184 @@
-import { run } from '@ember/runloop';
-import { merge } from '@ember/polyfills';
-
-const DEFAULT_EVENT_OPTIONS = { canBubble: true, cancelable: true };
-const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
-const MOUSE_EVENT_TYPES = [
+// from https://mdn.mozilla.org/en-US/docs/Web/Events
+export const KNOWN_EVENTS = Object.freeze([
+  'abort',
+  'afterprint',
+  'animationend',
+  'animationiteration',
+  'animationstart',
+  'appinstalled',
+  'audioprocess',
+  'audioend ',
+  'audiostart ',
+  'beforeprint',
+  'beforeunload',
+  'beginEvent',
+  'blocked	',
+  'blur',
+  'boundary ',
+  'cached',
+  'canplay',
+  'canplaythrough',
+  'change',
+  'chargingchange',
+  'chargingtimechange',
+  'checking',
   'click',
-  'mousedown',
-  'mouseup',
+  'close',
+  'complete',
+  'compositionend',
+  'compositionstart',
+  'compositionupdate',
+  'contextmenu',
+  'copy',
+  'cut',
   'dblclick',
+  'devicechange',
+  'devicelight',
+  'devicemotion',
+  'deviceorientation',
+  'deviceproximity',
+  'dischargingtimechange',
+  'downloading',
+  'drag',
+  'dragend',
+  'dragenter',
+  'dragleave',
+  'dragover',
+  'dragstart',
+  'drop',
+  'durationchange',
+  'emptied',
+  'end',
+  'ended',
+  'endEvent',
+  'error',
+  'focus',
+  'focusin',
+  'focusout',
+  'fullscreenchange',
+  'fullscreenerror',
+  'gamepadconnected',
+  'gamepaddisconnected',
+  'gotpointercapture',
+  'hashchange',
+  'lostpointercapture',
+  'input',
+  'invalid',
+  'keydown',
+  'keypress',
+  'keyup',
+  'languagechange ',
+  'levelchange',
+  'load',
+  'loadeddata',
+  'loadedmetadata',
+  'loadend',
+  'loadstart',
+  'mark ',
+  'message',
+  'messageerror',
+  'mousedown',
   'mouseenter',
   'mouseleave',
   'mousemove',
   'mouseout',
   'mouseover',
-];
+  'mouseup',
+  'nomatch',
+  'notificationclick',
+  'noupdate',
+  'obsolete',
+  'offline',
+  'online',
+  'open',
+  'orientationchange',
+  'pagehide',
+  'pageshow',
+  'paste',
+  'pause',
+  'pointercancel',
+  'pointerdown',
+  'pointerenter',
+  'pointerleave',
+  'pointerlockchange',
+  'pointerlockerror',
+  'pointermove',
+  'pointerout',
+  'pointerover',
+  'pointerup',
+  'play',
+  'playing',
+  'popstate',
+  'progress',
+  'push',
+  'pushsubscriptionchange',
+  'ratechange',
+  'readystatechange',
+  'repeatEvent',
+  'reset',
+  'resize',
+  'resourcetimingbufferfull',
+  'result ',
+  'resume ',
+  'scroll',
+  'seeked',
+  'seeking',
+  'select',
+  'selectstart',
+  'selectionchange',
+  'show',
+  'soundend ',
+  'soundstart ',
+  'speechend',
+  'speechstart',
+  'stalled',
+  'start',
+  'storage',
+  'submit',
+  'success',
+  'suspend',
+  'SVGAbort',
+  'SVGError',
+  'SVGLoad',
+  'SVGResize',
+  'SVGScroll',
+  'SVGUnload',
+  'SVGZoom',
+  'timeout',
+  'timeupdate',
+  'touchcancel',
+  'touchend',
+  'touchmove',
+  'touchstart',
+  'transitionend',
+  'unload',
+  'updateready',
+  'upgradeneeded	',
+  'userproximity',
+  'voiceschanged',
+  'versionchange',
+  'visibilitychange',
+  'volumechange',
+  'waiting',
+  'wheel',
+]);
 
-export const elMatches =
-  typeof Element !== 'undefined' &&
-  (Element.prototype.matches ||
-    Element.prototype.matchesSelector ||
-    Element.prototype.mozMatchesSelector ||
-    Element.prototype.msMatchesSelector ||
-    Element.prototype.oMatchesSelector ||
-    Element.prototype.webkitMatchesSelector);
+let uuid = 0;
+export function buildInstrumentedElement(elementType) {
+  let assert = QUnit.config.current.assert;
 
-export function matches(el, selector) {
-  return elMatches.call(el, selector);
-}
+  let element = document.createElement(elementType);
+  element.setAttribute('id', `fixture-${uuid++}`);
 
-function isFocusable(el) {
-  let focusableTags = ['INPUT', 'BUTTON', 'LINK', 'SELECT', 'A', 'TEXTAREA'];
-  let { tagName, type } = el;
-
-  if (type === 'hidden') {
-    return false;
-  }
-
-  return focusableTags.indexOf(tagName) > -1 || el.contentEditable === 'true';
-}
-
-export function click(el, options = {}) {
-  run(() => fireEvent(el, 'mousedown', options));
-  focus(el);
-  run(() => fireEvent(el, 'mouseup', options));
-  run(() => fireEvent(el, 'click', options));
-}
-
-export function focus(el) {
-  if (!el) {
-    return;
-  }
-  if (isFocusable(el)) {
-    run(null, function() {
-      let browserIsNotFocused = document.hasFocus && !document.hasFocus();
-
-      // Firefox does not trigger the `focusin` event if the window
-      // does not have focus. If the document doesn't have focus just
-      // use trigger('focusin') instead.
-      if (browserIsNotFocused) {
-        fireEvent(el, 'focusin');
-      }
-
-      // makes `document.activeElement` be `el`. If the browser is focused, it also fires a focus event
-      el.focus();
-
-      // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
-      if (browserIsNotFocused) {
-        fireEvent(el, 'focus');
-      }
+  KNOWN_EVENTS.forEach(type => {
+    element.addEventListener(type, e => {
+      assert.step(type);
+      assert.ok(e instanceof Event, `${type} listener should receive a native event`);
     });
-  }
-}
+  });
 
-export function blur(el) {
-  if (isFocusable(el)) {
-    run(null, function() {
-      let browserIsNotFocused = document.hasFocus && !document.hasFocus();
+  let fixture = document.querySelector('#qunit-fixture');
+  fixture.appendChild(element);
 
-      fireEvent(el, 'focusout');
-
-      // makes `document.activeElement` be `body`.
-      // If the browser is focused, it also fires a blur event
-      el.blur();
-
-      // Chrome/Firefox does not trigger the `blur` event if the window
-      // does not have focus. If the document does not have focus then
-      // fire `blur` event via native event.
-      if (browserIsNotFocused) {
-        fireEvent(el, 'blur');
-      }
-    });
-  }
-}
-
-export function fireEvent(element, type, options = {}) {
-  if (!element) {
-    return;
-  }
-  let event;
-  if (KEYBOARD_EVENT_TYPES.indexOf(type) > -1) {
-    event = buildKeyboardEvent(type, options);
-  } else if (MOUSE_EVENT_TYPES.indexOf(type) > -1) {
-    let rect = element.getBoundingClientRect();
-    let x = rect.left + 1;
-    let y = rect.top + 1;
-    let simulatedCoordinates = {
-      screenX: x + 5,
-      screenY: y + 95,
-      clientX: x,
-      clientY: y,
-    };
-    event = buildMouseEvent(type, merge(simulatedCoordinates, options));
-  } else {
-    event = buildBasicEvent(type, options);
-  }
-  element.dispatchEvent(event);
-}
-
-function buildBasicEvent(type, options = {}) {
-  let event = document.createEvent('Events');
-  event.initEvent(type, true, true);
-  merge(event, options);
-  return event;
-}
-
-function buildMouseEvent(type, options = {}) {
-  let event;
-  try {
-    event = document.createEvent('MouseEvents');
-    let eventOpts = merge({}, DEFAULT_EVENT_OPTIONS);
-    merge(eventOpts, options);
-
-    event.initMouseEvent(
-      type,
-      eventOpts.canBubble,
-      eventOpts.cancelable,
-      window,
-      eventOpts.detail,
-      eventOpts.screenX,
-      eventOpts.screenY,
-      eventOpts.clientX,
-      eventOpts.clientY,
-      eventOpts.ctrlKey,
-      eventOpts.altKey,
-      eventOpts.shiftKey,
-      eventOpts.metaKey,
-      eventOpts.button,
-      eventOpts.relatedTarget
-    );
-  } catch (e) {
-    event = buildBasicEvent(type, options);
-  }
-  return event;
-}
-
-function buildKeyboardEvent(type, options = {}) {
-  let event;
-  try {
-    event = document.createEvent('KeyEvents');
-    let eventOpts = merge({}, DEFAULT_EVENT_OPTIONS);
-    merge(eventOpts, options);
-    event.initKeyEvent(
-      type,
-      eventOpts.canBubble,
-      eventOpts.cancelable,
-      window,
-      eventOpts.ctrlKey,
-      eventOpts.altKey,
-      eventOpts.shiftKey,
-      eventOpts.metaKey,
-      eventOpts.keyCode,
-      eventOpts.charCode
-    );
-  } catch (e) {
-    event = buildBasicEvent(type, options);
-  }
-  return event;
+  return element;
 }

@@ -9,11 +9,10 @@ import {
   teardownRenderingContext,
 } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
-import { fireEvent } from '../helpers/events';
-import hasjQuery from '../helpers/has-jquery';
+import { click } from '@ember/test-helpers';
 import ajax from '../helpers/ajax';
 
 const TestComponent1 = Component.extend({
@@ -162,9 +161,7 @@ module('settled real-world scenarios', function(hooks) {
 
     assert.equal(this.element.textContent, 'initial value');
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'async value');
   });
@@ -174,9 +171,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-3}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'Remote Data!');
   });
@@ -186,40 +181,9 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-4}}`);
 
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled();
+    await click('div');
 
     assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
-  });
-
-  test('it can wait only for AJAX', async function(assert) {
-    this.owner.register('component:x-test-4', TestComponent4);
-
-    await this.render(hbs`{{x-test-4}}`);
-
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled({ waitForTimers: false });
-
-    assert.equal(this.element.textContent, 'Local Data!Remote Data!');
-  });
-
-  // in the wait utility we specific listen for artificial jQuery events
-  // to start/stop waiting, but when using ember-fetch those events are not
-  // emitted and instead test waiters are used
-  //
-  // therefore, this test is only valid when using jQuery.ajax
-  (hasjQuery() ? test : skip)('it can wait only for timers', async function(assert) {
-    this.owner.register('component:x-test-4', TestComponent4);
-
-    await this.render(hbs`{{x-test-4}}`);
-
-    fireEvent(this.element.querySelector('div'), 'click');
-
-    await settled({ waitForAJAX: false });
-
-    assert.equal(this.element.textContent, 'Local Data!');
   });
 
   test('it waits for Ember test waiters', async function(assert) {
