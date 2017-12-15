@@ -32,6 +32,7 @@ module('setupRenderingContext', function(hooks) {
     assert.ok(document.contains(beforeTeardownEl), 'precond - ember-testing element is in DOM');
 
     await teardownRenderingContext(this);
+    await teardownContext(this);
 
     let afterTeardownEl = document.getElementById('ember-testing');
 

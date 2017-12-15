@@ -1,5 +1,6 @@
 import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
 import buildOwner from './build-owner';
 import { _setupPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks } from './settled';
@@ -49,6 +50,8 @@ export function resumeTest() {
   return context.resumeTest();
 }
 
+export const CLEANUP = Object.create(null);
+
 /*
  * Responsible for:
  *
@@ -61,6 +64,9 @@ export function resumeTest() {
 export default function(context, options = {}) {
   Ember.testing = true;
   setContext(context);
+
+  let contextGuid = guidFor(context);
+  CLEANUP[contextGuid] = [];
 
   return nextTickPromise()
     .then(() => {
