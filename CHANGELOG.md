@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.8 (2017-12-15)
+
+#### :bug: Bug Fix
+* [#276](https://github.com/emberjs/ember-test-helpers/pull/276) Fix issues with IE11. All tests now passing on IE11, Chrome, FireFox, Edge, and Safari. 🎉 ([@cibernox](https://github.com/cibernox))
+
+#### Committers: 1
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+
 ## v0.7.7 (2017-12-15)
 
 #### :bug: Bug Fix
