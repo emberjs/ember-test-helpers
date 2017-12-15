@@ -2,7 +2,7 @@ import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
-import { getContext } from './setup-context';
+import { getContext, CLEANUP } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 
@@ -38,16 +38,17 @@ export function clearRender() {
  * - Adding `this.clearRender` to the provided context
  */
 export default function(context) {
-  let guid = guidFor(context);
+  let contextGuid = guidFor(context);
+  RENDERING_CLEANUP[contextGuid] = [];
 
   let testElementContainer = document.getElementById('ember-testing-container');
   let fixtureResetValue = testElementContainer.innerHTML;
 
-  RENDERING_CLEANUP[guid] = [
-    () => {
-      testElementContainer.innerHTML = fixtureResetValue;
-    },
-  ];
+  // push this into the final cleanup bucket, to be ran _after_ the owner
+  // is destroyed and settled (e.g. flushed run loops, etc)
+  CLEANUP[contextGuid].push(() => {
+    testElementContainer.innerHTML = fixtureResetValue;
+  });
 
   return nextTickPromise().then(() => {
     let { owner } = context;
@@ -67,7 +68,10 @@ export default function(context) {
       : owner._lookupFactory('view:-outlet');
     let OutletTemplate = owner.lookup('template:-outlet');
     let toplevelView = OutletView.create();
-    RENDERING_CLEANUP[guid].push(() => toplevelView.destroy());
+
+    // push this into the rendering specific cleanup bucket, to be ran during
+    // `teardownRenderingContext` but before the owner itself is destroyed
+    RENDERING_CLEANUP[contextGuid].push(() => toplevelView.destroy());
 
     let hasOutletTemplate = Boolean(OutletTemplate);
     let outletState = {
