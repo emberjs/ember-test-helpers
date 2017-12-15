@@ -14,6 +14,10 @@ import { nextTickPromise } from '../-utils';
 */
 export default function fillIn(target, text) {
   return nextTickPromise().then(() => {
+    if (!target) {
+      throw new Error('Must pass an element or selector to `fillIn`.');
+    }
+
     let element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);

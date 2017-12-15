@@ -13,6 +13,10 @@ import { nextTickPromise } from '../-utils';
 */
 export default function tap(target, options = {}) {
   return nextTickPromise().then(() => {
+    if (!target) {
+      throw new Error('Must pass an element or selector to `tap`.');
+    }
+
     let element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`tap('${target}')\`.`);

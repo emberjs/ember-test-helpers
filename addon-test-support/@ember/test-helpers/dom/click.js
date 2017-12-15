@@ -29,6 +29,10 @@ export function __click__(element) {
 */
 export default function click(target) {
   return nextTickPromise().then(() => {
+    if (!target) {
+      throw new Error('Must pass an element or selector to `click`.');
+    }
+
     let element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`click('${target}')\`.`);
