@@ -8,6 +8,9 @@ module.exports = function(defaults) {
     eslint: {
       testGenerator: 'qunit',
     },
+    trees: {
+      vendor: null,
+    },
   };
 
   if (defaults.project.findAddonByName('ember-native-dom-event-dispatcher')) {
