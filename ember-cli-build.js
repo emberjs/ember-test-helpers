@@ -32,6 +32,7 @@ module.exports = function(defaults) {
   });
 
   app.import('vendor/shims/qunit.js', { type: 'test' });
+  app.import('vendor/promise-polyfill.js', { type: 'test' });
 
   return app.toTree();
 };
