@@ -4,6 +4,8 @@ import { nextTick } from './-utils';
 
 export default function(callback, options = {}) {
   let timeout = 'timeout' in options ? options.timeout : 1000;
+
+  // creating this error eagerly so it has the proper invocation stack
   let waitUntilTimedOut = new Error('waitUntil timed out');
 
   return new Promise(function(resolve, reject) {
