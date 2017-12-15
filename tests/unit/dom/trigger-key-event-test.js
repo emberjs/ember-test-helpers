@@ -20,16 +20,16 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     unsetContext();
   });
 
-  test('rejects if event type is missing', async function(assert) {
+  test('rejects if event type is missing', function(assert) {
     element = buildInstrumentedElement('div');
 
     assert.rejects(() => {
       setContext(context);
-      triggerKeyEvent(element);
+      return triggerKeyEvent(element);
     }, /Must provide an `eventType` to `triggerKeyEvent`/);
   });
 
-  test('rejects if event type is invalid', async function(assert) {
+  test('rejects if event type is invalid', function(assert) {
     element = buildInstrumentedElement('div');
 
     assert.rejects(() => {
@@ -38,12 +38,12 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     }, /Must provide an `eventType` of keydown, keypress, keyup to `triggerKeyEvent` but you passed `mouseenter`./);
   });
 
-  test('rejects if key code is missing', async function(assert) {
+  test('rejects if key code is missing', function(assert) {
     element = buildInstrumentedElement('div');
 
     assert.rejects(() => {
       setContext(context);
-      triggerKeyEvent(element, 'keypress');
+      return triggerKeyEvent(element, 'keypress');
     }, /Must provide a `keyCode` to `triggerKeyEvent`/);
   });
 
