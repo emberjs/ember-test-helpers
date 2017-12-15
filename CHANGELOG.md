@@ -1,5 +1,16 @@
 # Change Log
 
+## v0.7.7 (2017-12-15)
+
+#### :bug: Bug Fix
+* [#275](https://github.com/emberjs/ember-test-helpers/pull/275) Split cleanup into two buckets. Ensure tests can be ran on IE11. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#274](https://github.com/emberjs/ember-test-helpers/pull/274) Ensure `vendor` tree is transpiled when developing addon.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.6 (2017-12-15)
 
 #### :bug: Bug Fix
