@@ -29,7 +29,10 @@ module('setupRenderingContext', function(hooks) {
       beforeTeardownEl.hasAttribute('data-was-set'),
       'precond - attribute is present before teardown'
     );
-    assert.ok(document.contains(beforeTeardownEl), 'precond - ember-testing element is in DOM');
+    assert.ok(
+      document.body.contains(beforeTeardownEl),
+      'precond - ember-testing element is in DOM'
+    );
 
     await teardownRenderingContext(this);
     await teardownContext(this);
@@ -40,14 +43,14 @@ module('setupRenderingContext', function(hooks) {
       afterTeardownEl.hasAttribute('data-was-set'),
       'attribute is not present on ember-testing that is in DOM'
     );
-    assert.ok(document.contains(afterTeardownEl), 'ember-testing element is still in DOM');
+    assert.ok(document.body.contains(afterTeardownEl), 'ember-testing element is still in DOM');
 
     assert.ok(
       beforeTeardownEl.hasAttribute('data-was-set'),
       'attribute is still present on prior ember-testing element after teardown'
     );
     assert.notOk(
-      document.contains(beforeTeardownEl),
+      document.body.contains(beforeTeardownEl),
       'previous ember-testing element is no longer in DOM'
     );
   });

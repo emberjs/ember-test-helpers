@@ -734,7 +734,7 @@ moduleForComponent('Component Integration Tests: willDestoryElement', {
 
           assert.equal(this._state, 'inDOM', 'still in dom during willDestroyElement');
           assert.ok(
-            document.contains(this.element),
+            document.body.contains(this.element),
             'component element still contained within `document`'
           );
         },
