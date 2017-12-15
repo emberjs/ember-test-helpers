@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { tap, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
-import isIE from '../../helpers/is-ie';
+import { isIE11 } from '../../helpers/browser-detect';
 
 module('DOM Helper: tap', function(hooks) {
   let context, element;
@@ -81,7 +81,7 @@ module('DOM Helper: tap', function(hooks) {
   module('focusable element types', function() {
     let tapSteps = ['touchstart', 'touchend', 'mousedown', 'focus', 'focusin', 'mouseup', 'click'];
 
-    if (isIE) {
+    if (isIE11) {
       tapSteps = ['touchstart', 'touchend', 'mousedown', 'focusin', 'mouseup', 'click', 'focus'];
     }
     test('tapping a input via selector with context set', async function(assert) {
