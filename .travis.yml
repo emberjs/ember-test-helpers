@@ -30,7 +30,7 @@ jobs:
         - yarn lint
         - yarn test
     - env: NAME=floating dependencies # used only to make Travis UI show description
-      install: yarn install --no-lockfile
+      install: yarn install --no-lockfile --non-interactive
       script: yarn test
 
     # runs tests against each supported Ember version
@@ -67,4 +67,4 @@ install:
   - yarn install
 
 script:
-  - yarn ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup

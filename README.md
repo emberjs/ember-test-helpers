@@ -30,7 +30,7 @@ A quick summary of the exports from the `ember-test-helpers` module:
 * `setupRenderingContext` - Sets up the provided context with the ability to render template
   snippets by adding `render`, `clearRender`, etc.
 * `teardownRenderingContext` - Cleans up any work done in a rendering test.
-* `settled` - Returns a promise which will resolve when all async from AJAX, test waiters, and 
+* `settled` - Returns a promise which will resolve when all async from AJAX, test waiters, and
   scheduled timers have completed.
 * `validateErrorHandler` - Used to ensure that the `Ember.onerror` error handler properly re-throws any errors during testing.
 
@@ -40,7 +40,7 @@ A quick summary of the exports from the `ember-test-helpers` module:
 
 * `git clone <repository-url>` this repository
 * `cd ember-test-helpers`
-* `npm install`
+* `yarn install`
 
 ### Running
 
@@ -49,7 +49,7 @@ A quick summary of the exports from the `ember-test-helpers` module:
 
 ### Running Tests
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
+* `yarn test` (Runs `ember try:each` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
