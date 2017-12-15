@@ -1,15 +1,15 @@
 /* globals require, Ember, jQuery */
 
-(function() {
+(() => {
   if (typeof jQuery !== 'undefined') {
-    var _Ember;
+    let _Ember;
     if (typeof Ember !== 'undefined') {
       _Ember = Ember;
     } else {
       _Ember = require('ember').default;
     }
 
-    var pendingRequests;
+    let pendingRequests;
     if (Ember.__loader.registry['ember-testing/test/pending_requests']) {
       pendingRequests = Ember.__loader.require('ember-testing/test/pending_requests');
     }
@@ -27,7 +27,7 @@
 
           pendingRequests.clearPendingRequests();
 
-          this._super.apply(this, arguments);
+          this._super(...arguments);
         },
       });
     }
