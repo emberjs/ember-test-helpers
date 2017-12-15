@@ -1,5 +1,18 @@
 # Change Log
 
+## v0.7.6 (2017-12-15)
+
+#### :bug: Bug Fix
+* [#271](https://github.com/emberjs/ember-test-helpers/pull/271) Ensure `vendor` is transpiled. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#272](https://github.com/emberjs/ember-test-helpers/pull/272) Make tests boot in IE. ([@cibernox](https://github.com/cibernox))
+* [#273](https://github.com/emberjs/ember-test-helpers/pull/273) Remove duplicated `wait` tests. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.5 (2017-12-15)
 
 #### :rocket: Enhancement
