@@ -2,12 +2,11 @@ import { test } from 'qunit';
 import { run } from '@ember/runloop';
 import EmberRouter from '@ember/routing/router';
 import Component from '@ember/component';
-import { settled } from '@ember/test-helpers';
+import { click } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 import hbs from 'htmlbars-inline-precompile';
 import ajax from '../helpers/ajax';
-import { fireEvent } from '../helpers/events';
 import Pretender from 'pretender';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
 
@@ -63,8 +62,10 @@ if (hasEmberVersion(2, 8)) {
     return this.application.testHelpers
       .visit('/ajax-request')
       .then(() => {
-        fireEvent(document.querySelector('.special-thing'), 'click');
-        return settled();
+        // returning `click` here is going to trigger the `click` event
+        // then `return settled()` (which is how we are testing the underlying
+        // settled interop).
+        return click(document.querySelector('.special-thing'));
       })
       .then(() => {
         let testingElement = document.getElementById('ember-testing');
