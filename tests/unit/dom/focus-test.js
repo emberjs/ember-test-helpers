@@ -1,11 +1,11 @@
 import { module, test } from 'qunit';
 import { focus, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
-import isIE from '../../helpers/is-ie';
+import { isIE11 } from '../../helpers/browser-detect';
 
 let focusSteps = ['focus', 'focusin'];
 
-if (isIE) {
+if (isIE11) {
   focusSteps = ['focusin', 'focus'];
 }
 

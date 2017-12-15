@@ -1,13 +1,16 @@
 import { module, test } from 'qunit';
 import { focus, blur, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
-import isIE from '../../helpers/is-ie';
+import { isIE11, isEdge } from '../../helpers/browser-detect';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
 
-if (isIE) {
+if (isIE11) {
   focusSteps = ['focusin', 'focus'];
+  blurSteps = ['focusout', 'blur'];
+} else if (isEdge) {
+  focusSteps = ['focus', 'focusin'];
   blurSteps = ['focusout', 'blur'];
 }
 

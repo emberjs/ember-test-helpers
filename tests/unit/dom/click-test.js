@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { click, setContext, unsetContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
-import isIE from '../../helpers/is-ie';
+import { isIE11 } from '../../helpers/browser-detect';
 
 module('DOM Helper: click', function(hooks) {
   let context, element;
@@ -81,7 +81,7 @@ module('DOM Helper: click', function(hooks) {
   module('focusable element types', function() {
     let clickSteps = ['mousedown', 'focus', 'focusin', 'mouseup', 'click'];
 
-    if (isIE) {
+    if (isIE11) {
       clickSteps = ['mousedown', 'focusin', 'mouseup', 'click', 'focus'];
     }
 
