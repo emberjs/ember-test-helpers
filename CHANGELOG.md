@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.9 (2017-12-16)
+
+#### :rocket: Enhancement
+* [#279](https://github.com/emberjs/ember-test-helpers/pull/279) Add application testing infrastructure. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.8 (2017-12-15)
 
 #### :bug: Bug Fix
