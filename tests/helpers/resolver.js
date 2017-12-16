@@ -1,11 +1,14 @@
 import Ember from 'ember';
 import { dasherize } from '@ember/string';
+import { merge } from '@ember/polyfills';
 import { setRegistry } from '../../resolver';
 import { setResolver, setApplication } from 'ember-test-helpers';
 import require from 'require';
 import App from '../../app';
+import config from '../../config/environment';
 
-export const application = App.create({ autoboot: false });
+const AppConfig = merge({ autoboot: false }, config.APP);
+export const application = App.create(AppConfig);
 export const resolver = application.Resolver.create({
   namespace: application,
   isResolverFromTestHelpers: true,

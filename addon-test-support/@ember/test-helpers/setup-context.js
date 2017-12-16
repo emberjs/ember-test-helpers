@@ -68,6 +68,15 @@ export default function(context, options = {}) {
   let contextGuid = guidFor(context);
   CLEANUP[contextGuid] = [];
 
+  let testElementContainer = document.getElementById('ember-testing-container');
+  let fixtureResetValue = testElementContainer.innerHTML;
+
+  // push this into the final cleanup bucket, to be ran _after_ the owner
+  // is destroyed and settled (e.g. flushed run loops, etc)
+  CLEANUP[contextGuid].push(() => {
+    testElementContainer.innerHTML = fixtureResetValue;
+  });
+
   return nextTickPromise()
     .then(() => {
       let { resolver } = options;

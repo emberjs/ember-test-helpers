@@ -11,6 +11,13 @@ export {
 export { default as teardownContext } from './teardown-context';
 export { default as setupRenderingContext, render, clearRender } from './setup-rendering-context';
 export { default as teardownRenderingContext } from './teardown-rendering-context';
+export {
+  default as setupApplicationContext,
+  visit,
+  currentRouteName,
+  currentURL,
+} from './setup-application-context';
+export { default as teardownApplicationContext } from './teardown-application-context';
 export { default as settled, isSettled, getState as getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';

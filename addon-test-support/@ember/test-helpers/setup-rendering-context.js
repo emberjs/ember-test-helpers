@@ -2,7 +2,7 @@ import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
-import { getContext, CLEANUP } from './setup-context';
+import { getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 
@@ -40,15 +40,6 @@ export function clearRender() {
 export default function(context) {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
-
-  let testElementContainer = document.getElementById('ember-testing-container');
-  let fixtureResetValue = testElementContainer.innerHTML;
-
-  // push this into the final cleanup bucket, to be ran _after_ the owner
-  // is destroyed and settled (e.g. flushed run loops, etc)
-  CLEANUP[contextGuid].push(() => {
-    testElementContainer.innerHTML = fixtureResetValue;
-  });
 
   return nextTickPromise().then(() => {
     let { owner } = context;
