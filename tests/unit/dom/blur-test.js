@@ -10,7 +10,6 @@ if (isIE11) {
   focusSteps = ['focusin', 'focus'];
   blurSteps = ['focusout', 'blur'];
 } else if (isEdge) {
-  focusSteps = ['focus', 'focusin'];
   blurSteps = ['focusout', 'blur'];
 }
 
