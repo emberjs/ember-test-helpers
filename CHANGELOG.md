@@ -1,5 +1,16 @@
 # Change Log
 
+## v0.7.10 (2017-12-20)
+
+#### :rocket: Enhancement
+* [#282](https://github.com/emberjs/ember-test-helpers/pull/282) Refactor `setupRenderingContext` so that element is stable after setup. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#280](https://github.com/emberjs/ember-test-helpers/pull/280) Cleanup browser detection and overrides. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.9 (2017-12-16)
 
 #### :rocket: Enhancement
