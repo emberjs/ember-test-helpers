@@ -66,18 +66,20 @@ module('setupRenderingContext', function(hooks) {
     });
 
     test('render does not run sync', async function(assert) {
-      assert.equal(this.element, undefined, 'precond - this.element is not set before this.render');
+      assert.ok(this.element, 'precond - this.element is present (but empty) before this.render');
 
       let renderPromise = this.render(hbs`<p>Hello!</p>`);
 
-      assert.equal(this.element, undefined, 'precond - this.element is not set sync');
+      assert.equal(this.element.textContent, '', 'precond - this.element is not updated sync');
 
       await renderPromise;
+
       assert.equal(this.element.textContent, 'Hello!');
     });
 
     test('clearRender can be used to clear the previously rendered template', async function(assert) {
       let testingRootElement = document.getElementById('ember-testing');
+      let originalElement = this.element;
 
       await this.render(hbs`<p>Hello!</p>`);
 
@@ -85,9 +87,10 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
 
       await this.clearRender();
-      assert.equal(this.element, undefined, 'this.element is reset');
 
-      assert.equal(testingRootElement.textContent, '', 'content is cleared');
+      assert.equal(this.element.textContent, '', 'has rendered content');
+      assert.equal(testingRootElement.textContent, '', 'has rendered content');
+      assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
 
     (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', async function(assert) {
@@ -322,6 +325,7 @@ module('setupRenderingContext', function(hooks) {
 
     test('imported clearRender can be used instead of this.clearRender', async function(assert) {
       let testingRootElement = document.getElementById('ember-testing');
+      let originalElement = this.element;
 
       await this.render(hbs`<p>Hello!</p>`);
 
@@ -329,9 +333,10 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
 
       await clearRender();
-      assert.equal(this.element, undefined, 'this.element is reset');
 
-      assert.equal(testingRootElement.textContent, '', 'content is cleared');
+      assert.equal(this.element.textContent, '', 'has rendered content');
+      assert.equal(testingRootElement.textContent, '', 'has rendered content');
+      assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
   }
 

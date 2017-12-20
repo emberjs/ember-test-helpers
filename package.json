@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "broccoli-funnel": "^2.0.1",
-    "ember-cli-babel": "^6.10.0"
+    "ember-cli-babel": "^6.10.0",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0"
   },
   "devDependencies": {
     "ember-cli": "^2.17.1",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
-    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
     "ember-cli-pretender": "^1.0.1",
     "ember-cli-shims": "^1.2.0",

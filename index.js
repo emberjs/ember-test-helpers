@@ -5,6 +5,8 @@ module.exports = {
   name: 'ember-test-helpers',
 
   included() {
+    this._super.included.apply(this, arguments);
+
     this.import('vendor/monkey-patches.js', { type: 'test' });
   },
 
