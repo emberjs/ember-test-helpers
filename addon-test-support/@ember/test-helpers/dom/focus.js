@@ -24,10 +24,12 @@ export function __focus__(element) {
 }
 
 /**
-  @method focus
-  @param {String|Element} target
-  @return {Promise<void>}
+  Focus the specified selector or provided element.
+
   @public
+  @method focus
+  @param {String|Element} target the element or selector to focus
+  @return {Promise<void>} resolves when the application is settled
 */
 export default function focus(target) {
   return nextTickPromise().then(() => {
