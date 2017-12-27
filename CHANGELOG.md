@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.11 (2017-12-27)
+
+#### :memo: Documentation
+* [#286](https://github.com/emberjs/ember-test-helpers/pull/286) Add `documentation` dev dependency. ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 1
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+
 ## v0.7.10 (2017-12-20)
 
 #### :rocket: Enhancement
