@@ -6,7 +6,8 @@ import fireEvent from './fire-event';
 import { nextTickPromise } from '../-utils';
 
 /**
-  Fill in the specified selector's `value` property (or innerHTML when content editable) with the provided text.
+  Fill the provided text into the `value` property (or set `.innerHTML` when
+  the target is a content editable element) on the specified target.
 
   @public
   @method fillIn

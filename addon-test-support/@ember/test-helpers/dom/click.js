@@ -17,7 +17,7 @@ export function __click__(element) {
 }
 
 /**
-  Clicks on the specified selector.
+  Clicks on the specified target.
 
   @public
   @method click

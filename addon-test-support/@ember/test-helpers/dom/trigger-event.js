@@ -4,7 +4,7 @@ import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 
 /**
-  Triggers an event on the specified selector or the provided element.
+  Triggers an event on the specified target.
 
   @public
   @method triggerEvent

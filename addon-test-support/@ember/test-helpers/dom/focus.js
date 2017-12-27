@@ -24,7 +24,7 @@ export function __focus__(element) {
 }
 
 /**
-  Focus the specified selector or provided element.
+  Focus the specified target.
 
   @public
   @method focus

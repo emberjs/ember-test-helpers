@@ -5,7 +5,7 @@ import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 
 /**
-  Taps on the specified selector.
+  Taps on the specified target.
 
   @public
   @method tap

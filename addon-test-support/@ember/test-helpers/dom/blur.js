@@ -21,7 +21,7 @@ export function __blur__(element) {
 }
 
 /**
-  Unfocus the specified selector.
+  Unfocus the specified target.
 
   @public
   @method blur
