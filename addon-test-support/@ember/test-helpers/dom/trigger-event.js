@@ -4,14 +4,16 @@ import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 
 /**
-  @method triggerEvent
-  @param {String|Element} target
-  @param {String} eventType
-  @param {Object} options
-  @return {Promise<void>}
+  Triggers an event on the specified selector or the provided element.
+
   @public
+  @method triggerEvent
+  @param {String|Element} target the element or selector to trigger the event on
+  @param {String} eventType the type of event to trigger
+  @param {Object} options additional properties to be set on the event
+  @return {Promise<void>} resolves when the application is settled
 */
-export default function triggerEvent(target, type, options) {
+export default function triggerEvent(target, eventType, options) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerEvent`.');
@@ -22,11 +24,11 @@ export default function triggerEvent(target, type, options) {
       throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
     }
 
-    if (!type) {
+    if (!eventType) {
       throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
     }
 
-    fireEvent(element, type, options);
+    fireEvent(element, eventType, options);
 
     return settled();
   });
