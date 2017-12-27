@@ -59,7 +59,7 @@ jobs:
           tags: true
           repo: emberjs/ember-test-helpers
     - if: tag IS present
-      script: yarn documentation
+      script: yarn docs
       deploy:
         provider: pages
         skip_cleanup: true
