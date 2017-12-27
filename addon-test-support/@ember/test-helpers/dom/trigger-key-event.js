@@ -13,7 +13,7 @@ const DEFAULT_MODIFIERS = Object.freeze({
 });
 
 /**
-  Triggers a keyboad event on the specified target.
+  Triggers a keyboard event on the specified target.
 
   @public
   @param {String|Element} target the element or selector to trigger the event on
