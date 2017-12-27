@@ -15,15 +15,6 @@ const MOUSE_EVENT_TYPES = [
 ];
 const FILE_SELECTION_EVENT_TYPES = ['change'];
 
-/**
-  @method fireEvent
-  @param {Element} element
-  @param {String} type
-  @param {Object} [options]
-  @returns {Event}
-
-  @private
-*/
 export default function fireEvent(element, type, options = {}) {
   if (!element) {
     throw new Error('Must pass an element to `fireEvent`');
@@ -64,13 +55,6 @@ export default function fireEvent(element, type, options = {}) {
   return event;
 }
 
-/**
-  @method buildBasicEvent
-  @param {String} type
-  @param {Object} [options]
-  @return {Event}
-  @private
-*/
 function buildBasicEvent(type, options = {}) {
   let event = document.createEvent('Events');
 
@@ -87,13 +71,6 @@ function buildBasicEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildMouseEvent
-  @param {String} type
-  @param {Object} [options]
-  @return {Event}
-  @private
-*/
 function buildMouseEvent(type, options = {}) {
   let event;
   try {
@@ -122,13 +99,6 @@ function buildMouseEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildKeyboardEvent
-  @param {String} type
-  @param {Object} (optional) options
-  @return {Event}
-  @private
-*/
 function buildKeyboardEvent(type, options = {}) {
   let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
   let event, eventMethodName;
@@ -197,14 +167,6 @@ function buildKeyboardEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildFileEvent
-  @param {String} type
-  @param {Element} element
-  @param {Array} [files] array of files
-  @return {Event}
-  @private
-*/
 function buildFileEvent(type, element, files = []) {
   let event = buildBasicEvent(type);
 

@@ -4,11 +4,6 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-/**
-  @private
-  @method __focus__
-  @param {Element} element
-*/
 export function __focus__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
