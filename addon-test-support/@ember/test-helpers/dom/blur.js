@@ -4,11 +4,6 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-/**
-  @private
-  @method __blur__
-  @param {Element} element
-*/
 export function __blur__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
@@ -26,10 +21,12 @@ export function __blur__(element) {
 }
 
 /**
-  @method blur
-  @param {String|Element} [target=document.activeElement] the element to blur
-  @return {Promise<void>}
+  Unfocus the specified selector.
+
   @public
+  @method blur
+  @param {String|Element} [target=document.activeElement] the element or selector to unfocus
+  @return {Promise<void>} resolves when the application is settled
 */
 export default function blur(target = document.activeElement) {
   return nextTickPromise().then(() => {
