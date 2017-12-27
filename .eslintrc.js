@@ -18,7 +18,8 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['./index.js'],
+      files: ['index.js'],
+      excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -34,7 +35,7 @@ module.exports = {
       }
     },
     {
-      files: ['./index.js', 'addon-test-support/**/*.js', 'config/**/*.js'],
+      files: ['index.js', 'addon-test-support/**/*.js', 'config/**/*.js'],
       plugins: [
         'disable-features',
       ],
