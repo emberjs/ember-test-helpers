@@ -25,6 +25,7 @@
   "scripts": {
     "build": "ember build",
     "changelog": "lerna-changelog",
+    "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml -f html -o docs",
     "lint": "eslint *.js addon addon-test-support app config lib node-tests server tests test-support",
     "start": "ember server",
     "test": "ember test",
