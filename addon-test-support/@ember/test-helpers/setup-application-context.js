@@ -65,6 +65,7 @@ export function currentURL() {
 
   @public
   @method setupApplicationContext
+  @param {Object} context the context to setup
   @returns {Promise<Object>} resolves with the context that was setup
 */
 export default function setupApplicationContext() {

@@ -1,6 +1,7 @@
 import isFormControl from './-is-form-control';
 
 const FOCUSABLE_TAGS = ['A'];
+
 /**
   @private
   @method isFocusable

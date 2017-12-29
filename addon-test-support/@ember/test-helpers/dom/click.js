@@ -26,7 +26,7 @@ export function __click__(element) {
 
   @public
   @method click
-  @param {String|Element} target the element or selector to click on
+  @param {string|Element} target the element or selector to click on
   @return {Promise<void>} resolves when the application is settled
 */
 export default function click(target) {

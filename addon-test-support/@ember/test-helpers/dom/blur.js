@@ -30,7 +30,7 @@ export function __blur__(element) {
 
   @public
   @method blur
-  @param {String|Element} [target=document.activeElement] the element or selector to unfocus
+  @param {string|Element} [target=document.activeElement] the element or selector to unfocus
   @return {Promise<void>} resolves when the application is settled
 */
 export default function blur(target = document.activeElement) {

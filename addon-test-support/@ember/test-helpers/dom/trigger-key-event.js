@@ -16,9 +16,9 @@ const DEFAULT_MODIFIERS = Object.freeze({
   Triggers a keyboard event on the specified target.
 
   @public
-  @param {String|Element} target the element or selector to trigger the event on
+  @param {string|Element} target the element or selector to trigger the event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
-  @param {String} keyCode the keyCode of the event being triggered
+  @param {string} keyCode the keyCode of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
   @param {boolean} [modifiers.ctrlKey=false] if true the generated event will indicate the control key was pressed during the key event
   @param {boolean} [modifiers.altKey=false] if true the generated event will indicate the alt key was pressed during the key event

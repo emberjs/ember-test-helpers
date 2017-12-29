@@ -11,8 +11,8 @@ import { nextTickPromise } from '../-utils';
 
   @public
   @method fillIn
-  @param {String|Element} target the element or selector to enter text into
-  @param {String} text the text to fill into the target element
+  @param {string|Element} target the element or selector to enter text into
+  @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
 */
 export default function fillIn(target, text) {

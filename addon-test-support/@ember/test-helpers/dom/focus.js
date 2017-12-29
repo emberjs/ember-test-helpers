@@ -33,7 +33,7 @@ export function __focus__(element) {
 
   @public
   @method focus
-  @param {String|Element} target the element or selector to focus
+  @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
 */
 export default function focus(target) {

@@ -9,7 +9,7 @@ import { nextTickPromise } from '../-utils';
 
   @public
   @method tap
-  @param {String|Element} target the element or selector to tap on
+  @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be provided to the touch events
   @return {Promise<void>} resolves when the application is settled
 */

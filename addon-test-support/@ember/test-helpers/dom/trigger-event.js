@@ -8,8 +8,8 @@ import { nextTickPromise } from '../-utils';
 
   @public
   @method triggerEvent
-  @param {String|Element} target the element or selector to trigger the event on
-  @param {String} eventType the type of event to trigger
+  @param {string|Element} target the element or selector to trigger the event on
+  @param {string} eventType the type of event to trigger
   @param {Object} options additional properties to be set on the event
   @return {Promise<void>} resolves when the application is settled
 */
