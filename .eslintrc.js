@@ -50,8 +50,12 @@ module.exports = {
     },
     {
       files: ['addon-test-support/**/*.js'],
+      excludedFiles: ['addon-test-support/ember-test-helpers/legacy-0-6-x/**'],
       rules: {
-        'valid-jsdoc': 'error',
+        'valid-jsdoc': ['error', {
+          requireReturn: false,
+        }],
+        'require-jsdoc': 'error',
       }
     },
   ]
