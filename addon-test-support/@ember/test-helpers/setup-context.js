@@ -80,7 +80,6 @@ export default function(context, options = {}) {
   return nextTickPromise()
     .then(() => {
       let { resolver } = options;
-      let buildOwnerOptions;
 
       // This handles precendence, specifying a specific option of
       // resolver always trumps whatever is auto-detected, then we fallback to
@@ -89,15 +88,10 @@ export default function(context, options = {}) {
       // At some later time this can be extended to support specifying a custom
       // engine or application...
       if (resolver) {
-        buildOwnerOptions = { resolver };
-      } else {
-        buildOwnerOptions = {
-          resolver: getResolver(),
-          application: getApplication(),
-        };
+        return buildOwner(null, resolver);
       }
 
-      return buildOwner(buildOwnerOptions);
+      return buildOwner(getApplication(), getResolver());
     })
     .then(owner => {
       context.owner = owner;
