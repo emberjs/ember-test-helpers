@@ -5,12 +5,15 @@ import settled from '../settled';
 import fireEvent from './fire-event';
 import { nextTickPromise } from '../-utils';
 
-/*
-  @method fillIn
-  @param {String|Element} target
-  @param {String} text
-  @return {Promise<void>}
+/**
+  Fill the provided text into the `value` property (or set `.innerHTML` when
+  the target is a content editable element) on the specified target.
+
   @public
+  @method fillIn
+  @param {String|Element} target the element or selector to enter text into
+  @param {String} text the text to fill into the target element
+  @return {Promise<void>} resolves when the application is settled
 */
 export default function fillIn(target, text) {
   return nextTickPromise().then(() => {

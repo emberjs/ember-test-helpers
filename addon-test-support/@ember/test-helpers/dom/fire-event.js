@@ -16,23 +16,23 @@ const MOUSE_EVENT_TYPES = [
 const FILE_SELECTION_EVENT_TYPES = ['change'];
 
 /**
-  @method fireEvent
-  @param {Element} element
-  @param {String} type
-  @param {Object} [options]
-  @returns {Event}
+  Internal helper used to build and dispatch events throughout the other DOM helpers.
 
   @private
+  @method fireEvent
+  @param {Element} element the element to dispatch the event to
+  @param {string} eventType the type of event
+  @param {Object} [options] additional properties to be set on the event
 */
-export default function fireEvent(element, type, options = {}) {
+export default function fireEvent(element, eventType, options = {}) {
   if (!element) {
     throw new Error('Must pass an element to `fireEvent`');
   }
 
   let event;
-  if (KEYBOARD_EVENT_TYPES.indexOf(type) > -1) {
-    event = buildKeyboardEvent(type, options);
-  } else if (MOUSE_EVENT_TYPES.indexOf(type) > -1) {
+  if (KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1) {
+    event = buildKeyboardEvent(eventType, options);
+  } else if (MOUSE_EVENT_TYPES.indexOf(eventType) > -1) {
     let rect;
     if (element instanceof Window) {
       rect = element.document.documentElement.getBoundingClientRect();
@@ -53,24 +53,17 @@ export default function fireEvent(element, type, options = {}) {
       clientY: y,
     };
 
-    event = buildMouseEvent(type, merge(simulatedCoordinates, options));
-  } else if (FILE_SELECTION_EVENT_TYPES.indexOf(type) > -1 && element.files) {
-    event = buildFileEvent(type, element, options);
+    event = buildMouseEvent(eventType, merge(simulatedCoordinates, options));
+  } else if (FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1 && element.files) {
+    event = buildFileEvent(eventType, element, options);
   } else {
-    event = buildBasicEvent(type, options);
+    event = buildBasicEvent(eventType, options);
   }
 
   element.dispatchEvent(event);
   return event;
 }
 
-/**
-  @method buildBasicEvent
-  @param {String} type
-  @param {Object} [options]
-  @return {Event}
-  @private
-*/
 function buildBasicEvent(type, options = {}) {
   let event = document.createEvent('Events');
 
@@ -87,13 +80,6 @@ function buildBasicEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildMouseEvent
-  @param {String} type
-  @param {Object} [options]
-  @return {Event}
-  @private
-*/
 function buildMouseEvent(type, options = {}) {
   let event;
   try {
@@ -122,13 +108,6 @@ function buildMouseEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildKeyboardEvent
-  @param {String} type
-  @param {Object} (optional) options
-  @return {Event}
-  @private
-*/
 function buildKeyboardEvent(type, options = {}) {
   let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
   let event, eventMethodName;
@@ -197,14 +176,6 @@ function buildKeyboardEvent(type, options = {}) {
   return event;
 }
 
-/**
-  @method buildFileEvent
-  @param {String} type
-  @param {Element} element
-  @param {Array} [files] array of files
-  @return {Event}
-  @private
-*/
 function buildFileEvent(type, element, files = []) {
   let event = buildBasicEvent(type);
 

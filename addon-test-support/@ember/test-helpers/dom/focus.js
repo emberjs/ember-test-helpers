@@ -4,11 +4,6 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-/**
-  @private
-  @method __focus__
-  @param {Element} element
-*/
 export function __focus__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
@@ -29,10 +24,12 @@ export function __focus__(element) {
 }
 
 /**
-  @method focus
-  @param {String|Element} target
-  @return {Promise<void>}
+  Focus the specified target.
+
   @public
+  @method focus
+  @param {String|Element} target the element or selector to focus
+  @return {Promise<void>} resolves when the application is settled
 */
 export default function focus(target) {
   return nextTickPromise().then(() => {

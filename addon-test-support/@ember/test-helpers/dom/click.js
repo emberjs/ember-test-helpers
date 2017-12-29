@@ -5,11 +5,6 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
-/**
-  @private
-  @method __click__
-  @param {Element} element
-*/
 export function __click__(element) {
   fireEvent(element, 'mousedown');
 
@@ -22,10 +17,12 @@ export function __click__(element) {
 }
 
 /**
-  @method click
-  @param {String|Element} target
-  @return {Promise<void>}
+  Clicks on the specified target.
+
   @public
+  @method click
+  @param {String|Element} target the element or selector to click on
+  @return {Promise<void>} resolves when the application is settled
 */
 export default function click(target) {
   return nextTickPromise().then(() => {

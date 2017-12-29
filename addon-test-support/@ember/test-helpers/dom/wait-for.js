@@ -13,17 +13,21 @@ function toArray(nodelist) {
 }
 
 /**
+  Used to wait for a particular selector to appear in the DOM. Due to the fact
+  that it does not wait for general settledness, this is quite useful for testing
+  interim DOM states (e.g. loading states, pending promises, etc).
+
   @method waitFor
-  @param {string|Element} target
-  @param {Object} [options]
-  @param {number} [options.timeout=1000]
-  @param {number} [options.count=1]
-  @returns {Element|Array<Element>}
+  @param {string} selector the selector to wait for
+  @param {Object} [options] the options to be used
+  @param {number} [options.timeout=1000] the time to wait (in ms) for a match
+  @param {number} [options.count=1] the number of elements that should match the provided selector
+  @returns {Element|Array<Element>} the element (or array of elements) that were being waited upon
 */
-export default function waitFor(target, { timeout = 1000, count = null } = {}) {
+export default function waitFor(selector, { timeout = 1000, count = null } = {}) {
   return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `waitFor`.');
+    if (!selector) {
+      throw new Error('Must pass a selector to `waitFor`.');
     }
 
     let callback;
@@ -31,13 +35,13 @@ export default function waitFor(target, { timeout = 1000, count = null } = {}) {
       callback = () => {
         let context = getContext();
         let rootElement = context && context.element;
-        let elements = rootElement.querySelectorAll(target);
+        let elements = rootElement.querySelectorAll(selector);
         if (elements.length === count) {
           return toArray(elements);
         }
       };
     } else {
-      callback = () => getElement(target);
+      callback = () => getElement(selector);
     }
     return waitUntil(callback, { timeout });
   });
