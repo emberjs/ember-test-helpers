@@ -18,14 +18,19 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['./index.js'],
+      files: ['index.js'],
+      excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         sourceType: 'script',
       },
       env: {
         browser: false,
         node: true,
-      }
+      },
+      plugins: ['node'],
+      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+      }),
     },
     {
       files: ['tests/**/*.js'],
@@ -34,7 +39,7 @@ module.exports = {
       }
     },
     {
-      files: ['./index.js', 'addon-test-support/**/*.js', 'config/**/*.js'],
+      files: ['index.js', 'addon-test-support/**/*.js', 'config/**/*.js'],
       plugins: [
         'disable-features',
       ],
@@ -42,6 +47,12 @@ module.exports = {
         'disable-features/disable-async-await': 'error',
         'disable-features/disable-generator-functions': 'error',
       }
-    }
+    },
+    {
+      files: ['addon-test-support/**/*.js'],
+      rules: {
+        'valid-jsdoc': 'warn',
+      }
+    },
   ]
 };
