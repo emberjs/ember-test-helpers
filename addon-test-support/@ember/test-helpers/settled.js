@@ -24,6 +24,11 @@ const _internalPendingRequests = (() => {
 
 let requests;
 
+/**
+  @private
+  @method pendingRequests
+  @returns {number} the count of pending requests
+*/
 function pendingRequests() {
   let localRequestsPending = requests !== undefined ? requests.length : 0;
   let internalRequestsPending = _internalPendingRequests();
@@ -31,11 +36,23 @@ function pendingRequests() {
   return localRequestsPending + internalRequestsPending;
 }
 
-function incrementAjaxPendingRequests(_, xhr) {
+/**
+  @private
+  @method incrementAjaxPendingRequests
+  @param {Event} event (unused)
+  @param {XMLHTTPRequest} xhr the XHR that has initiated a request
+*/
+function incrementAjaxPendingRequests(event, xhr) {
   requests.push(xhr);
 }
 
-function decrementAjaxPendingRequests(_, xhr) {
+/**
+  @private
+  @method decrementAjaxPendingRequests
+  @param {Event} event (unused)
+  @param {XMLHTTPRequest} xhr the XHR that has initiated a request
+*/
+function decrementAjaxPendingRequests(event, xhr) {
   // In most Ember versions to date (current version is 2.16) RSVP promises are
   // configured to flush in the actions queue of the Ember run loop, however it
   // is possible that in the future this changes to use "true" micro-task
@@ -55,6 +72,12 @@ function decrementAjaxPendingRequests(_, xhr) {
   }, 0);
 }
 
+/**
+  Clears listeners that were previously setup for `ajaxSend` and `ajaxComplete`.
+
+  @private
+  @method _teardownAJAXHooks
+*/
 export function _teardownAJAXHooks() {
   if (!jQuery) {
     return;
@@ -64,6 +87,12 @@ export function _teardownAJAXHooks() {
   jQuery(document).off('ajaxComplete', decrementAjaxPendingRequests);
 }
 
+/**
+  Sets up listeners for `ajaxSend` and `ajaxComplete`.
+
+  @private
+  @method _setupAJAXHooks
+*/
 export function _setupAJAXHooks() {
   requests = [];
 
@@ -80,6 +109,11 @@ if (Ember.__loader.registry['ember-testing/test/waiters']) {
   _internalCheckWaiters = Ember.__loader.require('ember-testing/test/waiters').checkWaiters;
 }
 
+/**
+  @private
+  @method checkWaiters
+  @returns {boolean} true if waiters are still pending
+*/
 function checkWaiters() {
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
@@ -92,7 +126,27 @@ function checkWaiters() {
   return false;
 }
 
-export function getState() {
+/**
+  Check various settledness metrics, and return an object with the following properties:
+
+  * `hasRunLoop` - Checks if a run-loop has been started. If it has, this will
+    be `true` otherwise it will be `false`.
+  * `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
+    These pending timers are primarily registered by `Ember.run.schedule`. If
+    there are pending timers, this will be `true`, otherwise `false`.
+  * `hasPendingWaiters` - Checks if any registered test waiters are still
+    pending (e.g. the waiter returns `true`). If there are pending waiters,
+    this will be `true`, otherwise `false`.
+  * `hasPendingRequests` - Checks if there are pending AJAX requests (based on
+    `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
+    are pending requests, this will be `true`, otherwise `false`.
+  * `pendingRequestCount` - The count of pending AJAX requests.
+
+  @public
+  @method getSettledState
+  @returns {Object} object with properties for each of the metrics used to determine settledness
+*/
+export function getSettledState() {
   let pendingRequestCount = pendingRequests();
 
   return {
@@ -104,18 +158,30 @@ export function getState() {
   };
 }
 
-export function isSettled(options) {
+/**
+  Checks various settledness metrics (via `getSettledState()`) to determine if things are settled or not.
+
+  Settled generally means that there are no pending timers, no pending waiters,
+  no pending AJAX requests, and no current run loop. However, new settledness
+  metrics may be added and used as they become available.
+
+  @public
+  @method isSettled
+  @returns {boolean} `true` if settled, `false` otherwise
+*/
+export function isSettled() {
   let waitForTimers = true;
   let waitForAJAX = true;
   let waitForWaiters = true;
 
-  if (options !== undefined) {
+  if (arguments[0] !== undefined) {
+    let options = arguments[0];
     waitForTimers = 'waitForTimers' in options ? options.waitForTimers : true;
     waitForAJAX = 'waitForAJAX' in options ? options.waitForAJAX : true;
     waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
   }
 
-  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getState();
+  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
 
   if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
     return false;
@@ -135,8 +201,19 @@ export function isSettled(options) {
 const TIMEOUTS = [0, 1, 2, 5];
 const MAX_TIMEOUT = 10;
 
-export default function settled(options) {
+/**
+  Returns a promise that resolves when in a settled state (see `isSettled` for
+  a definition of "settled state").
+
+  @public
+  @method settled
+  @returns {Promise<void>} resolves when settled
+*/
+export default function settled() {
+  let options = arguments[0];
+
   return new EmberPromise(function(resolve) {
+    // eslint-disable-next-line require-jsdoc
     function scheduleCheck(counter) {
       let timeout = TIMEOUTS[counter];
       if (timeout === undefined) {

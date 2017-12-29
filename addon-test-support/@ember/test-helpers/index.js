@@ -18,7 +18,7 @@ export {
   currentURL,
 } from './setup-application-context';
 export { default as teardownApplicationContext } from './teardown-application-context';
-export { default as settled, isSettled, getState as getSettledState } from './settled';
+export { default as settled, isSettled, getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 
