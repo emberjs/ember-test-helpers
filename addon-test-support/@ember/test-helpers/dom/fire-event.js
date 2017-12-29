@@ -23,6 +23,7 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   @param {Element} element the element to dispatch the event to
   @param {string} eventType the type of event
   @param {Object} [options] additional properties to be set on the event
+  @returns {Event} the event that was dispatched
 */
 export default function fireEvent(element, eventType, options = {}) {
   if (!element) {
