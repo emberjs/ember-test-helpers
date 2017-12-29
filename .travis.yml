@@ -48,6 +48,7 @@ jobs:
     # runs deploy if running on a specific tag
     - stage: deploy
       if: tag IS present
+      env: NAME=npm-publish # used only to make Travis UI show description
       install: yarn global add auto-dist-tag
       script: auto-dist-tag --write
       deploy:
@@ -59,7 +60,8 @@ jobs:
           tags: true
           repo: emberjs/ember-test-helpers
     - if: tag IS present
-      script: yarn documentation
+      env: NAME=docs-publish # used only to make Travis UI show description
+      script: yarn docs
       deploy:
         provider: pages
         skip_cleanup: true
