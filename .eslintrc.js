@@ -51,7 +51,7 @@ module.exports = {
     {
       files: ['addon-test-support/**/*.js'],
       rules: {
-        'valid-jsdoc': 'warn',
+        'valid-jsdoc': 'error',
       }
     },
   ]
