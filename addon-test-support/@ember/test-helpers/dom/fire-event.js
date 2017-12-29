@@ -65,6 +65,7 @@ export default function fireEvent(element, eventType, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildBasicEvent(type, options = {}) {
   let event = document.createEvent('Events');
 
@@ -81,6 +82,7 @@ function buildBasicEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
   try {
@@ -109,6 +111,7 @@ function buildMouseEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildKeyboardEvent(type, options = {}) {
   let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
   let event, eventMethodName;
@@ -177,6 +180,7 @@ function buildKeyboardEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildFileEvent(type, element, files = []) {
   let event = buildBasicEvent(type);
 

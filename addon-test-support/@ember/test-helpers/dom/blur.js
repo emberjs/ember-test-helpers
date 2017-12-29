@@ -4,6 +4,11 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @method __blur__
+  @param {Element} element the element to trigger events on
+*/
 export function __blur__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 

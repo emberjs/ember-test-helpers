@@ -3,6 +3,12 @@ import { getContext } from '../setup-context';
 import getElement from './-get-element';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @method toArray
+  @param {NodeList} nodelist the nodelist to convert to an array
+  @returns {Array} an array
+*/
 function toArray(nodelist) {
   let array = new Array(nodelist.length);
   for (let i = 0; i < nodelist.length; i++) {

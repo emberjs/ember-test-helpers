@@ -5,6 +5,11 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @method __click__
+  @param {Element} element the element to trigger events on
+*/
 export function __click__(element) {
   fireEvent(element, 'mousedown');
 
