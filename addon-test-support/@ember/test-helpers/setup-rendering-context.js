@@ -9,6 +9,14 @@ import hbs from 'htmlbars-inline-precompile';
 
 export const RENDERING_CLEANUP = Object.create(null);
 
+/**
+  Renders the provided template and appends it to the DOM.
+
+  @public
+  @method render
+  @param {CompiledTemplate} template the template to render
+  @returns {Promise<void>} resolves when settled
+*/
 export function render(template) {
   let context = getContext();
 
@@ -19,6 +27,15 @@ export function render(template) {
   return context.render(template);
 }
 
+/**
+  Clears any templates previously rendered. This is commonly used for
+  confirming behavior that is triggered by teardown (e.g.
+  `willDestroyElement`).
+
+  @public
+  @method clearRender
+  @returns {Promise<void>} resolves when settled
+*/
 export function clearRender() {
   let context = getContext();
 
@@ -31,14 +48,27 @@ export function clearRender() {
   return context.clearRender();
 }
 
-/*
- * Responsible for:
- *
- * - Creating a basic rendering setup (e.g. setting up the main outlet view)
- * - Adding `this.render` to the provided context
- * - Adding `this.clearRender` to the provided context
- */
-export default function(context) {
+/**
+  Used by test framework addons to setup the provided context for rendering.
+
+  `setupContext` must have been ran on the provided context
+  prior to calling `setupRenderingContext`.
+
+  Responsible for:
+
+  - Setup the basic framework used for rendering by the
+    `render` helper.
+  - Ensuring the event dispatcher is properly setup.
+  - Setting `this.element` to the root element of the testing
+    container (things rendered via `render` will go _into_ this
+    element).
+
+  @public
+  @method setupRenderingContext
+  @param {Object} context the context to setup for rendering
+  @returns {Promise<Object>} resolves with the context that was setup
+*/
+export default function setupRenderingContext(context) {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
 
