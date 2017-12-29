@@ -7,7 +7,21 @@ import { nextTickPromise, runDestroyablesFor } from './-utils';
 import settled from './settled';
 import Ember from 'ember';
 
-export default function(context) {
+/**
+  Used by test framework addons to tear down the provided context after testing is completed.
+
+  Responsible for:
+
+  - un-setting the "global testing context" (`unsetContext`)
+  - destroy the contexts owner object
+  - remove AJAX listeners
+
+  @public
+  @method teardownContext
+  @param {Object} context the context to setup
+  @returns {Promise<void>} resolves when settled
+*/
+export default function teardownContext(context) {
   return nextTickPromise()
     .then(() => {
       let { owner } = context;
