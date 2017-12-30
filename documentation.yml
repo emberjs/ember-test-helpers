@@ -1,50 +1,50 @@
 toc:
   - name: DOM Interaction Helpers
-
-  - click
-  - tap
-  - focus
-  - blur
-  - triggerEvent
-  - triggerKeyEvent
-  - fillIn
+    children:
+      - click
+      - tap
+      - focus
+      - blur
+      - triggerEvent
+      - triggerKeyEvent
+      - fillIn
 
   - name: Routing Helpers
-
-  - visit
-  - currentRouteName
-  - currentURL
+    children:
+      - visit
+      - currentRouteName
+      - currentURL
 
   - name: Rendering Helpers
-
-  - render
-  - clearRender
+    children:
+      - render
+      - clearRender
 
   - name: Wait Helpers
-
-  - waitFor
-  - waitUntil
-  - settled
-  - isSettled
-  - getSettledState
+    children:
+      - waitFor
+      - waitUntil
+      - settled
+      - isSettled
+      - getSettledState
 
   - name: Pause Helpers
-
-  - pauseTest
-  - resumeTest
+    children:
+      - pauseTest
+      - resumeTest
 
   - name: Test Framework APIs
-
-  - setResolver
-  - getResolver
-  - setupContext
-  - getContext
-  - setContext
-  - unsetContext
-  - teardownContext
-  - setupRenderingContext
-  - teardownRenderingContext
-  - setApplication
-  - setupApplicationContext
-  - teardownApplicationContext
-  - validateErrorHandler
+    children:
+      - setResolver
+      - getResolver
+      - setupContext
+      - getContext
+      - setContext
+      - unsetContext
+      - teardownContext
+      - setupRenderingContext
+      - teardownRenderingContext
+      - setApplication
+      - setupApplicationContext
+      - teardownApplicationContext
+      - validateErrorHandler
