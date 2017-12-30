@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { triggerKeyEvent, setContext, unsetContext } from '@ember/test-helpers';
+import { triggerKeyEvent, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 
 module('DOM Helper: triggerKeyEvent', function(hooks) {
@@ -13,36 +13,44 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(async function() {
     if (element) {
       element.parentNode.removeChild(element);
     }
-    unsetContext();
+
+    // only teardown if setupContext was called
+    if (context.owner) {
+      await teardownContext(context);
+    }
+    document.getElementById('ember-testing').innerHTML = '';
   });
 
-  test('rejects if event type is missing', function(assert) {
+  test('rejects if event type is missing', async function(assert) {
     element = buildInstrumentedElement('div');
 
+    await setupContext(context);
+
     assert.rejects(() => {
-      setContext(context);
       return triggerKeyEvent(element);
     }, /Must provide an `eventType` to `triggerKeyEvent`/);
   });
 
-  test('rejects if event type is invalid', function(assert) {
+  test('rejects if event type is invalid', async function(assert) {
     element = buildInstrumentedElement('div');
 
+    await setupContext(context);
+
     assert.rejects(() => {
-      setContext(context);
       return triggerKeyEvent(element, 'mouseenter');
     }, /Must provide an `eventType` of keydown, keypress, keyup to `triggerKeyEvent` but you passed `mouseenter`./);
   });
 
-  test('rejects if key code is missing', function(assert) {
+  test('rejects if key code is missing', async function(assert) {
     element = buildInstrumentedElement('div');
 
+    await setupContext(context);
+
     assert.rejects(() => {
-      setContext(context);
       return triggerKeyEvent(element, 'keypress');
     }, /Must provide a `keyCode` to `triggerKeyEvent`/);
   });
@@ -50,7 +58,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(context);
+    await setupContext(context);
     await triggerKeyEvent(`#${element.id}`, 'keydown', 13);
 
     assert.verifySteps(['keydown']);
@@ -59,7 +67,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   test('triggering via element with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(context);
+    await setupContext(context);
     await triggerKeyEvent(element, 'keydown', 13);
 
     assert.verifySteps(['keydown']);
@@ -88,7 +96,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
         assert.ok(e[`${modifierType}Key`], `has ${modifierType} indicated`);
       });
 
-      setContext(context);
+      await setupContext(context);
       await triggerKeyEvent(element, 'keypress', 13, { [`${modifierType}Key`]: true });
 
       assert.verifySteps(['keypress']);
@@ -102,7 +110,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
       assert.ok(e.altKey, `has altKey indicated`);
     });
 
-    setContext(context);
+    await setupContext(context);
     await triggerKeyEvent(element, 'keypress', 13, { altKey: true, ctrlKey: true });
 
     assert.verifySteps(['keypress']);

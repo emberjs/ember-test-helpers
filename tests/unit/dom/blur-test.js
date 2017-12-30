@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { focus, blur, setContext, unsetContext } from '@ember/test-helpers';
+import { focus, blur, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 
@@ -17,11 +17,7 @@ module('DOM Helper: blur', function(hooks) {
   let context, elementWithFocus;
 
   hooks.beforeEach(async function(assert) {
-    // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
-    // set context.element to the rootElement
-    context = {
-      element: document.querySelector('#qunit-fixture'),
-    };
+    context = {};
 
     // create the element and focus in preparation for blur testing
     elementWithFocus = buildInstrumentedElement('input');
@@ -32,11 +28,15 @@ module('DOM Helper: blur', function(hooks) {
     assert.equal(document.activeElement, elementWithFocus, 'activeElement updated');
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(async function() {
     if (elementWithFocus) {
       elementWithFocus.parentNode.removeChild(elementWithFocus);
     }
-    unsetContext();
+    // only teardown if setupContext was called
+    if (context.owner) {
+      await teardownContext(context);
+    }
+    document.getElementById('ember-testing').innerHTML = '';
   });
 
   test('does not run sync', async function(assert) {
@@ -50,7 +50,7 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('rejects if selector is not found', async function(assert) {
-    setContext(context);
+    await setupContext(context);
 
     assert.rejects(() => {
       return blur(`#foo-bar-baz-not-here-ever-bye-bye`);
@@ -58,7 +58,7 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('bluring via selector with context set', async function(assert) {
-    setContext(context);
+    await setupContext(context);
     await blur(`#${elementWithFocus.id}`);
 
     assert.verifySteps(blurSteps);
@@ -72,7 +72,7 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('bluring via element with context set', async function(assert) {
-    setContext(context);
+    await setupContext(context);
     await blur(elementWithFocus);
 
     assert.verifySteps(blurSteps);
