@@ -48,37 +48,39 @@ export function unsetContext() {
 }
 
 /**
-  Returns a promise to be used to pauses the current test (due to being
-  returned from the test itself).  This is useful for debugging while testing
-  or for test-driving.  It allows you to inspect the state of your application
-  at any point.
-
-  @example <caption>Usage via ember-qunit</caption>
-
-  ```js
-  import { setupRenderingTest } from 'ember-qunit';
-  import { render, click, pauseTest } from '@ember/test-helpers';
-
-  module('awesome-sauce', function(hooks) {
-    setupRenderingTest(hooks);
-
-    test('does something awesome', function(assert) {
-      render(hbs`{{awesome-sauce}}`);
-
-      // added here to visualize / interact with the DOM prior
-      // to the interaction below
-      return pauseTest();
-
-      click('.some-selector');
-
-      assert.equal(this.element.textContent, 'this sauce is awesome!');
-    });
-  });
-  ```
-
-  @public
-  @returns {Promise<void>} resolves _only_ when `resumeTest()` is invoked
-*/
+ * Returns a promise to be used to pauses the current test (due to being
+ * returned from the test itself).  This is useful for debugging while testing
+ * or for test-driving.  It allows you to inspect the state of your application
+ * at any point.
+ *
+ * The test framework wrapper (e.g. `ember-qunit` or `ember-mocha`) should
+ * ensure that when `pauseTest()` is used, any framework specific test timeouts
+ * are disabled.
+ *
+ * @public
+ * @returns {Promise<void>} resolves _only_ when `resumeTest()` is invoked
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { setupRenderingTest } from 'ember-qunit';
+ * import { render, click, pauseTest } from '@ember/test-helpers';
+ *
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', async function(assert) {
+ *     await render(hbs`{{awesome-sauce}}`);
+ *
+ *     // added here to visualize / interact with the DOM prior
+ *     // to the interaction below
+ *     await pauseTest();
+ *
+ *     click('.some-selector');
+ *
+ *     assert.equal(this.element.textContent, 'this sauce is awesome!');
+ *   });
+ * });
+ */
 export function pauseTest() {
   let context = getContext();
 
@@ -92,7 +94,7 @@ export function pauseTest() {
 }
 
 /**
-  Resumes a test previously paused by `return pauseTest()`.
+  Resumes a test previously paused by `await pauseTest()`.
 
   @public
 */
