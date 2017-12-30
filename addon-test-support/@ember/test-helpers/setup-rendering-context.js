@@ -111,8 +111,15 @@ export default function setupRenderingContext(context) {
     };
     toplevelView.setOutletState(outletState);
 
-    // TODO: make this id configurable
-    run(toplevelView, 'appendTo', '#ember-testing');
+    let rootElement;
+    // When the host app uses `setApplication` (instead of `setResolver`) the owner has
+    // a `rootElement` set on it with the element id to be used
+    if (owner._emberTestHelpersMockOwner) {
+      rootElement = '#ember-testing';
+    } else {
+      rootElement = owner.rootElement;
+    }
+    run(toplevelView, 'appendTo', rootElement);
 
     // ensure the element is based on the wrapping toplevel view
     // Ember still wraps the main application template with a
