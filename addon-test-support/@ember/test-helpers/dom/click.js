@@ -5,6 +5,10 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @param {Element} element the element to click on
+*/
 export function __click__(element) {
   fireEvent(element, 'mousedown');
 
@@ -19,10 +23,30 @@ export function __click__(element) {
 /**
   Clicks on the specified target.
 
+  Sends a number of events intending to simulate a "real" user clicking on an
+  element.
+
+  For non-focusable elements the following events are triggered (in order):
+
+  - `mousedown`
+  - `mouseup`
+  - `click`
+
+  For focusable (e.g. form control) elements the following events are triggered
+  (in order):
+
+  - `mousedown`
+  - `focus`
+  - `focusin`
+  - `mouseup`
+  - `click`
+
+  The exact listing of events that are triggered may change over time as needed
+  to continue to emulate how actual browsers handle clicking a given element.
+
   @public
-  @method click
-  @param {String|Element} target the element or selector to click on
-  @return {Promise<void>} resolves when the application is settled
+  @param {string|Element} target the element or selector to click on
+  @return {Promise<void>} resolves when settled
 */
 export default function click(target) {
   return nextTickPromise().then(() => {

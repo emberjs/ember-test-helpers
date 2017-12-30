@@ -3,6 +3,11 @@ import { getContext } from '../setup-context';
 import getElement from './-get-element';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @param {NodeList} nodelist the nodelist to convert to an array
+  @returns {Array} an array
+*/
 function toArray(nodelist) {
   let array = new Array(nodelist.length);
   for (let i = 0; i < nodelist.length; i++) {
@@ -17,7 +22,6 @@ function toArray(nodelist) {
   that it does not wait for general settledness, this is quite useful for testing
   interim DOM states (e.g. loading states, pending promises, etc).
 
-  @method waitFor
   @param {string} selector the selector to wait for
   @param {Object} [options] the options to be used
   @param {number} [options.timeout=1000] the time to wait (in ms) for a match

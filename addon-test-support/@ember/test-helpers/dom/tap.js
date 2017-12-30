@@ -7,11 +7,35 @@ import { nextTickPromise } from '../-utils';
 /**
   Taps on the specified target.
 
+  Sends a number of events intending to simulate a "real" user tapping on an
+  element.
+
+  For non-focusable elements the following events are triggered (in order):
+
+  - `touchstart`
+  - `touchend`
+  - `mousedown`
+  - `mouseup`
+  - `click`
+
+  For focusable (e.g. form control) elements the following events are triggered
+  (in order):
+
+  - `touchstart`
+  - `touchend`
+  - `mousedown`
+  - `focus`
+  - `focusin`
+  - `mouseup`
+  - `click`
+
+  The exact listing of events that are triggered may change over time as needed
+  to continue to emulate how actual browsers handle tapping on a given element.
+
   @public
-  @method tap
-  @param {String|Element} target the element or selector to tap on
+  @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be provided to the touch events
-  @return {Promise<void>} resolves when the application is settled
+  @return {Promise<void>} resolves when settled
 */
 export default function tap(target, options = {}) {
   return nextTickPromise().then(() => {

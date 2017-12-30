@@ -4,6 +4,10 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 
+/**
+  @private
+  @param {Element} element the element to trigger events on
+*/
 export function __focus__(element) {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
@@ -26,9 +30,19 @@ export function __focus__(element) {
 /**
   Focus the specified target.
 
+  Sends a number of events intending to simulate a "real" user focusing an
+  element.
+
+  The following events are triggered (in order):
+
+  - `focus`
+  - `focusin`
+
+  The exact listing of events that are triggered may change over time as needed
+  to continue to emulate how actual browsers handle focusing a given element.
+
   @public
-  @method focus
-  @param {String|Element} target the element or selector to focus
+  @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
 */
 export default function focus(target) {

@@ -14,18 +14,73 @@ import { nextTickPromise } from './-utils';
 
 let __test_context__;
 
+/**
+  Stores the provided context as the "global testing context".
+
+  Generally setup automatically by `setupContext`.
+
+  @public
+  @param {Object} context the context to use
+*/
 export function setContext(context) {
   __test_context__ = context;
 }
 
+/**
+  Retrive the "global testing context" as stored by `setContext`.
+
+  @public
+  @returns {Object} the previously stored testing context
+*/
 export function getContext() {
   return __test_context__;
 }
 
+/**
+  Clear the "global testing context".
+
+  Generally invoked from `teardownContext`.
+
+  @public
+*/
 export function unsetContext() {
   __test_context__ = undefined;
 }
 
+/**
+ * Returns a promise to be used to pauses the current test (due to being
+ * returned from the test itself).  This is useful for debugging while testing
+ * or for test-driving.  It allows you to inspect the state of your application
+ * at any point.
+ *
+ * The test framework wrapper (e.g. `ember-qunit` or `ember-mocha`) should
+ * ensure that when `pauseTest()` is used, any framework specific test timeouts
+ * are disabled.
+ *
+ * @public
+ * @returns {Promise<void>} resolves _only_ when `resumeTest()` is invoked
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { setupRenderingTest } from 'ember-qunit';
+ * import { render, click, pauseTest } from '@ember/test-helpers';
+ *
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', async function(assert) {
+ *     await render(hbs`{{awesome-sauce}}`);
+ *
+ *     // added here to visualize / interact with the DOM prior
+ *     // to the interaction below
+ *     await pauseTest();
+ *
+ *     click('.some-selector');
+ *
+ *     assert.equal(this.element.textContent, 'this sauce is awesome!');
+ *   });
+ * });
+ */
 export function pauseTest() {
   let context = getContext();
 
@@ -38,6 +93,11 @@ export function pauseTest() {
   return context.pauseTest();
 }
 
+/**
+  Resumes a test previously paused by `await pauseTest()`.
+
+  @public
+*/
 export function resumeTest() {
   let context = getContext();
 
@@ -47,20 +107,28 @@ export function resumeTest() {
     );
   }
 
-  return context.resumeTest();
+  context.resumeTest();
 }
 
 export const CLEANUP = Object.create(null);
 
-/*
- * Responsible for:
- *
- * - sets the "global testing context" to the provided context
- * - create an owner object and set it on the provided context (e.g. this.owner)
- * - setup this.set, this.setProperties, this.get, and this.getProperties to the provided context
- * - setting up AJAX listeners
- * - setting up RSVP promise integration
- */
+/**
+  Used by test framework addons to setup the provided context for testing.
+
+  Responsible for:
+
+  - sets the "global testing context" to the provided context (`setContext`)
+  - create an owner object and set it on the provided context (e.g. `this.owner`)
+  - setup `this.set`, `this.setProperties`, `this.get`, and `this.getProperties` to the provided context
+  - setting up AJAX listeners
+  - setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
+
+  @public
+  @param {Object} context the context to setup
+  @param {Object} [options] options used to override defaults
+  @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
+  @returns {Promise<Object>} resolves with the context that was setup
+*/
 export default function(context, options = {}) {
   Ember.testing = true;
   setContext(context);
@@ -80,7 +148,6 @@ export default function(context, options = {}) {
   return nextTickPromise()
     .then(() => {
       let { resolver } = options;
-      let buildOwnerOptions;
 
       // This handles precendence, specifying a specific option of
       // resolver always trumps whatever is auto-detected, then we fallback to
@@ -89,15 +156,10 @@ export default function(context, options = {}) {
       // At some later time this can be extended to support specifying a custom
       // engine or application...
       if (resolver) {
-        buildOwnerOptions = { resolver };
-      } else {
-        buildOwnerOptions = {
-          resolver: getResolver(),
-          application: getApplication(),
-        };
+        return buildOwner(null, resolver);
       }
 
-      return buildOwner(buildOwnerOptions);
+      return buildOwner(getApplication(), getResolver());
     })
     .then(owner => {
       context.owner = owner;

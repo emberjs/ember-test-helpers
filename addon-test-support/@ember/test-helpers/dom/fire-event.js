@@ -19,7 +19,6 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   Internal helper used to build and dispatch events throughout the other DOM helpers.
 
   @private
-  @method fireEvent
   @param {Element} element the element to dispatch the event to
   @param {string} eventType the type of event
   @param {Object} [options] additional properties to be set on the event
@@ -65,6 +64,7 @@ export default function fireEvent(element, eventType, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildBasicEvent(type, options = {}) {
   let event = document.createEvent('Events');
 
@@ -81,6 +81,7 @@ function buildBasicEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
   try {
@@ -109,6 +110,7 @@ function buildMouseEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildKeyboardEvent(type, options = {}) {
   let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
   let event, eventMethodName;
@@ -177,6 +179,7 @@ function buildKeyboardEvent(type, options = {}) {
   return event;
 }
 
+// eslint-disable-next-line require-jsdoc
 function buildFileEvent(type, element, files = []) {
   let event = buildBasicEvent(type);
 
