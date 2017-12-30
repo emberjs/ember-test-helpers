@@ -59,17 +59,6 @@ jobs:
         on:
           tags: true
           repo: emberjs/ember-test-helpers
-    - if: tag IS present
-      env: NAME=docs-publish # used only to make Travis UI show description
-      script: yarn docs
-      deploy:
-        provider: pages
-        skip_cleanup: true
-        local_dir: docs
-        github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
-        on:
-          tags: true
-          repo: emberjs/ember-test-helpers
 
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
