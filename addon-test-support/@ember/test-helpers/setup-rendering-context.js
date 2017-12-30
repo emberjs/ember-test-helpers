@@ -6,6 +6,7 @@ import { getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 import hbs from 'htmlbars-inline-precompile';
+import getRootElement from './dom/get-root-element';
 
 export const RENDERING_CLEANUP = Object.create(null);
 
@@ -111,15 +112,7 @@ export default function setupRenderingContext(context) {
     };
     toplevelView.setOutletState(outletState);
 
-    let rootElement;
-    // When the host app uses `setApplication` (instead of `setResolver`) the owner has
-    // a `rootElement` set on it with the element id to be used
-    if (owner._emberTestHelpersMockOwner) {
-      rootElement = '#ember-testing';
-    } else {
-      rootElement = owner.rootElement;
-    }
-    run(toplevelView, 'appendTo', rootElement);
+    run(toplevelView, 'appendTo', getRootElement());
 
     // ensure the element is based on the wrapping toplevel view
     // Ember still wraps the main application template with a

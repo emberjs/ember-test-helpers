@@ -1,4 +1,4 @@
-import { getContext } from '../setup-context';
+import getRootElement from './get-root-element';
 
 /**
   Used internally by the DOM interaction helpers to find the element to trigger
@@ -16,11 +16,7 @@ export default function getElement(target) {
   ) {
     return target;
   } else if (typeof target === 'string') {
-    let context = getContext();
-    let rootElement = context && context.element;
-    if (!rootElement) {
-      throw new Error(`Must setup rendering context before attempting to interact with elements.`);
-    }
+    let rootElement = getRootElement();
 
     return rootElement.querySelector(target);
   } else {

@@ -1,5 +1,5 @@
 import waitUntil from '../wait-until';
-import { getContext } from '../setup-context';
+import getRootElement from './get-root-element';
 import getElement from './-get-element';
 import { nextTickPromise } from '../-utils';
 
@@ -37,8 +37,7 @@ export default function waitFor(selector, { timeout = 1000, count = null } = {})
     let callback;
     if (count !== null) {
       callback = () => {
-        let context = getContext();
-        let rootElement = context && context.element;
+        let rootElement = getRootElement();
         let elements = rootElement.querySelectorAll(selector);
         if (elements.length === count) {
           return toArray(elements);

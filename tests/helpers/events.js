@@ -177,7 +177,7 @@ export function buildInstrumentedElement(elementType) {
     });
   });
 
-  let fixture = document.querySelector('#qunit-fixture');
+  let fixture = document.querySelector('#ember-testing');
   fixture.appendChild(element);
 
   return element;
