@@ -1,6 +1,8 @@
 import { Promise } from 'rsvp';
+import { futureTick } from './-utils';
 
-import { nextTick } from './-utils';
+const TIMEOUTS = [0, 1, 2, 5, 7];
+const MAX_TIMEOUT = 10;
 
 /**
   Wait for the provided callback to return a truthy value.
@@ -21,29 +23,35 @@ export default function waitUntil(callback, options = {}) {
   let waitUntilTimedOut = new Error('waitUntil timed out');
 
   return new Promise(function(resolve, reject) {
-    // starting at -10 because the first invocation happens on 0
-    // but still increments the time...
-    let time = -10;
+    let time = 0;
+
     // eslint-disable-next-line require-jsdoc
-    function tick() {
-      time += 10;
-
-      let value;
-      try {
-        value = callback();
-      } catch (error) {
-        reject(error);
+    function scheduleCheck(timeoutsIndex) {
+      let interval = TIMEOUTS[timeoutsIndex];
+      if (interval === undefined) {
+        interval = MAX_TIMEOUT;
       }
 
-      if (value) {
-        resolve(value);
-      } else if (time < timeout) {
-        nextTick(tick, 10);
-      } else {
-        reject(waitUntilTimedOut);
-      }
+      futureTick(function() {
+        time += interval;
+
+        let value;
+        try {
+          value = callback();
+        } catch (error) {
+          reject(error);
+        }
+
+        if (value) {
+          resolve(value);
+        } else if (time < timeout) {
+          scheduleCheck(timeoutsIndex + 1);
+        } else {
+          reject(waitUntilTimedOut);
+        }
+      }, interval);
     }
 
-    nextTick(tick);
+    scheduleCheck(0);
   });
 }

@@ -1,10 +1,10 @@
 import { run } from '@ember/runloop';
 
-import { Promise as EmberPromise } from 'rsvp';
 import jQuery from 'jquery';
 
 import Ember from 'ember';
-import { nextTick, futureTick } from './-utils';
+import { nextTick } from './-utils';
+import waitUntil from './wait-until';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -190,9 +190,6 @@ export function isSettled() {
   return true;
 }
 
-const TIMEOUTS = [0, 1, 2, 5];
-const MAX_TIMEOUT = 10;
-
 /**
   Returns a promise that resolves when in a settled state (see `isSettled` for
   a definition of "settled state").
@@ -203,25 +200,5 @@ const MAX_TIMEOUT = 10;
 export default function settled() {
   let options = arguments[0];
 
-  return new EmberPromise(function(resolve) {
-    // eslint-disable-next-line require-jsdoc
-    function scheduleCheck(counter) {
-      let timeout = TIMEOUTS[counter];
-      if (timeout === undefined) {
-        timeout = MAX_TIMEOUT;
-      }
-
-      futureTick(function() {
-        let settled = isSettled(options);
-        if (settled) {
-          // Synchronously resolve the promise
-          run(null, resolve);
-        } else {
-          scheduleCheck(counter + 1);
-        }
-      }, timeout);
-    }
-
-    scheduleCheck(0);
-  });
+  return waitUntil(() => isSettled(options), { timeout: Infinity });
 }
