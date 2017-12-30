@@ -30,6 +30,17 @@ export function __focus__(element) {
 /**
   Focus the specified target.
 
+  Sends a number of events intending to simulate a "real" user focusing an
+  element.
+
+  The following events are triggered (in order):
+
+  - `focus`
+  - `focusin`
+
+  The exact listing of events that are triggered may change over time as needed
+  to continue to emulate how actual browsers handle focusing a given element.
+
   @public
   @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled

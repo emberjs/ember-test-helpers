@@ -7,7 +7,8 @@ import { nextTickPromise } from '../-utils';
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
-  the target is a content editable element) on the specified target.
+  the target is a content editable element) then trigger `change` and `input`
+  events on the specified target.
 
   @public
   @param {string|Element} target the element or selector to enter text into
