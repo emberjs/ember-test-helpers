@@ -9,7 +9,11 @@ import { getContext } from '../setup-context';
   @returns {Element} the target or selector
 */
 export default function getElement(target) {
-  if (target instanceof Window || target instanceof Document || target instanceof Element) {
+  if (
+    target.nodeType === Node.ELEMENT_NODE ||
+    target.nodeType === Node.DOCUMENT_NODE ||
+    target instanceof Window
+  ) {
     return target;
   } else if (typeof target === 'string') {
     let context = getContext();
