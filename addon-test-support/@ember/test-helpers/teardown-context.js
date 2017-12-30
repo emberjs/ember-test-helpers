@@ -17,7 +17,6 @@ import Ember from 'ember';
   - remove AJAX listeners
 
   @public
-  @method teardownContext
   @param {Object} context the context to setup
   @returns {Promise<void>} resolves when settled
 */

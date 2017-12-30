@@ -9,7 +9,6 @@ var __application__;
   - Used by `setupContext` and `setupRenderingContext` when present.
 
   @public
-  @method setApplication
   @param {Ember.Application} application the application that will be tested
 */
 export function setApplication(application) {
@@ -27,7 +26,6 @@ export function setApplication(application) {
   Retrieve the application instance stored by `setApplication`.
 
   @public
-  @method getApplication
   @returns {Ember.Application} the previously stored application instance under test
 */
 export function getApplication() {

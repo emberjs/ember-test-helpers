@@ -13,7 +13,6 @@ export const RENDERING_CLEANUP = Object.create(null);
   Renders the provided template and appends it to the DOM.
 
   @public
-  @method render
   @param {CompiledTemplate} template the template to render
   @returns {Promise<void>} resolves when settled
 */
@@ -33,7 +32,6 @@ export function render(template) {
   `willDestroyElement`).
 
   @public
-  @method clearRender
   @returns {Promise<void>} resolves when settled
 */
 export function clearRender() {
@@ -64,7 +62,6 @@ export function clearRender() {
     element).
 
   @public
-  @method setupRenderingContext
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
 */

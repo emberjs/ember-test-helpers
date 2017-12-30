@@ -10,7 +10,6 @@ import { nextTickPromise } from '../-utils';
   the target is a content editable element) on the specified target.
 
   @public
-  @method fillIn
   @param {string|Element} target the element or selector to enter text into
   @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled

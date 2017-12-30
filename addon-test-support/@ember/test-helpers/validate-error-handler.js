@@ -27,7 +27,6 @@ const INVALID = Object.freeze({
   ```
 
   @public
-  @method validateErrorHandler
   @param {Function} [callback=Ember.onerror] the callback to validate
   @returns {Object} object with `isValid` and `message`
 */

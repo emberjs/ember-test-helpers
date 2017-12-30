@@ -12,7 +12,6 @@ import settled from './settled';
     when `setupRenderingContext` was called).
 
   @public
-  @method teardownRenderingContext
   @param {Object} context the context to setup
   @returns {Promise<void>} resolves when settled
 */

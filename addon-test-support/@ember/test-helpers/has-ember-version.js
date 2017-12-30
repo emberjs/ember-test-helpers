@@ -5,7 +5,6 @@ import Ember from 'ember';
   specified major and minor version numbers.
 
   @private
-  @method hasEmberVersion
   @param {number} major the major version number to compare
   @param {number} minor the minor version number to compare
   @returns {boolean} true if the Ember version is >= MAJOR.MINOR specified, false otherwise

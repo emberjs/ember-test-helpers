@@ -5,7 +5,6 @@ import { getContext } from '../setup-context';
   an event on.
 
   @private
-  @method getElement
   @param {string|Element} target the element or selector to retrieve
   @returns {Element} the target or selector
 */

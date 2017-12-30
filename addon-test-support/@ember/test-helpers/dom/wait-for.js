@@ -5,7 +5,6 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @private
-  @method toArray
   @param {NodeList} nodelist the nodelist to convert to an array
   @returns {Array} an array
 */
@@ -23,7 +22,6 @@ function toArray(nodelist) {
   that it does not wait for general settledness, this is quite useful for testing
   interim DOM states (e.g. loading states, pending promises, etc).
 
-  @method waitFor
   @param {string} selector the selector to wait for
   @param {Object} [options] the options to be used
   @param {number} [options.timeout=1000] the time to wait (in ms) for a match

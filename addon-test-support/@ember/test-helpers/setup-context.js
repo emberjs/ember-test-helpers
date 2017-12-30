@@ -20,7 +20,6 @@ let __test_context__;
   Generally setup automatically by `setupContext`.
 
   @public
-  @method setContext
   @param {Object} context the context to use
 */
 export function setContext(context) {
@@ -31,7 +30,6 @@ export function setContext(context) {
   Retrive the "global testing context" as stored by `setContext`.
 
   @public
-  @method getContext
   @returns {Object} the previously stored testing context
 */
 export function getContext() {
@@ -44,7 +42,6 @@ export function getContext() {
   Generally invoked from `teardownContext`.
 
   @public
-  @method unsetContext
 */
 export function unsetContext() {
   __test_context__ = undefined;
@@ -80,7 +77,6 @@ export function unsetContext() {
   ```
 
   @public
-  @method pauseTest
   @returns {Promise<void>} resolves _only_ when `resumeTest()` is invoked
 */
 export function pauseTest() {
@@ -99,7 +95,6 @@ export function pauseTest() {
   Resumes a test previously paused by `return pauseTest()`.
 
   @public
-  @method resumeTest
 */
 export function resumeTest() {
   let context = getContext();
@@ -127,7 +122,6 @@ export const CLEANUP = Object.create(null);
   - setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
 
   @public
-  @method setupContext
   @param {Object} context the context to setup
   @param {Object} [options] options used to override defaults
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution

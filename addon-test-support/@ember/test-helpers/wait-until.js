@@ -9,7 +9,6 @@ import { nextTick } from './-utils';
   while _not_ settled (e.g. "loading" or "pending" states).
 
   @public
-  @method waitUntil
   @param {Function} callback the callback to use for testing when waiting should stop
   @param {Object} [options] options used to override defaults
   @param {number} [options.timeout=1000] the maximum amount of time to wait

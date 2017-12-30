@@ -6,7 +6,6 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @private
-  @method __focus__
   @param {Element} element the element to trigger events on
 */
 export function __focus__(element) {
@@ -32,7 +31,6 @@ export function __focus__(element) {
   Focus the specified target.
 
   @public
-  @method focus
   @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
 */

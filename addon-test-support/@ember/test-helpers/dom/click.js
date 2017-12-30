@@ -7,7 +7,6 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @private
-  @method __click__
   @param {Element} element the element to trigger events on
 */
 export function __click__(element) {
@@ -25,7 +24,6 @@ export function __click__(element) {
   Clicks on the specified target.
 
   @public
-  @method click
   @param {string|Element} target the element or selector to click on
   @return {Promise<void>} resolves when the application is settled
 */

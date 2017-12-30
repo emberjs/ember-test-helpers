@@ -6,7 +6,6 @@ import { nextTickPromise } from '../-utils';
 
 /**
   @private
-  @method __blur__
   @param {Element} element the element to trigger events on
 */
 export function __blur__(element) {
@@ -29,7 +28,6 @@ export function __blur__(element) {
   Unfocus the specified target.
 
   @public
-  @method blur
   @param {string|Element} [target=document.activeElement] the element or selector to unfocus
   @return {Promise<void>} resolves when the application is settled
 */

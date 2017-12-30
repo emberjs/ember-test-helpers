@@ -19,7 +19,6 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   Internal helper used to build and dispatch events throughout the other DOM helpers.
 
   @private
-  @method fireEvent
   @param {Element} element the element to dispatch the event to
   @param {string} eventType the type of event
   @param {Object} [options] additional properties to be set on the event

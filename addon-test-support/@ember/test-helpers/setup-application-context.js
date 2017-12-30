@@ -8,7 +8,6 @@ import settled from './settled';
   Navigate the application to the provided URL.
 
   @public
-  @method visit
   @returns {Promise<void>} resolves when settled
 */
 export function visit() {
@@ -27,7 +26,6 @@ export function visit() {
 
 /**
   @public
-  @method currentRouteName
   @returns {string} the currently active route name
 */
 export function currentRouteName() {
@@ -40,7 +38,6 @@ const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
 
 /**
   @public
-  @method currentURL
   @returns {string} the applications current url
 */
 export function currentURL() {
@@ -64,7 +61,6 @@ export function currentURL() {
   Sets up the basic framework used by application tests.
 
   @public
-  @method setupApplicationContext
   @param {Object} context the context to setup
   @returns {Promise<Object>} resolves with the context that was setup
 */

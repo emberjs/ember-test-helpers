@@ -4,7 +4,6 @@ const FOCUSABLE_TAGS = ['A'];
 
 /**
   @private
-  @method isFocusable
   @param {Element} element the element to check
   @returns {boolean} `true` when the element is focusable, `false` otherwise
 */

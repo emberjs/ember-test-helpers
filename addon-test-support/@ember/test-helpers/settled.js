@@ -26,7 +26,6 @@ let requests;
 
 /**
   @private
-  @method pendingRequests
   @returns {number} the count of pending requests
 */
 function pendingRequests() {
@@ -38,7 +37,6 @@ function pendingRequests() {
 
 /**
   @private
-  @method incrementAjaxPendingRequests
   @param {Event} event (unused)
   @param {XMLHTTPRequest} xhr the XHR that has initiated a request
 */
@@ -48,7 +46,6 @@ function incrementAjaxPendingRequests(event, xhr) {
 
 /**
   @private
-  @method decrementAjaxPendingRequests
   @param {Event} event (unused)
   @param {XMLHTTPRequest} xhr the XHR that has initiated a request
 */
@@ -76,7 +73,6 @@ function decrementAjaxPendingRequests(event, xhr) {
   Clears listeners that were previously setup for `ajaxSend` and `ajaxComplete`.
 
   @private
-  @method _teardownAJAXHooks
 */
 export function _teardownAJAXHooks() {
   if (!jQuery) {
@@ -91,7 +87,6 @@ export function _teardownAJAXHooks() {
   Sets up listeners for `ajaxSend` and `ajaxComplete`.
 
   @private
-  @method _setupAJAXHooks
 */
 export function _setupAJAXHooks() {
   requests = [];
@@ -111,7 +106,6 @@ if (Ember.__loader.registry['ember-testing/test/waiters']) {
 
 /**
   @private
-  @method checkWaiters
   @returns {boolean} true if waiters are still pending
 */
 function checkWaiters() {
@@ -143,7 +137,6 @@ function checkWaiters() {
   * `pendingRequestCount` - The count of pending AJAX requests.
 
   @public
-  @method getSettledState
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState() {
@@ -166,7 +159,6 @@ export function getSettledState() {
   metrics may be added and used as they become available.
 
   @public
-  @method isSettled
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled() {
@@ -206,7 +198,6 @@ const MAX_TIMEOUT = 10;
   a definition of "settled state").
 
   @public
-  @method settled
   @returns {Promise<void>} resolves when settled
 */
 export default function settled() {

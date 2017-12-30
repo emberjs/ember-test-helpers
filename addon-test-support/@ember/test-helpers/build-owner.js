@@ -17,7 +17,6 @@ import legacyBuildRegistry from 'ember-test-helpers/legacy-0-6-x/build-registry'
   `Ember._RegistryProxyMixin`.
 
   @private
-  @method buildOwner
   @param {Ember.Application} [application] the Ember.Application to build an instance from
   @param {Ember.Resolver} [resolver] the resolver to use to back a "mock owner"
   @returns {Promise<Ember.ApplicationInstance>} a promise resolving to the generated "owner"

@@ -7,7 +7,6 @@ import { nextTickPromise } from '../-utils';
   Triggers an event on the specified target.
 
   @public
-  @method triggerEvent
   @param {string|Element} target the element or selector to trigger the event on
   @param {string} eventType the type of event to trigger
   @param {Object} options additional properties to be set on the event

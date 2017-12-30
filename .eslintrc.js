@@ -53,6 +53,9 @@ module.exports = {
       excludedFiles: ['addon-test-support/ember-test-helpers/legacy-0-6-x/**'],
       rules: {
         'valid-jsdoc': ['error', {
+          prefer: {
+            'method': 'do-not-use-redundant-method-tag',
+          },
           preferType: {
             'String': 'string',
           },

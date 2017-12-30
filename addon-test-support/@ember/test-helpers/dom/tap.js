@@ -8,7 +8,6 @@ import { nextTickPromise } from '../-utils';
   Taps on the specified target.
 
   @public
-  @method tap
   @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be provided to the touch events
   @return {Promise<void>} resolves when the application is settled

@@ -5,7 +5,6 @@ export const futureTick = setTimeout;
 
 /**
  @private
- @method nextTickPromise
  @returns {Promise<void>} promise which resolves on the next turn of the event loop
 */
 export function nextTickPromise() {
@@ -20,7 +19,6 @@ export function nextTickPromise() {
  property (clearing the array).
 
  @private
- @method runDestroyablesFor
  @param {Object} object an object to search for the destroyable array within
  @param {string} property the property on the object that contains the destroyable array
 */

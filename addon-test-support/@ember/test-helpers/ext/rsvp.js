@@ -9,7 +9,6 @@ let originalAsync;
   provide a consistent testing experience for users of Ember < 1.7).
 
   @private
-  @method _setupPromiseListeners
 */
 export function _setupPromiseListeners() {
   originalAsync = RSVP.configure('async');
@@ -26,7 +25,6 @@ export function _setupPromiseListeners() {
   and should likely be removed.
 
   @private
-  @method _teardownPromiseListeners
 */
 export function _teardownPromiseListeners() {
   RSVP.configure('async', originalAsync);
