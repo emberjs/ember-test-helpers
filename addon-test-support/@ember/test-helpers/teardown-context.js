@@ -1,6 +1,5 @@
 import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
-import { _teardownPromiseListeners } from './ext/rsvp';
 import { _teardownAJAXHooks } from './settled';
 import { unsetContext, CLEANUP } from './setup-context';
 import { nextTickPromise, runDestroyablesFor } from './-utils';
@@ -25,7 +24,6 @@ export default function teardownContext(context) {
     .then(() => {
       let { owner } = context;
 
-      _teardownPromiseListeners();
       _teardownAJAXHooks();
 
       run(owner, 'destroy');

@@ -5,8 +5,8 @@ let originalAsync;
 
 /**
   Configures `RSVP` to resolve promises on the run-loop's action queue. This is
-  done by Ember internally and should likely be removed (it was only needed to
-  provide a consistent testing experience for users of Ember < 1.7).
+  done by Ember internally since Ember 1.7 and it is only needed to
+  provide a consistent testing experience for users of Ember < 1.7.
 
   @private
 */
@@ -21,8 +21,7 @@ export function _setupPromiseListeners() {
 }
 
 /**
-  Resets `RSVP`'s `async` to its prior value. This is done by Ember internally
-  and should likely be removed.
+  Resets `RSVP`'s `async` to its prior value.
 
   @private
 */

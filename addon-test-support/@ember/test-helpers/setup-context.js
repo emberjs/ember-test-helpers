@@ -2,7 +2,6 @@ import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import buildOwner from './build-owner';
-import { _setupPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks } from './settled';
 import Ember from 'ember';
 import { Promise } from 'rsvp';
@@ -205,7 +204,6 @@ export default function(context, options = {}) {
       };
 
       _setupAJAXHooks();
-      _setupPromiseListeners();
 
       return context;
     });
