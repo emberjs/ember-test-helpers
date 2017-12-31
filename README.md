@@ -11,6 +11,8 @@ This library is best used by way of a test-framework-specific
 wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
 [ember-mocha](https://github.com/emberjs/ember-mocha).
 
+**Full documentation can be found in [API.md](API.md).**
+
 ## Collaborating
 
 ### Installation
