@@ -9,7 +9,38 @@ import hbs from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
 
 export const RENDERING_CLEANUP = Object.create(null);
+const OUTLET_TEMPLATE = hbs`{{outlet}}`;
+const EMPTY_TEMPLATE = hbs``;
 
+/**
+  @private
+  @param {Ember.ApplicationInstance} owner the current owner instance
+  @returns {Template} a template representing {{outlet}}
+*/
+function lookupOutletTemplate(owner) {
+  let OutletTemplate = owner.lookup('template:-outlet');
+  if (!OutletTemplate) {
+    owner.register('template:-outlet', OUTLET_TEMPLATE);
+    OutletTemplate = owner.lookup('template:-outlet');
+  }
+
+  return OutletTemplate;
+}
+
+/**
+  @private
+  @param {string} [selector] the selector to search for relative to element
+  @returns {jQuery} a jQuery object representing the selector (or element itself if no selector)
+*/
+function jQuerySelector(selector) {
+  let { element } = getContext();
+
+  // emulates Ember internal behavor of `this.$` in a component
+  // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
+  return selector ? global.jQuery(selector, element) : global.jQuery(element);
+}
+
+let templateId = 0;
 /**
   Renders the provided template and appends it to the DOM.
 
@@ -20,11 +51,56 @@ export const RENDERING_CLEANUP = Object.create(null);
 export function render(template) {
   let context = getContext();
 
-  if (!context || typeof context.render !== 'function') {
-    throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
+  if (!template) {
+    throw new Error('you must pass a template to `render()`');
   }
 
-  return context.render(template);
+  return nextTickPromise().then(() => {
+    let { owner } = context;
+
+    let toplevelView = owner.lookup('-top-level-view:main');
+    let OutletTemplate = lookupOutletTemplate(owner);
+    templateId += 1;
+    let templateFullName = `template:-undertest-${templateId}`;
+    owner.register(templateFullName, template);
+
+    let outletState = {
+      render: {
+        owner,
+        into: undefined,
+        outlet: 'main',
+        name: 'application',
+        controller: undefined,
+        ViewClass: undefined,
+        template: OutletTemplate,
+      },
+
+      outlets: {
+        main: {
+          render: {
+            owner,
+            into: undefined,
+            outlet: 'main',
+            name: 'index',
+            controller: context,
+            ViewClass: undefined,
+            template: owner.lookup(templateFullName),
+            outlets: {},
+          },
+          outlets: {},
+        },
+      },
+    };
+    toplevelView.setOutletState(outletState);
+
+    // returning settled here because the actual rendering does not happen until
+    // the renderer detects it is dirty (which happens on backburner's end
+    // hook), see the following implementation details:
+    //
+    // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
+    // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
+    return settled();
+  });
 }
 
 /**
@@ -44,7 +120,7 @@ export function clearRender() {
     );
   }
 
-  return context.clearRender();
+  return render(EMPTY_TEMPLATE);
 }
 
 /**
@@ -70,123 +146,58 @@ export default function setupRenderingContext(context) {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
 
-  return nextTickPromise().then(() => {
-    let { owner } = context;
+  return nextTickPromise()
+    .then(() => {
+      let { owner } = context;
 
-    // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
-    // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
-    // `setResolver` (instead of `setApplication`) a "mock owner" is created by extending
-    // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
-    // manually start the event dispatcher.
-    if (owner._emberTestHelpersMockOwner) {
-      let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
-      dispatcher.setup({}, '#ember-testing');
-    }
+      // these methods being placed on the context itself will be deprecated in
+      // a future version (no giant rush) to remove some confusion about which
+      // is the "right" way to things...
+      context.render = render;
+      context.clearRender = clearRender;
 
-    let OutletView = owner.factoryFor
-      ? owner.factoryFor('view:-outlet')
-      : owner._lookupFactory('view:-outlet');
-    let toplevelView = OutletView.create();
-    let OutletTemplate = owner.lookup('template:-outlet');
-    if (!OutletTemplate) {
-      owner.register('template:-outlet', hbs`{{outlet}}`);
-      OutletTemplate = owner.lookup('template:-outlet');
-    }
-
-    // push this into the rendering specific cleanup bucket, to be ran during
-    // `teardownRenderingContext` but before the owner itself is destroyed
-    RENDERING_CLEANUP[contextGuid].push(() => toplevelView.destroy());
-
-    let outletState = {
-      render: {
-        owner,
-        into: undefined,
-        outlet: 'main',
-        name: 'application',
-        controller: context,
-        ViewClass: undefined,
-        template: OutletTemplate,
-      },
-
-      outlets: {},
-    };
-    toplevelView.setOutletState(outletState);
-
-    run(toplevelView, 'appendTo', getRootElement());
-
-    // ensure the element is based on the wrapping toplevel view
-    // Ember still wraps the main application template with a
-    // normal tagged view
-    //
-    // In older Ember versions (2.4) the element itself is not stable,
-    // and therefore we cannot update the `this.element` until after the
-    // rendering is completed
-    context.element = document.querySelector('#ember-testing > .ember-view');
-
-    let templateId = 0;
-
-    context.render = function render(template) {
-      if (!template) {
-        throw new Error('you must pass a template to `render()`');
+      if (global.jQuery) {
+        context.$ = jQuerySelector;
       }
 
-      return nextTickPromise().then(() => {
-        templateId += 1;
-        let templateFullName = `template:-undertest-${templateId}`;
-        owner.register(templateFullName, template);
-        let stateToRender = {
-          owner,
-          into: undefined,
-          outlet: 'main',
-          name: 'index',
-          controller: context,
-          ViewClass: undefined,
-          template: owner.lookup(templateFullName),
-          outlets: {},
-        };
+      // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
+      // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
+      // `setResolver` (instead of `setApplication`) a "mock owner" is created by extending
+      // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
+      // manually start the event dispatcher.
+      if (owner._emberTestHelpersMockOwner) {
+        let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
+        dispatcher.setup({}, '#ember-testing');
+      }
 
-        stateToRender.name = 'index';
-        outletState.outlets.main = { render: stateToRender, outlets: {} };
+      let OutletView = owner.factoryFor
+        ? owner.factoryFor('view:-outlet')
+        : owner._lookupFactory('view:-outlet');
+      let toplevelView = OutletView.create();
 
-        toplevelView.setOutletState(outletState);
-
-        // using next here because the actual rendering does not happen until
-        // the renderer detects it is dirty (which happens on backburner's end
-        // hook), see the following implementation details:
-        //
-        // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
-        // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
-        return settled();
+      owner.register('-top-level-view:main', {
+        create() {
+          return toplevelView;
+        },
       });
-    };
 
-    if (global.jQuery) {
-      context.$ = function $(selector) {
-        // emulates Ember internal behavor of `this.$` in a component
-        // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-        return selector ? global.jQuery(selector, context.element) : global.jQuery(context.element);
-      };
-    }
-
-    context.clearRender = function clearRender() {
-      return nextTickPromise().then(() => {
-        toplevelView.setOutletState({
-          render: {
-            owner,
-            into: undefined,
-            outlet: 'main',
-            name: 'application',
-            controller: context,
-            ViewClass: undefined,
-            template: OutletTemplate,
-          },
-          outlets: {},
-        });
+      // initially render a simple empty template
+      return render(EMPTY_TEMPLATE).then(() => {
+        run(toplevelView, 'appendTo', getRootElement());
 
         return settled();
       });
-    };
+    })
+    .then(() => {
+      // ensure the element is based on the wrapping toplevel view
+      // Ember still wraps the main application template with a
+      // normal tagged view
+      //
+      // In older Ember versions (2.4) the element itself is not stable,
+      // and therefore we cannot update the `this.element` until after the
+      // rendering is completed
+      context.element = getRootElement().querySelector('.ember-view');
 
-    return context;
-  });
+      return context;
+    });
 }
