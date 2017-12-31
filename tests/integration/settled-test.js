@@ -28,7 +28,7 @@ const TestComponent1 = Component.extend({
 });
 
 const TestComponent2 = Component.extend({
-  layout: hbs`{{internalValue}}`,
+  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
 
   internalValue: 'initial value',
 
@@ -38,7 +38,7 @@ const TestComponent2 = Component.extend({
 });
 
 const TestComponent3 = Component.extend({
-  layout: hbs`{{internalValue}}`,
+  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
 
   internalValue: '',
 
@@ -52,7 +52,7 @@ const TestComponent3 = Component.extend({
 });
 
 const TestComponent4 = Component.extend({
-  layout: hbs`{{internalValue}}`,
+  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
 
   internalValue: '',
 
@@ -161,7 +161,7 @@ module('settled real-world scenarios', function(hooks) {
 
     assert.equal(this.element.textContent, 'initial value');
 
-    await click('div');
+    await click('.test-component');
 
     assert.equal(this.element.textContent, 'async value');
   });
@@ -171,7 +171,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-3}}`);
 
-    await click('div');
+    await click('.test-component');
 
     assert.equal(this.element.textContent, 'Remote Data!');
   });
@@ -181,7 +181,7 @@ module('settled real-world scenarios', function(hooks) {
 
     await this.render(hbs`{{x-test-4}}`);
 
-    await click('div');
+    await click('.test-component');
 
     assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
   });

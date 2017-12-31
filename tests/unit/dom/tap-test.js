@@ -1,9 +1,14 @@
 import { module, test } from 'qunit';
-import { tap, setContext, unsetContext } from '@ember/test-helpers';
+import { tap, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 module('DOM Helper: tap', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   let context, element;
 
   hooks.beforeEach(function() {
@@ -14,18 +19,22 @@ module('DOM Helper: tap', function(hooks) {
     };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(async function() {
     if (element) {
       element.parentNode.removeChild(element);
     }
-    unsetContext();
+    // only teardown if setupContext was called
+    if (context.owner) {
+      await teardownContext(context);
+    }
+    document.getElementById('ember-testing').innerHTML = '';
   });
 
   module('non-focusable element types', function() {
     test('taping a div via selector with context set', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      setContext(context);
+      await setupContext(context);
       await tap(`#${element.id}`);
 
       assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
@@ -34,7 +43,7 @@ module('DOM Helper: tap', function(hooks) {
     test('tapping a div via element with context set', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      setContext(context);
+      await setupContext(context);
       await tap(element);
 
       assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
@@ -63,8 +72,9 @@ module('DOM Helper: tap', function(hooks) {
     test('rejects if selector is not found', async function(assert) {
       element = buildInstrumentedElement('div');
 
+      await setupContext(context);
+
       assert.rejects(() => {
-        setContext(context);
         return tap(`#foo-bar-baz-not-here-ever-bye-bye`);
       }, /Element not found when calling `tap\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
     });
@@ -87,7 +97,7 @@ module('DOM Helper: tap', function(hooks) {
     test('tapping a input via selector with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
-      setContext(context);
+      await setupContext(context);
       await tap(`#${element.id}`);
 
       assert.verifySteps(tapSteps);
@@ -97,7 +107,7 @@ module('DOM Helper: tap', function(hooks) {
     test('tapping a input via element with context set', async function(assert) {
       element = buildInstrumentedElement('input');
 
-      setContext(context);
+      await setupContext(context);
       await tap(element);
 
       assert.verifySteps(tapSteps);

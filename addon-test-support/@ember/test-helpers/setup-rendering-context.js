@@ -6,6 +6,7 @@ import { getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 import hbs from 'htmlbars-inline-precompile';
+import getRootElement from './dom/get-root-element';
 
 export const RENDERING_CLEANUP = Object.create(null);
 
@@ -111,8 +112,7 @@ export default function setupRenderingContext(context) {
     };
     toplevelView.setOutletState(outletState);
 
-    // TODO: make this id configurable
-    run(toplevelView, 'appendTo', '#ember-testing');
+    run(toplevelView, 'appendTo', getRootElement());
 
     // ensure the element is based on the wrapping toplevel view
     // Ember still wraps the main application template with a

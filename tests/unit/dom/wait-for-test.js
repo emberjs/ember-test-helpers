@@ -1,20 +1,25 @@
 import { module, test } from 'qunit';
-import { waitFor, setContext, unsetContext } from '@ember/test-helpers';
+import { waitFor, setupContext, teardownContext } from '@ember/test-helpers';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 module('DOM Helper: waitFor', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   let context, rootElement;
 
   hooks.beforeEach(function() {
-    // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
-    // set context.element to the rootElement
-    rootElement = document.querySelector('#qunit-fixture');
-    context = {
-      element: rootElement,
-    };
+    context = {};
+    rootElement = document.getElementById('ember-testing');
   });
 
-  hooks.afterEach(function() {
-    unsetContext();
+  hooks.afterEach(async function() {
+    // only teardown if setupContext was called
+    if (context.owner) {
+      await teardownContext(context);
+    }
+    document.getElementById('ember-testing').innerHTML = '';
   });
 
   test('wait for selector without context set', async function(assert) {
@@ -24,7 +29,7 @@ module('DOM Helper: waitFor', function(hooks) {
   });
 
   test('wait for selector', async function(assert) {
-    setContext(context);
+    await setupContext(context);
 
     let waitPromise = waitFor('.something');
 
@@ -38,7 +43,7 @@ module('DOM Helper: waitFor', function(hooks) {
   });
 
   test('wait for count of selector', async function(assert) {
-    setContext(context);
+    await setupContext(context);
 
     let waitPromise = waitFor('.something', { count: 2 });
 
@@ -61,7 +66,7 @@ module('DOM Helper: waitFor', function(hooks) {
   test('wait for selector with timeout', async function(assert) {
     assert.expect(2);
 
-    setContext(context);
+    await setupContext(context);
 
     let start = Date.now();
     try {

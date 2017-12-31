@@ -1,4 +1,4 @@
-import { getContext } from '../setup-context';
+import getRootElement from './get-root-element';
 
 /**
   Used internally by the DOM interaction helpers to find the element to trigger
@@ -9,14 +9,14 @@ import { getContext } from '../setup-context';
   @returns {Element} the target or selector
 */
 export default function getElement(target) {
-  if (target instanceof Window || target instanceof Document || target instanceof Element) {
+  if (
+    target.nodeType === Node.ELEMENT_NODE ||
+    target.nodeType === Node.DOCUMENT_NODE ||
+    target instanceof Window
+  ) {
     return target;
   } else if (typeof target === 'string') {
-    let context = getContext();
-    let rootElement = context && context.element;
-    if (!rootElement) {
-      throw new Error(`Must setup rendering context before attempting to interact with elements.`);
-    }
+    let rootElement = getRootElement();
 
     return rootElement.querySelector(target);
   } else {

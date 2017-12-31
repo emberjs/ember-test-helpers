@@ -8,6 +8,7 @@ import {
   teardownRenderingContext,
   waitFor,
   render,
+  click,
 } from '@ember/test-helpers';
 
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
@@ -33,6 +34,26 @@ const PromiseWrapper = Component.extend({
   },
 });
 
+const ClickMeButtonTemplate = hbs`
+{{~#if wasClicked~}}
+  Clicked!
+{{~else~}}
+  Click Me!
+{{~/if~}}
+`;
+
+const ClickMeButtonComponent = Component.extend({
+  classNames: ['click-me-button'],
+  init() {
+    this._super(...arguments);
+    this.wasClicked = false;
+  },
+
+  click() {
+    this.set('wasClicked', true);
+  },
+});
+
 module('setupRenderingContext "real world"', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
@@ -41,6 +62,9 @@ module('setupRenderingContext "real world"', function(hooks) {
     setResolverRegistry({
       'component:promise-wrapper': PromiseWrapper,
       'template:components/promise-wrapper': PromiseWrapperTemplate,
+
+      'component:click-me-button': ClickMeButtonComponent,
+      'template:components/click-me-button': ClickMeButtonTemplate,
     });
 
     await setupContext(this);
@@ -89,4 +113,37 @@ module('setupRenderingContext "real world"', function(hooks) {
 
     assert.equal(this.element.textContent, 'Yippie!', 'has fulfillment value');
   });
+
+  // uses `{{-in-element` which was only added in Ember 2.10
+  if (hasEmberVersion(2, 10)) {
+    test('can click on a sibling element of this.element (within the rootElement)', async function(assert) {
+      let rootElement = document.getElementById('ember-testing');
+
+      assert.notEqual(
+        rootElement,
+        this.element,
+        'precond - confirm that the rootElement is different from this.element'
+      );
+
+      this.set('rootElement', rootElement);
+
+      await render(hbs`{{#-in-element rootElement}}{{click-me-button}}{{/-in-element}}`);
+
+      // this will need to be modified / removed once RFC280 lands
+      assert.equal(this.element.textContent, '', 'no content is contained _within_ this.element');
+      assert.equal(
+        rootElement.textContent,
+        'Click Me!',
+        'the rootElement has the correct content after initial render'
+      );
+
+      await click('.click-me-button');
+
+      assert.equal(
+        rootElement.textContent,
+        'Clicked!',
+        'the rootElement has the correct content after clicking'
+      );
+    });
+  }
 });

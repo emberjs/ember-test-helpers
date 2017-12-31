@@ -1,7 +1,8 @@
 import { module, test } from 'qunit';
-import { fillIn, setContext, unsetContext } from '@ember/test-helpers';
+import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
@@ -10,27 +11,31 @@ if (isIE11) {
 }
 
 module('DOM Helper: fillIn', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   let context, element;
 
   hooks.beforeEach(function() {
-    // used to simulate how `setupRenderingTest` (and soon `setupApplicationTest`)
-    // set context.element to the rootElement
-    context = {
-      element: document.querySelector('#qunit-fixture'),
-    };
+    context = {};
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(async function() {
     if (element) {
       element.parentNode.removeChild(element);
     }
-    unsetContext();
+    if (context.owner) {
+      await teardownContext(context);
+    }
+
+    document.getElementById('ember-testing').innerHTML = '';
   });
 
   test('filling in a non-fillable element', async function(assert) {
     element = buildInstrumentedElement('div');
 
-    setContext(context);
+    await setupContext(context);
     assert.rejects(() => {
       return fillIn(`#${element.id}`, 'foo');
     }, /`fillIn` is only usable on form controls or contenteditable elements/);
@@ -39,8 +44,9 @@ module('DOM Helper: fillIn', function(hooks) {
   test('rejects if selector is not found', async function(assert) {
     element = buildInstrumentedElement('div');
 
+    await setupContext(context);
+
     assert.rejects(() => {
-      setContext(context);
       return fillIn(`#foo-bar-baz-not-here-ever-bye-bye`, 'foo');
     }, /Element not found when calling `fillIn\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
   });
@@ -78,7 +84,7 @@ module('DOM Helper: fillIn', function(hooks) {
   test('filling a textarea via selector with context set', async function(assert) {
     element = buildInstrumentedElement('textarea');
 
-    setContext(context);
+    await setupContext(context);
     await fillIn(`#${element.id}`, 'foo');
 
     assert.verifySteps(clickSteps);
@@ -89,7 +95,7 @@ module('DOM Helper: fillIn', function(hooks) {
   test('filling an input via element with context set', async function(assert) {
     element = buildInstrumentedElement('textarea');
 
-    setContext(context);
+    await setupContext(context);
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
@@ -100,7 +106,7 @@ module('DOM Helper: fillIn', function(hooks) {
   test('filling an input via selector with context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    setContext(context);
+    await setupContext(context);
     await fillIn(`#${element.id}`, 'foo');
 
     assert.verifySteps(clickSteps);
@@ -111,7 +117,7 @@ module('DOM Helper: fillIn', function(hooks) {
   test('filling an input via element with context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    setContext(context);
+    await setupContext(context);
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
@@ -123,7 +129,7 @@ module('DOM Helper: fillIn', function(hooks) {
     element = buildInstrumentedElement('div');
     element.setAttribute('contenteditable', '');
 
-    setContext(context);
+    await setupContext(context);
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
