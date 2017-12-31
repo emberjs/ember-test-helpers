@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
+import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
@@ -10,6 +11,10 @@ if (isIE11) {
 }
 
 module('DOM Helper: fillIn', function(hooks) {
+  if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
   let context, element;
 
   hooks.beforeEach(function() {
