@@ -1,5 +1,25 @@
 # Change Log
 
+## v0.7.12 (2017-12-31)
+
+#### :rocket: Enhancement
+* [#295](https://github.com/emberjs/ember-test-helpers/pull/295) Use "real" rootElement for DOM interaction helpers. ([@rwjblue](https://github.com/rwjblue))
+* [#292](https://github.com/emberjs/ember-test-helpers/pull/292) Refactor settled to leverage waitUntil. ([@rwjblue](https://github.com/rwjblue))
+
+#### :memo: Documentation
+* [#294](https://github.com/emberjs/ember-test-helpers/pull/294) Update documentation to generate into API.md. ([@rwjblue](https://github.com/rwjblue))
+* [#291](https://github.com/emberjs/ember-test-helpers/pull/291) Document all the things... ([@rwjblue](https://github.com/rwjblue))
+* [#287](https://github.com/emberjs/ember-test-helpers/pull/287) Flesh out DOM interaction helper documentation. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#293](https://github.com/emberjs/ember-test-helpers/pull/293) Chore: Remove RSVP "resolve in run-loop" config. ([@rwjblue](https://github.com/rwjblue))
+* [#290](https://github.com/emberjs/ember-test-helpers/pull/290) Tests: Make valid-jsdoc an error (instead of warning). ([@rwjblue](https://github.com/rwjblue))
+* [#289](https://github.com/emberjs/ember-test-helpers/pull/289) Fix documentation deployment in CI.. ([@rwjblue](https://github.com/rwjblue))
+* [#288](https://github.com/emberjs/ember-test-helpers/pull/288) Tweak linting configuration.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.11 (2017-12-27)
 
 #### :memo: Documentation
