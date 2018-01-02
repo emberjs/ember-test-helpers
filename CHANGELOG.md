@@ -1,5 +1,16 @@
 # Change Log
 
+## v0.7.13 (2018-01-02)
+
+#### :bug: Bug Fix
+* [#297](https://github.com/emberjs/ember-test-helpers/pull/297) Ensure templates are precompiled properly on ember-cli prior to 2.12. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#296](https://github.com/emberjs/ember-test-helpers/pull/296) Clean up and simplify setupRenderingContext. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.12 (2017-12-31)
 
 #### :rocket: Enhancement
