@@ -18,14 +18,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['index.js'],
+      files: ['index.js', 'config/ember-try.js'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
+        ecmaVersion: 2015,
         sourceType: 'script',
       },
       env: {
         browser: false,
         node: true,
+        es6: true
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
