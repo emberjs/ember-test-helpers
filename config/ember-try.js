@@ -74,25 +74,49 @@ module.exports = {
     },
     {
       name: 'ember-release',
+      bower: {
+        dependencies: {
+          ember: 'components/ember#release',
+        },
+        resolutions: {
+          ember: 'release',
+        },
+      },
       npm: {
         devDependencies: {
-          'ember-source': 'http://builds.emberjs.com/release.tgz',
+          'ember-source': null,
         },
       },
     },
     {
       name: 'ember-beta',
+      bower: {
+        dependencies: {
+          ember: 'components/ember#beta',
+        },
+        resolutions: {
+          ember: 'beta',
+        },
+      },
       npm: {
         devDependencies: {
-          'ember-source': 'http://builds.emberjs.com/beta.tgz',
+          'ember-source': null,
         },
       },
     },
     {
       name: 'ember-canary',
+      bower: {
+        dependencies: {
+          ember: 'components/ember#canary',
+        },
+        resolutions: {
+          ember: 'canary',
+        },
+      },
       npm: {
         devDependencies: {
-          'ember-source': 'http://builds.emberjs.com/canary.tgz',
+          'ember-source': null,
         },
       },
     },
