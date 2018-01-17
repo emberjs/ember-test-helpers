@@ -2,7 +2,6 @@ import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
-import { Promise } from 'rsvp';
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
