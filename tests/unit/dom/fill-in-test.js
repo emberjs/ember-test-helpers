@@ -36,9 +36,10 @@ module('DOM Helper: fillIn', function(hooks) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
-    assert.rejects(() => {
-      return fillIn(`#${element.id}`, 'foo');
-    }, /`fillIn` is only usable on form controls or contenteditable elements/);
+    assert.rejects(
+      fillIn(`#${element.id}`, 'foo'),
+      /`fillIn` is only usable on form controls or contenteditable elements/
+    );
   });
 
   test('rejects if selector is not found', async function(assert) {
@@ -46,25 +47,25 @@ module('DOM Helper: fillIn', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return fillIn(`#foo-bar-baz-not-here-ever-bye-bye`, 'foo');
-    }, /Element not found when calling `fillIn\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
+    assert.rejects(
+      fillIn(`#foo-bar-baz-not-here-ever-bye-bye`, 'foo'),
+      /Element not found when calling `fillIn\('#foo-bar-baz-not-here-ever-bye-bye'\)`/
+    );
   });
 
   test('rejects if text to fill in is not provided', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    assert.rejects(() => {
-      return fillIn(element);
-    }, /Must provide `text` when calling `fillIn`/);
+    assert.rejects(fillIn(element), /Must provide `text` when calling `fillIn`/);
   });
 
   test('filling an input via selector without context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    assert.rejects(() => {
-      return fillIn(`#${element.id}`, 'foo');
-    }, /Must setup rendering context before attempting to interact with elements/);
+    assert.rejects(
+      fillIn(`#${element.id}`, 'foo'),
+      /Must setup rendering context before attempting to interact with elements/
+    );
   });
 
   test('does not run sync', async function(assert) {

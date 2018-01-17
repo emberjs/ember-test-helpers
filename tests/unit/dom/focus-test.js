@@ -36,18 +36,14 @@ module('DOM Helper: focus', function(hooks) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
-    assert.rejects(() => {
-      return focus(`#${element.id}`);
-    }, /is not focusable/);
+    assert.rejects(focus(`#${element.id}`), /is not focusable/);
   });
 
   test('focusing a div via element with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
-    assert.rejects(() => {
-      return focus(element);
-    }, /is not focusable/);
+    assert.rejects(focus(element), /is not focusable/);
   });
 
   test('does not run sync', async function(assert) {
@@ -67,9 +63,10 @@ module('DOM Helper: focus', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return focus(`#foo-bar-baz-not-here-ever-bye-bye`);
-    }, /Element not found when calling `focus\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
+    assert.rejects(
+      focus(`#foo-bar-baz-not-here-ever-bye-bye`),
+      /Element not found when calling `focus\('#foo-bar-baz-not-here-ever-bye-bye'\)`/
+    );
   });
 
   test('focusing a input via selector with context set', async function(assert) {
@@ -104,8 +101,9 @@ module('DOM Helper: focus', function(hooks) {
   test('focusing a input via selector without context set', async function(assert) {
     element = buildInstrumentedElement('input');
 
-    assert.rejects(() => {
-      return focus(`#${element.id}`);
-    }, /Must setup rendering context before attempting to interact with elements/);
+    assert.rejects(
+      focus(`#${element.id}`),
+      /Must setup rendering context before attempting to interact with elements/
+    );
   });
 });

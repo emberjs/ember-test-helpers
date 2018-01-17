@@ -72,9 +72,10 @@ module('DOM Helper: triggerEvent', function(hooks) {
   test('triggering event via selector without context set', function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.rejects(() => {
-      return triggerEvent(`#${element.id}`, 'mouseenter');
-    }, /Must setup rendering context before attempting to interact with elements/);
+    assert.rejects(
+      triggerEvent(`#${element.id}`, 'mouseenter'),
+      /Must setup rendering context before attempting to interact with elements/
+    );
   });
 
   test('does not run sync', async function(assert) {
@@ -94,9 +95,10 @@ module('DOM Helper: triggerEvent', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return triggerEvent(`#foo-bar-baz-not-here-ever-bye-bye`, 'mouseenter');
-    }, /Element not found when calling `triggerEvent\('#foo-bar-baz-not-here-ever-bye-bye'/);
+    assert.rejects(
+      triggerEvent(`#foo-bar-baz-not-here-ever-bye-bye`, 'mouseenter'),
+      /Element not found when calling `triggerEvent\('#foo-bar-baz-not-here-ever-bye-bye'/
+    );
   });
 
   test('rejects if event type is not passed', async function(assert) {
@@ -104,9 +106,7 @@ module('DOM Helper: triggerEvent', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return triggerEvent(element);
-    }, /Must provide an `eventType` to `triggerEvent`/);
+    assert.rejects(triggerEvent(element), /Must provide an `eventType` to `triggerEvent`/);
   });
 
   test('events properly bubble upwards', async function(assert) {

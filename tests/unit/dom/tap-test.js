@@ -74,17 +74,19 @@ module('DOM Helper: tap', function(hooks) {
 
       await setupContext(context);
 
-      assert.rejects(() => {
-        return tap(`#foo-bar-baz-not-here-ever-bye-bye`);
-      }, /Element not found when calling `tap\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
+      assert.rejects(
+        tap(`#foo-bar-baz-not-here-ever-bye-bye`),
+        /Element not found when calling `tap\('#foo-bar-baz-not-here-ever-bye-bye'\)`/
+      );
     });
 
     test('tapping a div via selector without context set', async function(assert) {
       element = buildInstrumentedElement('div');
 
-      assert.rejects(async () => {
-        await tap(`#${element.id}`);
-      }, /Must setup rendering context before attempting to interact with elements/);
+      assert.rejects(
+        tap(`#${element.id}`),
+        /Must setup rendering context before attempting to interact with elements/
+      );
     });
   });
 
@@ -126,9 +128,10 @@ module('DOM Helper: tap', function(hooks) {
     test('tapping a input via selector without context set', function(assert) {
       element = buildInstrumentedElement('input');
 
-      assert.rejects(async () => {
-        await tap(`#${element.id}`);
-      }, /Must setup rendering context before attempting to interact with elements/);
+      assert.rejects(
+        tap(`#${element.id}`),
+        /Must setup rendering context before attempting to interact with elements/
+      );
     });
   });
 });

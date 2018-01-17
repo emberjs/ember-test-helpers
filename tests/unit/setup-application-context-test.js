@@ -125,8 +125,6 @@ module('setupApplicationContext', function(hooks) {
   });
 
   test('bubbles up errors', function(assert) {
-    assert.rejects(() => {
-      return visit('/widgets');
-    }, /Model hook error from \/widgets/);
+    assert.rejects(visit('/widgets'), /Model hook error from \/widgets/);
   });
 });
