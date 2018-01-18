@@ -146,4 +146,15 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
   });
+
+  test('filling an input via selector with empty string', async function(assert) {
+    element = buildInstrumentedElement('input');
+
+    await setupContext(context);
+    await fillIn(`#${element.id}`, '');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.equal(element.value, '');
+  });
 });

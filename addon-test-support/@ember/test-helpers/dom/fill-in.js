@@ -30,7 +30,7 @@ export default function fillIn(target, text) {
       throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
     }
 
-    if (!text) {
+    if (typeof text === 'undefined' || text === null) {
       throw new Error('Must provide `text` when calling `fillIn`.');
     }
 
