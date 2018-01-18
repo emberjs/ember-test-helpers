@@ -154,6 +154,21 @@ module('settled real-world scenarios', function(hooks) {
     assert.equal(this.element.textContent, 'async value');
   });
 
+  test('raises assertion if pass in timer', async function(assert) {
+    this.owner.register('component:x-test-1', TestComponent1);
+
+    await this.render(hbs`{{x-test-1}}`);
+
+    try {
+      await settled(3000);
+    } catch (e) {
+      assert.equal(
+        e.message,
+        `Assertion Failed: The 'settled' (formerly 'wait') testing helper only accepts 'undefined' or an object. You passed 3000`
+      );
+    }
+  });
+
   test('it works when async exists in an event/action', async function(assert) {
     this.owner.register('component:x-test-2', TestComponent2);
 
