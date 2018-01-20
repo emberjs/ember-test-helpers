@@ -26,7 +26,9 @@ export function visit() {
         context.element = document.querySelector('#ember-testing');
       }
     })
-    .then(settled);
+    .then(() => {
+      return settled();
+    });
 }
 
 /**
