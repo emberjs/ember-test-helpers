@@ -196,7 +196,12 @@ export default function setupRenderingContext(context) {
       // In older Ember versions (2.4) the element itself is not stable,
       // and therefore we cannot update the `this.element` until after the
       // rendering is completed
-      context.element = getRootElement().querySelector('.ember-view');
+      // eslint-disable-next-line
+      if (EmberENV.FEATURES['ember-glimmer-remove-application-template-wrapper']) {
+        context.element = getRootElement();
+      } else {
+        context.element = getRootElement().querySelector('.ember-view');
+      }
 
       return context;
     });

@@ -19,7 +19,12 @@ export function visit() {
       return owner.visit(...arguments);
     })
     .then(() => {
-      context.element = document.querySelector('#ember-testing > .ember-view');
+      // eslint-disable-next-line
+      if (EmberENV.FEATURES['ember-glimmer-remove-application-template-wrapper']) {
+        context.element = document.querySelector('#ember-testing');
+      } else {
+        context.element = document.querySelector('#ember-testing > .ember-view');
+      }
     })
     .then(settled);
 }
