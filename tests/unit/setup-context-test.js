@@ -16,6 +16,9 @@ import {
   application,
   resolver,
 } from '../helpers/resolver';
+import { merge } from '@ember/polyfills';
+import App from '../../app';
+import config from '../../config/environment';
 import Ember from 'ember';
 
 module('setupContext', function(hooks) {
@@ -263,5 +266,78 @@ module('setupContext', function(hooks) {
     });
 
     setupContextTests();
+  });
+
+  module('initializers', function(hooks) {
+    let isolatedApp;
+
+    hooks.beforeEach(function() {
+      const AppConfig = merge({ autoboot: false }, config.APP);
+      // .extend() because initializers are stored in the constructor, and we
+      // don't want to pollute other tests using an application created from the
+      // same constructor.
+      isolatedApp = App.extend({}).create(AppConfig);
+      let resolver = isolatedApp.Resolver.create({
+        namespace: isolatedApp,
+        isResolverFromTestHelpers: true,
+      });
+
+      setResolver(resolver);
+      setApplication(isolatedApp);
+    });
+
+    test('run once per test run', async function(assert) {
+      let initializerCallCount = 0;
+      isolatedApp.initializer({
+        name: 'foo',
+        initialize() {
+          initializerCallCount += 1;
+        },
+      });
+
+      await teardownContext(await setupContext({}));
+      assert.equal(initializerCallCount, 1);
+
+      await teardownContext(await setupContext({}));
+      assert.equal(initializerCallCount, 1);
+    });
+
+    test('changes to the DOM persist across multiple setupContext() calls', async function(assert) {
+      function rootEl() {
+        return document.querySelector(isolatedApp.rootElement);
+      }
+
+      isolatedApp.initializer({
+        name: 'foo',
+        initialize() {
+          let initializerDiv = document.createElement('div');
+          initializerDiv.id = 'initializer';
+          rootEl().appendChild(initializerDiv);
+        },
+      });
+
+      try {
+        let context = await setupContext({});
+        try {
+          assert.ok(rootEl().lastChild);
+          assert.equal(rootEl().lastChild.id, 'initializer');
+        } finally {
+          await teardownContext(context);
+        }
+
+        context = await setupContext({});
+        try {
+          assert.ok(rootEl().lastChild);
+          assert.equal(rootEl().lastChild.id, 'initializer');
+        } finally {
+          await teardownContext(context);
+        }
+      } finally {
+        // Don't leave #ember-testing polluted for other tests
+        if (rootEl().lastChild) {
+          rootEl().lastChild.remove();
+        }
+      }
+    });
   });
 });
