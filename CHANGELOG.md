@@ -1,5 +1,25 @@
 # Change Log
 
+## v0.7.14 (2018-01-26)
+
+#### :bug: Bug Fix
+* [#307](https://github.com/emberjs/ember-test-helpers/pull/307) Make sure initializers can modify the DOM. ([@bendemboski](https://github.com/bendemboski))
+* [#302](https://github.com/emberjs/ember-test-helpers/pull/302) Allow empty string to fillIn. ([@snewcomer](https://github.com/snewcomer))
+
+#### :memo: Documentation
+* [#301](https://github.com/emberjs/ember-test-helpers/pull/301) README: use SVG badges. ([@olleolleolle](https://github.com/olleolleolle))
+
+#### :house: Internal
+* [#304](https://github.com/emberjs/ember-test-helpers/pull/304) Update to 2.18. ([@cibernox](https://github.com/cibernox))
+* [#298](https://github.com/emberjs/ember-test-helpers/pull/298) Avoid using Bower builds for release, beta, and canary.... ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 5
+- Ben Demboski ([bendemboski](https://github.com/bendemboski))
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+- Olle Jonsson ([olleolleolle](https://github.com/olleolleolle))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+- Scott Newcomer ([snewcomer](https://github.com/snewcomer))
+
 ## v0.7.13 (2018-01-02)
 
 #### :bug: Bug Fix
