@@ -1,7 +1,9 @@
 import { getContext } from '../setup-context';
 
 /**
-  @private
+  Get the root element of the application under test (usually `#ember-testing`)
+
+  @public
   @returns {Element} the root element
 */
 export default function getRootElement() {
