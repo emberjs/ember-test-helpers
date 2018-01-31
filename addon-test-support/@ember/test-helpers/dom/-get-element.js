@@ -1,8 +1,7 @@
 import getRootElement from './get-root-element';
 
 /**
-  Used internally by the DOM interaction helpers to find the element to trigger
-  an event on.
+  Used internally by the DOM interaction helpers to find one element.
 
   @private
   @param {string|Element} target the element or selector to retrieve
