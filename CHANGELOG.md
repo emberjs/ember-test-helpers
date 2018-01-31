@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.15 (2018-01-31)
+
+#### :rocket: Enhancement
+* [#308](https://github.com/emberjs/ember-test-helpers/pull/308) Implement `find()` and `findAll()` DOM helpers. ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([bendemboski](https://github.com/bendemboski))
+
 ## v0.7.14 (2018-01-26)
 
 #### :bug: Bug Fix
