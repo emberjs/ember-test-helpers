@@ -1,21 +1,8 @@
 import waitUntil from '../wait-until';
-import getRootElement from './get-root-element';
 import getElement from './-get-element';
+import getElements from './-get-elements';
+import toArray from './-to-array';
 import { nextTickPromise } from '../-utils';
-
-/**
-  @private
-  @param {NodeList} nodelist the nodelist to convert to an array
-  @returns {Array} an array
-*/
-function toArray(nodelist) {
-  let array = new Array(nodelist.length);
-  for (let i = 0; i < nodelist.length; i++) {
-    array[i] = nodelist[i];
-  }
-
-  return array;
-}
 
 /**
   Used to wait for a particular selector to appear in the DOM. Due to the fact
@@ -37,8 +24,7 @@ export default function waitFor(selector, { timeout = 1000, count = null } = {})
     let callback;
     if (count !== null) {
       callback = () => {
-        let rootElement = getRootElement();
-        let elements = rootElement.querySelectorAll(selector);
+        let elements = getElements(selector);
         if (elements.length === count) {
           return toArray(elements);
         }
