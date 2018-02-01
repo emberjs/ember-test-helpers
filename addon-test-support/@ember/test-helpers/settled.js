@@ -202,8 +202,10 @@ export default function settled() {
   let options = arguments[0];
 
   if (arguments.length > 0) {
-    assert(`The 'settled' (formerly 'wait') testing helper only accepts an object. You passed ${options}`,
-      typeof options === 'object' && options !== null);
+    assert(
+      `The 'settled' (formerly 'wait') testing helper only accepts an object.  You passed ${options}`,
+      typeof options === 'object' && options !== null
+    );
   }
 
   return waitUntil(() => isSettled(options), { timeout: Infinity });
