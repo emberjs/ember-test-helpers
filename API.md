@@ -40,6 +40,7 @@
     -   [setupApplicationContext](#setupapplicationcontext)
     -   [teardownApplicationContext](#teardownapplicationcontext)
     -   [validateErrorHandler](#validateerrorhandler)
+-   [getRootElement](#getrootelement)
 -   [find](#find)
 -   [findAll](#findall)
 
@@ -543,6 +544,12 @@ test('Ember.onerror is functioning properly', function(assert) {
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object with `isValid` and `message`
+
+## getRootElement
+
+Get the root element of the application under test (usually `#ember-testing`)
+
+Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** the root element
 
 ## find
 
