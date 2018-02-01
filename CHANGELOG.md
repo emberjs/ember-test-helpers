@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.16 (2018-02-01)
+
+#### :rocket: Enhancement
+* [#309](https://github.com/emberjs/ember-test-helpers/pull/309) Make getRootElement() public. ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([bendemboski](https://github.com/bendemboski))
+
 ## v0.7.15 (2018-01-31)
 
 #### :rocket: Enhancement
