@@ -203,7 +203,7 @@ export default function settled() {
 
   if (arguments.length > 0) {
     assert(
-      `The 'settled' (formerly 'wait') testing helper only accepts an object.  You passed ${options}`,
+      `The 'settled' (formerly 'wait') testing helper only accepts an object. You passed ${options}`,
       typeof options === 'object' && options !== null
     );
   }
