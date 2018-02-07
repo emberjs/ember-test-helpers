@@ -20,10 +20,10 @@ export function visit() {
     })
     .then(() => {
       // eslint-disable-next-line
-      if (EmberENV.FEATURES['ember-glimmer-remove-application-template-wrapper']) {
-        context.element = document.querySelector('#ember-testing');
-      } else {
+      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER) {
         context.element = document.querySelector('#ember-testing > .ember-view');
+      } else {
+        context.element = document.querySelector('#ember-testing');
       }
     })
     .then(settled);

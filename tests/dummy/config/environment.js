@@ -1,5 +1,7 @@
 /* eslint-env node */
 'use strict';
+let wrapperProp =
+  process.env.EMBER_TRY_CURRENT_SCENARIO !== 'ember-canary-without-application-wrapper';
 
 module.exports = function(environment) {
   let ENV = {
@@ -8,10 +10,10 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
+      _APPLICATION_TEMPLATE_WRAPPER: wrapperProp,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
-        'ember-glimmer-remove-application-template-wrapper': true,
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.

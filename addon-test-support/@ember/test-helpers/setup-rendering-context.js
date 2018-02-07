@@ -197,10 +197,10 @@ export default function setupRenderingContext(context) {
       // and therefore we cannot update the `this.element` until after the
       // rendering is completed
       // eslint-disable-next-line
-      if (EmberENV.FEATURES['ember-glimmer-remove-application-template-wrapper']) {
-        context.element = getRootElement();
-      } else {
+      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER) {
         context.element = getRootElement().querySelector('.ember-view');
+      } else {
+        context.element = getRootElement();
       }
 
       return context;

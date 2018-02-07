@@ -105,6 +105,14 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-canary-without-application-wrapper',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[2],
+            },
+          },
+        },
+        {
           name: 'ember-default-with-jquery',
           npm: {
             devDependencies: {
