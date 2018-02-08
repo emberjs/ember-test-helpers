@@ -44,6 +44,22 @@ module('DOM Helper: find', function(hooks) {
     assert.notOk(find('#elt'));
   });
 
+  test('works if an ancestor is passed', async function(assert) {
+    await setupContext(context);
+    let selector = 'my-unique-class';
+
+    let fixture = document.querySelector('#ember-testing');
+    element.classList.add(selector);
+    fixture.appendChild(element);
+    let ancestor = document.createElement('span');
+    let validResult = document.createElement('div');
+    validResult.classList.add(selector);
+    ancestor.appendChild(validResult);
+    fixture.appendChild(ancestor);
+
+    assert.equal(find(`.${selector}`, ancestor), validResult);
+  });
+
   test('throws without context set', function(assert) {
     assert.throws(() => {
       find('#foo');

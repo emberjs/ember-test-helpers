@@ -58,6 +58,30 @@ module('DOM Helper: findAll', function(hooks) {
     assert.equal(result[0], element1);
   });
 
+  test('works if an ancestor is passed', async function(assert) {
+    await setupContext(context);
+    let selector = 'my-unique-class';
+    let resultCount = 3;
+
+    let fixture = document.querySelector('#ember-testing');
+    element1.classList.add(selector);
+    fixture.appendChild(element1);
+    element2.classList.add(selector);
+    fixture.appendChild(element2);
+    let ancestor = document.createElement('span');
+    for (let i = 0; i < resultCount; i++) {
+      let validResult = document.createElement('div');
+      validResult.classList.add(selector);
+      ancestor.appendChild(validResult);
+    }
+    fixture.appendChild(ancestor);
+
+    let resultElements = findAll(`.${selector}`, ancestor);
+    assert.equal(resultElements.length, resultCount);
+    assert.notOk(resultElements.includes(element1));
+    assert.notOk(resultElements.includes(element2));
+  });
+
   test('throws without context set', function(assert) {
     assert.throws(() => {
       findAll('#foo');
