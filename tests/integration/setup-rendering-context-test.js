@@ -119,18 +119,10 @@ module('setupRenderingContext "real world"', function(hooks) {
     test('can click on a sibling element of this.element (within the rootElement)', async function(assert) {
       let rootElement = document.getElementById('ember-testing');
 
-      assert.notEqual(
-        rootElement,
-        this.element,
-        'precond - confirm that the rootElement is different from this.element'
-      );
-
       this.set('rootElement', rootElement);
 
       await render(hbs`{{#-in-element rootElement}}{{click-me-button}}{{/-in-element}}`);
 
-      // this will need to be modified / removed once RFC280 lands
-      assert.equal(this.element.textContent, '', 'no content is contained _within_ this.element');
       assert.equal(
         rootElement.textContent,
         'Click Me!',
