@@ -1,5 +1,20 @@
 # Change Log
 
+## v0.7.17 (2018-02-10)
+
+#### :rocket: Enhancement
+* [#305](https://github.com/emberjs/ember-test-helpers/pull/305) Support testing without an application template wrapper. ([@cibernox](https://github.com/cibernox))
+
+#### :bug: Bug Fix
+* [#317](https://github.com/emberjs/ember-test-helpers/pull/317) Remove simple alias for `wait` -> `settled`. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#315](https://github.com/emberjs/ember-test-helpers/pull/315) Update to QUnit 2.5.0.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
 ## v0.7.16 (2018-02-01)
 
 #### :rocket: Enhancement
