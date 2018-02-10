@@ -1,3 +1,4 @@
+/* globals EmberENV */
 import { set, setProperties, get, getProperties } from '@ember/object';
 import $ from 'jquery';
 import { isArray } from '@ember/array';
@@ -278,10 +279,14 @@ export function setupComponentIntegrationTest() {
       hasRendered = true;
     }
 
-    // ensure the element is based on the wrapping toplevel view
-    // Ember still wraps the main application template with a
-    // normal tagged view
-    context._element = element = document.querySelector('#ember-testing > .ember-view');
+    if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
+      // ensure the element is based on the wrapping toplevel view
+      // Ember still wraps the main application template with a
+      // normal tagged view
+      context._element = element = document.querySelector('#ember-testing > .ember-view');
+    } else {
+      context._element = element = document.querySelector('#ember-testing');
+    }
   };
 
   context.$ = function(selector) {

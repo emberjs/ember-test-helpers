@@ -105,6 +105,17 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-without-application-wrapper',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
+          },
+          npm: {
+            devDependencies: {
+              'ember-source': urls[2],
+            },
+          },
+        },
+        {
           name: 'ember-default-with-jquery',
           npm: {
             devDependencies: {
