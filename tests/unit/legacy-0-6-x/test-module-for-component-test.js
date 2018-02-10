@@ -1,3 +1,4 @@
+/* globals EmberENV */
 import QUnit, { module, test } from 'qunit';
 import { resolve } from 'rsvp';
 import TextField from '@ember/component/text-field';
@@ -388,9 +389,15 @@ test('it happens', function(assert) {
 moduleForComponent('Component Integration Tests', {
   integration: true,
   beforeSetup() {
-    setResolverRegistry({
+    let registry = {
       'template:components/my-component': hbs`<span>{{name}}</span>`,
-    });
+    };
+
+    if (EmberENV._TEMPLATE_ONLY_GLIMMER_COMPONENTS === true) {
+      registry['template:components/my-component'] = hbs`<span>{{@name}}</span>`;
+    }
+
+    setResolverRegistry(registry);
   },
 });
 

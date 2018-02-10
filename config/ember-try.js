@@ -116,6 +116,17 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-template-only-glimmer-components',
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'template-only-glimmer-components': true }),
+          },
+          npm: {
+            devDependencies: {
+              'ember-source': urls[2],
+            },
+          },
+        },
+        {
           name: 'ember-default-with-jquery',
           npm: {
             devDependencies: {

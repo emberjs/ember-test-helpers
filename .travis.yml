@@ -45,6 +45,7 @@ jobs:
     - env: EMBER_TRY_SCENARIO=ember-canary
     - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
     - env: EMBER_TRY_SCENARIO=ember-without-application-wrapper
+    - env: EMBER_TRY_SCENARIO=ember-template-only-glimmer-components
 
     # runs deploy if running on a specific tag
     - stage: deploy
