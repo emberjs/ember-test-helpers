@@ -35,9 +35,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return triggerKeyEvent(element);
-    }, /Must provide an `eventType` to `triggerKeyEvent`/);
+    assert.rejects(triggerKeyEvent(element), /Must provide an `eventType` to `triggerKeyEvent`/);
   });
 
   test('rejects if event type is invalid', async function(assert) {
@@ -45,9 +43,10 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return triggerKeyEvent(element, 'mouseenter');
-    }, /Must provide an `eventType` of keydown, keypress, keyup to `triggerKeyEvent` but you passed `mouseenter`./);
+    assert.rejects(
+      triggerKeyEvent(element, 'mouseenter'),
+      /Must provide an `eventType` of keydown, keypress, keyup to `triggerKeyEvent` but you passed `mouseenter`./
+    );
   });
 
   test('rejects if key code is missing', async function(assert) {
@@ -55,9 +54,10 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(() => {
-      return triggerKeyEvent(element, 'keypress');
-    }, /Must provide a `keyCode` to `triggerKeyEvent`/);
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress'),
+      /Must provide a `keyCode` to `triggerKeyEvent`/
+    );
   });
 
   test('triggering via selector with context set', async function(assert) {
@@ -89,9 +89,10 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   test('triggering via selector without context set', function(assert) {
     element = buildInstrumentedElement('div');
 
-    assert.rejects(() => {
-      return triggerKeyEvent(`#${element.id}`, 'keydown', 13);
-    }, /Must setup rendering context before attempting to interact with elements/);
+    assert.rejects(
+      triggerKeyEvent(`#${element.id}`, 'keydown', 13),
+      /Must setup rendering context before attempting to interact with elements/
+    );
   });
 
   ['ctrl', 'shift', 'alt', 'meta'].forEach(function(modifierType) {

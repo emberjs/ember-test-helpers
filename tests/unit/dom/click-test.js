@@ -70,17 +70,19 @@ module('DOM Helper: click', function(hooks) {
 
       await setupContext(context);
 
-      assert.rejects(() => {
-        return click(`#foo-bar-baz-not-here-ever-bye-bye`);
-      }, /Element not found when calling `click\('#foo-bar-baz-not-here-ever-bye-bye'\)`/);
+      assert.rejects(
+        click(`#foo-bar-baz-not-here-ever-bye-bye`),
+        /Element not found when calling `click\('#foo-bar-baz-not-here-ever-bye-bye'\)`/
+      );
     });
 
     test('clicking a div via selector without context set', function(assert) {
       element = buildInstrumentedElement('div');
 
-      assert.rejects(() => {
-        return click(`#${element.id}`);
-      }, /Must setup rendering context before attempting to interact with elements/);
+      assert.rejects(
+        click(`#${element.id}`),
+        /Must setup rendering context before attempting to interact with elements/
+      );
     });
   });
 
@@ -123,9 +125,10 @@ module('DOM Helper: click', function(hooks) {
     test('clicking a input via selector without context set', function(assert) {
       element = buildInstrumentedElement('input');
 
-      assert.rejects(() => {
-        return click(`#${element.id}`);
-      }, /Must setup rendering context before attempting to interact with elements/);
+      assert.rejects(
+        click(`#${element.id}`),
+        /Must setup rendering context before attempting to interact with elements/
+      );
     });
   });
 });

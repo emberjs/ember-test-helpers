@@ -23,9 +23,10 @@ module('DOM Helper: waitFor', function(hooks) {
   });
 
   test('wait for selector without context set', async function(assert) {
-    assert.rejects(() => {
-      return waitFor('.something');
-    }, /Must setup rendering context before attempting to interact with elements/);
+    assert.rejects(
+      waitFor('.something'),
+      /Must setup rendering context before attempting to interact with elements/
+    );
   });
 
   test('wait for selector', async function(assert) {
