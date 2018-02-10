@@ -1,3 +1,4 @@
+import { assert } from '@ember/debug';
 import { run } from '@ember/runloop';
 
 import jQuery from 'jquery';
@@ -199,6 +200,13 @@ export function isSettled() {
 */
 export default function settled() {
   let options = arguments[0];
+
+  if (options) {
+    assert(
+      `The 'settled' (formerly 'wait') testing helper only accepts an object if passed arguments. You passed ${options}`,
+      typeof options === 'object'
+    );
+  }
 
   return waitUntil(() => isSettled(options), { timeout: Infinity });
 }
