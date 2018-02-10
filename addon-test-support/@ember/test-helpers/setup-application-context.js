@@ -1,3 +1,4 @@
+/* globals EmberENV */
 import { get } from '@ember/object';
 import { nextTickPromise } from './-utils';
 import { getContext } from './setup-context';
@@ -19,7 +20,6 @@ export function visit() {
       return owner.visit(...arguments);
     })
     .then(() => {
-      // eslint-disable-next-line
       if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
         context.element = document.querySelector('#ember-testing > .ember-view');
       } else {

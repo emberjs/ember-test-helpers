@@ -1,3 +1,4 @@
+/* globals EmberENV */
 import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
@@ -196,7 +197,6 @@ export default function setupRenderingContext(context) {
       // In older Ember versions (2.4) the element itself is not stable,
       // and therefore we cannot update the `this.element` until after the
       // rendering is completed
-      // eslint-disable-next-line
       if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
         context.element = getRootElement().querySelector('.ember-view');
       } else {
