@@ -154,6 +154,15 @@ module('settled real-world scenarios', function(hooks) {
     assert.equal(this.element.textContent, 'async value');
   });
 
+  test('does not error for various argument types', async function(assert) {
+    assert.expect(0); // no assertions, just shouldn't error
+
+    await settled(3000);
+    await settled(null);
+    await settled(undefined);
+    await settled();
+  });
+
   test('it works when async exists in an event/action', async function(assert) {
     this.owner.register('component:x-test-2', TestComponent2);
 
