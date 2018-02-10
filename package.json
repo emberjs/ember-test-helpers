@@ -55,7 +55,7 @@
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
     "ember-native-dom-event-dispatcher": "^0.6.3",
     "ember-resolver": "^4.0.0",
-    "ember-source": "https://s3.amazonaws.com/builds.emberjs.com/canary/shas/5f27c1be4786ae5fde1acd9f71c5922d1cea10df.tgz",
+    "ember-source": "~3.0.0-beta.5",
     "ember-source-channel-url": "^1.0.1",
     "ember-try": "^1.0.0-beta.1",
     "eslint-config-prettier": "^2.6.0",
