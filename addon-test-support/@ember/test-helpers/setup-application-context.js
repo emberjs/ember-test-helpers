@@ -20,7 +20,7 @@ export function visit() {
     })
     .then(() => {
       // eslint-disable-next-line
-      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER) {
+      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
         context.element = document.querySelector('#ember-testing > .ember-view');
       } else {
         context.element = document.querySelector('#ember-testing');
