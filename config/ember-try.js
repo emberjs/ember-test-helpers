@@ -105,7 +105,7 @@ module.exports = function() {
           },
         },
         {
-          name: 'ember-canary-without-application-wrapper',
+          name: 'ember-without-application-wrapper',
           env: {
             EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
           },
