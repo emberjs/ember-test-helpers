@@ -162,28 +162,9 @@ export function getSettledState() {
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled() {
-  let waitForTimers = true;
-  let waitForAJAX = true;
-  let waitForWaiters = true;
-
-  if (arguments[0] !== undefined) {
-    let options = arguments[0];
-    waitForTimers = 'waitForTimers' in options ? options.waitForTimers : true;
-    waitForAJAX = 'waitForAJAX' in options ? options.waitForAJAX : true;
-    waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
-  }
-
   let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
 
-  if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
-    return false;
-  }
-
-  if (waitForAJAX && hasPendingRequests) {
-    return false;
-  }
-
-  if (waitForWaiters && hasPendingWaiters) {
+  if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters) {
     return false;
   }
 
@@ -198,7 +179,5 @@ export function isSettled() {
   @returns {Promise<void>} resolves when settled
 */
 export default function settled() {
-  let options = arguments[0];
-
-  return waitUntil(() => isSettled(options), { timeout: Infinity });
+  return waitUntil(isSettled, { timeout: Infinity });
 }
