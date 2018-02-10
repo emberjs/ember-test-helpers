@@ -164,7 +164,7 @@ module('settled real-world scenarios', function(hooks) {
     } catch (e) {
       assert.equal(
         e.message,
-        `Assertion Failed: The 'settled' (formerly 'wait') testing helper only accepts an object. You passed 3000`
+        `Assertion Failed: The 'settled' (formerly 'wait') testing helper only accepts an object if passed arguments. You passed 3000`
       );
     }
   });
