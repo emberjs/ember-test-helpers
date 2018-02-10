@@ -201,10 +201,10 @@ export function isSettled() {
 export default function settled() {
   let options = arguments[0];
 
-  if (arguments.length > 0) {
+  if (options) {
     assert(
       `The 'settled' (formerly 'wait') testing helper only accepts an object. You passed ${options}`,
-      typeof options === 'object' && options !== null
+      typeof options === 'object'
     );
   }
 
