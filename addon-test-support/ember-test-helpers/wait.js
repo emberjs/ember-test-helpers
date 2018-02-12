@@ -24,25 +24,33 @@ export default function wait(options = {}) {
     options = {};
   }
 
-  return waitUntil(() => {
-    let waitForTimers = 'waitForTimers' in options ? options.waitForTimers : true;
-    let waitForAJAX = 'waitForAJAX' in options ? options.waitForAJAX : true;
-    let waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
+  return waitUntil(
+    () => {
+      let waitForTimers = 'waitForTimers' in options ? options.waitForTimers : true;
+      let waitForAJAX = 'waitForAJAX' in options ? options.waitForAJAX : true;
+      let waitForWaiters = 'waitForWaiters' in options ? options.waitForWaiters : true;
 
-    let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
+      let {
+        hasPendingTimers,
+        hasRunLoop,
+        hasPendingRequests,
+        hasPendingWaiters,
+      } = getSettledState();
 
-    if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
-      return false;
-    }
+      if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
+        return false;
+      }
 
-    if (waitForAJAX && hasPendingRequests) {
-      return false;
-    }
+      if (waitForAJAX && hasPendingRequests) {
+        return false;
+      }
 
-    if (waitForWaiters && hasPendingWaiters) {
-      return false;
-    }
+      if (waitForWaiters && hasPendingWaiters) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    },
+    { timeout: Infinity }
+  );
 }
