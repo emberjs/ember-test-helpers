@@ -2326,7 +2326,7 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-documentation@^5.3.5:
+documentation@5.3.5:
   version "5.3.5"
   resolved "https://registry.yarnpkg.com/documentation/-/documentation-5.3.5.tgz#48f5f30035f17f76f149c3a516e7df6fae0ece6c"
   dependencies:
