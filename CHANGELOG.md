@@ -1,5 +1,17 @@
 # Change Log
 
+## v0.7.18 (2018-02-13)
+
+#### :bug: Bug Fix
+* [#319](https://github.com/emberjs/ember-test-helpers/pull/319) Fix regression with `wait()` timeouts.. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#320](https://github.com/emberjs/ember-test-helpers/pull/320) Lock down documentation to 5.3.5 to avoid Node 4 issues.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+
+
 ## v0.7.17 (2018-02-10)
 
 #### :rocket: Enhancement
