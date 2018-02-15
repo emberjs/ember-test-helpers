@@ -42,14 +42,14 @@ module('DOM Helper: selectFiles', function(hooks) {
 
     let count = 0;
 
-    element.addEventListener('change', () => {
-      assert.step(`file${++count}`);
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[count].name);
     });
 
     await setupContext(context);
     await triggerEvent(element, 'change', [textFile]);
     await triggerEvent(element, 'change', [imageFile]);
 
-    assert.verifySteps(['change', 'file1', 'change', 'file2']);
+    assert.verifySteps(['change', 'text-file.txt', 'change', 'image-file.png']);
   });
 });
