@@ -191,6 +191,7 @@ function buildFileEvent(type, element, files = []) {
     });
     Object.defineProperty(element, 'files', {
       value: files,
+      configurable: true,
     });
   }
 
