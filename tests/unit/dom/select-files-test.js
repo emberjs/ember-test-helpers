@@ -40,10 +40,8 @@ module('DOM Helper: selectFiles', function(hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    let count = 0;
-
     element.addEventListener('change', e => {
-      assert.step(e.target.files[count].name);
+      assert.step(e.target.files[0].name);
     });
 
     await setupContext(context);
