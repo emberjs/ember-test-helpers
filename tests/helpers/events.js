@@ -163,11 +163,25 @@ export const KNOWN_EVENTS = Object.freeze([
   'wheel',
 ]);
 
-let uuid = 0;
+
 export function buildInstrumentedElement(elementType) {
+  let element = document.createElement(elementType);
+
+  instrumentElement(element);
+  insertElement(element);
+
+  return element;
+}
+
+export function insertElement(element) {
+  let fixture = document.querySelector('#ember-testing');
+  fixture.appendChild(element);
+}
+
+let uuid = 0;
+export function instrumentElement(element) {
   let assert = QUnit.config.current.assert;
 
-  let element = document.createElement(elementType);
   element.setAttribute('id', `fixture-${uuid++}`);
 
   KNOWN_EVENTS.forEach(type => {
@@ -176,9 +190,4 @@ export function buildInstrumentedElement(elementType) {
       assert.ok(e instanceof Event, `${type} listener should receive a native event`);
     });
   });
-
-  let fixture = document.querySelector('#ember-testing');
-  fixture.appendChild(element);
-
-  return element;
 }

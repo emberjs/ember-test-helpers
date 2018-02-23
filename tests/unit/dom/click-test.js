@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { click, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
@@ -129,6 +129,24 @@ module('DOM Helper: click', function(hooks) {
         click(`#${element.id}`),
         /Must setup rendering context before attempting to interact with elements/
       );
+    });
+  });
+
+  module('elements in different realms', function() {
+    test('clicking an element in a different realm', async function(assert) {
+      element = document.createElement('iframe');
+
+      insertElement(element);
+
+
+      let iframeDocument = element.contentDocument;
+      let iframeElement = iframeDocument.createElement('div');
+
+      instrumentElement(iframeElement);
+
+      await click(iframeElement);
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
   });
 });
