@@ -36,9 +36,9 @@ export default function fireEvent(element, eventType, options = {}) {
     let rect;
     if (element instanceof Window) {
       rect = element.document.documentElement.getBoundingClientRect();
-    } else if (element instanceof Document) {
+    } else if (element.nodeType === Node.DOCUMENT_NODE) {
       rect = element.documentElement.getBoundingClientRect();
-    } else if (element instanceof Element) {
+    } else if (element.nodeType === Node.ELEMENT_NODE) {
       rect = element.getBoundingClientRect();
     } else {
       return;

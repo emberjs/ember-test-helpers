@@ -163,7 +163,6 @@ export const KNOWN_EVENTS = Object.freeze([
   'wheel',
 ]);
 
-
 export function buildInstrumentedElement(elementType) {
   let element = document.createElement(elementType);
 

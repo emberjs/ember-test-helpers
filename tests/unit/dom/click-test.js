@@ -138,7 +138,6 @@ module('DOM Helper: click', function(hooks) {
 
       insertElement(element);
 
-
       let iframeDocument = element.contentDocument;
       let iframeElement = iframeDocument.createElement('div');
 
