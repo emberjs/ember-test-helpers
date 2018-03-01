@@ -1,8 +1,18 @@
-# @ember/test-helpers [![Build Status](https://secure.travis-ci.org/emberjs/ember-test-helpers.svg?branch=master)](http://travis-ci.org/emberjs/ember-test-helpers)
+@ember/test-helpers
+==============================================================================
 
-A test-framework-agnostic set of helpers for testing Ember.js applications.
+[![Build Status](https://secure.travis-ci.org/emberjs/ember-test-helpers.svg?branch=master)](http://travis-ci.org/emberjs/ember-test-helpers)
 
-## Usage
+A test-framework-agnostic set of helpers for testing Ember.js applications
+
+Installation
+------------------------------------------------------------------------------
+
+TBD
+
+
+Usage
+------------------------------------------------------------------------------
 
 The exports of this library are intended to be utility functions that can be used to bring the
 standard Ember testing experience to any testing framework.
@@ -13,37 +23,39 @@ wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
 
 **Full documentation can be found in [API.md](API.md).**
 
-## Collaborating
+
+Contributing
+------------------------------------------------------------------------------
 
 ### Installation
 
-* `git clone <repository-url>` this repository
+* `git clone <repository-url>`
 * `cd ember-test-helpers`
 * `yarn install`
 
-### Running
-
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-### Running Tests
+### Running tests
 
 * `yarn test` (Runs `ember try:each` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
-### Building
+### Running the dummy application
 
-* `ember build`
+* `ember serve`
+* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
-## Attribution
+
+Attribution
+------------------------------------------------------------------------------
 
 Much of `ember-test-helpers` was extracted from the original `ember-qunit`,
 which was written by Stefan Penner, Robert Jackson, and Ryan Florence.
 
-## Copyright and License
+
+Copyright and License
+------------------------------------------------------------------------------
 
 Copyright 2015 [Switchfly](https://github.com/switchfly) and contributors.
 
