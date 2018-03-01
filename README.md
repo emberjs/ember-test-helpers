@@ -21,14 +21,14 @@ install this package like any other regular Ember addon.
 Usage
 ------------------------------------------------------------------------------
 
-The exports of this library are intended to be utility functions that can be used to bring the
-standard Ember testing experience to any testing framework.
+This package exports several helper functions that can be used to improve
+the testing experience when developing Ember.js apps or addons.
 
-This library is best used by way of a test-framework-specific
-wrapper, such as [ember-qunit](https://github.com/emberjs/ember-qunit) or
-[ember-mocha](https://github.com/emberjs/ember-mocha).
+These helper functions include DOM interaction helpers (`click()`, `fillIn()`,
+...), routing and rendering helpers (`visit()`, `render()`, ...) and some
+other things that make it easy to write good tests.
 
-**Full documentation can be found in [API.md](API.md).**
+**The full documentation can be found in the [API reference](API.md).**
 
 
 Contributing
