@@ -8,7 +8,14 @@ A test-framework-agnostic set of helpers for testing Ember.js applications
 Installation
 ------------------------------------------------------------------------------
 
-TBD
+If you are writing a regular Ember app or addon there is not much for you to
+do as [ember-qunit](https://github.com/emberjs/ember-qunit) (and
+[ember-mocha](https://github.com/emberjs/ember-mocha)) already include this
+package as a dependency. You only need to make sure that you are using a
+recent enough version of either one of these packages.
+
+If you are working on `ember-qunit` or `ember-mocha` themselves you can
+install this package like any other regular Ember addon. 
 
 
 Usage
