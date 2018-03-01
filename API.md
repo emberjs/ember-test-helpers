@@ -10,6 +10,10 @@
     -   [triggerEvent](#triggerevent)
     -   [triggerKeyEvent](#triggerkeyevent)
     -   [fillIn](#fillin)
+-   [DOM Query Helpers](#dom-query-helpers)
+    -   [find](#find)
+    -   [findAll](#findall)
+    -   [getRootElement](#getrootelement)
 -   [Routing Helpers](#routing-helpers)
     -   [visit](#visit)
     -   [currentRouteName](#currentroutename)
@@ -40,9 +44,6 @@
     -   [setupApplicationContext](#setupapplicationcontext)
     -   [teardownApplicationContext](#teardownapplicationcontext)
     -   [validateErrorHandler](#validateerrorhandler)
--   [getRootElement](#getrootelement)
--   [find](#find)
--   [findAll](#findall)
 
 ## DOM Interaction Helpers
 
@@ -199,6 +200,39 @@ events on the specified target.
 -   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the text to fill into the target element
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+
+## DOM Query Helpers
+
+
+
+
+### find
+
+Find the first element matched by the given selector. Equivalent to calling
+`querySelector()` on the test root element.
+
+**Parameters**
+
+-   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
+
+Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** matched element or null
+
+### findAll
+
+Find all elements matched by the given selector. Equivalent to calling
+`querySelectorAll()` on the test root element.
+
+**Parameters**
+
+-   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** array of matched elements
+
+### getRootElement
+
+Get the root element of the application under test (usually `#ember-testing`)
+
+Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** the root element
 
 ## Routing Helpers
 
@@ -544,31 +578,3 @@ test('Ember.onerror is functioning properly', function(assert) {
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object with `isValid` and `message`
-
-## getRootElement
-
-Get the root element of the application under test (usually `#ember-testing`)
-
-Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** the root element
-
-## find
-
-Find the first element matched by the given selector. Equivalent to calling
-`querySelector()` on the test root element.
-
-**Parameters**
-
--   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
-
-Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** matched element or null
-
-## findAll
-
-Find all elements matched by the given selector. Equivalent to calling
-`querySelectorAll()` on the test root element.
-
-**Parameters**
-
--   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
-
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** array of matched elements
