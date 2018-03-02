@@ -9,6 +9,12 @@ toc:
       - triggerKeyEvent
       - fillIn
 
+  - name: DOM Query Helpers
+    children:
+      - find
+      - findAll
+      - getRootElement
+
   - name: Routing Helpers
     children:
       - visit
