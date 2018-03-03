@@ -1,5 +1,5 @@
 export { setResolver, getResolver } from './resolver';
-export { setApplication } from './application';
+export { getApplication, setApplication } from './application';
 export {
   default as setupContext,
   getContext,

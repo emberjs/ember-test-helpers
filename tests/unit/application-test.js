@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { application, resolver } from '../helpers/resolver';
-import { setApplication, setResolver, getResolver } from '@ember/test-helpers';
+import { getApplication, setApplication, setResolver, getResolver } from '@ember/test-helpers';
 
 module('application', function(hooks) {
   hooks.beforeEach(function() {
@@ -26,6 +26,7 @@ module('application', function(hooks) {
       actualResolver.isResolverFromTestHelpers,
       'should not have used resolver created in tests/helpers/resolver.js'
     );
+    assert.deepEqual(getApplication().constructor, application.constructor);
   });
 
   test('calling setApplication when a resolver is set does not clobber existing resolver', function(assert) {
