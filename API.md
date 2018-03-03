@@ -41,6 +41,7 @@
     -   [setupRenderingContext](#setuprenderingcontext)
     -   [teardownRenderingContext](#teardownrenderingcontext)
     -   [setApplication](#setapplication)
+    -   [getApplication](#getapplication)
     -   [setupApplicationContext](#setupapplicationcontext)
     -   [teardownApplicationContext](#teardownapplicationcontext)
     -   [validateErrorHandler](#validateerrorhandler)
@@ -511,6 +512,12 @@ Responsible for:
 -   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+
+### getApplication
+
+Retrieves the application instance stored by setApplication.
+
+-   Used by `setupContext`.
 
 ### setApplication
 
