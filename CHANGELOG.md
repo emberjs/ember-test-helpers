@@ -1,5 +1,28 @@
 # Change Log
 
+yarn run v1.3.2
+$ lerna-changelog
+
+## v0.7.19 (2018-03-19)
+
+#### :rocket: Enhancement
+* [#336](https://github.com/emberjs/ember-test-helpers/pull/336) Make `getApplication` public. ([@snewcomer](https://github.com/snewcomer))
+
+#### :bug: Bug Fix
+* [#331](https://github.com/emberjs/ember-test-helpers/pull/331) Check `nodeType` rather than `instanceOf` Check. ([@spencer516](https://github.com/spencer516))
+
+#### :memo: Documentation
+* [#334](https://github.com/emberjs/ember-test-helpers/pull/334) Enhance README and API reference. ([@Turbo87](https://github.com/Turbo87))
+
+#### :house: Internal
+* [#344](https://github.com/emberjs/ember-test-helpers/pull/344) Update `qunit` to v2.5.1. ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 4
+- Andrew Kirwin ([amk221](https://github.com/amk221))
+- Scott Newcomer ([snewcomer](https://github.com/snewcomer))
+- Spencer P ([spencer516](https://github.com/spencer516))
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+
 ## v0.7.18 (2018-02-13)
 
 #### :bug: Bug Fix
