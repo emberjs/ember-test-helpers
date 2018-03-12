@@ -57,11 +57,11 @@ module('DOM Helper: blur', function(hooks) {
   test('rejects if selector is not found', async function(assert) {
     await setupContext(context);
 
+    assert.verifySteps([]);
     assert.rejects(
       blur(`#foo-bar-baz-not-here-ever-bye-bye`),
       /Element not found when calling `blur\('#foo-bar-baz-not-here-ever-bye-bye'\)`/
     );
-    assert.verifySteps([]);
   });
 
   test('bluring via selector with context set', async function(assert) {
@@ -73,11 +73,11 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('bluring via selector without context set', function(assert) {
+    assert.verifySteps([]);
     assert.rejects(
       blur(`#${elementWithFocus.id}`),
       /Must setup rendering context before attempting to interact with elements/
     );
-    assert.verifySteps([]);
   });
 
   test('bluring via element with context set', async function(assert) {
