@@ -170,6 +170,20 @@ Triggers an event on the specified target.
 -   `eventType` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the type of event to trigger
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional properties to be set on the event
 
+**Examples**
+
+_Using triggerEvent to Upload a file
+When using triggerEvent to upload a file the `eventType` must be `change` and  you must pass an
+array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) as `options`._
+
+```javascript
+triggerEvent(
+  'input.fileUpload',
+  'change',
+  [new Blob(['Ember Rules!'])]
+);
+```
+
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
 
 ### triggerKeyEvent
