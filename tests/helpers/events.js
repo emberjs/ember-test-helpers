@@ -185,7 +185,9 @@ export function instrumentElement(element) {
 
   KNOWN_EVENTS.forEach(type => {
     element.addEventListener(type, e => {
-      assert.step(type);
+      if (!element.hasAttribute('data-skip-steps')) {
+        assert.step(type);
+      }
       assert.ok(e instanceof Event, `${type} listener should receive a native event`);
     });
   });
