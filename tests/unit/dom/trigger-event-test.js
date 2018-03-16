@@ -19,6 +19,8 @@ module('DOM Helper: triggerEvent', function(hooks) {
   });
 
   hooks.afterEach(async function() {
+    element.setAttribute('data-skip-steps', true);
+
     if (element) {
       element.parentNode.removeChild(element);
     }

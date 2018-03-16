@@ -55,6 +55,8 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('rejects if selector is not found', async function(assert) {
+    elementWithFocus.setAttribute('data-skip-steps', true);
+
     await setupContext(context);
 
     assert.rejects(
@@ -72,6 +74,8 @@ module('DOM Helper: blur', function(hooks) {
   });
 
   test('bluring via selector without context set', function(assert) {
+    elementWithFocus.setAttribute('data-skip-steps', true);
+
     assert.rejects(
       blur(`#${elementWithFocus.id}`),
       /Must setup rendering context before attempting to interact with elements/
