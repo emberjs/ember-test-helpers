@@ -14,6 +14,7 @@ const MAX_TIMEOUT = 10;
   @param {Function} callback the callback to use for testing when waiting should stop
   @param {Object} [options] options used to override defaults
   @param {number} [options.timeout=1000] the maximum amount of time to wait
+  @param {string} [options.timeoutMessage='waitUntil timed out'] the message to use in the reject on timeout
   @returns {Promise} resolves with the callback value when it returns a truthy value
 */
 export default function waitUntil(callback, options = {}) {
