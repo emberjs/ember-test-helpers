@@ -42,7 +42,7 @@ module('DOM helper: waitUntil', function() {
     assert.step('before invocation');
     let waiter = waitUntil(() => {}, {
       timeout: 20,
-      errorMessage: 'Oh no, a nasty error occurred',
+      timeoutMessage: 'Oh no, a nasty error occurred',
     });
     assert.step('after invocation');
 
