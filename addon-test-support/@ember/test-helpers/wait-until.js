@@ -18,9 +18,10 @@ const MAX_TIMEOUT = 10;
 */
 export default function waitUntil(callback, options = {}) {
   let timeout = 'timeout' in options ? options.timeout : 1000;
+  let errorMsg = 'errorMessage' in options ? options.errorMessage : 'waitUntil timed out';
 
   // creating this error eagerly so it has the proper invocation stack
-  let waitUntilTimedOut = new Error('waitUntil timed out');
+  let waitUntilTimedOut = new Error(errorMsg);
 
   return new Promise(function(resolve, reject) {
     let time = 0;
