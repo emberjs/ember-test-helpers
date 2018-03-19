@@ -1,7 +1,12 @@
 # Change Log
 
-yarn run v1.3.2
-$ lerna-changelog
+## v0.7.20 (2018-03-19)
+
+#### :bug: Bug Fix
+* Fix invalid publish artifact (missing directory contents).
+
+#### Committers: 4
+- Robert Jackson
 
 ## v0.7.19 (2018-03-19)
 
