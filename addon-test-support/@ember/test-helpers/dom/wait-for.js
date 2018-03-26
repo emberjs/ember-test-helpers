@@ -12,7 +12,7 @@ import { nextTickPromise } from '../-utils';
   @param {string} selector the selector to wait for
   @param {Object} [options] the options to be used
   @param {number} [options.timeout=1000] the time to wait (in ms) for a match
-  @param {number} [options.count=1] the number of elements that should match the provided selector
+  @param {number} [options.count=null] the number of elements that should match the provided selector (null means one or more)
   @returns {Element|Array<Element>} the element (or array of elements) that were being waited upon
 */
 export default function waitFor(selector, { timeout = 1000, count = null } = {}) {

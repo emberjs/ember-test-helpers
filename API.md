@@ -293,7 +293,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 -   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to wait for
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
     -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the time to wait (in ms) for a match (optional, default `1000`)
-    -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (optional, default `1`)
+    -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
 
 Returns **([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)** the element (or array of elements) that were being waited upon
 
