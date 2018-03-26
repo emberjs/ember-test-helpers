@@ -50,6 +50,7 @@ toc:
       - teardownContext
       - setupRenderingContext
       - teardownRenderingContext
+      - getApplication
       - setApplication
       - setupApplicationContext
       - teardownApplicationContext

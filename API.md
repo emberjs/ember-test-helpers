@@ -40,8 +40,8 @@
     -   [teardownContext](#teardowncontext)
     -   [setupRenderingContext](#setuprenderingcontext)
     -   [teardownRenderingContext](#teardownrenderingcontext)
-    -   [setApplication](#setapplication)
     -   [getApplication](#getapplication)
+    -   [setApplication](#setapplication)
     -   [setupApplicationContext](#setupapplicationcontext)
     -   [teardownApplicationContext](#teardownapplicationcontext)
     -   [validateErrorHandler](#validateerrorhandler)
@@ -309,6 +309,7 @@ while _not_ settled (e.g. "loading" or "pending" states).
 -   `callback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the callback to use for testing when waiting should stop
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** options used to override defaults (optional, default `{}`)
     -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the maximum amount of time to wait (optional, default `1000`)
+    -   `options.timeoutMessage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves with the callback value when it returns a truthy value
 
@@ -515,9 +516,9 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### getApplication
 
-Retrieves the application instance stored by setApplication.
+Retrieve the application instance stored by `setApplication`.
 
--   Used by `setupContext`.
+Returns **Ember.Application** the previously stored application instance under test
 
 ### setApplication
 
