@@ -167,31 +167,46 @@ export default function(context, options = {}) {
       return buildOwner(getApplication(), getResolver());
     })
     .then(owner => {
-      context.owner = owner;
+      Object.defineProperty(context, 'owner', {
+        value: owner,
+        writable: false,
+      });
 
-      context.set = function(key, value) {
-        let ret = run(function() {
-          return set(context, key, value);
-        });
+      Object.defineProperty(context, 'set', {
+        value(key, value) {
+          let ret = run(function() {
+            return set(context, key, value);
+          });
 
-        return ret;
-      };
+          return ret;
+        },
+        writable: false,
+      });
 
-      context.setProperties = function(hash) {
-        let ret = run(function() {
-          return setProperties(context, hash);
-        });
+      Object.defineProperty(context, 'setProperties', {
+        value(hash) {
+          let ret = run(function() {
+            return setProperties(context, hash);
+          });
 
-        return ret;
-      };
+          return ret;
+        },
+        writable: false,
+      });
 
-      context.get = function(key) {
-        return get(context, key);
-      };
+      Object.defineProperty(context, 'get', {
+        value(key) {
+          return get(context, key);
+        },
+        writable: false,
+      });
 
-      context.getProperties = function(...args) {
-        return getProperties(context, args);
-      };
+      Object.defineProperty(context, 'getProperties', {
+        value(...args) {
+          return getProperties(context, args);
+        },
+        writable: false,
+      });
 
       let resume;
       context.resumeTest = function resumeTest() {
