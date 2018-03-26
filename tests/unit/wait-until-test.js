@@ -38,6 +38,30 @@ module('DOM helper: waitUntil', function() {
       });
   });
 
+  test('waits until timeout expires with custom error message', function(assert) {
+    assert.step('before invocation');
+    let waiter = waitUntil(() => {}, {
+      timeout: 20,
+      timeoutMessage: 'Oh no, a nasty error occurred',
+    });
+    assert.step('after invocation');
+
+    setTimeout(() => assert.step('waiting'), 10);
+
+    return waiter
+      .catch(reason => {
+        assert.step(`catch handler: ${reason.message}`);
+      })
+      .finally(() => {
+        assert.verifySteps([
+          'before invocation',
+          'after invocation',
+          'waiting',
+          'catch handler: Oh no, a nasty error occurred',
+        ]);
+      });
+  });
+
   test('rejects when callback throws', function(assert) {
     return waitUntil(() => {
       throw new Error('error goes here');
