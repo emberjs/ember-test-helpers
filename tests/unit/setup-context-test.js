@@ -43,6 +43,14 @@ module('setupContext', function(hooks) {
     setResolver(resolver);
   });
 
+  function overwriteTest(context, key) {
+    test(`throws an error when trying to overwrite this.${key}`, function(assert) {
+      assert.throws(() => {
+        context[key] = null;
+      }, TypeError);
+    });
+  }
+
   function setupContextTests() {
     module('without options', function(hooks) {
       hooks.beforeEach(function() {
@@ -59,6 +67,8 @@ module('setupContext', function(hooks) {
           assert.equal(typeof owner.factoryFor, 'function', 'has expected factory interface');
         }
       });
+
+      overwriteTest(context, 'owner');
 
       test('it uses the default resolver if no override specified', function(assert) {
         let { owner } = context;
@@ -103,6 +113,11 @@ module('setupContext', function(hooks) {
           'getProperties reads content from context'
         );
       });
+
+      overwriteTest(context, 'set');
+      overwriteTest(context, 'setProperties');
+      overwriteTest(context, 'get');
+      overwriteTest(context, 'getProperties');
 
       test('it calls setContext with the provided context', function(assert) {
         assert.equal(getContext(), context);
