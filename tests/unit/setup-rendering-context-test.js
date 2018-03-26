@@ -30,6 +30,14 @@ module('setupRenderingContext', function(hooks) {
     setResolver(resolver);
   });
 
+  function overwriteTest(key) {
+    test(`throws an error when trying to overwrite this.${key}`, function(assert) {
+      assert.throws(() => {
+        this[key] = null;
+      }, TypeError);
+    });
+  }
+
   function setupRenderingContextTests(hooks) {
     hooks.beforeEach(async function() {
       setResolverRegistry({
@@ -72,6 +80,8 @@ module('setupRenderingContext', function(hooks) {
       });
     }
 
+    overwriteTest('element');
+
     test('render can be used multiple times', async function(assert) {
       await this.render(hbs`<p>Hello!</p>`);
       assert.equal(this.element.textContent, 'Hello!');
@@ -107,6 +117,9 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
+
+    overwriteTest('render');
+    overwriteTest('clearRender');
 
     (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', async function(assert) {
       await this.render(hbs`<p>Hello!</p>`);

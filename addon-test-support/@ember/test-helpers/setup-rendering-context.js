@@ -154,11 +154,14 @@ export default function setupRenderingContext(context) {
       // these methods being placed on the context itself will be deprecated in
       // a future version (no giant rush) to remove some confusion about which
       // is the "right" way to things...
-      context.render = render;
-      context.clearRender = clearRender;
+      Object.defineProperty(context, 'render', { value: render, writable: false });
+      Object.defineProperty(context, 'clearRender', {
+        value: clearRender,
+        writable: false,
+      });
 
       if (global.jQuery) {
-        context.$ = jQuerySelector;
+        Object.defineProperty(context, '$', { value: jQuerySelector, writable: false });
       }
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
@@ -190,18 +193,21 @@ export default function setupRenderingContext(context) {
       });
     })
     .then(() => {
-      // ensure the element is based on the wrapping toplevel view
-      // Ember still wraps the main application template with a
-      // normal tagged view
-      //
-      // In older Ember versions (2.4) the element itself is not stable,
-      // and therefore we cannot update the `this.element` until after the
-      // rendering is completed
-      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-        context.element = getRootElement().querySelector('.ember-view');
-      } else {
-        context.element = getRootElement();
-      }
+      Object.defineProperty(context, 'element', {
+        // ensure the element is based on the wrapping toplevel view
+        // Ember still wraps the main application template with a
+        // normal tagged view
+        //
+        // In older Ember versions (2.4) the element itself is not stable,
+        // and therefore we cannot update the `this.element` until after the
+        // rendering is completed
+        value:
+          EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false
+            ? getRootElement().querySelector('.ember-view')
+            : getRootElement(),
+
+        writable: false,
+      });
 
       return context;
     });
