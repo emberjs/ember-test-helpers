@@ -6,12 +6,13 @@ import getElement from './-get-element';
 
   @public
   @param {string} selector the selector to search for
+  @param {Element} ancestor optional root element
   @return {Element} matched element or null
 */
-export default function find(selector) {
+export default function find(selector, ancestor) {
   if (!selector) {
     throw new Error('Must pass a selector to `find`.');
   }
 
-  return getElement(selector);
+  return getElement(selector, ancestor);
 }

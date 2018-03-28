@@ -5,9 +5,10 @@ import getRootElement from './get-root-element';
 
   @private
   @param {string|Element} target the element or selector to retrieve
+  @param {Element} [ancestor] optional root element
   @returns {Element} the target or selector
 */
-export default function getElement(target) {
+export default function getElement(target, ancestor) {
   if (
     target.nodeType === Node.ELEMENT_NODE ||
     target.nodeType === Node.DOCUMENT_NODE ||
@@ -15,7 +16,11 @@ export default function getElement(target) {
   ) {
     return target;
   } else if (typeof target === 'string') {
-    let rootElement = getRootElement();
+    let rootElement = ancestor;
+
+    if (!(ancestor instanceof HTMLElement)) {
+      rootElement = getRootElement();
+    }
 
     return rootElement.querySelector(target);
   } else {
