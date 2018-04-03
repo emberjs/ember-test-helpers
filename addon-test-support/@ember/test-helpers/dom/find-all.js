@@ -7,12 +7,13 @@ import toArray from './-to-array';
 
   @public
   @param {string} selector the selector to search for
+  @param {string|Element} [context] the context element or selector
   @return {Array} array of matched elements
 */
-export default function find(selector) {
+export default function find(selector, context) {
   if (!selector) {
     throw new Error('Must pass a selector to `findAll`.');
   }
 
-  return toArray(getElements(selector));
+  return toArray(getElements(selector, context));
 }

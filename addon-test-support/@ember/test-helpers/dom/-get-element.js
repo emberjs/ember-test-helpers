@@ -1,13 +1,14 @@
-import getRootElement from './get-root-element';
+import getContextElement from './get-context-element';
 
 /**
   Used internally by the DOM interaction helpers to find one element.
 
   @private
   @param {string|Element} target the element or selector to retrieve
+  @param {string|Element} [context] the context element or selector
   @returns {Element} the target or selector
 */
-export default function getElement(target) {
+export default function getElement(target, context) {
   if (
     target.nodeType === Node.ELEMENT_NODE ||
     target.nodeType === Node.DOCUMENT_NODE ||
@@ -15,7 +16,7 @@ export default function getElement(target) {
   ) {
     return target;
   } else if (typeof target === 'string') {
-    let rootElement = getRootElement();
+    let rootElement = getContextElement(context);
 
     return rootElement.querySelector(target);
   } else {

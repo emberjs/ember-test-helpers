@@ -1,15 +1,16 @@
-import getRootElement from './get-root-element';
+import getContextElement from './get-context-element';
 
 /**
   Used internally by the DOM interaction helpers to find multiple elements.
 
   @private
   @param {string} target the selector to retrieve
+  @param {string|Element} [context] the context element or selector
   @returns {NodeList} the matched elements
 */
-export default function getElements(target) {
+export default function getElements(target, context) {
   if (typeof target === 'string') {
-    let rootElement = getRootElement();
+    let rootElement = getContextElement(context);
 
     return rootElement.querySelectorAll(target);
   } else {
