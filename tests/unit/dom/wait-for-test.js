@@ -71,11 +71,11 @@ module('DOM Helper: waitFor', function(hooks) {
 
     let start = Date.now();
     try {
-      await waitFor('.something', { timeout: 100 });
+      await waitFor('.something', { timeout: 100, timeoutMessage: '.something timed out' });
     } catch (error) {
       let end = Date.now();
       assert.ok(end - start >= 100, 'timed out after correct time');
-      assert.equal(error.message, 'waitUntil timed out');
+      assert.equal(error.message, '.something timed out');
     }
   });
 });
