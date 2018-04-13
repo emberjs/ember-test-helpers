@@ -1,5 +1,20 @@
 # Change Log
 
+## v0.7.21 (2018-04-13)
+
+#### :rocket: Enhancement
+* [#358](https://github.com/emberjs/ember-test-helpers/pull/358) Add `context` argument assertions to the `find` and `findAll` helpers. ([@Turbo87](https://github.com/Turbo87))
+* [#349](https://github.com/emberjs/ember-test-helpers/pull/349) Protect context properties and methods from overwriting. ([@Turbo87](https://github.com/Turbo87))
+* [#346](https://github.com/emberjs/ember-test-helpers/pull/346) Allow for custom error message in waitUntil helper. ([@BitBrit](https://github.com/BitBrit))
+
+#### :memo: Documentation
+* [#348](https://github.com/emberjs/ember-test-helpers/pull/348) wait-for helper's count value is null by default. ([@sly7-7](https://github.com/sly7-7))
+
+#### Committers: 3
+- Sylvain MINA ([sly7-7](https://github.com/sly7-7))
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+- [BitBrit](https://github.com/BitBrit)
+
 ## v0.7.20 (2018-03-19)
 
 #### :bug: Bug Fix
