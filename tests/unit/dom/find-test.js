@@ -49,4 +49,10 @@ module('DOM Helper: find', function(hooks) {
       find('#foo');
     }, /Must setup rendering context before attempting to interact with elements/);
   });
+
+  test('throws if context argument is passed in', function(assert) {
+    assert.throws(() => {
+      find('#foo', document.querySelector('#ember-testing'));
+    }, /The `find` test helper only takes a single argument./);
+  });
 });

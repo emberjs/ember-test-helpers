@@ -63,4 +63,10 @@ module('DOM Helper: findAll', function(hooks) {
       findAll('#foo');
     }, /Must setup rendering context before attempting to interact with elements/);
   });
+
+  test('throws if context argument is passed in', function(assert) {
+    assert.throws(() => {
+      findAll('#foo', document.querySelector('#ember-testing'));
+    }, /The `findAll` test helper only takes a single argument./);
+  });
 });
