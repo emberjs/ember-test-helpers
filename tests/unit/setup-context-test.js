@@ -114,11 +114,6 @@ module('setupContext', function(hooks) {
         );
       });
 
-      overwriteTest(context, 'set');
-      overwriteTest(context, 'setProperties');
-      overwriteTest(context, 'get');
-      overwriteTest(context, 'getProperties');
-
       test('it calls setContext with the provided context', function(assert) {
         assert.equal(getContext(), context);
       });

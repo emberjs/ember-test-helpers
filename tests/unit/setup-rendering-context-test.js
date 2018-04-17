@@ -118,9 +118,6 @@ module('setupRenderingContext', function(hooks) {
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
 
-    overwriteTest('render');
-    overwriteTest('clearRender');
-
     (hasjQuery() ? test : skip)('this.$ is exposed when jQuery is present', async function(assert) {
       await this.render(hbs`<p>Hello!</p>`);
 

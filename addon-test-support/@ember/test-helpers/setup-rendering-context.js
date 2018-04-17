@@ -154,14 +154,11 @@ export default function setupRenderingContext(context) {
       // these methods being placed on the context itself will be deprecated in
       // a future version (no giant rush) to remove some confusion about which
       // is the "right" way to things...
-      Object.defineProperty(context, 'render', { value: render, writable: false });
-      Object.defineProperty(context, 'clearRender', {
-        value: clearRender,
-        writable: false,
-      });
+      context.render = render;
+      context.clearRender = clearRender;
 
       if (global.jQuery) {
-        Object.defineProperty(context, '$', { value: jQuerySelector, writable: false });
+        context.$ = jQuerySelector;
       }
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has

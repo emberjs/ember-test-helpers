@@ -172,41 +172,29 @@ export default function(context, options = {}) {
         writable: false,
       });
 
-      Object.defineProperty(context, 'set', {
-        value(key, value) {
-          let ret = run(function() {
-            return set(context, key, value);
-          });
+      context.set = function(key, value) {
+        let ret = run(function() {
+          return set(context, key, value);
+        });
 
-          return ret;
-        },
-        writable: false,
-      });
+        return ret;
+      };
 
-      Object.defineProperty(context, 'setProperties', {
-        value(hash) {
-          let ret = run(function() {
-            return setProperties(context, hash);
-          });
+      context.setProperties = function(hash) {
+        let ret = run(function() {
+          return setProperties(context, hash);
+        });
 
-          return ret;
-        },
-        writable: false,
-      });
+        return ret;
+      };
 
-      Object.defineProperty(context, 'get', {
-        value(key) {
-          return get(context, key);
-        },
-        writable: false,
-      });
+      context.get = function(key) {
+        return get(context, key);
+      };
 
-      Object.defineProperty(context, 'getProperties', {
-        value(...args) {
-          return getProperties(context, args);
-        },
-        writable: false,
-      });
+      context.getProperties = function(...args) {
+        return getProperties(context, args);
+      };
 
       let resume;
       context.resumeTest = function resumeTest() {
