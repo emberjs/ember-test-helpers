@@ -12,13 +12,96 @@ const DEFAULT_MODIFIERS = Object.freeze({
   metaKey: false,
 });
 
+// This is not a comprehensive list, but it is better than nothing.
+const keyFromKeyCode = {
+  8: 'Backspace',
+  9: 'Tab',
+  13: 'Enter',
+  16: 'Shift',
+  17: 'Control',
+  18: 'Alt',
+  20: 'CapsLock',
+  27: 'Escape',
+  32: '',
+  37: 'ArrowLeft',
+  38: 'ArrowUp',
+  39: 'ArrowRight',
+  40: 'ArrowDown',
+  65: 'a',
+  66: 'b',
+  67: 'c',
+  68: 'd',
+  69: 'e',
+  70: 'f',
+  71: 'g',
+  72: 'h',
+  73: 'i',
+  74: 'j',
+  75: 'k',
+  76: 'l',
+  77: 'm',
+  78: 'n',
+  79: 'o',
+  80: 'p',
+  81: 'q',
+  82: 'r',
+  83: 's',
+  84: 't',
+  85: 'u',
+  86: 'v',
+  87: 'v',
+  88: 'x',
+  89: 'y',
+  90: 'z',
+  91: 'Meta',
+  93: 'Meta', // There is two keys that map to meta,
+  187: '=',
+  189: '-',
+};
+
+/**
+  Calculates the value of KeyboardEvent#key given a keycode and the modifiers.
+  Note that this works if the key is pressed in combination with the shift key, but it cannot
+  detect if caps lock is enabled.
+  @param {number} keycode The keycode of the event.
+  @param {object} modifiers The modifiers of the event.
+  @returns {string} The key string for the event.
+ */
+function keyFromKeyCodeAndModifiers(keycode, modifiers) {
+  if (keycode > 64 && keycode < 91) {
+    if (modifiers.shiftKey) {
+      return String.fromCharCode(keycode);
+    } else {
+      return String.fromCharCode(keycode).toLocaleLowerCase();
+    }
+  }
+  let key = keyFromKeyCode[keycode];
+  if (key) {
+    return key;
+  }
+}
+
+/**
+ * Infers the keycode from the given key
+ * @param {string} key The KeyboardEvent#key string
+ * @returns {number} The keycode for the given key
+ */
+function keyCodeFromKey(key) {
+  let keys = Object.keys(keyFromKeyCode);
+  let keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key);
+  if (!keyCode) {
+    keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key.toLowerCase());
+  }
+  return parseInt(keyCode);
+}
+
 /**
   Triggers a keyboard event on the specified target.
 
   @public
   @param {string|Element} target the element or selector to trigger the event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
-  @param {string} keyCode the keyCode of the event being triggered
+  @param {number|string} key the keyCode of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
   @param {boolean} [modifiers.ctrlKey=false] if true the generated event will indicate the control key was pressed during the key event
   @param {boolean} [modifiers.altKey=false] if true the generated event will indicate the alt key was pressed during the key event
@@ -26,7 +109,7 @@ const DEFAULT_MODIFIERS = Object.freeze({
   @param {boolean} [modifiers.metaKey=false] if true the generated event will indicate the meta key was pressed during the key event
   @return {Promise<void>} resolves when the application is settled
 */
-export default function triggerKeyEvent(target, eventType, keyCode, modifiers = DEFAULT_MODIFIERS) {
+export default function triggerKeyEvent(target, eventType, key, modifiers = DEFAULT_MODIFIERS) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
@@ -48,11 +131,17 @@ export default function triggerKeyEvent(target, eventType, keyCode, modifiers = 
       );
     }
 
-    if (!keyCode) {
-      throw new Error(`Must provide a \`keyCode\` to \`triggerKeyEvent\``);
+    if (key === null || key === undefined) {
+      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
     }
-
-    let options = merge({ keyCode, which: keyCode, key: keyCode }, modifiers);
+    let props;
+    if (typeof key === 'number') {
+      props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
+    } else {
+      let keyCode = keyCodeFromKey(key);
+      props = { keyCode, which: keyCode, key };
+    }
+    let options = merge(props, modifiers);
 
     fireEvent(element, eventType, options);
 

@@ -128,13 +128,13 @@ function buildKeyboardEvent(type, options = {}) {
     // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
     Object.defineProperty(event, 'keyCode', {
       get() {
-        return parseInt(this.key);
+        return parseInt(eventOpts.keyCode);
       },
     });
 
     Object.defineProperty(event, 'which', {
       get() {
-        return parseInt(this.key);
+        return parseInt(eventOpts.which);
       },
     });
 

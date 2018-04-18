@@ -58,7 +58,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
 
     assert.rejects(
       triggerKeyEvent(element, 'keypress'),
-      /Must provide a `keyCode` to `triggerKeyEvent`/
+      /Must provide a `key` or `keyCode` to `triggerKeyEvent`/
     );
   });
 
@@ -122,5 +122,111 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await triggerKeyEvent(element, 'keypress', 13, { altKey: true, ctrlKey: true });
 
     assert.verifySteps(['keypress']);
+  });
+
+  test('The value of the `event.key` is properly inferred from the given keycode and modifiers', async function(assert) {
+    element = buildInstrumentedElement('div');
+    async function checkKey(keyCode, key, modifiers) {
+      let handler = e => {
+        assert.equal(e.key, key);
+      };
+      element.addEventListener('keydown', handler);
+      await triggerKeyEvent(element, 'keydown', keyCode, modifiers);
+      element.removeEventListener('keydown', handler);
+    }
+    await checkKey(8, 'Backspace');
+    await checkKey(9, 'Tab');
+    await checkKey(13, 'Enter');
+    await checkKey(16, 'Shift');
+    await checkKey(17, 'Control');
+    await checkKey(18, 'Alt');
+    await checkKey(20, 'CapsLock');
+    await checkKey(27, 'Escape');
+    await checkKey(32, '');
+    await checkKey(37, 'ArrowLeft');
+    await checkKey(38, 'ArrowUp');
+    await checkKey(39, 'ArrowRight');
+    await checkKey(40, 'ArrowDown');
+    await checkKey(91, 'Meta');
+    await checkKey(93, 'Meta');
+    await checkKey(187, '=');
+    await checkKey(189, '-');
+    await checkKey(65, 'a');
+    await checkKey(90, 'z');
+    await checkKey(65, 'A', { shiftKey: true });
+    await checkKey(90, 'Z', { shiftKey: true });
+    assert.verifySteps([
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+    ]);
+  });
+
+  test('The value of the `event.keyCode` is properly inferred from the given key', async function(assert) {
+    element = buildInstrumentedElement('div');
+    async function checkKeyCode(key, keyCode) {
+      let handler = e => {
+        assert.equal(e.keyCode, keyCode);
+      };
+      element.addEventListener('keydown', handler);
+      await triggerKeyEvent(element, 'keydown', key);
+      element.removeEventListener('keydown', handler);
+    }
+    await checkKeyCode('Backspace', 8);
+    await checkKeyCode('Tab', 9);
+    await checkKeyCode('Enter', 13);
+    await checkKeyCode('Shift', 16);
+    await checkKeyCode('Control', 17);
+    await checkKeyCode('Alt', 18);
+    await checkKeyCode('CapsLock', 20);
+    await checkKeyCode('Escape', 27);
+    await checkKeyCode('', 32);
+    await checkKeyCode('ArrowLeft', 37);
+    await checkKeyCode('ArrowUp', 38);
+    await checkKeyCode('ArrowRight', 39);
+    await checkKeyCode('ArrowDown', 40);
+    await checkKeyCode('Meta', 91);
+    await checkKeyCode('=', 187);
+    await checkKeyCode('-', 189);
+    await checkKeyCode('a', 65);
+    await checkKeyCode('z', 90);
+    assert.verifySteps([
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+      'keydown',
+    ]);
   });
 });
