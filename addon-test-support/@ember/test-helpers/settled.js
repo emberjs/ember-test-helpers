@@ -15,8 +15,13 @@ import waitUntil from './wait-until';
 // This utilizes a local utility method present in Ember since around 2.8.0 to
 // properly consider pending AJAX requests done within legacy acceptance tests.
 const _internalPendingRequests = (() => {
+  // Ember <= 3.1
   if (Ember.__loader.registry['ember-testing/test/pending_requests']) {
     return Ember.__loader.require('ember-testing/test/pending_requests').pendingRequests;
+  }
+  // Ember >= 3.2
+  if (Ember.__loader.registry['ember-testing/lib/test/pending_requests']) {
+    return Ember.__loader.require('ember-testing/lib/test/pending_requests').pendingRequests;
   }
 
   return () => 0;
