@@ -16,7 +16,11 @@ import waitUntil from './wait-until';
 // properly consider pending AJAX requests done within legacy acceptance tests.
 const _internalPendingRequests = (() => {
   if (Ember.__loader.registry['ember-testing/test/pending_requests']) {
+    // Ember <= 3.1
     return Ember.__loader.require('ember-testing/test/pending_requests').pendingRequests;
+  } else if (Ember.__loader.registry['ember-testing/lib/test/pending_requests']) {
+    // Ember >= 3.2
+    return Ember.__loader.require('ember-testing/lib/test/pending_requests').pendingRequests;
   }
 
   return () => 0;
@@ -101,7 +105,11 @@ export function _setupAJAXHooks() {
 
 let _internalCheckWaiters;
 if (Ember.__loader.registry['ember-testing/test/waiters']) {
+  // Ember <= 3.1
   _internalCheckWaiters = Ember.__loader.require('ember-testing/test/waiters').checkWaiters;
+} else if (Ember.__loader.registry['ember-testing/lib/test/waiters']) {
+  // Ember >= 3.2
+  _internalCheckWaiters = Ember.__loader.require('ember-testing/lib/test/waiters').checkWaiters;
 }
 
 /**
