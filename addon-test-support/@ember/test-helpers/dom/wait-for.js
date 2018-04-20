@@ -15,7 +15,10 @@ import { nextTickPromise } from '../-utils';
   @param {number} [options.count=null] the number of elements that should match the provided selector (null means one or more)
   @returns {Element|Array<Element>} the element (or array of elements) that were being waited upon
 */
-export default function waitFor(selector, { timeout = 1000, count = null } = {}) {
+export default function waitFor(
+  selector,
+  { timeout = 1000, count = null, timeoutMessage = 'waitFor timed out' } = {}
+) {
   return nextTickPromise().then(() => {
     if (!selector) {
       throw new Error('Must pass a selector to `waitFor`.');
@@ -32,6 +35,6 @@ export default function waitFor(selector, { timeout = 1000, count = null } = {})
     } else {
       callback = () => getElement(selector);
     }
-    return waitUntil(callback, { timeout });
+    return waitUntil(callback, { timeout, timeoutMessage });
   });
 }

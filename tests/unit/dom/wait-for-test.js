@@ -75,7 +75,19 @@ module('DOM Helper: waitFor', function(hooks) {
     } catch (error) {
       let end = Date.now();
       assert.ok(end - start >= 100, 'timed out after correct time');
-      assert.equal(error.message, 'waitUntil timed out');
+      assert.equal(error.message, 'waitFor timed out');
+    }
+  });
+
+  test('wait for selector with timeoutMessage', async function(assert) {
+    assert.expect(1);
+
+    await setupContext(context);
+
+    try {
+      await waitFor('.something', { timeoutMessage: '.something timed out' });
+    } catch (error) {
+      assert.equal(error.message, '.something timed out');
     }
   });
 });
