@@ -21,7 +21,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': null,
-              'ember-native-dom-event-dispatcher': null,
               'ember-fetch': null,
             },
           },
@@ -39,7 +38,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': null,
-              'ember-native-dom-event-dispatcher': null,
               'ember-fetch': null,
             },
           },
@@ -57,7 +55,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': null,
-              'ember-native-dom-event-dispatcher': null,
               'ember-fetch': null,
             },
           },
@@ -67,7 +64,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~2.12.0',
-              'ember-native-dom-event-dispatcher': null,
               'ember-fetch': null,
             },
           },
@@ -77,6 +73,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~2.16.0-beta.1',
+              'ember-native-dom-event-dispatcher': '^0.6.4',
             },
           },
         },
@@ -119,7 +116,6 @@ module.exports = function() {
           name: 'ember-default-with-jquery',
           npm: {
             devDependencies: {
-              'ember-native-dom-event-dispatcher': null,
               'ember-fetch': null,
             },
           },
