@@ -1,5 +1,18 @@
 # Change Log
 
+## v0.7.22 (2018-04-21)
+
+#### :rocket: Enhancement
+* [#361](https://github.com/emberjs/ember-test-helpers/pull/361) Fix KeyboardEvent#key and allow `triggerKeyEvent` to receive keys instead of keycodes. ([@cibernox](https://github.com/cibernox))
+* [#356](https://github.com/emberjs/ember-test-helpers/pull/356) add waitFor msg. ([@snewcomer](https://github.com/snewcomer))
+
+#### :bug: Bug Fix
+* [#366](https://github.com/emberjs/ember-test-helpers/pull/366) Fix issues with Ember 3.2+ and legacy acceptance tests.. ([@cibernox](https://github.com/cibernox))
+
+#### Committers: 2
+- Miguel Camba ([cibernox](https://github.com/cibernox))
+- Scott Newcomer ([snewcomer](https://github.com/snewcomer))
+
 ## v0.7.21 (2018-04-13)
 
 #### :rocket: Enhancement

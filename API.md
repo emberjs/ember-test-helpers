@@ -174,13 +174,16 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 ### triggerKeyEvent
 
-Triggers a keyboard event on the specified target.
+Triggers a keyboard event of given type in the target element.
+It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+or the numeric [`keyCode`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) of the pressed key.
+Optionally the user can also provide a POJO with extra modifiers for the event.
 
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to trigger the event on
 -   `eventType` **(`"keydown"` \| `"keyup"` \| `"keypress"`)** the type of event to trigger
--   `keyCode` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the keyCode of the event being triggered
+-   `key` **([number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** the `keyCode`(number) or `key`(string) of the event being triggered
 -   `modifiers` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
     -   `modifiers.ctrlKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
     -   `modifiers.altKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
@@ -294,7 +297,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
     -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the time to wait (in ms) for a match (optional, default `1000`)
     -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
-    -   `options.timeoutMessage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the message to use in the reject on timeout (optional, default `'waitFor timed out'`)
+    -   `options.timeoutMessage`   (optional, default `'waitFor timed out'`)
 
 Returns **([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)** the element (or array of elements) that were being waited upon
 
