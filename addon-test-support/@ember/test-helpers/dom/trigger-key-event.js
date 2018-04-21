@@ -96,12 +96,15 @@ function keyCodeFromKey(key) {
 }
 
 /**
-  Triggers a keyboard event on the specified target.
+  Triggers a keyboard event of given type in the target element.
+  It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+  or the numeric [`keyCode`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) of the pressed key.
+  Optionally the user can also provide a POJO with extra modifiers for the event.
 
   @public
   @param {string|Element} target the element or selector to trigger the event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
-  @param {number|string} key the keyCode of the event being triggered
+  @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
   @param {boolean} [modifiers.ctrlKey=false] if true the generated event will indicate the control key was pressed during the key event
   @param {boolean} [modifiers.altKey=false] if true the generated event will indicate the alt key was pressed during the key event
@@ -131,7 +134,7 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
       );
     }
 
-    if (key === null || key === undefined) {
+    if (typeof key !== 'number' && typeof key !== 'string') {
       throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
     }
     let props;

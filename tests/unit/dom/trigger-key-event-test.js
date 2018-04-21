@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { triggerKeyEvent, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
 module('DOM Helper: triggerKeyEvent', function(hooks) {
@@ -125,7 +125,8 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
   });
 
   test('The value of the `event.key` is properly inferred from the given keycode and modifiers', async function(assert) {
-    element = buildInstrumentedElement('div');
+    element = document.createElement('div');
+    insertElement(element);
     async function checkKey(keyCode, key, modifiers) {
       let handler = e => {
         assert.equal(e.key, key);
@@ -155,33 +156,11 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKey(90, 'z');
     await checkKey(65, 'A', { shiftKey: true });
     await checkKey(90, 'Z', { shiftKey: true });
-    assert.verifySteps([
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-    ]);
   });
 
   test('The value of the `event.keyCode` is properly inferred from the given key', async function(assert) {
-    element = buildInstrumentedElement('div');
+    element = document.createElement('div');
+    insertElement(element);
     async function checkKeyCode(key, keyCode) {
       let handler = e => {
         assert.equal(e.keyCode, keyCode);
@@ -208,25 +187,5 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('-', 189);
     await checkKeyCode('a', 65);
     await checkKeyCode('z', 90);
-    assert.verifySteps([
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-      'keydown',
-    ]);
   });
 });
