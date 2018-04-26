@@ -4,6 +4,7 @@ import EmberRouter from '@ember/routing/router';
 import Component from '@ember/component';
 import { click } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import hasjQuery from '../helpers/has-jquery';
 
 import hbs from 'htmlbars-inline-precompile';
 import ajax from '../helpers/ajax';
@@ -34,6 +35,7 @@ moduleForAcceptance('Classic "moduleForAcceptance" | using settled', {
     'router:main': Router,
     'component:x-test-3': TestComponent3,
     'template:ajax-request': hbs`{{x-test-3 class="special-thing"}}`,
+    'template:index': hbs`<div class="foo">I'm a div!</div>`,
   },
 
   beforeEach() {
@@ -71,5 +73,18 @@ if (hasEmberVersion(2, 8)) {
         let testingElement = document.getElementById('ember-testing');
         assert.equal(testingElement.textContent, 'Remote Data!');
       });
+  });
+}
+
+if (hasjQuery()) {
+  test('has access to `find`', function(assert) {
+    // eslint-disable-next-line no-undef
+    visit('/');
+
+    // eslint-disable-next-line no-undef
+    andThen(() => {
+      let element = find('.foo');
+      assert.equal(element.textContent, "I'm a div!");
+    });
   });
 }
