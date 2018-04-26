@@ -1,6 +1,7 @@
 import { Promise } from 'rsvp';
 
-export const nextTick = setTimeout;
+export const nextTick =
+  typeof Promise === 'undefined' ? setTimeout : cb => Promise.resolve().then(cb);
 export const futureTick = setTimeout;
 
 /**
