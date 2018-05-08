@@ -20,6 +20,7 @@ import hbs from 'htmlbars-inline-precompile';
 const Router = EmberRouter.extend({ location: 'none' });
 Router.map(function() {
   this.route('widgets');
+  this.route('purgatory');
   this.route('posts', function() {
     this.route('post', { path: ':post_id' });
   });
@@ -47,6 +48,13 @@ module('setupApplicationContext', function(hooks) {
       'route:posts/post': Route.extend({
         model(params) {
           return params;
+        },
+      }),
+      'route:purgatory': Route.extend({
+        actions: {
+          willTransition() {
+            this.transitionTo('purgatory');
+          },
         },
       }),
       'route:widgets': Route.extend({
@@ -182,5 +190,12 @@ module('setupApplicationContext', function(hooks) {
       'model resolving',
       'after click resolved',
     ]);
+  });
+
+  test('`transitionAborted` errors are not treated as test errors', async function(assert) {
+    await visit('/purgatory');
+    await visit('/');
+
+    assert.equal(currentURL(), '/purgatory');
   });
 });
