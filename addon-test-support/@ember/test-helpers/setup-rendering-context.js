@@ -154,14 +154,26 @@ export default function setupRenderingContext(context) {
       // these methods being placed on the context itself will be deprecated in
       // a future version (no giant rush) to remove some confusion about which
       // is the "right" way to things...
-      Object.defineProperty(context, 'render', { value: render, writable: false });
+      Object.defineProperty(context, 'render', {
+        configurable: true,
+        enumerable: true,
+        value: render,
+        writable: false,
+      });
       Object.defineProperty(context, 'clearRender', {
+        configurable: true,
+        enumerable: true,
         value: clearRender,
         writable: false,
       });
 
       if (global.jQuery) {
-        Object.defineProperty(context, '$', { value: jQuerySelector, writable: false });
+        Object.defineProperty(context, '$', {
+          configurable: true,
+          enumerable: true,
+          value: jQuerySelector,
+          writable: false,
+        });
       }
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
@@ -194,6 +206,8 @@ export default function setupRenderingContext(context) {
     })
     .then(() => {
       Object.defineProperty(context, 'element', {
+        configurable: true,
+        enumerable: true,
         // ensure the element is based on the wrapping toplevel view
         // Ember still wraps the main application template with a
         // normal tagged view
