@@ -168,11 +168,15 @@ export default function(context, options = {}) {
     })
     .then(owner => {
       Object.defineProperty(context, 'owner', {
+        configurable: true,
+        enumerable: true,
         value: owner,
         writable: false,
       });
 
       Object.defineProperty(context, 'set', {
+        configurable: true,
+        enumerable: true,
         value(key, value) {
           let ret = run(function() {
             return set(context, key, value);
@@ -184,6 +188,8 @@ export default function(context, options = {}) {
       });
 
       Object.defineProperty(context, 'setProperties', {
+        configurable: true,
+        enumerable: true,
         value(hash) {
           let ret = run(function() {
             return setProperties(context, hash);
@@ -195,6 +201,8 @@ export default function(context, options = {}) {
       });
 
       Object.defineProperty(context, 'get', {
+        configurable: true,
+        enumerable: true,
         value(key) {
           return get(context, key);
         },
@@ -202,6 +210,8 @@ export default function(context, options = {}) {
       });
 
       Object.defineProperty(context, 'getProperties', {
+        configurable: true,
+        enumerable: true,
         value(...args) {
           return getProperties(context, args);
         },
