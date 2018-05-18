@@ -50,7 +50,7 @@ jobs:
     - stage: deploy
       if: tag IS present
       env: NAME=npm-publish # used only to make Travis UI show description
-      install: yarn global add auto-dist-tag
+      install: yarn global add auto-dist-tag@0.1
       script: auto-dist-tag --write
       deploy:
         provider: npm
