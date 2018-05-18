@@ -1,5 +1,14 @@
 # Change Log
 
+## v0.7.24 (2018-05-18)
+
+#### :house: Internal
+* [#376](https://github.com/emberjs/ember-test-helpers/pull/376) auto-dist-tag: Use Node 4 compatible release. ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 1
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+
+
 ## v0.7.23 (2018-05-18)
 
 #### :bug: Bug Fix
