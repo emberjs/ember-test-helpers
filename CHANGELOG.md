@@ -1,5 +1,14 @@
 # Change Log
 
+## v0.7.23 (2018-05-18)
+
+#### :bug: Bug Fix
+* [#374](https://github.com/emberjs/ember-test-helpers/pull/374) Change descriptors to allow properties to be enumerated and configured. ([@jimenglish81](https://github.com/jimenglish81))
+
+#### Committers: 1
+- [jimenglish81](https://github.com/jimenglish81)
+
+
 ## v0.7.22 (2018-04-21)
 
 #### :rocket: Enhancement
