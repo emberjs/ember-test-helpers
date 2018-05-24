@@ -138,6 +138,13 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
     if (typeof key === 'number') {
       props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
     } else if (typeof key === 'string' && key.length !== 0) {
+      let firstCharacter = key[0];
+      if (firstCharacter !== firstCharacter.toUpperCase()) {
+        throw new Error(
+          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+        );
+      }
+
       let keyCode = keyCodeFromKey(key);
       props = { keyCode, which: keyCode, key };
     } else {

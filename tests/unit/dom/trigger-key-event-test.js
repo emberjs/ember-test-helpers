@@ -73,6 +73,17 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     );
   });
 
+  test('rejects if lower case key is passed in', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', 'enter'),
+      /Must provide a `key` to `triggerKeyEvent` that starts with an uppercase character but you passed `enter`./
+    );
+  });
+
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
@@ -196,7 +207,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('Meta', 91);
     await checkKeyCode('=', 187);
     await checkKeyCode('-', 189);
-    await checkKeyCode('a', 65);
-    await checkKeyCode('z', 90);
+    await checkKeyCode('A', 65);
+    await checkKeyCode('Z', 90);
   });
 });
