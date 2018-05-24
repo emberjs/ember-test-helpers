@@ -137,7 +137,7 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
     let props;
     if (typeof key === 'number') {
       props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
-    } else if (typeof key === 'string') {
+    } else if (typeof key === 'string' && key.length !== 0) {
       let keyCode = keyCodeFromKey(key);
       props = { keyCode, which: keyCode, key };
     } else {

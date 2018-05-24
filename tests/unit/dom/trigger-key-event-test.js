@@ -62,6 +62,17 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     );
   });
 
+  test('rejects if empty string is passed in', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', ''),
+      /Must provide a `key` or `keyCode` to `triggerKeyEvent`/
+    );
+  });
+
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
