@@ -35,3 +35,14 @@ export function runDestroyablesFor(object, property) {
 
   delete object[property];
 }
+
+/**
+ Returns whether the passed in string consists only of numeric characters.
+
+ @private
+ @param {string} n input string
+ @returns {boolean} whether the input string consists only of numeric characters
+ */
+export function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}

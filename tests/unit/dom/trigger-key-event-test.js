@@ -84,6 +84,17 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     );
   });
 
+  test('rejects if keyCode is passed as a string', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', '13'),
+      /Must provide a numeric `keyCode` to `triggerKeyEvent` but you passed `13` as a string./
+    );
+  });
+
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 

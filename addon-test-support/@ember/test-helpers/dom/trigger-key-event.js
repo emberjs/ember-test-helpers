@@ -3,7 +3,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES } from './fire-event';
-import { nextTickPromise } from '../-utils';
+import { nextTickPromise, isNumeric } from '../-utils';
 
 const DEFAULT_MODIFIERS = Object.freeze({
   ctrlKey: false,
@@ -142,6 +142,12 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
       if (firstCharacter !== firstCharacter.toUpperCase()) {
         throw new Error(
           `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+        );
+      }
+
+      if (isNumeric(key)) {
+        throw new Error(
+          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
         );
       }
 
