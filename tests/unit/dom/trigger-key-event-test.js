@@ -176,7 +176,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKey(18, 'Alt');
     await checkKey(20, 'CapsLock');
     await checkKey(27, 'Escape');
-    await checkKey(32, 'Space');
+    await checkKey(32, ' ');
     await checkKey(37, 'ArrowLeft');
     await checkKey(38, 'ArrowUp');
     await checkKey(39, 'ArrowRight');
@@ -210,7 +210,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('Alt', 18);
     await checkKeyCode('CapsLock', 20);
     await checkKeyCode('Escape', 27);
-    await checkKeyCode('Space', 32);
+    await checkKeyCode(' ', 32);
     await checkKeyCode('ArrowLeft', 37);
     await checkKeyCode('ArrowUp', 38);
     await checkKeyCode('ArrowRight', 39);

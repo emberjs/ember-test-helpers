@@ -22,7 +22,7 @@ const keyFromKeyCode = {
   18: 'Alt',
   20: 'CapsLock',
   27: 'Escape',
-  32: 'Space',
+  32: ' ',
   37: 'ArrowLeft',
   38: 'ArrowUp',
   39: 'ArrowRight',
