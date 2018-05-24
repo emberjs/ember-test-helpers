@@ -134,16 +134,16 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
       );
     }
 
-    if (typeof key !== 'number' && typeof key !== 'string') {
-      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
-    }
     let props;
     if (typeof key === 'number') {
       props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
-    } else {
+    } else if (typeof key === 'string') {
       let keyCode = keyCodeFromKey(key);
       props = { keyCode, which: keyCode, key };
+    } else {
+      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
     }
+
     let options = merge(props, modifiers);
 
     fireEvent(element, eventType, options);
