@@ -62,6 +62,39 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     );
   });
 
+  test('rejects if empty string is passed in', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', ''),
+      /Must provide a `key` or `keyCode` to `triggerKeyEvent`/
+    );
+  });
+
+  test('rejects if lower case key is passed in', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', 'enter'),
+      /Must provide a `key` to `triggerKeyEvent` that starts with an uppercase character but you passed `enter`./
+    );
+  });
+
+  test('rejects if keyCode is passed as a string', async function(assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+
+    assert.rejects(
+      triggerKeyEvent(element, 'keypress', '13'),
+      /Must provide a numeric `keyCode` to `triggerKeyEvent` but you passed `13` as a string./
+    );
+  });
+
   test('triggering via selector with context set', async function(assert) {
     element = buildInstrumentedElement('div');
 
@@ -143,7 +176,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKey(18, 'Alt');
     await checkKey(20, 'CapsLock');
     await checkKey(27, 'Escape');
-    await checkKey(32, '');
+    await checkKey(32, ' ');
     await checkKey(37, 'ArrowLeft');
     await checkKey(38, 'ArrowUp');
     await checkKey(39, 'ArrowRight');
@@ -177,7 +210,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('Alt', 18);
     await checkKeyCode('CapsLock', 20);
     await checkKeyCode('Escape', 27);
-    await checkKeyCode('', 32);
+    await checkKeyCode(' ', 32);
     await checkKeyCode('ArrowLeft', 37);
     await checkKeyCode('ArrowUp', 38);
     await checkKeyCode('ArrowRight', 39);
@@ -185,7 +218,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('Meta', 91);
     await checkKeyCode('=', 187);
     await checkKeyCode('-', 189);
-    await checkKeyCode('a', 65);
-    await checkKeyCode('z', 90);
+    await checkKeyCode('A', 65);
+    await checkKeyCode('Z', 90);
   });
 });

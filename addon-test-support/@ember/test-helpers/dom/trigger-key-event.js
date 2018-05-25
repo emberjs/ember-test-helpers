@@ -3,7 +3,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES } from './fire-event';
-import { nextTickPromise } from '../-utils';
+import { nextTickPromise, isNumeric } from '../-utils';
 
 const DEFAULT_MODIFIERS = Object.freeze({
   ctrlKey: false,
@@ -22,7 +22,7 @@ const keyFromKeyCode = {
   18: 'Alt',
   20: 'CapsLock',
   27: 'Escape',
-  32: '',
+  32: ' ',
   37: 'ArrowLeft',
   38: 'ArrowUp',
   39: 'ArrowRight',
@@ -134,16 +134,29 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
       );
     }
 
-    if (typeof key !== 'number' && typeof key !== 'string') {
-      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
-    }
     let props;
     if (typeof key === 'number') {
       props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
-    } else {
+    } else if (typeof key === 'string' && key.length !== 0) {
+      let firstCharacter = key[0];
+      if (firstCharacter !== firstCharacter.toUpperCase()) {
+        throw new Error(
+          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+        );
+      }
+
+      if (isNumeric(key)) {
+        throw new Error(
+          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
+        );
+      }
+
       let keyCode = keyCodeFromKey(key);
       props = { keyCode, which: keyCode, key };
+    } else {
+      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
     }
+
     let options = merge(props, modifiers);
 
     fireEvent(element, eventType, options);
