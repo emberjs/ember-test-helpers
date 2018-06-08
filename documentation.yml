@@ -2,6 +2,7 @@ toc:
   - name: DOM Interaction Helpers
     children:
       - click
+      - doubleClick
       - tap
       - focus
       - blur
