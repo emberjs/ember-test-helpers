@@ -4,6 +4,7 @@ import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
+import isFormControl from './-is-form-control';
 
 /**
   @private
@@ -59,7 +60,12 @@ export default function click(target) {
       throw new Error(`Element not found when calling \`click('${target}')\`.`);
     }
 
-    __click__(element);
+    let isDisabledFormControl = isFormControl(element) && element.disabled === true;
+
+    if (!isDisabledFormControl) {
+      __click__(element);
+    }
+
     return settled();
   });
 }

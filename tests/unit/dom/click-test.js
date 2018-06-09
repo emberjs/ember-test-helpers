@@ -86,6 +86,15 @@ module('DOM Helper: click', function(hooks) {
         /Must setup rendering context before attempting to interact with elements/
       );
     });
+
+    test('clicking a disabled div still clicks', async function(assert) {
+      element = buildInstrumentedElement('div');
+      element.setAttribute('disabled', true);
+
+      await click(element);
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
+    });
   });
 
   module('focusable element types', function() {
@@ -131,6 +140,16 @@ module('DOM Helper: click', function(hooks) {
         click(`#${element.id}`),
         /Must setup rendering context before attempting to interact with elements/
       );
+    });
+
+    test('clicking a disabled input does nothing', async function(assert) {
+      element = buildInstrumentedElement('input');
+      element.setAttribute('disabled', true);
+
+      await click(element);
+
+      assert.verifySteps([]);
+      assert.notStrictEqual(document.activeElement, element, 'activeElement not updated');
     });
   });
 
