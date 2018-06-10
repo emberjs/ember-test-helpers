@@ -1,5 +1,24 @@
 # Change Log
 
+## v0.7.25 (2018-06-10)
+
+#### :boom: Breaking Change
+* [#384](https://github.com/emberjs/ember-test-helpers/pull/384) Prevent `click` from triggering events on disabled form elements. ([@kellyselden](https://github.com/kellyselden))
+
+#### :rocket: Enhancement
+* [#379](https://github.com/emberjs/ember-test-helpers/pull/379) Improve `triggerKeyEvent()` warnings. ([@Turbo87](https://github.com/Turbo87))
+
+#### :bug: Bug Fix
+* [#384](https://github.com/emberjs/ember-test-helpers/pull/384) Prevent `click` from triggering events on disabled form elements. ([@kellyselden](https://github.com/kellyselden))
+
+#### :house: Internal
+* [#377](https://github.com/emberjs/ember-test-helpers/pull/377) Ignore yarn.lock in published tarballs.. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Kelly Selden ([kellyselden](https://github.com/kellyselden))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([Turbo87](https://github.com/Turbo87))
+
 ## v0.7.24 (2018-05-18)
 
 #### :house: Internal
