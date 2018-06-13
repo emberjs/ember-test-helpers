@@ -4,6 +4,7 @@
 
 -   [DOM Interaction Helpers](#dom-interaction-helpers)
     -   [click](#click)
+    -   [doubleClick](#doubleclick)
     -   [tap](#tap)
     -   [focus](#focus)
     -   [blur](#blur)
@@ -79,6 +80,45 @@ to continue to emulate how actual browsers handle clicking a given element.
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to click on
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+
+### doubleClick
+
+Double-clicks on the specified target.
+
+Sends a number of events intending to simulate a "real" user double-clicking on an
+element.
+
+For non-focusable elements the following events are triggered (in order):
+
+-   `mousedown`
+-   `mouseup`
+-   `click`
+-   `mousedown`
+-   `mouseup`
+-   `click`
+-   `dblclick`
+
+For focusable (e.g. form control) elements the following events are triggered
+(in order):
+
+-   `mousedown`
+-   `focus`
+-   `focusin`
+-   `mouseup`
+-   `click`
+-   `mousedown`
+-   `mouseup`
+-   `click`
+-   `dblclick`
+
+The exact listing of events that are triggered may change over time as needed
+to continue to emulate how actual browsers handle double-clicking a given element.
+
+**Parameters**
+
+-   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to double-click on
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
 
