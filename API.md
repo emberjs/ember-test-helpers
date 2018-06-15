@@ -339,7 +339,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
     -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
     -   `options.timeoutMessage`   (optional, default `'waitFor timed out'`)
 
-Returns **([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)** the element (or array of elements) that were being waited upon
+Returns Promise<void> resolves when settled
 
 ### waitUntil
 
