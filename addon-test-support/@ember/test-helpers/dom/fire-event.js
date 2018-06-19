@@ -1,5 +1,15 @@
 import { merge } from '@ember/polyfills';
 
+// eslint-disable-next-line require-jsdoc
+function checkMouseEventExistence() {
+  try {
+    new MouseEvent('test');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+const MOUSE_EVENT_EXISTS = checkMouseEventExistence();
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
 export const KEYBOARD_EVENT_TYPES = Object.freeze(['keydown', 'keypress', 'keyup']);
 const MOUSE_EVENT_TYPES = [
@@ -85,13 +95,9 @@ function buildBasicEvent(type, options = {}) {
 function buildMouseEvent(type, options = {}) {
   let event;
   let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
-  try {
+  if (MOUSE_EVENT_EXISTS) {
     event = new MouseEvent(type, eventOpts);
-  } catch (e) {
-    // left intentionally blank
-  }
-
-  if (!event) {
+  } else {
     try {
       event = document.createEvent('MouseEvents');
       event.initMouseEvent(
@@ -112,13 +118,10 @@ function buildMouseEvent(type, options = {}) {
         eventOpts.relatedTarget
       );
     } catch (e) {
-      // left intentionally blank
+      event = buildBasicEvent(type, options);
     }
   }
 
-  if (!event) {
-    event = buildBasicEvent(type, options);
-  }
   return event;
 }
 
