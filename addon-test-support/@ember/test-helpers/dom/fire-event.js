@@ -84,27 +84,39 @@ function buildBasicEvent(type, options = {}) {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
+  let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
   try {
-    event = document.createEvent('MouseEvents');
-    let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
-    event.initMouseEvent(
-      type,
-      eventOpts.bubbles,
-      eventOpts.cancelable,
-      window,
-      eventOpts.detail,
-      eventOpts.screenX,
-      eventOpts.screenY,
-      eventOpts.clientX,
-      eventOpts.clientY,
-      eventOpts.ctrlKey,
-      eventOpts.altKey,
-      eventOpts.shiftKey,
-      eventOpts.metaKey,
-      eventOpts.button,
-      eventOpts.relatedTarget
-    );
+    event = new MouseEvent(type, eventOpts);
   } catch (e) {
+    // left intentionally blank
+  }
+
+  if (!event) {
+    try {
+      event = document.createEvent('MouseEvents');
+      event.initMouseEvent(
+        type,
+        eventOpts.bubbles,
+        eventOpts.cancelable,
+        window,
+        eventOpts.detail,
+        eventOpts.screenX,
+        eventOpts.screenY,
+        eventOpts.clientX,
+        eventOpts.clientY,
+        eventOpts.ctrlKey,
+        eventOpts.altKey,
+        eventOpts.shiftKey,
+        eventOpts.metaKey,
+        eventOpts.button,
+        eventOpts.relatedTarget
+      );
+    } catch (e) {
+      // left intentionally blank
+    }
+  }
+
+  if (!event) {
     event = buildBasicEvent(type, options);
   }
   return event;
