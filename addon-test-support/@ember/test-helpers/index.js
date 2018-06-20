@@ -35,3 +35,4 @@ export { default as waitFor } from './dom/wait-for';
 export { default as getRootElement } from './dom/get-root-element';
 export { default as find } from './dom/find';
 export { default as findAll } from './dom/find-all';
+export { default as visible } from './dom/visible';

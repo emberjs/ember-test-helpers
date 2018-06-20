@@ -25,6 +25,7 @@
 -   [Wait Helpers](#wait-helpers)
     -   [waitFor](#waitfor)
     -   [waitUntil](#waituntil)
+    -   [visible](#visible)
     -   [settled](#settled)
     -   [isSettled](#issettled)
     -   [getSettledState](#getsettledstate)
@@ -356,6 +357,22 @@ while _not_ settled (e.g. "loading" or "pending" states).
     -   `options.timeoutMessage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves with the callback value when it returns a truthy value
+
+### visible
+
+Used to wait until a given element is graphically visibile within a parent container. This is accomplished by utilizing an [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API).
+
+**Parameters**
+
+-   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the selector to wait for
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
+    -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the time to wait (in ms) for the element to appear (optional, default `1000`)
+    -   `options.threshold` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** the percentage (between 0 and 1) of the object that must be visible. Equivalent to the threshold option of the [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). (optional, default `1.0`)
+    -   `options.root` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))?** the container element to check if the target is visible within. Equivalent to the root option of the [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). (optional, default is the test container element)
+    -   `options.rootMargin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** a CSS margin that will be added to the container element before comparison to the target element. Equivalent to the rootmargin option of the [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). (optional, default `0px 0px 0px 0px`)
+    -   `options.timeoutMessage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** the error message when the helper times out (optional, default `'visible timed out'`)
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the target element is visible
 
 ### settled
 
