@@ -3,7 +3,6 @@ import { futureTick } from '../-utils';
 import { getRootElement } from './get-root-element';
 import getElement from './-get-element';
 
-
 /**
   Wait for element to be visible inside of given root element (defaults to testing container)
 
@@ -25,25 +24,29 @@ export default function visible(target, options = {}) {
   let timeout = 'timeout' in options ? options.timeout : 1000;
   let timeoutMessage = 'timeoutMessage' in options ? options.timeoutMessage : 'visible timed out';
 
-  root = typeof(root) == "string" ? getElement(root) : root;
-  if(!root) throw new Error('Provided root element does not exist');
+  root = typeof root == 'string' ? getElement(root) : root;
+  if (!root) throw new Error('Provided root element does not exist');
 
-  target = typeof(target) == "string" ? getElement(target) : target;
-  if(!target) throw new Error('Provided target element does not exist');
+  target = typeof target == 'string' ? getElement(target) : target;
+  if (!target) throw new Error('Provided target element does not exist');
 
   // creating this error eagerly so it has the proper invocation stack
   let waitTimedOut = new Error(timeoutMessage);
 
   return new Promise(function(resolve, reject) {
-    function observerCallback (entries, observer) {
-      if(entries[0].intersectionRatio >= threshold) {
+    // eslint-disable-next-line require-jsdoc
+    function observerCallback(entries, observer) {
+      if (entries[0].intersectionRatio >= threshold) {
         observer.disconnect();
         resolve(target);
       }
-    };
+    }
 
-    var intersectionObserver = new IntersectionObserver(observerCallback,
-      {'root': root, 'threshold': threshold, 'rootMargin': rootMargin});
+    var intersectionObserver = new IntersectionObserver(observerCallback, {
+      root,
+      threshold,
+      rootMargin,
+    });
     intersectionObserver.observe(target);
 
     futureTick(function() {
@@ -52,5 +55,3 @@ export default function visible(target, options = {}) {
     }, timeout);
   });
 }
-
-
