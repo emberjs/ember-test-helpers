@@ -155,7 +155,7 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
         );
       }
 
-      if (isNumeric(key)) {
+      if (isNumeric(key) && key.length > 1) {
         throw new Error(
           `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
         );

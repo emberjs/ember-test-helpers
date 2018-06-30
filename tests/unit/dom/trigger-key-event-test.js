@@ -181,6 +181,8 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKey(38, 'ArrowUp');
     await checkKey(39, 'ArrowRight');
     await checkKey(40, 'ArrowDown');
+    await checkKey(48, '0');
+    await checkKey(57, '9');
     await checkKey(91, 'Meta');
     await checkKey(93, 'Meta');
     await checkKey(187, '=');
@@ -218,6 +220,8 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
     await checkKeyCode('Meta', 91);
     await checkKeyCode('=', 187);
     await checkKeyCode('-', 189);
+    await checkKeyCode('0', 48);
+    await checkKeyCode('9', 57);
     await checkKeyCode('A', 65);
     await checkKeyCode('Z', 90);
   });
