@@ -15,10 +15,7 @@ import { nextTickPromise } from '../-utils';
   @param {number} [options.count=null] the number of elements that should match the provided selector (null means one or more)
   @return {Promise<Element|Element[]>} resolves when the element(s) appear on the page
 */
-export default function waitFor(
-  selector,
-  { timeout = 1000, count = null, timeoutMessage } = {}
-) {
+export default function waitFor(selector, { timeout = 1000, count = null, timeoutMessage } = {}) {
   return nextTickPromise().then(() => {
     if (!selector) {
       throw new Error('Must pass a selector to `waitFor`.');
