@@ -52,7 +52,7 @@ export default function tap(target, options = {}) {
     let touchendEv = fireEvent(element, 'touchend', options);
 
     if (!touchstartEv.defaultPrevented && !touchendEv.defaultPrevented) {
-      __click__(element);
+      __click__(element, options);
     }
 
     return settled();

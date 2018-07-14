@@ -163,10 +163,10 @@ export const KNOWN_EVENTS = Object.freeze([
   'wheel',
 ]);
 
-export function buildInstrumentedElement(elementType) {
+export function buildInstrumentedElement(elementType, logOptionsProperties) {
   let element = document.createElement(elementType);
 
-  instrumentElement(element);
+  instrumentElement(element, logOptionsProperties);
   insertElement(element);
 
   return element;
@@ -178,15 +178,21 @@ export function insertElement(element) {
 }
 
 let uuid = 0;
-export function instrumentElement(element) {
+export function instrumentElement(element, logOptionsProperties) {
   let assert = QUnit.config.current.assert;
 
   element.setAttribute('id', `fixture-${uuid++}`);
 
   KNOWN_EVENTS.forEach(type => {
     element.addEventListener(type, e => {
+      let step = type;
       if (!element.hasAttribute('data-skip-steps')) {
-        assert.step(type);
+        if (logOptionsProperties) {
+          for (var prop of logOptionsProperties) {
+            step += ` ${e[prop]}`;
+          }
+        }
+        assert.step(step);
       }
       assert.ok(e instanceof Event, `${type} listener should receive a native event`);
     });

@@ -9,19 +9,19 @@ import { nextTickPromise } from '../-utils';
   @private
   @param {Element} element the element to double-click on
 */
-export function __doubleClick__(element) {
-  fireEvent(element, 'mousedown');
+export function __doubleClick__(element, options) {
+  fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
     __focus__(element);
   }
 
-  fireEvent(element, 'mouseup');
-  fireEvent(element, 'click');
-  fireEvent(element, 'mousedown');
-  fireEvent(element, 'mouseup');
-  fireEvent(element, 'click');
-  fireEvent(element, 'dblclick');
+  fireEvent(element, 'mouseup', options);
+  fireEvent(element, 'click', options);
+  fireEvent(element, 'mousedown', options);
+  fireEvent(element, 'mouseup', options);
+  fireEvent(element, 'click', options);
+  fireEvent(element, 'dblclick', options);
 }
 
 /**
@@ -60,7 +60,7 @@ export function __doubleClick__(element) {
   @param {string|Element} target the element or selector to double-click on
   @return {Promise<void>} resolves when settled
 */
-export default function doubleClick(target) {
+export default function doubleClick(target, options = {}) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `doubleClick`.');
@@ -71,7 +71,7 @@ export default function doubleClick(target) {
       throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
     }
 
-    __doubleClick__(element);
+    __doubleClick__(element, options);
     return settled();
   });
 }

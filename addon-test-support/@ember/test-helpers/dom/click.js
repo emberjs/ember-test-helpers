@@ -10,15 +10,15 @@ import isFormControl from './-is-form-control';
   @private
   @param {Element} element the element to click on
 */
-export function __click__(element) {
-  fireEvent(element, 'mousedown');
+export function __click__(element, options) {
+  fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
     __focus__(element);
   }
 
-  fireEvent(element, 'mouseup');
-  fireEvent(element, 'click');
+  fireEvent(element, 'mouseup', options);
+  fireEvent(element, 'click', options);
 }
 
 /**
@@ -49,7 +49,7 @@ export function __click__(element) {
   @param {string|Element} target the element or selector to click on
   @return {Promise<void>} resolves when settled
 */
-export default function click(target) {
+export default function click(target, options = {}) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `click`.');
@@ -63,7 +63,7 @@ export default function click(target) {
     let isDisabledFormControl = isFormControl(element) && element.disabled === true;
 
     if (!isDisabledFormControl) {
-      __click__(element);
+      __click__(element, options);
     }
 
     return settled();

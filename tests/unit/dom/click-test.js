@@ -95,6 +95,14 @@ module('DOM Helper: click', function(hooks) {
 
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
+
+    test('clicking passes options through to mouse events', async function(assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+
+      await click(element, { clientX: 13, clientY: 17, button: 2 });
+
+      assert.verifySteps(['mousedown 13 17 2', 'mouseup 13 17 2', 'click 13 17 2']);
+    });
   });
 
   module('focusable element types', function() {
