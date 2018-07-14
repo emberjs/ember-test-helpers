@@ -67,7 +67,7 @@ export default class extends TestModule {
     } else {
       this.callbacks.subject = function() {
         throw new Error(
-          "component integration tests do not support `subject()`. Instead, render the component as if it were HTML: `this.render('<my-component foo=true>');`. For more information, read: http://guides.emberjs.com/v2.2.0/testing/testing-components/"
+          "component integration tests do not support `subject()`. Instead, render the component as if it were HTML: `this.render('<my-component foo=true>');`. For more information, read: http://guides.emberjs.com/current/testing/testing-components/"
         );
       };
       this.setupSteps.push(this.setupComponentIntegrationTest);
