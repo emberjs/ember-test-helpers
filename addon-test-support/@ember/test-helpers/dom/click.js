@@ -9,6 +9,7 @@ import isFormControl from './-is-form-control';
 /**
   @private
   @param {Element} element the element to click on
+  @param {Object} options the options to be merged into the mouse events
 */
 export function __click__(element, options) {
   fireEvent(element, 'mousedown', options);
@@ -45,8 +46,11 @@ export function __click__(element, options) {
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
+  Use the `options` hash to change the parameters of the MouseEvents. 
+
   @public
   @param {string|Element} target the element or selector to click on
+  @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
 export default function click(target, options = {}) {

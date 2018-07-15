@@ -32,9 +32,11 @@ import { nextTickPromise } from '../-utils';
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle tapping on a given element.
 
+  Use the `options` hash to change the parameters of the tap events. 
+
   @public
   @param {string|Element} target the element or selector to tap on
-  @param {Object} options the options to be provided to the touch events
+  @param {Object} options the options to be merged into the touch events
   @return {Promise<void>} resolves when settled
 */
 export default function tap(target, options = {}) {
