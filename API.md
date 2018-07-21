@@ -87,7 +87,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Double-clicks on the specified target.
 
-Sends a number of events intending to simulate a "real" user double-clicking on an
+Sends a number of events intending to simulate a "real" user clicking on an
 element.
 
 For non-focusable elements the following events are triggered (in order):
@@ -114,7 +114,7 @@ For focusable (e.g. form control) elements the following events are triggered
 -   `dblclick`
 
 The exact listing of events that are triggered may change over time as needed
-to continue to emulate how actual browsers handle double-clicking a given element.
+to continue to emulate how actual browsers handle clicking a given element.
 
 **Parameters**
 
@@ -204,11 +204,40 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Triggers an event on the specified target.
 
+For HTML `input` element of type 'file', if you wish to trigger `change`
+event, the options param can be passed as:
+  1\. an array of `File` objects.
+  2\. an object with key `files` which contains an array of `File` objects.
+
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to trigger the event on
 -   `eventType` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the type of event to trigger
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional properties to be set on the event
+
+**Examples**
+
+_Usage_
+
+```javascript
+import { setupRenderingTest } from 'ember-qunit';
+import { render, triggerEvent } from '@ember/test-helpers';
+
+module('awesome-sauce', function(hooks) {
+  setupRenderingTest(hooks);
+    test('does something awesome', async function(assert) {
+    await render(hbs`{{awesome-sauce}}`);
+
+    // passing an array of files
+    let file = new File(['text file'], 'text.txt', { type: 'text/plain' });
+    await triggerEvent('input:file', 'change', [file]);
+
+    // passing an object that with 'files' as a key
+    let file = new File(['text file'], 'text.txt', { type: 'text/plain' });
+    await triggerEvent('input:file', 'change', { files: [file] });
+  });
+});
+```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
 
@@ -337,7 +366,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
     -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the time to wait (in ms) for a match (optional, default `1000`)
     -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
-    -   `options.timeoutMessage`   (optional, default `'waitFor timed out'`)
+    -   `options.timeoutMessage`  
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)>** resolves when the element(s) appear on the page
 

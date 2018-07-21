@@ -50,4 +50,18 @@ module('DOM Helper: selectFiles', function(hooks) {
 
     assert.verifySteps(['change', 'text-file.txt', 'change', 'image-file.png']);
   });
+
+  test('it can trigger a file selection event with files passed in options object', async function(assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[0].name);
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change', { files: [textFile] });
+
+    assert.verifySteps(['change', 'text-file.txt']);
+  });
 });

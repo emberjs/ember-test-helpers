@@ -180,8 +180,9 @@ function buildKeyboardEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildFileEvent(type, element, files = []) {
+function buildFileEvent(type, element, options = {}) {
   let event = buildBasicEvent(type);
+  let files = Array.isArray(options) ? options : options.files || [];
 
   if (files.length > 0) {
     Object.defineProperty(files, 'item', {
