@@ -1,5 +1,14 @@
 import { merge } from '@ember/polyfills';
 
+// eslint-disable-next-line require-jsdoc
+const MOUSE_EVENT_CONSTRUCTOR = (() => {
+  try {
+    new MouseEvent('test');
+    return true;
+  } catch (e) {
+    return false;
+  }
+})();
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
 export const KEYBOARD_EVENT_TYPES = Object.freeze(['keydown', 'keypress', 'keyup']);
 const MOUSE_EVENT_TYPES = [
@@ -84,29 +93,34 @@ function buildBasicEvent(type, options = {}) {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
-  try {
-    event = document.createEvent('MouseEvents');
-    let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
-    event.initMouseEvent(
-      type,
-      eventOpts.bubbles,
-      eventOpts.cancelable,
-      window,
-      eventOpts.detail,
-      eventOpts.screenX,
-      eventOpts.screenY,
-      eventOpts.clientX,
-      eventOpts.clientY,
-      eventOpts.ctrlKey,
-      eventOpts.altKey,
-      eventOpts.shiftKey,
-      eventOpts.metaKey,
-      eventOpts.button,
-      eventOpts.relatedTarget
-    );
-  } catch (e) {
-    event = buildBasicEvent(type, options);
+  let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
+  if (MOUSE_EVENT_CONSTRUCTOR) {
+    event = new MouseEvent(type, eventOpts);
+  } else {
+    try {
+      event = document.createEvent('MouseEvents');
+      event.initMouseEvent(
+        type,
+        eventOpts.bubbles,
+        eventOpts.cancelable,
+        window,
+        eventOpts.detail,
+        eventOpts.screenX,
+        eventOpts.screenY,
+        eventOpts.clientX,
+        eventOpts.clientY,
+        eventOpts.ctrlKey,
+        eventOpts.altKey,
+        eventOpts.shiftKey,
+        eventOpts.metaKey,
+        eventOpts.button,
+        eventOpts.relatedTarget
+      );
+    } catch (e) {
+      event = buildBasicEvent(type, options);
+    }
   }
+
   return event;
 }
 
