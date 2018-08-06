@@ -131,18 +131,18 @@ function checkWaiters() {
 /**
   Check various settledness metrics, and return an object with the following properties:
 
-  * `hasRunLoop` - Checks if a run-loop has been started. If it has, this will
+  - `hasRunLoop` - Checks if a run-loop has been started. If it has, this will
     be `true` otherwise it will be `false`.
-  * `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
+  - `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
     These pending timers are primarily registered by `Ember.run.schedule`. If
     there are pending timers, this will be `true`, otherwise `false`.
-  * `hasPendingWaiters` - Checks if any registered test waiters are still
+  - `hasPendingWaiters` - Checks if any registered test waiters are still
     pending (e.g. the waiter returns `true`). If there are pending waiters,
     this will be `true`, otherwise `false`.
-  * `hasPendingRequests` - Checks if there are pending AJAX requests (based on
+  - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
     `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
     are pending requests, this will be `true`, otherwise `false`.
-  * `pendingRequestCount` - The count of pending AJAX requests.
+  - `pendingRequestCount` - The count of pending AJAX requests.
 
   @public
   @returns {Object} object with properties for each of the metrics used to determine settledness
