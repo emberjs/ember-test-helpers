@@ -14,16 +14,24 @@ export default function getRootElement() {
     throw new Error('Must setup rendering context before attempting to interact with elements.');
   }
 
-  let rootElementSelector;
+  let rootElement;
   // When the host app uses `setApplication` (instead of `setResolver`) the owner has
-  // a `rootElement` set on it with the element id to be used
+  // a `rootElement` set on it with the element or id to be used
   if (owner && owner._emberTestHelpersMockOwner === undefined) {
-    rootElementSelector = owner.rootElement;
+    rootElement = owner.rootElement;
   } else {
-    rootElementSelector = '#ember-testing';
+    rootElement = '#ember-testing';
   }
 
-  let rootElement = document.querySelector(rootElementSelector);
-
-  return rootElement;
+  if (
+    rootElement.nodeType === Node.ELEMENT_NODE ||
+    rootElement.nodeType === Node.DOCUMENT_NODE ||
+    rootElement instanceof Window
+  ) {
+    return rootElement;
+  } else if (typeof rootElement === 'string') {
+    return document.querySelector(rootElement);
+  } else {
+    throw new Error('Application.rootElement must be an element or a selector string');
+  }
 }
