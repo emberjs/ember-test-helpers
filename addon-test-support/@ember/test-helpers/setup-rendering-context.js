@@ -149,6 +149,12 @@ export default function setupRenderingContext(context) {
 
   return nextTickPromise()
     .then(() => {
+      let originalFind = global.find;
+      RENDERING_CLEANUP[contextGuid].push(() => {
+        global.find = originalFind;
+      });
+      delete global.find;
+
       let { owner } = context;
 
       // these methods being placed on the context itself will be deprecated in

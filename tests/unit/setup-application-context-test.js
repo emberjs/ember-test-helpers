@@ -127,4 +127,8 @@ module('setupApplicationContext', function(hooks) {
   test('bubbles up errors', function(assert) {
     assert.rejects(visit('/widgets'), /Model hook error from \/widgets/);
   });
+
+  test('window.find is not present', function(assert) {
+    assert.strictEqual(self.find, undefined, 'global find is not present');
+  });
 });

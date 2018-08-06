@@ -13,6 +13,7 @@ module('setupRenderingContext', function(hooks) {
   }
 
   hooks.beforeEach(async function() {
+    this.originalFind = self.find;
     await setupContext(this);
     await setupRenderingContext(this);
   });
@@ -53,5 +54,11 @@ module('setupRenderingContext', function(hooks) {
       document.body.contains(beforeTeardownEl),
       'previous ember-testing element is no longer in DOM'
     );
+  });
+
+  test('resets self.find after teardown', async function(assert) {
+    await teardownRenderingContext(this);
+
+    assert.strictEqual(self.find, this.originalFind);
   });
 });

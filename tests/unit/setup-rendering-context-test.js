@@ -366,6 +366,10 @@ module('setupRenderingContext', function(hooks) {
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
+
+    test('window.find is not present', function(assert) {
+      assert.strictEqual(self.find, undefined, 'global find is not present');
+    });
   }
 
   module('with only application set', function(hooks) {

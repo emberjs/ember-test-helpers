@@ -1,9 +1,13 @@
 /* globals EmberENV */
+import { guidFor } from '@ember/object/internals';
 import { get } from '@ember/object';
 import { nextTickPromise } from './-utils';
+import global from './global';
 import { getContext } from './setup-context';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
+
+export const APPLICATION_CLEANUP = Object.create(null);
 
 /**
   Navigate the application to the provided URL.
@@ -69,6 +73,15 @@ export function currentURL() {
   @param {Object} context the context to setup
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupApplicationContext() {
-  return nextTickPromise();
+export default function setupApplicationContext(context) {
+  let contextGuid = guidFor(context);
+  APPLICATION_CLEANUP[contextGuid] = [];
+
+  return nextTickPromise().then(() => {
+    let originalFind = global.find;
+    APPLICATION_CLEANUP[contextGuid].push(() => {
+      global.find = originalFind;
+    });
+    delete global.find;
+  });
 }
