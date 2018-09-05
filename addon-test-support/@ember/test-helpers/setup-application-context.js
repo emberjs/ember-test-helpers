@@ -60,8 +60,8 @@ export function currentURL() {
   Used by test framework addons to setup the provided context for working with
   an application (e.g. routing).
 
-  `setupContext` must have been ran on the provided context prior to calling
-  `setupApplicatinContext`.
+  `setupContext` must have been run on the provided context prior to calling
+  `setupApplicationContext`.
 
   Sets up the basic framework used by application tests.
 
