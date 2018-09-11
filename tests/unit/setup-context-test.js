@@ -16,7 +16,7 @@ import {
   application,
   resolver,
 } from '../helpers/resolver';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import App from '../../app';
 import config from '../../config/environment';
 import Ember from 'ember';
@@ -287,7 +287,7 @@ module('setupContext', function(hooks) {
     let isolatedApp;
 
     hooks.beforeEach(function() {
-      const AppConfig = merge({ autoboot: false }, config.APP);
+      const AppConfig = assign({ autoboot: false }, config.APP);
       // .extend() because initializers are stored in the constructor, and we
       // don't want to pollute other tests using an application created from the
       // same constructor.

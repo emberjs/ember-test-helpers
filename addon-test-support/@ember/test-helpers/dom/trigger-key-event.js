@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
@@ -167,7 +167,7 @@ export default function triggerKeyEvent(target, eventType, key, modifiers = DEFA
       throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
     }
 
-    let options = merge(props, modifiers);
+    let options = assign(props, modifiers);
 
     fireEvent(element, eventType, options);
 

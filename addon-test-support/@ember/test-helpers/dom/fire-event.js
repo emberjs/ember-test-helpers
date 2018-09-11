@@ -1,4 +1,4 @@
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -62,7 +62,7 @@ export default function fireEvent(element, eventType, options = {}) {
       clientY: y,
     };
 
-    event = buildMouseEvent(eventType, merge(simulatedCoordinates, options));
+    event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
   } else if (FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1 && element.files) {
     event = buildFileEvent(eventType, element, options);
   } else {
@@ -86,14 +86,14 @@ function buildBasicEvent(type, options = {}) {
   // bubbles and cancelable are readonly, so they can be
   // set when initializing event
   event.initEvent(type, bubbles, cancelable);
-  merge(event, options);
+  assign(event, options);
   return event;
 }
 
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
-  let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
+  let eventOpts = assign({}, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
@@ -126,7 +126,7 @@ function buildMouseEvent(type, options = {}) {
 
 // eslint-disable-next-line require-jsdoc
 function buildKeyboardEvent(type, options = {}) {
-  let eventOpts = merge(merge({}, DEFAULT_EVENT_OPTIONS), options);
+  let eventOpts = assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event, eventMethodName;
 
   try {
