@@ -47,7 +47,7 @@
     "ember-cli-pretender": "^1.0.1",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-test-loader": "^2.2.0",
-    "ember-data": "~3.1.1",
+    "ember-data": "3.1.1",
     "ember-debug-handlers-polyfill": "^1.0.3",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-fetch": "^3.4.0",
@@ -56,7 +56,7 @@
     "ember-resolver": "^4.0.0",
     "ember-source": "~3.1.0",
     "ember-source-channel-url": "^1.0.1",
-    "ember-try": "^1.0.0-beta.1",
+    "ember-try": "1.0.0-beta.1",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-disable-features": "^0.1.3",
     "eslint-plugin-node": "^6.0.1",
@@ -84,5 +84,9 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "resolutions": {
+    "**/sane": "^2.5.2",
+    "ember-cli/testem": "~2.6.0"
   }
 }
