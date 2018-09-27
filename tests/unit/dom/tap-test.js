@@ -59,6 +59,20 @@ module('DOM Helper: tap', function(hooks) {
       assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
     });
 
+    test('tapping passes options through to mouse events', async function(assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+
+      await tap(element, { clientX: 13, clientY: 17, button: 1 });
+
+      assert.verifySteps([
+        'touchstart 13 17 1',
+        'touchend 13 17 1',
+        'mousedown 13 17 1',
+        'mouseup 13 17 1',
+        'click 13 17 1',
+      ]);
+    });
+
     test('does not run sync', async function(assert) {
       element = buildInstrumentedElement('div');
 

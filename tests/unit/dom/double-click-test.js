@@ -118,6 +118,22 @@ module('DOM Helper: doubleClick', function(hooks) {
         /Must setup rendering context before attempting to interact with elements/
       );
     });
+
+    test('double-clicking passes options through to mouse events', async function(assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+
+      await doubleClick(element, { clientX: 13, clientY: 17, button: 1 });
+
+      assert.verifySteps([
+        'mousedown 13 17 1',
+        'mouseup 13 17 1',
+        'click 13 17 1',
+        'mousedown 13 17 1',
+        'mouseup 13 17 1',
+        'click 13 17 1',
+        'dblclick 13 17 1',
+      ]);
+    });
   });
 
   module('focusable element types', function() {

@@ -9,16 +9,17 @@ import isFormControl from './-is-form-control';
 /**
   @private
   @param {Element} element the element to click on
+  @param {Object} options the options to be merged into the mouse events
 */
-export function __click__(element) {
-  fireEvent(element, 'mousedown');
+export function __click__(element, options) {
+  fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
     __focus__(element);
   }
 
-  fireEvent(element, 'mouseup');
-  fireEvent(element, 'click');
+  fireEvent(element, 'mouseup', options);
+  fireEvent(element, 'click', options);
 }
 
 /**
@@ -45,11 +46,14 @@ export function __click__(element) {
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
+  Use the `options` hash to change the parameters of the MouseEvents. 
+
   @public
   @param {string|Element} target the element or selector to click on
+  @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
-export default function click(target) {
+export default function click(target, options = {}) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `click`.');
@@ -63,7 +67,7 @@ export default function click(target) {
     let isDisabledFormControl = isFormControl(element) && element.disabled === true;
 
     if (!isDisabledFormControl) {
-      __click__(element);
+      __click__(element, options);
     }
 
     return settled();
