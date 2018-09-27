@@ -1,16 +1,11 @@
 import { run } from '@ember/runloop';
 import { Promise as EmberPromise, resolve } from 'rsvp';
-import { assign, merge as emberMerge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import { _setupPromiseListeners, _teardownPromiseListeners } from './ext/rsvp';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { getContext, setContext, unsetContext } from '@ember/test-helpers';
 
 import Ember from 'ember';
-
-// calling this `merge` here because we cannot
-// actually assume it is like `Object.assign`
-// with > 2 args
-const merge = assign || emberMerge;
 
 export default class {
   constructor(name, options) {
@@ -126,11 +121,14 @@ export default class {
   setupContext(options) {
     let context = this.getContext();
 
-    merge(context, {
-      dispatcher: null,
-      inject: {},
-    });
-    merge(context, options);
+    assign(
+      context,
+      {
+        dispatcher: null,
+        inject: {},
+      },
+      options
+    );
 
     this.setToString();
     setContext(context);
