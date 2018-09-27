@@ -1,14 +1,15 @@
 toc:
   - name: DOM Interaction Helpers
     children:
+      - blur
       - click
       - doubleClick
-      - tap
+      - fillIn
       - focus
-      - blur
+      - tap
       - triggerEvent
       - triggerKeyEvent
-      - fillIn
+      - typeIn
 
   - name: DOM Query Helpers
     children:
