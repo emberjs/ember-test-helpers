@@ -1,9 +1,13 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
+import { isSettled, getSettledState } from '@ember/test-helpers';
 import { getContext, setupContext, teardownContext } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import Ember from 'ember';
+import hasjQuery from '../helpers/has-jquery';
+import ajax from '../helpers/ajax';
+import Pretender from 'pretender';
 
 module('teardownContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -12,11 +16,16 @@ module('teardownContext', function(hooks) {
 
   let context;
   hooks.beforeEach(function() {
+    this.pretender = new Pretender();
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
     context = {};
     return setupContext(context);
+  });
+
+  hooks.afterEach(function() {
+    this.pretender.shutdown();
   });
 
   test('it destroys any instances created', async function(assert) {
@@ -45,4 +54,21 @@ module('teardownContext', function(hooks) {
 
     assert.strictEqual(getContext(), undefined, 'context is unset');
   });
+
+  if (hasjQuery()) {
+    test('out of balance xhr semaphores are cleaned up on teardown', async function(assert) {
+      this.pretender.unhandledRequest = function(/* verb, path, request */) {
+        throw new Error(`Synchronous error from Pretender.prototype.unhandledRequest`);
+      };
+
+      ajax('/some/totally/invalid/url');
+
+      await teardownContext(context);
+
+      assert.ok(
+        isSettled(),
+        `out of balance xhr semaphores are cleaned up on teardown: ${getSettledState()}`
+      );
+    });
+  }
 });
