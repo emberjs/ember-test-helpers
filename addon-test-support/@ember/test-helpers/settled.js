@@ -79,6 +79,13 @@ function decrementAjaxPendingRequests(event, xhr) {
   @private
 */
 export function _teardownAJAXHooks() {
+  // jQuery will not invoke `ajaxComplete` if
+  //    1. `transport.send` throws synchronously and
+  //    2. it has an `error` option which also throws synchronously
+
+  // We can no longer handle any remaining requests
+  requests = [];
+
   if (!jQuery) {
     return;
   }
