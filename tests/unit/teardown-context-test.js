@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { isSettled } from '@ember/test-helpers';
+import { isSettled, getSettledState } from '@ember/test-helpers';
 import { getContext, setupContext, teardownContext } from 'ember-test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
@@ -65,7 +65,10 @@ module('teardownContext', function(hooks) {
 
       await teardownContext(context);
 
-      assert.ok(isSettled(), 'out of balance xhr semaphores are cleaned up on teardown');
+      assert.ok(
+        isSettled(),
+        `out of balance xhr semaphores are cleaned up on teardown: ${getSettledState()}`
+      );
     });
   }
 });

@@ -2,6 +2,7 @@ import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
+import { isSettled, getSettledState } from '@ember/test-helpers';
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
@@ -9,6 +10,7 @@ if (QUnit.config.seed) {
 
 let moduleLoadFailures = [];
 let cleanupFailures = [];
+let asyncLeakageFailures = [];
 
 QUnit.done(function() {
   if (moduleLoadFailures.length) {
@@ -17,6 +19,10 @@ QUnit.done(function() {
 
   if (cleanupFailures.length) {
     throw new Error('\n' + cleanupFailures.join('\n'));
+  }
+
+  if (asyncLeakageFailures.length) {
+    throw new Error('\n' + asyncLeakageFailures.join('\n'));
   }
 });
 
@@ -70,6 +76,16 @@ QUnit.testDone(function({ module, name }) {
     // eslint-disable-next-line
     console.error(message);
     testElementContainer.innerHTML = expected;
+  }
+
+  if (!isSettled()) {
+    let message = `Expected to be settled after ${module}: ${name}, but was \`${JSON.stringify(
+      getSettledState()
+    )}\``;
+    asyncLeakageFailures.push(message);
+
+    // eslint-disable-next-line
+    console.error(message);
   }
 });
 
