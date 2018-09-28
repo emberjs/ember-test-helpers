@@ -18,6 +18,7 @@ export default function qunitModuleFor(testModule) {
     },
     afterEach(assert) {
       return testModule.teardown(assert).finally(() => {
+        Ember.Test.adapter = null;
         if (Ember.testing) {
           throw new Error('should not have Ember.testing === true after tests have finished');
         }
