@@ -3,14 +3,15 @@
 ### Table of Contents
 
 -   [DOM Interaction Helpers](#dom-interaction-helpers)
+    -   [blur](#blur)
     -   [click](#click)
     -   [doubleClick](#doubleclick)
-    -   [tap](#tap)
+    -   [fillIn](#fillin)
     -   [focus](#focus)
-    -   [blur](#blur)
+    -   [tap](#tap)
     -   [triggerEvent](#triggerevent)
     -   [triggerKeyEvent](#triggerkeyevent)
-    -   [fillIn](#fillin)
+    -   [typeIn](#typein)
 -   [DOM Query Helpers](#dom-query-helpers)
     -   [find](#find)
     -   [findAll](#findall)
@@ -52,6 +53,27 @@
 
 
 
+### blur
+
+Unfocus the specified target.
+
+Sends a number of events intending to simulate a "real" user unfocusing an
+element.
+
+The following events are triggered (in order):
+
+-   `blur`
+-   `focusout`
+
+The exact listing of events that are triggered may change over time as needed
+to continue to emulate how actual browsers handle unfocusing a given element.
+
+**Parameters**
+
+-   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to unfocus (optional, default `document.activeElement`)
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+
 ### click
 
 Clicks on the specified target.
@@ -77,9 +99,12 @@ For focusable (e.g. form control) elements the following events are triggered
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle clicking a given element.
 
+Use the `options` hash to change the parameters of the MouseEvents.
+
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to click on
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the mouse events (optional, default `{}`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
 
@@ -87,7 +112,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Double-clicks on the specified target.
 
-Sends a number of events intending to simulate a "real" user double-clicking on an
+Sends a number of events intending to simulate a "real" user clicking on an
 element.
 
 For non-focusable elements the following events are triggered (in order):
@@ -114,13 +139,50 @@ For focusable (e.g. form control) elements the following events are triggered
 -   `dblclick`
 
 The exact listing of events that are triggered may change over time as needed
-to continue to emulate how actual browsers handle double-clicking a given element.
+to continue to emulate how actual browsers handle clicking a given element.
+
+Use the `options` hash to change the parameters of the MouseEvents.
 
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to double-click on
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the mouse events (optional, default `{}`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+
+### fillIn
+
+Fill the provided text into the `value` property (or set `.innerHTML` when
+the target is a content editable element) then trigger `change` and `input`
+events on the specified target.
+
+**Parameters**
+
+-   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to enter text into
+-   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the text to fill into the target element
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+
+### focus
+
+Focus the specified target.
+
+Sends a number of events intending to simulate a "real" user focusing an
+element.
+
+The following events are triggered (in order):
+
+-   `focus`
+-   `focusin`
+
+The exact listing of events that are triggered may change over time as needed
+to continue to emulate how actual browsers handle focusing a given element.
+
+**Parameters**
+
+-   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to focus
+
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
 
 ### tap
 
@@ -151,52 +213,12 @@ For focusable (e.g. form control) elements the following events are triggered
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle tapping on a given element.
 
+Use the `options` hash to change the parameters of the tap events.
+
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to tap on
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be provided to the touch events (optional, default `{}`)
-
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
-
-### focus
-
-Focus the specified target.
-
-Sends a number of events intending to simulate a "real" user focusing an
-element.
-
-The following events are triggered (in order):
-
--   `focus`
--   `focusin`
-
-The exact listing of events that are triggered may change over time as needed
-to continue to emulate how actual browsers handle focusing a given element.
-
-**Parameters**
-
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to focus
-
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
-
-### blur
-
-Unfocus the specified target.
-
-Sends a number of events intending to simulate a "real" user unfocusing an
-element.
-
-The following events are triggered (in order):
-
--   `blur`
--   `focusout`
-
-The exact listing of events that are triggered may change over time as needed
-to continue to emulate how actual browsers handle unfocusing a given element.
-
-**Parameters**
-
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to unfocus (optional, default `document.activeElement`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the touch events (optional, default `{}`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
 
@@ -212,9 +234,10 @@ Triggers an event on the specified target.
 
 **Examples**
 
-_Using triggerEvent to Upload a file
+Using triggerEvent to Upload a file
 When using triggerEvent to upload a file the `eventType` must be `change` and  you must pass an
-array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) as `options`._
+array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) as `options`.
+
 
 ```javascript
 triggerEvent(
@@ -246,16 +269,23 @@ Optionally the user can also provide a POJO with extra modifiers for the event.
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
 
-### fillIn
+### typeIn
 
-Fill the provided text into the `value` property (or set `.innerHTML` when
-the target is a content editable element) then trigger `change` and `input`
-events on the specified target.
+Mimics character by character entry into the target `input` or `textarea` element.
+
+Allows for simulation of slow entry by passing an optional millisecond delay
+between key events.
+
+The major difference between `typeIn` and `fillIn` is that `typeIn` triggers
+keyboard events as well as `input` and `change`.
+Typically this looks like `focus` -> `focusin` -> `keydown` -> `keypress` -> `keyup` -> `input` -> `change`
+per character of the passed text (this may vary on some browsers).
 
 **Parameters**
 
 -   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to enter text into
--   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the text to fill into the target element
+-   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the test to fill the element with
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{delay:50}`)
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
 
@@ -351,7 +381,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
     -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the time to wait (in ms) for a match (optional, default `1000`)
     -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
-    -   `options.timeoutMessage`   (optional, default `'waitFor timed out'`)
+    -   `options.timeoutMessage`  
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)>** resolves when the element(s) appear on the page
 
@@ -392,18 +422,18 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Check various settledness metrics, and return an object with the following properties:
 
-`hasRunLoop` - Checks if a run-loop has been started. If it has, this will
-be `true` otherwise it will be `false`.
-`hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
-These pending timers are primarily registered by `Ember.run.schedule`. If
-there are pending timers, this will be `true`, otherwise `false`.
-`hasPendingWaiters` - Checks if any registered test waiters are still
-pending (e.g. the waiter returns `true`). If there are pending waiters,
-this will be `true`, otherwise `false`.
-`hasPendingRequests` - Checks if there are pending AJAX requests (based on
-`ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
-are pending requests, this will be `true`, otherwise `false`.
-`pendingRequestCount` - The count of pending AJAX requests.
+-   `hasRunLoop` - Checks if a run-loop has been started. If it has, this will
+    be `true` otherwise it will be `false`.
+-   `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
+    These pending timers are primarily registered by `Ember.run.schedule`. If
+    there are pending timers, this will be `true`, otherwise `false`.
+-   `hasPendingWaiters` - Checks if any registered test waiters are still
+    pending (e.g. the waiter returns `true`). If there are pending waiters,
+    this will be `true`, otherwise `false`.
+-   `hasPendingRequests` - Checks if there are pending AJAX requests (based on
+    `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
+    are pending requests, this will be `true`, otherwise `false`.
+-   `pendingRequestCount` - The count of pending AJAX requests.
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object with properties for each of the metrics used to determine settledness
 
@@ -425,7 +455,8 @@ are disabled.
 
 **Examples**
 
-_Usage via ember-qunit_
+Usage via ember-qunit
+
 
 ```javascript
 import { setupRenderingTest } from 'ember-qunit';
@@ -594,8 +625,8 @@ Stores the provided application instance so that tests being ran will be aware o
 Used by test framework addons to setup the provided context for working with
 an application (e.g. routing).
 
-`setupContext` must have been ran on the provided context prior to calling
-`setupApplicatinContext`.
+`setupContext` must have been run on the provided context prior to calling
+`setupApplicationContext`.
 
 Sets up the basic framework used by application tests.
 
@@ -632,7 +663,8 @@ everything is on fire...
 
 **Examples**
 
-_Example implementation for `ember-qunit`_
+Example implementation for `ember-qunit`
+
 
 ```javascript
 import { validateErrorHandler } from '@ember/test-helpers';
