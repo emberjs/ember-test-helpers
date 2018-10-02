@@ -1,5 +1,47 @@
 # Change Log
 
+## v0.7.26 (2018-10-02)
+
+#### :rocket: Enhancement
+* [#410](https://github.com/emberjs/ember-test-helpers/pull/410) Use `assign` instead of deprecated `merge`. ([@wagenet](https://github.com/wagenet))
+* [#397](https://github.com/emberjs/ember-test-helpers/pull/397) Add `typeIn` helper to trigger `keyup`, `keypress` and `keyup` events when filling inputs. ([@mfeckie](https://github.com/mfeckie))
+* [#398](https://github.com/emberjs/ember-test-helpers/pull/398) Add options to `click`, `doubleClick`, and `tap`. ([@BryanCrotaz](https://github.com/BryanCrotaz))
+* [#387](https://github.com/emberjs/ember-test-helpers/pull/387) Update `buildMouseEvent` to use `MouseEvent` constructor if it is present. ([@ggayowsky](https://github.com/ggayowsky))
+* [#391](https://github.com/emberjs/ember-test-helpers/pull/391) Add numbers to `keyFromKeyCode`. ([@localpcguy](https://github.com/localpcguy))
+* [#392](https://github.com/emberjs/ember-test-helpers/pull/392) Include selector in `waitFor()`'s default timeout message. ([@gabrielgrant](https://github.com/gabrielgrant))
+* [#382](https://github.com/emberjs/ember-test-helpers/pull/382) Add `doubleClick` helper. ([@mmun](https://github.com/mmun))
+
+#### :bug: Bug Fix
+* [#413](https://github.com/emberjs/ember-test-helpers/pull/413) Clear requests array when tearing down. ([@hjdivad](https://github.com/hjdivad))
+* [#404](https://github.com/emberjs/ember-test-helpers/pull/404) Fix `getRootElement` failing when `Application.rootElement` is an element. ([@apellerano-pw](https://github.com/apellerano-pw))
+
+#### :memo: Documentation
+* [#408](https://github.com/emberjs/ember-test-helpers/pull/408) Update `setupApplicationContext` documentation. ([@vitch](https://github.com/vitch))
+* [#340](https://github.com/emberjs/ember-test-helpers/pull/340) Add some specific documentation for uploading files. ([@jrjohnson](https://github.com/jrjohnson))
+* [#396](https://github.com/emberjs/ember-test-helpers/pull/396) docs(api): try fixing `getSettledState` list. ([@knownasilya](https://github.com/knownasilya))
+* [#199](https://github.com/emberjs/ember-test-helpers/pull/199) Replace hard-coded guides link with /current. ([@acorncom](https://github.com/acorncom))
+* [#386](https://github.com/emberjs/ember-test-helpers/pull/386) Fix `waitFor` return value documentation. ([@pcambra](https://github.com/pcambra))
+
+#### :house: Internal
+* [#412](https://github.com/emberjs/ember-test-helpers/pull/412) Work around downstream dependencies dropping Node 4 without major bump. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 15
+- Andrew Pellerano ([apellerano-pw](https://github.com/apellerano-pw))
+- Bryan ([BryanCrotaz](https://github.com/BryanCrotaz))
+- David Baker ([acorncom](https://github.com/acorncom))
+- David J. Hamilton ([hjdivad](https://github.com/hjdivad))
+- Gabriel Grant ([gabrielgrant](https://github.com/gabrielgrant))
+- Ilya Radchenko ([knownasilya](https://github.com/knownasilya))
+- Jonathan Johnson ([jrjohnson](https://github.com/jrjohnson))
+- Kelvin Luck ([vitch](https://github.com/vitch))
+- Martin Feckie ([mfeckie](https://github.com/mfeckie))
+- Martin Muñoz ([mmun](https://github.com/mmun))
+- Mike Behnke ([localpcguy](https://github.com/localpcguy))
+- Pedro ([pcambra](https://github.com/pcambra))
+- Peter Wagenet ([wagenet](https://github.com/wagenet))
+- Robert Jackson ([rwjblue](https://github.com/rwjblue))
+- [ggayowsky](https://github.com/ggayowsky)
+
 ## v0.7.25 (2018-06-10)
 
 #### :boom: Breaking Change
