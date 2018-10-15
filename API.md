@@ -235,7 +235,7 @@ Triggers an event on the specified target.
 **Examples**
 
 Using triggerEvent to Upload a file
-When using triggerEvent to upload a file the `eventType` must be `change` and you should pass the `options` param as an object with a key `files` containing an array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the `options` param as an object with a key `files` containing an array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
 
 
 ```javascript
