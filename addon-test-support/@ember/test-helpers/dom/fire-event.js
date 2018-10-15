@@ -1,4 +1,5 @@
 import { assign } from '@ember/polyfills';
+import { deprecate } from '@ember/application/deprecations';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -194,8 +195,23 @@ function buildKeyboardEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildFileEvent(type, element, files = []) {
+function buildFileEvent(type, element, options = {}) {
   let event = buildBasicEvent(type);
+  let files;
+  if (Array.isArray(options)) {
+    deprecate(
+      'Passing the `options` param as an array to `triggerEvent` for file inputs is deprecated. Please pass an object with a key `files` containing the array instead.',
+      false,
+      {
+        id: 'ember-test-helpers.trigger-event.options-blob-array',
+        until: '0.8.0',
+      }
+    );
+
+    files = options;
+  } else {
+    files = options.files;
+  }
 
   if (files.length > 0) {
     Object.defineProperty(files, 'item', {
