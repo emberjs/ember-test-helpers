@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.7.27 (2018-10-16)
+
+#### :bug: Bug Fix
+* [#429](https://github.com/emberjs/ember-test-helpers/pull/429) Ensure view is set by default on generated mouse events. ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([mydea](https://github.com/mydea))
+
 ## v0.7.26 (2018-10-02)
 
 #### :rocket: Enhancement
