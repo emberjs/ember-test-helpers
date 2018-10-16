@@ -14,8 +14,9 @@ import { nextTickPromise } from '../-utils';
  *
  * @example
  * <caption>Using triggerEvent to Upload a file
- * When using triggerEvent to upload a file the `eventType` must be `change` and  you must pass an
- * array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob) as `options`.</caption>
+ * When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the
+ * `options` param as an object with a key `files` containing an array of
+ * [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).</caption>
  *
  * triggerEvent(
  *   'input.fileUpload',

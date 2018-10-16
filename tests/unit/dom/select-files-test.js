@@ -50,4 +50,35 @@ module('DOM Helper: selectFiles', function(hooks) {
 
     assert.verifySteps(['change', 'text-file.txt', 'change', 'image-file.png']);
   });
+
+  test('it can trigger a file selection event with files passed in options as an object', async function(assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[0].name);
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change', { files: [textFile] });
+
+    assert.verifySteps(['change', 'text-file.txt']);
+  });
+
+  test('it can trigger a file selection event with files passed in options as an array but raises a deprecation warning', async function(assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[0].name);
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change', [textFile]);
+
+    assert.verifySteps(['change', 'text-file.txt']);
+    assert.deprecationsInclude(
+      'Passing the `options` param as an array to `triggerEvent` for file inputs is deprecated. Please pass an object with a key `files` containing the array instead.'
+    );
+  });
 });
