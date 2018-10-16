@@ -93,7 +93,7 @@ function buildBasicEvent(type, options = {}) {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
-  let eventOpts = assign({}, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
