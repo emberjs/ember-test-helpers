@@ -103,6 +103,19 @@ module('DOM Helper: click', function(hooks) {
 
       assert.verifySteps(['mousedown 13 17 2', 'mouseup 13 17 2', 'click 13 17 2']);
     });
+
+    test('clicking a div has window set as view by default', async function(assert) {
+      element = buildInstrumentedElement('div', ['view']);
+
+      await setupContext(context);
+      await click(element);
+
+      assert.verifySteps([
+        'mousedown [object Window]',
+        'mouseup [object Window]',
+        'click [object Window]',
+      ]);
+    });
   });
 
   module('focusable element types', function() {
