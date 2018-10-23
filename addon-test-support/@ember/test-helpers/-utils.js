@@ -1,4 +1,5 @@
-import { Promise } from 'rsvp';
+/* globals Promise */
+import { Promise as RSVPPromise } from 'rsvp';
 
 export const nextTick =
   typeof Promise === 'undefined' ? setTimeout : cb => Promise.resolve().then(cb);
@@ -6,10 +7,10 @@ export const futureTick = setTimeout;
 
 /**
  @private
- @returns {Promise<void>} promise which resolves on the next turn of the event loop
+ @returns {Promise<void>} Promise which can not be forced to be ran synchronously
 */
 export function nextTickPromise() {
-  return new Promise(resolve => {
+  return new RSVPPromise(resolve => {
     nextTick(resolve);
   });
 }
