@@ -204,7 +204,7 @@ function buildFileEvent(type, element, options = {}) {
       false,
       {
         id: 'ember-test-helpers.trigger-event.options-blob-array',
-        until: '0.8.0',
+        until: '2.0.0',
       }
     );
 
