@@ -38,7 +38,7 @@
     "ember-cli-htmlbars-inline-precompile": "^1.0.5"
   },
   "devDependencies": {
-    "@ember/optional-features": "^0.5.2",
+    "@ember/optional-features": "^0.7.0",
     "documentation": "8.1.2",
     "ember-cli": "~3.1.2",
     "ember-cli-dependency-checker": "^3.0.0",
