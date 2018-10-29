@@ -2214,7 +2214,7 @@ broccoli-lint-eslint@^4.2.1:
     lodash.defaultsdeep "^4.6.0"
     md5-hex "^2.0.0"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.2.1:
+broccoli-merge-trees@^1.0.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-1.2.4.tgz#a001519bb5067f06589d91afa2942445a2d0fdb5"
   integrity sha1-oAFRm7UGfwZYnZGvopQkRaLQ/bU=
@@ -3601,15 +3601,20 @@ ember-cli-preprocess-registry@^3.1.0:
     process-relative-require "^1.0.0"
     silent-error "^1.0.0"
 
-ember-cli-pretender@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-pretender/-/ember-cli-pretender-1.0.1.tgz#35540babddef6f2778e91c627d190c73505103cd"
-  integrity sha1-NVQLq93vbyd46RxifRkMc1BRA80=
+ember-cli-pretender@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-pretender/-/ember-cli-pretender-3.0.0.tgz#dcaf772332a1e6b0fc91e4b9a7e793a1283c85ac"
+  integrity sha512-WpcXEiAStYFrPUfy6RElkm9EcJFjRAdD6LmMFoORG/fLjcWZya/pMSemzykZpCPMjMLHabR5ltmfvUjb4MR1ZQ==
   dependencies:
-    broccoli-funnel "^1.1.0"
-    broccoli-merge-trees "^1.2.1"
-    pretender "^1.4.2"
+    "@xg-wang/whatwg-fetch" "^3.0.0"
+    abortcontroller-polyfill "^1.1.9"
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^3.0.0"
+    ember-cli-babel "^6.6.0"
+    fake-xml-http-request "^2.0.0"
+    pretender "^2.1.0"
     resolve "^1.2.0"
+    route-recognizer "^0.3.3"
 
 ember-cli-shims@^1.2.0:
   version "1.2.0"
@@ -4532,10 +4537,10 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-fake-xml-http-request@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/fake-xml-http-request/-/fake-xml-http-request-1.6.0.tgz#bd0ac79ae3e2660098282048a12c730a6f64d550"
-  integrity sha512-99XPwwSg89BfzPuv4XCpZxn3EbauMCgAQCxq9MzrvS6DFD73OON6AnUTicL4A0HZtYMBwCZBWVnRqGjZDgQkTg==
+fake-xml-http-request@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fake-xml-http-request/-/fake-xml-http-request-2.0.0.tgz#41a92f0ca539477700cb1dafd2df251d55dac8ff"
+  integrity sha512-UjNnynb6eLAB0lyh2PlTEkjRJORnNsVF1hbzU+PQv89/cyBV9GDRCy7JAcLQgeCLYT+3kaumWWZKEJvbaK74eQ==
 
 fast-deep-equal@^1.0.0:
   version "1.1.0"
@@ -7976,12 +7981,13 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
 
-pretender@^1.4.2:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/pretender/-/pretender-1.6.1.tgz#77d1e42ac8c6b298f5cd43534a87645df035db8c"
-  integrity sha1-d9HkKsjGspj1zUNTSodkXfA124w=
+pretender@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/pretender/-/pretender-2.1.1.tgz#5085f0a1272c31d5b57c488386f69e6ca207cb35"
+  integrity sha512-IkidsJzaroAanw3I43tKCFm2xCpurkQr9aPXv5/jpN+LfCwDaeI8rngVWtQZTx4qqbhc5zJspnLHJ4N/25KvDQ==
   dependencies:
-    fake-xml-http-request "^1.6.0"
+    "@xg-wang/whatwg-fetch" "^3.0.0"
+    fake-xml-http-request "^2.0.0"
     route-recognizer "^0.3.3"
 
 prettier-linter-helpers@^1.0.0:
