@@ -1,5 +1,24 @@
 # Change Log
 
+## v1.0.0 (2018-10-29)
+
+#### :boom: Breaking Change
+* [#427](https://github.com/emberjs/ember-test-helpers/pull/427) Drop support for Node.js 4 and below ([@Turbo87](https://github.com/Turbo87))
+* [#425](https://github.com/emberjs/ember-test-helpers/pull/425) Drop support for ember-cli 2.12 and below ([@dependabot](https://github.com/dependabot))
+
+#### :rocket: Enhancement
+* [#370](https://github.com/emberjs/ember-test-helpers/pull/370) Allow internal `nextTick` utility to use microtasks when possible. ([@rwjblue](https://github.com/rwjblue))
+* [#428](https://github.com/emberjs/ember-test-helpers/pull/428) Standardize params for calling triggerEvent on file input ([@mattdonnelly](https://github.com/mattdonnelly))
+
+#### :bug: Bug Fix
+* [#429](https://github.com/emberjs/ember-test-helpers/pull/429) Ensure view is set by default on generated mouse events ([@mydea](https://github.com/mydea))
+
+#### Committers: 4
+- Francesco Novy ([@mydea](https://github.com/mydea))
+- Matt Donnelly ([@mattdonnelly](https://github.com/mattdonnelly))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v0.7.27 (2018-10-16)
 
 #### :bug: Bug Fix
