@@ -1,4 +1,5 @@
 import { getContext } from '../setup-context';
+import { isDocument, isElement } from './-target';
 
 /**
   Get the root element of the application under test (usually `#ember-testing`)
@@ -6,7 +7,7 @@ import { getContext } from '../setup-context';
   @public
   @returns {Element} the root element
 */
-export default function getRootElement(): Element {
+export default function getRootElement(): Element | Document {
   let context = getContext();
   let owner = context && context.owner;
 
@@ -23,11 +24,7 @@ export default function getRootElement(): Element {
     rootElement = '#ember-testing';
   }
 
-  if (
-    rootElement.nodeType === Node.ELEMENT_NODE ||
-    rootElement.nodeType === Node.DOCUMENT_NODE ||
-    rootElement instanceof Window
-  ) {
+  if (isElement(rootElement) || isDocument(rootElement) || rootElement instanceof Window) {
     return rootElement;
   } else if (typeof rootElement === 'string') {
     let _rootElement = document.querySelector(rootElement);
