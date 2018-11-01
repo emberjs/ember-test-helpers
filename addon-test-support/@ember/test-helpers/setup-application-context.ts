@@ -1,12 +1,17 @@
 import { get } from '@ember/object';
 import { nextTickPromise } from './-utils';
-import { getContext, TestContext } from './setup-context';
+import { BaseContext, getContext, isTestContext, TestContext } from './setup-context';
 import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 
 export interface ApplicationTestContext extends TestContext {
-  element?: Element;
+  element?: Element | null;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isApplicationTestContext(context: BaseContext): context is ApplicationTestContext {
+  return isTestContext(context);
 }
 
 /**
@@ -18,7 +23,11 @@ export interface ApplicationTestContext extends TestContext {
   @returns {Promise<void>} resolves when settled
 */
 export function visit(url: string, options?: { [key: string]: any }): Promise<void> {
-  let context = getContext() as TestContext;
+  const context = getContext();
+  if (!context || !isApplicationTestContext(context)) {
+    throw new Error('Cannot call `visit` without having first called `setupApplicationContext`.');
+  }
+
   let { owner } = context;
 
   return nextTickPromise()
@@ -40,8 +49,14 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
   @returns {string} the currently active route name
 */
 export function currentRouteName(): string {
-  let { owner } = getContext() as TestContext;
-  let router = owner.lookup('router:main');
+  const context = getContext();
+  if (!context || !isApplicationTestContext(context)) {
+    throw new Error(
+      'Cannot call `currentRouteName` without having first called `setupApplicationContext`.'
+    );
+  }
+
+  let router = context.owner.lookup('router:main');
   return get(router, 'currentRouteName');
 }
 
@@ -52,8 +67,14 @@ const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
   @returns {string} the applications current url
 */
 export function currentURL(): string {
-  let { owner } = getContext() as TestContext;
-  let router = owner.lookup('router:main');
+  const context = getContext();
+  if (!context || !isApplicationTestContext(context)) {
+    throw new Error(
+      'Cannot call `currentURL` without having first called `setupApplicationContext`.'
+    );
+  }
+
+  let router = context.owner.lookup('router:main');
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
     return get(router, 'currentURL');
