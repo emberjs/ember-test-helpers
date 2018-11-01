@@ -1,6 +1,8 @@
+import Application from '@ember/application';
+
 import { getResolver, setResolver } from './resolver';
 
-var __application__;
+var __application__: Application;
 
 /**
   Stores the provided application instance so that tests being ran will be aware of the application under test.
@@ -11,11 +13,11 @@ var __application__;
   @public
   @param {Ember.Application} application the application that will be tested
 */
-export function setApplication(application) {
+export function setApplication(application: Application): void {
   __application__ = application;
 
   if (!getResolver()) {
-    let Resolver = application.Resolver;
+    let Resolver = (application as any).Resolver;
     let resolver = Resolver.create({ namespace: application });
 
     setResolver(resolver);
@@ -28,6 +30,6 @@ export function setApplication(application) {
   @public
   @returns {Ember.Application} the previously stored application instance under test
 */
-export function getApplication() {
+export function getApplication(): Application {
   return __application__;
 }

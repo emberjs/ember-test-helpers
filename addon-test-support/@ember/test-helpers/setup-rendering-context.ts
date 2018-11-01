@@ -6,7 +6,7 @@ import global from './global';
 import { getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
-import hbs from 'htmlbars-inline-precompile';
+import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
 
 export const RENDERING_CLEANUP = Object.create(null);
@@ -49,7 +49,7 @@ let templateId = 0;
   @param {CompiledTemplate} template the template to render
   @returns {Promise<void>} resolves when settled
 */
-export function render(template) {
+export function render(template: TemplateFactory): Promise<void> {
   let context = getContext();
 
   if (!template) {
@@ -112,7 +112,7 @@ export function render(template) {
   @public
   @returns {Promise<void>} resolves when settled
 */
-export function clearRender() {
+export function clearRender(): Promise<void> {
   let context = getContext();
 
   if (!context || typeof context.clearRender !== 'function') {
@@ -143,7 +143,9 @@ export function clearRender() {
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupRenderingContext(context) {
+export default function setupRenderingContext<Context extends { owner: any }>(
+  context: Context
+): Promise<Context> {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
 
@@ -182,7 +184,8 @@ export default function setupRenderingContext(context) {
       // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
-        let dispatcher = owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
+        let dispatcher =
+          owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
         dispatcher.setup({}, '#ember-testing');
       }
 

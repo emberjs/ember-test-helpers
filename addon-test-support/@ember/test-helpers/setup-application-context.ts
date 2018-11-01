@@ -9,9 +9,10 @@ import settled from './settled';
   Navigate the application to the provided URL.
 
   @public
+  @param {string} url The URL to visit (e.g. `/posts`)
   @returns {Promise<void>} resolves when settled
 */
-export function visit() {
+export function visit(url: string): Promise<void> {
   let context = getContext();
   let { owner } = context;
 
@@ -33,7 +34,7 @@ export function visit() {
   @public
   @returns {string} the currently active route name
 */
-export function currentRouteName() {
+export function currentRouteName(): string {
   let { owner } = getContext();
   let router = owner.lookup('router:main');
   return get(router, 'currentRouteName');
@@ -45,7 +46,7 @@ const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
   @public
   @returns {string} the applications current url
 */
-export function currentURL() {
+export function currentURL(): string {
   let { owner } = getContext();
   let router = owner.lookup('router:main');
 
@@ -69,6 +70,8 @@ export function currentURL() {
   @param {Object} context the context to setup
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupApplicationContext() {
+export default function setupApplicationContext<Context extends object>(
+  context: Context
+): Promise<void> {
   return nextTickPromise();
 }

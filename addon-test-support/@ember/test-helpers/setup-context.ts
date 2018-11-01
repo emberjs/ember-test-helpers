@@ -1,6 +1,8 @@
 import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import Resolver from '@ember/application/resolver';
+
 import buildOwner from './build-owner';
 import { _setupAJAXHooks } from './settled';
 import Ember from 'ember';
@@ -11,7 +13,7 @@ import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { nextTickPromise } from './-utils';
 
-let __test_context__;
+let __test_context__: any | undefined;
 
 /**
   Stores the provided context as the "global testing context".
@@ -21,7 +23,7 @@ let __test_context__;
   @public
   @param {Object} context the context to use
 */
-export function setContext(context) {
+export function setContext(context: any): void {
   __test_context__ = context;
 }
 
@@ -31,7 +33,7 @@ export function setContext(context) {
   @public
   @returns {Object} the previously stored testing context
 */
-export function getContext() {
+export function getContext(): any | undefined {
   return __test_context__;
 }
 
@@ -42,7 +44,7 @@ export function getContext() {
 
   @public
 */
-export function unsetContext() {
+export function unsetContext(): void {
   __test_context__ = undefined;
 }
 
@@ -80,7 +82,7 @@ export function unsetContext() {
  *   });
  * });
  */
-export function pauseTest() {
+export function pauseTest(): Promise<void> {
   let context = getContext();
 
   if (!context || typeof context.pauseTest !== 'function') {
@@ -97,7 +99,7 @@ export function pauseTest() {
 
   @public
 */
-export function resumeTest() {
+export function resumeTest(): void {
   let context = getContext();
 
   if (!context || typeof context.resumeTest !== 'function') {
@@ -128,7 +130,10 @@ export const CLEANUP = Object.create(null);
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function(context, options: any = {}) {
+export default function<Context extends any>(
+  context: Context,
+  options: { resolver?: Resolver } = {}
+): Promise<Context> {
   (Ember as any).testing = true;
   setContext(context);
 
@@ -139,8 +144,9 @@ export default function(context, options: any = {}) {
     .then(() => {
       let application = getApplication();
       if (application) {
-        return application.boot();
+        return application.boot().then(() => {});
       }
+      return;
     })
     .then(() => {
       let testElementContainer = document.getElementById('ember-testing-container')!; // TODO remove "!"

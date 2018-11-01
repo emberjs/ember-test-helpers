@@ -19,7 +19,9 @@ import Ember from 'ember';
   @param {Object} context the context to setup
   @returns {Promise<void>} resolves when settled
 */
-export default function teardownContext(context) {
+export default function teardownContext<Context extends { owner: any }>(
+  context: Context
+): Promise<void> {
   return nextTickPromise()
     .then(() => {
       let { owner } = context;

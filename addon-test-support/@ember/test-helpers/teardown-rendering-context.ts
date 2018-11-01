@@ -15,7 +15,7 @@ import settled from './settled';
   @param {Object} context the context to setup
   @returns {Promise<void>} resolves when settled
 */
-export default function teardownRenderingContext(context) {
+export default function teardownRenderingContext(context: object): Promise<void> {
   return nextTickPromise().then(() => {
     let contextGuid = guidFor(context);
 
