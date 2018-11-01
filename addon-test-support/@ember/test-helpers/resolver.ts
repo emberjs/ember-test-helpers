@@ -1,6 +1,6 @@
 import Resolver from '@ember/application/resolver';
 
-var __resolver__: Resolver;
+var __resolver__: Resolver | undefined;
 
 /**
   Stores the provided resolver instance so that tests being ran can resolve
@@ -21,6 +21,6 @@ export function setResolver(resolver: Resolver): void {
   @public
   @returns {Ember.Resolver} the previously stored resolver
 */
-export function getResolver(): Resolver {
+export function getResolver(): Resolver | undefined {
   return __resolver__;
 }
