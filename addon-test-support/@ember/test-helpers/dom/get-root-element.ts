@@ -24,7 +24,11 @@ export default function getRootElement(): Element | Document {
     rootElement = '#ember-testing';
   }
 
-  if (isElement(rootElement) || isDocument(rootElement) || rootElement instanceof Window) {
+  if (rootElement instanceof Window) {
+    rootElement = rootElement.document;
+  }
+
+  if (isElement(rootElement) || isDocument(rootElement)) {
     return rootElement;
   } else if (typeof rootElement === 'string') {
     let _rootElement = document.querySelector(rootElement);
