@@ -78,7 +78,7 @@ export const futureTick = setTimeout;
  @private
  @returns {Promise<void>} Promise which can not be forced to be ran synchronously
 */
-export function nextTickPromise() {
+export function nextTickPromise(): RSVP.Promise<void> {
   // Ember 3.4 removed the auto-run assertion, in 3.4+ we can (and should) avoid the "psuedo promisey" run loop configuration
   // for our `nextTickPromise` implementation. This allows us to have real microtask based next tick timing...
   if (hasEmberVersion(3,4)) {
