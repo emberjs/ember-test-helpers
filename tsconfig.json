@@ -33,12 +33,6 @@
       "@ember/test-helpers/*": [
         "addon-test-support/@ember/test-helpers/*"
       ],
-      "ember-test-helpers": [
-        "addon-test-support/ember-test-helpers"
-      ],
-      "ember-test-helpers/*": [
-        "addon-test-support/ember-test-helpers/*"
-      ],
       "*": [
         "types/*"
       ]
