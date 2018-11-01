@@ -6,6 +6,12 @@ node_js:
 sudo: false
 dist: trusty
 
+branches:
+  only:
+    - master
+    - /^v\d+\.\d+\.\d+/      # version tags
+    - /^v\d+-(\d+|x)(-x)?/   # version branches
+
 addons:
   chrome: stable
 
