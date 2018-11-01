@@ -30,7 +30,12 @@ export default function getRootElement(): Element {
   ) {
     return rootElement;
   } else if (typeof rootElement === 'string') {
-    return document.querySelector(rootElement)!; // TODO remove "!"
+    let _rootElement = document.querySelector(rootElement);
+    if (_rootElement) {
+      return _rootElement;
+    }
+
+    throw new Error(`Application.rootElement (${rootElement}) not found`);
   } else {
     throw new Error('Application.rootElement must be an element or a selector string');
   }
