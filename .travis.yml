@@ -25,11 +25,11 @@ jobs:
   include:
     # runs tests with current locked deps and linting
     - stage: test
-      env: NAME=test                  # used only to make Travis UI show description
+      name: "test"
       script:
         - yarn lint
         - yarn test
-    - env: NAME=floating dependencies # used only to make Travis UI show description
+    - name: "floating dependencies"
       install: yarn install --no-lockfile --non-interactive
       script: yarn test
 
@@ -49,7 +49,7 @@ jobs:
     # runs deploy if running on a specific tag
     - stage: deploy
       if: tag IS present
-      env: NAME=npm-publish # used only to make Travis UI show description
+      name: "npm-publish"
       install: yarn global add auto-dist-tag@0.1
       script: auto-dist-tag --write
       deploy:
