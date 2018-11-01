@@ -1,4 +1,5 @@
 import isFormControl from './-is-form-control';
+import { isDocument } from './-target';
 
 const FOCUSABLE_TAGS = ['A'];
 
@@ -14,7 +15,11 @@ function isFocusableElement(element: Element): element is FocusableElement {
   @param {Element} element the element to check
   @returns {boolean} `true` when the element is focusable, `false` otherwise
 */
-export default function isFocusable(element: Element): boolean {
+export default function isFocusable(element: Element | Document): boolean {
+  if (isDocument(element)) {
+    return false;
+  }
+
   if (
     isFormControl(element) ||
     (element as HTMLElement).isContentEditable ||
