@@ -102,7 +102,7 @@ function keyCodeFromKey(key) {
   if (!keyCode) {
     keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key.toLowerCase());
   }
-  return parseInt(keyCode);
+  return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
 
 /**

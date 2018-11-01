@@ -1,7 +1,7 @@
-/* globals EmberENV */
 import { get } from '@ember/object';
 import { nextTickPromise } from './-utils';
 import { getContext } from './setup-context';
+import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 
@@ -20,7 +20,7 @@ export function visit() {
       return owner.visit(...arguments);
     })
     .then(() => {
-      if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
+      if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
         context.element = document.querySelector('#ember-testing > .ember-view');
       } else {
         context.element = document.querySelector('#ember-testing');

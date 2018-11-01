@@ -15,12 +15,14 @@ import waitUntil from './wait-until';
 // This utilizes a local utility method present in Ember since around 2.8.0 to
 // properly consider pending AJAX requests done within legacy acceptance tests.
 const _internalPendingRequests = (() => {
-  if (Ember.__loader.registry['ember-testing/test/pending_requests']) {
+  let loader = (Ember as any).__loader;
+
+  if (loader.registry['ember-testing/test/pending_requests']) {
     // Ember <= 3.1
-    return Ember.__loader.require('ember-testing/test/pending_requests').pendingRequests;
-  } else if (Ember.__loader.registry['ember-testing/lib/test/pending_requests']) {
+    return loader.require('ember-testing/test/pending_requests').pendingRequests;
+  } else if (loader.registry['ember-testing/lib/test/pending_requests']) {
     // Ember >= 3.2
-    return Ember.__loader.require('ember-testing/lib/test/pending_requests').pendingRequests;
+    return loader.require('ember-testing/lib/test/pending_requests').pendingRequests;
   }
 
   return () => 0;
@@ -111,12 +113,14 @@ export function _setupAJAXHooks() {
 }
 
 let _internalCheckWaiters;
-if (Ember.__loader.registry['ember-testing/test/waiters']) {
+
+let loader = (Ember as any).__loader;
+if (loader.registry['ember-testing/test/waiters']) {
   // Ember <= 3.1
-  _internalCheckWaiters = Ember.__loader.require('ember-testing/test/waiters').checkWaiters;
-} else if (Ember.__loader.registry['ember-testing/lib/test/waiters']) {
+  _internalCheckWaiters = loader.require('ember-testing/test/waiters').checkWaiters;
+} else if (loader.registry['ember-testing/lib/test/waiters']) {
   // Ember >= 3.2
-  _internalCheckWaiters = Ember.__loader.require('ember-testing/lib/test/waiters').checkWaiters;
+  _internalCheckWaiters = loader.require('ember-testing/lib/test/waiters').checkWaiters;
 }
 
 /**
@@ -126,8 +130,8 @@ if (Ember.__loader.registry['ember-testing/test/waiters']) {
 function checkWaiters() {
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
-  } else if (Ember.Test.waiters) {
-    if (Ember.Test.waiters.any(([context, callback]) => !callback.call(context))) {
+  } else if ((Ember.Test as any).waiters) {
+    if ((Ember.Test as any).waiters.any(([context, callback]) => !callback.call(context))) {
       return true;
     }
   }
@@ -158,8 +162,8 @@ export function getSettledState() {
   let pendingRequestCount = pendingRequests();
 
   return {
-    hasPendingTimers: Boolean(run.hasScheduledTimers()),
-    hasRunLoop: Boolean(run.currentRunLoop),
+    hasPendingTimers: Boolean((run as any).hasScheduledTimers()),
+    hasRunLoop: Boolean((run as any).currentRunLoop),
     hasPendingWaiters: checkWaiters(),
     hasPendingRequests: pendingRequestCount > 0,
     pendingRequestCount,
@@ -193,6 +197,6 @@ export function isSettled() {
   @public
   @returns {Promise<void>} resolves when settled
 */
-export default function settled() {
-  return waitUntil(isSettled, { timeout: Infinity });
+export default function settled(): Promise<void> {
+  return waitUntil(isSettled, { timeout: Infinity }).then(() => {});
 }

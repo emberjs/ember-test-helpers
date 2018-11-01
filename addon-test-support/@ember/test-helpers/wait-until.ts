@@ -17,7 +17,7 @@ const MAX_TIMEOUT = 10;
   @param {string} [options.timeoutMessage='waitUntil timed out'] the message to use in the reject on timeout
   @returns {Promise} resolves with the callback value when it returns a truthy value
 */
-export default function waitUntil(callback, options = {}) {
+export default function waitUntil(callback, options: any = {}) {
   let timeout = 'timeout' in options ? options.timeout : 1000;
   let timeoutMessage = 'timeoutMessage' in options ? options.timeoutMessage : 'waitUntil timed out';
 

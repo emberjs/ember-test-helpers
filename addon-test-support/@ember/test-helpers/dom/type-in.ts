@@ -52,7 +52,7 @@ export default function typeIn(target, text, options = { delay: 50 }) {
 
 // eslint-disable-next-line require-jsdoc
 function fillOut(element, text, delay) {
-  const inputFunctions = text.split('').map(character => keyEntry(element, character, delay));
+  const inputFunctions = text.split('').map(character => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
     return currentPromise.then(() => delayedExecute(func, delay));
   }, Promise.resolve());

@@ -128,8 +128,8 @@ export const CLEANUP = Object.create(null);
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function(context, options = {}) {
-  Ember.testing = true;
+export default function(context, options: any = {}) {
+  (Ember as any).testing = true;
   setContext(context);
 
   let contextGuid = guidFor(context);
@@ -143,7 +143,7 @@ export default function(context, options = {}) {
       }
     })
     .then(() => {
-      let testElementContainer = document.getElementById('ember-testing-container');
+      let testElementContainer = document.getElementById('ember-testing-container')!; // TODO remove "!"
       let fixtureResetValue = testElementContainer.innerHTML;
 
       // push this into the final cleanup bucket, to be ran _after_ the owner

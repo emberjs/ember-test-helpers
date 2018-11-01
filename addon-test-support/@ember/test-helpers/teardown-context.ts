@@ -27,7 +27,7 @@ export default function teardownContext(context) {
       _teardownAJAXHooks();
 
       run(owner, 'destroy');
-      Ember.testing = false;
+      (Ember as any).testing = false;
 
       unsetContext();
 
