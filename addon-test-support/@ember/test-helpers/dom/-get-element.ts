@@ -1,6 +1,11 @@
 import getRootElement from './get-root-element';
 import Target, { isDocument, isElement } from './-target';
 
+function getElement(target: string): Element | null;
+function getElement(target: Element): Element;
+function getElement(target: Document): Document;
+function getElement(target: Window): Document;
+function getElement(target: Target): Element | Document | null;
 /**
   Used internally by the DOM interaction helpers to find one element.
 
@@ -8,7 +13,7 @@ import Target, { isDocument, isElement } from './-target';
   @param {string|Element} target the element or selector to retrieve
   @returns {Element} the target or selector
 */
-export default function getElement(target: Target) {
+function getElement(target: Target): Element | Document | null {
   if (typeof target === 'string') {
     let rootElement = getRootElement();
 
@@ -21,3 +26,5 @@ export default function getElement(target: Target) {
     throw new Error('Must use an element or a selector string');
   }
 }
+
+export default getElement;
