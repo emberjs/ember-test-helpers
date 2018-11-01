@@ -8,6 +8,7 @@ import { nextTickPromise } from './-utils';
 import settled from './settled';
 import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
+import { Owner } from './build-owner';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -36,7 +37,7 @@ export function isRenderingTestContext(context: BaseContext): context is Renderi
   @param {Ember.ApplicationInstance} owner the current owner instance
   @returns {Template} a template representing {{outlet}}
 */
-function lookupOutletTemplate(owner) {
+function lookupOutletTemplate(owner: Owner): any {
   let OutletTemplate = owner.lookup('template:-outlet');
   if (!OutletTemplate) {
     owner.register('template:-outlet', OUTLET_TEMPLATE);
@@ -51,8 +52,8 @@ function lookupOutletTemplate(owner) {
   @param {string} [selector] the selector to search for relative to element
   @returns {jQuery} a jQuery object representing the selector (or element itself if no selector)
 */
-function jQuerySelector(selector) {
-  let { element } = getContext();
+function jQuerySelector(selector: string): any {
+  let { element } = getContext() as RenderingTestContext;
 
   // emulates Ember internal behavor of `this.$` in a component
   // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
