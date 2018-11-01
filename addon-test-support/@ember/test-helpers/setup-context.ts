@@ -3,7 +3,7 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Resolver from '@ember/application/resolver';
 
-import buildOwner from './build-owner';
+import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks } from './settled';
 import Ember from 'ember';
 import { Promise } from 'rsvp';
@@ -18,7 +18,7 @@ export interface BaseContext {
 }
 
 export interface TestContext extends BaseContext {
-  owner: any;
+  owner: Owner;
 
   set(key: string, value: any): any;
   setProperties(hash: { [key: string]: any }): { [key: string]: any };

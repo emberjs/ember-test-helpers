@@ -207,7 +207,7 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
 
       let OutletView = owner.factoryFor
         ? owner.factoryFor('view:-outlet')
-        : owner._lookupFactory('view:-outlet');
+        : owner._lookupFactory!('view:-outlet');
       let toplevelView = OutletView.create();
 
       owner.register('-top-level-view:main', {
