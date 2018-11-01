@@ -7,10 +7,10 @@ const FOCUSABLE_TAGS = ['A'];
   @param {Element} element the element to check
   @returns {boolean} `true` when the element is focusable, `false` otherwise
 */
-export default function isFocusable(element) {
+export default function isFocusable(element: Element): boolean {
   if (
     isFormControl(element) ||
-    element.isContentEditable ||
+    (element as HTMLElement).isContentEditable ||
     FOCUSABLE_TAGS.indexOf(element.tagName) > -1
   ) {
     return true;
