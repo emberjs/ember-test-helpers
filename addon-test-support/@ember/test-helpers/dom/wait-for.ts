@@ -27,7 +27,7 @@ export default function waitFor(
       timeoutMessage = `waitFor timed out waiting for selector "${selector}"`;
     }
 
-    let callback: () => Element | Element[] | void;
+    let callback: () => Element | Element[] | void | null;
     if (count !== null) {
       callback = () => {
         let elements = getElements(selector);
