@@ -28,16 +28,16 @@
         "app/*"
       ],
       "@ember/test-helpers": [
-        "addon"
+        "addon-test-support/@ember/test-helpers"
       ],
       "@ember/test-helpers/*": [
-        "addon/*"
+        "addon-test-support/@ember/test-helpers/*"
       ],
-      "@ember/test-helpers/test-support": [
-        "addon-test-support"
+      "ember-test-helpers": [
+        "addon-test-support/ember-test-helpers"
       ],
-      "@ember/test-helpers/test-support/*": [
-        "addon-test-support/*"
+      "ember-test-helpers/*": [
+        "addon-test-support/ember-test-helpers/*"
       ],
       "*": [
         "types/*"
