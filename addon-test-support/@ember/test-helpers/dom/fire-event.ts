@@ -1,5 +1,6 @@
 import { assign } from '@ember/polyfills';
 import { deprecate } from '@ember/application/deprecations';
+import { isDocument, isElement } from './-target';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -46,9 +47,9 @@ export default function fireEvent(element, eventType, options = {}) {
     let rect;
     if (element instanceof Window && element.document.documentElement) {
       rect = element.document.documentElement.getBoundingClientRect();
-    } else if (element.nodeType === Node.DOCUMENT_NODE) {
-      rect = element.documentElement.getBoundingClientRect();
-    } else if (element.nodeType === Node.ELEMENT_NODE) {
+    } else if (isDocument(element)) {
+      rect = element.documentElement!.getBoundingClientRect();
+    } else if (isElement(element)) {
       rect = element.getBoundingClientRect();
     } else {
       return;

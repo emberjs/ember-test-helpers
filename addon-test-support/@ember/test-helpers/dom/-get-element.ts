@@ -1,5 +1,5 @@
 import getRootElement from './get-root-element';
-import Target from './-target';
+import Target, { isDocument, isElement } from './-target';
 
 /**
   Used internally by the DOM interaction helpers to find one element.
@@ -13,11 +13,7 @@ export default function getElement(target: Target) {
     let rootElement = getRootElement();
 
     return rootElement.querySelector(target);
-  } else if (
-    target.nodeType === Node.ELEMENT_NODE ||
-    target.nodeType === Node.DOCUMENT_NODE ||
-    target instanceof Window
-  ) {
+  } else if (isElement(target) || isDocument(target) || (target as any) instanceof Window) {
     return target;
   } else {
     throw new Error('Must use an element or a selector string');
