@@ -9,7 +9,7 @@ import Ember from 'ember';
   @param {number} minor the minor version number to compare
   @returns {boolean} true if the Ember version is >= MAJOR.MINOR specified, false otherwise
 */
-export default function hasEmberVersion(major, minor) {
+export default function hasEmberVersion(major: number, minor: number): boolean {
   var numbers = Ember.VERSION.split('-')[0].split('.');
   var actualMajor = parseInt(numbers[0], 10);
   var actualMinor = parseInt(numbers[1], 10);
