@@ -18,7 +18,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['index.js', 'config/ember-try.js'],
+      files: ['index.js', 'config/ember-try.js', 'scripts/**'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         ecmaVersion: 2015,
