@@ -13,7 +13,11 @@ import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { nextTickPromise } from './-utils';
 
-let __test_context__: any | undefined;
+export interface BaseContext {
+  [key: string]: any;
+}
+
+let __test_context__: BaseContext | undefined;
 
 /**
   Stores the provided context as the "global testing context".
@@ -23,7 +27,7 @@ let __test_context__: any | undefined;
   @public
   @param {Object} context the context to use
 */
-export function setContext(context: any): void {
+export function setContext(context: BaseContext): void {
   __test_context__ = context;
 }
 
@@ -33,7 +37,7 @@ export function setContext(context: any): void {
   @public
   @returns {Object} the previously stored testing context
 */
-export function getContext(): any | undefined {
+export function getContext(): BaseContext | undefined {
   return __test_context__;
 }
 
