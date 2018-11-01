@@ -1,6 +1,7 @@
 import { assign } from '@ember/polyfills';
 import { deprecate } from '@ember/application/deprecations';
 import { isDocument, isElement } from './-target';
+import tuple from '../-tuple';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -12,8 +13,11 @@ const MOUSE_EVENT_CONSTRUCTOR = (() => {
   }
 })();
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
-export const KEYBOARD_EVENT_TYPES = Object.freeze(['keydown', 'keypress', 'keyup']);
-const MOUSE_EVENT_TYPES = [
+
+export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
+export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
+
+const MOUSE_EVENT_TYPES = tuple(
   'click',
   'mousedown',
   'mouseup',
@@ -22,9 +26,12 @@ const MOUSE_EVENT_TYPES = [
   'mouseleave',
   'mousemove',
   'mouseout',
-  'mouseover',
-];
-const FILE_SELECTION_EVENT_TYPES = ['change'];
+  'mouseover'
+);
+export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
+
+const FILE_SELECTION_EVENT_TYPES = tuple('change');
+export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
 
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
