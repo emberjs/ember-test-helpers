@@ -45,6 +45,15 @@ module.exports = {
       }
     },
     {
+      files: ['**/*.ts'],
+      rules: {
+        // the TypeScript compiler already takes care of this and
+        // leaving it enabled results in false positives for interface imports
+        'no-unused-vars': false,
+        'no-undef': false,
+      }
+    },
+    {
       files: ['index.js', 'addon-test-support/**/*.[jt]s', 'config/**/*.js'],
       plugins: [
         'disable-features',
