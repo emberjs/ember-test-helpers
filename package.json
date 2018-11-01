@@ -48,6 +48,7 @@
     "@types/ember-testing-helpers": "^0.0.3",
     "@types/ember__test-helpers": "^0.7.6",
     "@types/rsvp": "^4.0.2",
+    "broccoli-merge-trees": "^3.0.1",
     "documentation": "8.1.2",
     "ember-cli": "~3.1.2",
     "ember-cli-dependency-checker": "^3.0.0",
