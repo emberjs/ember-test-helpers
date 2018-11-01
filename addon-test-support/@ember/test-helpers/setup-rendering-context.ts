@@ -3,7 +3,7 @@ import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
-import { getContext } from './setup-context';
+import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
@@ -12,6 +12,24 @@ import getRootElement from './dom/get-root-element';
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
+
+export interface RenderingTestContext extends TestContext {
+  render(template: TemplateFactory): Promise<void>;
+  clearRender(): Promise<void>;
+
+  $?(selector: string): any;
+
+  element: Element | Document;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isRenderingTestContext(context: BaseContext): context is RenderingTestContext {
+  return (
+    isTestContext(context) &&
+    typeof context.render === 'function' &&
+    typeof context.clearRender === 'function'
+  );
+}
 
 /**
   @private
@@ -115,7 +133,7 @@ export function render(template: TemplateFactory): Promise<void> {
 export function clearRender(): Promise<void> {
   let context = getContext();
 
-  if (!context || typeof context.clearRender !== 'function') {
+  if (!context || !isRenderingTestContext(context)) {
     throw new Error(
       'Cannot call `clearRender` without having first called `setupRenderingContext`.'
     );
@@ -143,9 +161,7 @@ export function clearRender(): Promise<void> {
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupRenderingContext<Context extends { owner: any }>(
-  context: Context
-): Promise<Context> {
+export default function setupRenderingContext(context: TestContext): Promise<RenderingTestContext> {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
 
@@ -226,6 +242,6 @@ export default function setupRenderingContext<Context extends { owner: any }>(
         writable: false,
       });
 
-      return context;
+      return context as RenderingTestContext;
     });
 }
