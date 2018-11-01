@@ -2,11 +2,9 @@ import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { KEYBOARD_EVENT_TYPES } from './fire-event';
+import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
-
-export type KeyEvent = 'keydown' | 'keyup' | 'keypress';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -134,7 +132,7 @@ function keyCodeFromKey(key) {
 */
 export default function triggerKeyEvent(
   target: Target,
-  eventType: KeyEvent,
+  eventType: KeyboardEventType,
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
@@ -152,7 +150,7 @@ export default function triggerKeyEvent(
       throw new Error(`Must provide an \`eventType\` to \`triggerKeyEvent\``);
     }
 
-    if (KEYBOARD_EVENT_TYPES.indexOf(eventType) === -1) {
+    if (!isKeyboardEventType(eventType)) {
       let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
       throw new Error(
         `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`

@@ -17,6 +17,11 @@ const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
 export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
 export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
 
+// eslint-disable-next-line require-jsdoc
+export function isKeyboardEventType(eventType: any): eventType is KeyboardEventType {
+  return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
 const MOUSE_EVENT_TYPES = tuple(
   'click',
   'mousedown',
@@ -30,8 +35,18 @@ const MOUSE_EVENT_TYPES = tuple(
 );
 export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
 
+// eslint-disable-next-line require-jsdoc
+export function isMouseEventType(eventType: any): eventType is MouseEventType {
+  return MOUSE_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
 const FILE_SELECTION_EVENT_TYPES = tuple('change');
 export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
+
+// eslint-disable-next-line require-jsdoc
+export function isFileSelectionEventType(eventType: any): eventType is FileSelectionEventType {
+  return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
+}
 
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
@@ -48,9 +63,9 @@ export default function fireEvent(element, eventType, options = {}) {
   }
 
   let event;
-  if (KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1) {
+  if (isKeyboardEventType(eventType)) {
     event = buildKeyboardEvent(eventType, options);
-  } else if (MOUSE_EVENT_TYPES.indexOf(eventType) > -1) {
+  } else if (isMouseEventType(eventType)) {
     let rect;
     if (element instanceof Window && element.document.documentElement) {
       rect = element.document.documentElement.getBoundingClientRect();
@@ -72,7 +87,7 @@ export default function fireEvent(element, eventType, options = {}) {
     };
 
     event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
-  } else if (FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1 && element.files) {
+  } else if (isFileSelectionEventType(eventType) && element.files) {
     event = buildFileEvent(eventType, element, options);
   } else {
     event = buildBasicEvent(eventType, options);
