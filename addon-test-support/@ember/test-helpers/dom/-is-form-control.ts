@@ -1,3 +1,5 @@
+import { isDocument } from './-target';
+
 const FORM_CONTROL_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
 
 /**
@@ -6,9 +8,10 @@ const FORM_CONTROL_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
   @returns {boolean} `true` when the element is a form control, `false` otherwise
 */
 export default function isFormControl(
-  element: Element
+  element: Element | Document
 ): element is HTMLInputElement | HTMLButtonElement | HTMLSelectElement | HTMLTextAreaElement {
   return (
+    !isDocument(element) &&
     FORM_CONTROL_TAGS.indexOf(element.tagName) > -1 &&
     (element as HTMLInputElement).type !== 'hidden'
   );
