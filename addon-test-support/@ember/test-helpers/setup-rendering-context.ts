@@ -75,6 +75,10 @@ export function render(template: TemplateFactory): Promise<void> {
   }
 
   return nextTickPromise().then(() => {
+    if (!context || !isRenderingTestContext(context)) {
+      throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
+    }
+
     let { owner } = context;
 
     let toplevelView = owner.lookup('-top-level-view:main');
