@@ -245,10 +245,10 @@ export default function(
         writable: false,
       });
 
-      let resume;
+      let resume: Function | undefined;
       context.resumeTest = function resumeTest() {
-        assert('Testing has not been paused. There is nothing to resume.', resume);
-        resume();
+        assert('Testing has not been paused. There is nothing to resume.', Boolean(resume));
+        (resume as Function)();
         global.resumeTest = resume = undefined;
       };
 
