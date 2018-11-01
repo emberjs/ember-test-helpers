@@ -11,7 +11,7 @@ import Target from './-target';
   @param {Element} element the element to double-click on
   @param {Object} options the options to be merged into the mouse events
 */
-export function __doubleClick__(element, options) {
+export function __doubleClick__(element: Element, options: MouseEventInit) {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
@@ -65,7 +65,7 @@ export function __doubleClick__(element, options) {
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
-export default function doubleClick(target: Target, options: object = {}): Promise<void> {
+export default function doubleClick(target: Target, options: MouseEventInit = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `doubleClick`.');
