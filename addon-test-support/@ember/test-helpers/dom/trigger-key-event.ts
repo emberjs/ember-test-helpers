@@ -21,7 +21,7 @@ const DEFAULT_MODIFIERS: KeyModifiers = Object.freeze({
 });
 
 // This is not a comprehensive list, but it is better than nothing.
-const keyFromKeyCode = {
+const keyFromKeyCode: { [key: number]: string } = {
   8: 'Backspace',
   9: 'Tab',
   13: 'Enter',
@@ -85,7 +85,7 @@ const keyFromKeyCode = {
   @param {object} modifiers The modifiers of the event.
   @returns {string} The key string for the event.
  */
-function keyFromKeyCodeAndModifiers(keycode, modifiers) {
+function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): string | void {
   if (keycode > 64 && keycode < 91) {
     if (modifiers.shiftKey) {
       return String.fromCharCode(keycode);
@@ -104,11 +104,11 @@ function keyFromKeyCodeAndModifiers(keycode, modifiers) {
  * @param {string} key The KeyboardEvent#key string
  * @returns {number} The keycode for the given key
  */
-function keyCodeFromKey(key) {
+function keyCodeFromKey(key: string) {
   let keys = Object.keys(keyFromKeyCode);
-  let keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key);
+  let keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key);
   if (!keyCode) {
-    keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key.toLowerCase());
+    keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key.toLowerCase());
   }
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
