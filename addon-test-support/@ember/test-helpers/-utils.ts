@@ -71,7 +71,7 @@ RSVP.configure('async', (callback: any, promise: any) => {
 });
 
 export const nextTick: Function =
-  typeof Promise === 'undefined' ? setTimeout : cb => Promise.resolve().then(cb);
+  typeof Promise === 'undefined' ? setTimeout : (cb: () => void) => Promise.resolve().then(cb);
 export const futureTick = setTimeout;
 
 /**
@@ -100,7 +100,7 @@ export function nextTickPromise(): RSVP.Promise<void> {
  @param {Object} object an object to search for the destroyable array within
  @param {string} property the property on the object that contains the destroyable array
 */
-export function runDestroyablesFor(object, property) {
+export function runDestroyablesFor(object: any, property: string): void {
   let destroyables = object[property];
 
   if (!destroyables) {
@@ -121,6 +121,6 @@ export function runDestroyablesFor(object, property) {
  @param {string} n input string
  @returns {boolean} whether the input string consists only of numeric characters
  */
-export function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+export function isNumeric(n: string): boolean {
+  return !isNaN(parseFloat(n)) && isFinite(Number(n));
 }
