@@ -48,6 +48,25 @@ export function isFileSelectionEventType(eventType: any): eventType is FileSelec
   return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
 }
 
+// eslint-disable-next-line require-jsdoc
+export function isFileSelectionInput(element: any): element is HTMLInputElement {
+  return element.files;
+}
+
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: KeyboardEventType,
+  options?: any
+): Event;
+
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: MouseEventType,
+  options?: any
+): Event | void;
+
+function fireEvent(element: Element | Document | Window, eventType: string, options?: any): Event;
+
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
 
@@ -57,7 +76,11 @@ export function isFileSelectionEventType(eventType: any): eventType is FileSelec
   @param {Object} [options] additional properties to be set on the event
   @returns {Event} the event that was dispatched
 */
-export default function fireEvent(element, eventType, options = {}) {
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: string,
+  options = {}
+): Event | void {
   if (!element) {
     throw new Error('Must pass an element to `fireEvent`');
   }
@@ -87,7 +110,7 @@ export default function fireEvent(element, eventType, options = {}) {
     };
 
     event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
-  } else if (isFileSelectionEventType(eventType) && element.files) {
+  } else if (isFileSelectionEventType(eventType) && isFileSelectionInput(element)) {
     event = buildFileEvent(eventType, element, options);
   } else {
     event = buildBasicEvent(eventType, options);
@@ -97,8 +120,10 @@ export default function fireEvent(element, eventType, options = {}) {
   return event;
 }
 
+export default fireEvent;
+
 // eslint-disable-next-line require-jsdoc
-function buildBasicEvent(type, options: any = {}) {
+function buildBasicEvent(type: string, options: any = {}): Event {
   let event = document.createEvent('Events');
 
   let bubbles = options.bubbles !== undefined ? options.bubbles : true;
@@ -115,7 +140,7 @@ function buildBasicEvent(type, options: any = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildMouseEvent(type, options = {}) {
+function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
   let eventOpts: any = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
@@ -149,9 +174,10 @@ function buildMouseEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildKeyboardEvent(type, options = {}) {
+function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
   let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
-  let event, eventMethodName;
+  let event: Event | undefined;
+  let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
   try {
     event = new KeyboardEvent(type, eventOpts);
@@ -197,8 +223,8 @@ function buildKeyboardEvent(type, options = {}) {
     }
   }
 
-  if (event) {
-    event[eventMethodName](
+  if (event && eventMethodName) {
+    (event as any)[eventMethodName](
       type,
       eventOpts.bubbles,
       eventOpts.cancelable,
@@ -218,7 +244,11 @@ function buildKeyboardEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildFileEvent(type, element, options: any = {}) {
+function buildFileEvent(
+  type: FileSelectionEventType,
+  element: HTMLInputElement,
+  options: any = {}
+): Event {
   let event = buildBasicEvent(type);
   let files;
   if (Array.isArray(options)) {
@@ -238,7 +268,7 @@ function buildFileEvent(type, element, options: any = {}) {
 
   if (files.length > 0) {
     Object.defineProperty(files, 'item', {
-      value(index) {
+      value(index: number) {
         return typeof index === 'number' ? this[index] : null;
       },
     });
