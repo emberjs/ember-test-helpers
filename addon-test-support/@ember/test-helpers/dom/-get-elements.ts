@@ -7,7 +7,7 @@ import getRootElement from './get-root-element';
   @param {string} target the selector to retrieve
   @returns {NodeList} the matched elements
 */
-export default function getElements(target) {
+export default function getElements(target: string): NodeListOf<Element> {
   if (typeof target === 'string') {
     let rootElement = getRootElement();
 
