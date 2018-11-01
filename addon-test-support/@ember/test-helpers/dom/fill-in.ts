@@ -15,13 +15,13 @@ import { nextTickPromise } from '../-utils';
   @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
 */
-export default function fillIn(target, text) {
+export default function fillIn(target: any, text: string): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `fillIn`.');
     }
 
-    let element = getElement(target);
+    let element = getElement(target) as any;
     if (!element) {
       throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
     }

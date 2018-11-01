@@ -44,7 +44,7 @@ export default function fireEvent(element, eventType, options = {}) {
     event = buildKeyboardEvent(eventType, options);
   } else if (MOUSE_EVENT_TYPES.indexOf(eventType) > -1) {
     let rect;
-    if (element instanceof Window) {
+    if (element instanceof Window && element.document.documentElement) {
       rect = element.document.documentElement.getBoundingClientRect();
     } else if (element.nodeType === Node.DOCUMENT_NODE) {
       rect = element.documentElement.getBoundingClientRect();
@@ -75,7 +75,7 @@ export default function fireEvent(element, eventType, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildBasicEvent(type, options = {}) {
+function buildBasicEvent(type, options: any = {}) {
   let event = document.createEvent('Events');
 
   let bubbles = options.bubbles !== undefined ? options.bubbles : true;
@@ -94,7 +94,7 @@ function buildBasicEvent(type, options = {}) {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type, options = {}) {
   let event;
-  let eventOpts = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts: any = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
@@ -127,7 +127,7 @@ function buildMouseEvent(type, options = {}) {
 
 // eslint-disable-next-line require-jsdoc
 function buildKeyboardEvent(type, options = {}) {
-  let eventOpts = assign({}, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event, eventMethodName;
 
   try {
@@ -195,7 +195,7 @@ function buildKeyboardEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildFileEvent(type, element, options = {}) {
+function buildFileEvent(type, element, options: any = {}) {
   let event = buildBasicEvent(type);
   let files;
   if (Array.isArray(options)) {

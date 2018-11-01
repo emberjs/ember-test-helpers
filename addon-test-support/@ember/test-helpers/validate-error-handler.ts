@@ -36,7 +36,7 @@ export default function validateErrorHandler(callback = Ember.onerror) {
   let error = new Error('Error handler validation error!');
 
   let originalEmberTesting = Ember.testing;
-  Ember.testing = true;
+  (Ember as any).testing = true;
   try {
     callback(error);
   } catch (e) {
@@ -44,7 +44,7 @@ export default function validateErrorHandler(callback = Ember.onerror) {
       return VALID;
     }
   } finally {
-    Ember.testing = originalEmberTesting;
+    (Ember as any).testing = originalEmberTesting;
   }
 
   return INVALID;

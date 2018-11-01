@@ -182,7 +182,7 @@ export default function setupRenderingContext(context) {
       // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
-        let dispatcher = owner.lookup('event_dispatcher:main') || Ember.EventDispatcher.create();
+        let dispatcher = owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
         dispatcher.setup({}, '#ember-testing');
       }
 
@@ -199,7 +199,7 @@ export default function setupRenderingContext(context) {
 
       // initially render a simple empty template
       return render(EMPTY_TEMPLATE).then(() => {
-        run(toplevelView, 'appendTo', getRootElement());
+        (run as Function)(toplevelView, 'appendTo', getRootElement());
 
         return settled();
       });
@@ -216,7 +216,7 @@ export default function setupRenderingContext(context) {
         // and therefore we cannot update the `this.element` until after the
         // rendering is completed
         value:
-          EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false
+          global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false
             ? getRootElement().querySelector('.ember-view')
             : getRootElement(),
 

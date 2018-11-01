@@ -1,7 +1,11 @@
 module.exports = {
   root: true,
   extends: ['eslint:recommended', 'prettier'],
-  plugins: ['prettier'],
+  parser: 'typescript-eslint-parser',
+  plugins: [
+    'prettier',
+    'typescript',
+  ],
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module',
@@ -18,7 +22,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['index.js', 'config/ember-try.js'],
+      files: ['index.js', 'config/ember-try.js', 'scripts/**'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         ecmaVersion: 2015,
@@ -35,13 +39,22 @@ module.exports = {
       }),
     },
     {
-      files: ['tests/**/*.js'],
+      files: ['tests/**/*.[jt]s'],
       env: {
         qunit: true
       }
     },
     {
-      files: ['index.js', 'addon-test-support/**/*.js', 'config/**/*.js'],
+      files: ['**/*.ts'],
+      rules: {
+        // the TypeScript compiler already takes care of this and
+        // leaving it enabled results in false positives for interface imports
+        'no-unused-vars': false,
+        'no-undef': false,
+      }
+    },
+    {
+      files: ['index.js', 'addon-test-support/**/*.[jt]s', 'config/**/*.js'],
       plugins: [
         'disable-features',
       ],
@@ -51,7 +64,7 @@ module.exports = {
       }
     },
     {
-      files: ['addon-test-support/**/*.js'],
+      files: ['addon-test-support/**/*.[jt]s'],
       excludedFiles: ['addon-test-support/ember-test-helpers/legacy-0-6-x/**'],
       rules: {
         'valid-jsdoc': ['error', {
