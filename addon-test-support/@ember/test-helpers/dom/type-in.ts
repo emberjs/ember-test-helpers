@@ -3,6 +3,7 @@ import settled from '../settled';
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
 import { __focus__ } from './focus';
+import isFocusable from './-is-focusable';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import Target from './-target';
@@ -43,7 +44,9 @@ export default function typeIn(target: Target, text, options = { delay: 50 }): P
       throw new Error('Must provide `text` when calling `typeIn`.');
     }
 
-    __focus__(element);
+    if (isFocusable(element)) {
+      __focus__(element);
+    }
 
     return fillOut(element, text, options.delay)
       .then(() => fireEvent(element, 'change'))
