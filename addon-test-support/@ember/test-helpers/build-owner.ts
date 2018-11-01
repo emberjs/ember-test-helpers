@@ -12,6 +12,8 @@ export interface Owner extends CoreObject, ContainerProxyMixin, RegistryProxyMix
   _emberTestHelpersMockOwner?: boolean;
 
   _lookupFactory?(key: string): any;
+
+  visit(url: string, options?: { [key: string]: any }): Promise<any>;
 }
 
 /**
@@ -38,7 +40,9 @@ export default function buildOwner(
   resolver: Resolver | undefined | null
 ): Promise<Owner> {
   if (application) {
-    return application.boot().then(app => app.buildInstance().boot());
+    return (application.boot().then(app => app.buildInstance().boot()) as unknown) as Promise<
+      Owner
+    >;
   }
 
   if (!resolver) {
