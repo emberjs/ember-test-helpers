@@ -1,12 +1,16 @@
 import { nextTickPromise } from '../-utils';
 import settled from '../settled';
 import getElement from './-get-element';
-import isFormControl from './-is-form-control';
+import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
 import isFocusable from './-is-focusable';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import Target from './-target';
+
+export interface Options {
+  delay?: number;
+}
 
 /**
  * Mimics character by character entry into the target `input` or `textarea` element.
@@ -25,7 +29,7 @@ import Target from './-target';
  * @param {Object} options {delay: x} (default 50) number of milliseconds to wait per keypress
  * @return {Promise<void>} resolves when the application is settled
  */
-export default function typeIn(target: Target, text, options = { delay: 50 }): Promise<void> {
+export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `typeIn`.');
@@ -35,8 +39,7 @@ export default function typeIn(target: Target, text, options = { delay: 50 }): P
     if (!element) {
       throw new Error(`Element not found when calling \`typeIn('${target}')\``);
     }
-    let isControl = isFormControl(element);
-    if (!isControl) {
+    if (!isFormControl(element)) {
       throw new Error('`typeIn` is only usable on form controls.');
     }
 
@@ -44,27 +47,29 @@ export default function typeIn(target: Target, text, options = { delay: 50 }): P
       throw new Error('Must provide `text` when calling `typeIn`.');
     }
 
+    let { delay = 50 } = options;
+
     if (isFocusable(element)) {
       __focus__(element);
     }
 
-    return fillOut(element, text, options.delay)
+    return fillOut(element, text, delay)
       .then(() => fireEvent(element, 'change'))
       .then(settled);
   });
 }
 
 // eslint-disable-next-line require-jsdoc
-function fillOut(element, text, delay) {
+function fillOut(element: FormControl, text: string, delay: number) {
   const inputFunctions = text.split('').map(character => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
-    return currentPromise.then(() => delayedExecute(func, delay));
-  }, Promise.resolve());
+    return currentPromise.then(() => delayedExecute(delay)).then(func);
+  }, Promise.resolve(undefined));
 }
 
 // eslint-disable-next-line require-jsdoc
-function keyEntry(element, character) {
-  const charCode = character.charCodeAt();
+function keyEntry(element: FormControl, character: string): () => void {
+  const charCode = character.charCodeAt(0);
 
   const eventOptions = {
     bubbles: true,
@@ -88,8 +93,8 @@ function keyEntry(element, character) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function delayedExecute(func, delay) {
+function delayedExecute(delay: number): Promise<void> {
   return new Promise(resolve => {
     setTimeout(resolve, delay);
-  }).then(func);
+  });
 }
