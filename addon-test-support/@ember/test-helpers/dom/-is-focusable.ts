@@ -2,6 +2,13 @@ import isFormControl from './-is-form-control';
 
 const FOCUSABLE_TAGS = ['A'];
 
+type FocusableElement = HTMLAnchorElement;
+
+// eslint-disable-next-line require-jsdoc
+function isFocusableElement(element: Element): element is FocusableElement {
+  return FOCUSABLE_TAGS.indexOf(element.tagName) > -1;
+}
+
 /**
   @private
   @param {Element} element the element to check
@@ -11,7 +18,7 @@ export default function isFocusable(element: Element): boolean {
   if (
     isFormControl(element) ||
     (element as HTMLElement).isContentEditable ||
-    FOCUSABLE_TAGS.indexOf(element.tagName) > -1
+    isFocusableElement(element)
   ) {
     return true;
   }
