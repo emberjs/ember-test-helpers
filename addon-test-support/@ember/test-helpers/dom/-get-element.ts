@@ -13,8 +13,10 @@ export default function getElement(target: Target) {
     let rootElement = getRootElement();
 
     return rootElement.querySelector(target);
-  } else if (isElement(target) || isDocument(target) || (target as any) instanceof Window) {
+  } else if (isElement(target) || isDocument(target)) {
     return target;
+  } else if (target instanceof Window) {
+    return target.document;
   } else {
     throw new Error('Must use an element or a selector string');
   }
