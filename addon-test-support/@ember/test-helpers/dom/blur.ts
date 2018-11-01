@@ -9,7 +9,7 @@ import Target from './-target';
   @private
   @param {Element} element the element to trigger events on
 */
-export function __blur__(element) {
+export function __blur__(element: HTMLElement | SVGElement): void {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // makes `document.activeElement` be `body`.

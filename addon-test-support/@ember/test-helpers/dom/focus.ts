@@ -9,7 +9,7 @@ import Target from './-target';
   @private
   @param {Element} element the element to trigger events on
 */
-export function __focus__(element) {
+export function __focus__(element: HTMLElement | SVGElement): void {
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
