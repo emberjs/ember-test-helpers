@@ -40,7 +40,7 @@ import Target from './-target';
   @param {Object} options the options to be merged into the touch events
   @return {Promise<void>} resolves when settled
 */
-export default function tap(target: Target, options = {}) {
+export default function tap(target: Target, options: object = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `tap`.');

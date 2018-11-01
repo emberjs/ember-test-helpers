@@ -65,7 +65,7 @@ export function __doubleClick__(element, options) {
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
-export default function doubleClick(target: Target, options = {}) {
+export default function doubleClick(target: Target, options: object = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `doubleClick`.');

@@ -6,7 +6,7 @@ import { getContext } from '../setup-context';
   @public
   @returns {Element} the root element
 */
-export default function getRootElement() {
+export default function getRootElement(): Element {
   let context = getContext();
   let owner = context && context.owner;
 
@@ -30,7 +30,7 @@ export default function getRootElement() {
   ) {
     return rootElement;
   } else if (typeof rootElement === 'string') {
-    return document.querySelector(rootElement);
+    return document.querySelector(rootElement)!; // TODO remove "!"
   } else {
     throw new Error('Application.rootElement must be an element or a selector string');
   }

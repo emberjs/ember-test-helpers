@@ -24,7 +24,7 @@ import Target from './-target';
  * @param {Object} options {delay: x} (default 50) number of milliseconds to wait per keypress
  * @return {Promise<void>} resolves when the application is settled
  */
-export default function typeIn(target: Target, text, options = { delay: 50 }) {
+export default function typeIn(target: Target, text, options = { delay: 50 }): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `typeIn`.');

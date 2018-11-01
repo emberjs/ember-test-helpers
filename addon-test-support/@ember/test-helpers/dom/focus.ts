@@ -46,7 +46,7 @@ export function __focus__(element) {
   @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
 */
-export default function focus(target: Target) {
+export default function focus(target: Target): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `focus`.');

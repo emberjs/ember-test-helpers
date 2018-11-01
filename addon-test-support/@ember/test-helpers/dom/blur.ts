@@ -43,7 +43,7 @@ export function __blur__(element) {
   @param {string|Element} [target=document.activeElement] the element or selector to unfocus
   @return {Promise<void>} resolves when settled
 */
-export default function blur(target: Target = document.activeElement!) {
+export default function blur(target: Target = document.activeElement!): Promise<void> {
   return nextTickPromise().then(() => {
     let element = getElement(target);
     if (!element) {

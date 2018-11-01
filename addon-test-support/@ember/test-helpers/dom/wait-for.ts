@@ -18,7 +18,7 @@ import { nextTickPromise } from '../-utils';
 export default function waitFor(
   selector,
   { timeout = 1000, count = null, timeoutMessage = '' } = {}
-) {
+): Promise<Element | Element[]> {
   return nextTickPromise().then(() => {
     if (!selector) {
       throw new Error('Must pass a selector to `waitFor`.');
@@ -27,7 +27,7 @@ export default function waitFor(
       timeoutMessage = `waitFor timed out waiting for selector "${selector}"`;
     }
 
-    let callback;
+    let callback: () => Element | Element[] | void;
     if (count !== null) {
       callback = () => {
         let elements = getElements(selector);

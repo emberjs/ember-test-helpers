@@ -8,7 +8,7 @@ import getElement from './-get-element';
   @param {string} selector the selector to search for
   @return {Element} matched element or null
 */
-export default function find(selector) {
+export default function find(selector: string): Element | null {
   if (!selector) {
     throw new Error('Must pass a selector to `find`.');
   }

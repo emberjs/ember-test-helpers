@@ -25,7 +25,11 @@ import Target from './-target';
  *   [new Blob(['Ember Rules!'])]
  * );
  */
-export default function triggerEvent(target: Target, eventType, options) {
+export default function triggerEvent(
+  target: Target,
+  eventType: string,
+  options?: object
+): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerEvent`.');

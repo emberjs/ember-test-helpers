@@ -3,6 +3,11 @@ import { futureTick, _Promise as Promise } from './-utils';
 const TIMEOUTS = [0, 1, 2, 5, 7];
 const MAX_TIMEOUT = 10;
 
+export interface Options {
+  timeout?: number;
+  timeoutMessage?: string;
+}
+
 /**
   Wait for the provided callback to return a truthy value.
 
@@ -16,8 +21,11 @@ const MAX_TIMEOUT = 10;
   @param {string} [options.timeoutMessage='waitUntil timed out'] the message to use in the reject on timeout
   @returns {Promise} resolves with the callback value when it returns a truthy value
 */
-export default function waitUntil(callback, options: any = {}) {
-  let timeout = 'timeout' in options ? options.timeout : 1000;
+export default function waitUntil<T>(
+  callback: () => T | void | false | null | undefined | '',
+  options: Options = {}
+): Promise<T> {
+  let timeout = 'timeout' in options ? (options.timeout as number) : 1000;
   let timeoutMessage = 'timeoutMessage' in options ? options.timeoutMessage : 'waitUntil timed out';
 
   // creating this error eagerly so it has the proper invocation stack
