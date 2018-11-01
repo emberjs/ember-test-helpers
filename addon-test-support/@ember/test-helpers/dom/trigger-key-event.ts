@@ -4,6 +4,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
+import Target from './-target';
 
 const DEFAULT_MODIFIERS = Object.freeze({
   ctrlKey: false,
@@ -122,7 +123,7 @@ function keyCodeFromKey(key) {
   @param {boolean} [modifiers.metaKey=false] if true the generated event will indicate the meta key was pressed during the key event
   @return {Promise<void>} resolves when the application is settled
 */
-export default function triggerKeyEvent(target, eventType, key, modifiers = DEFAULT_MODIFIERS) {
+export default function triggerKeyEvent(target: Target, eventType, key, modifiers = DEFAULT_MODIFIERS) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerKeyEvent`.');

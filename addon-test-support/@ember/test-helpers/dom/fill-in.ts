@@ -4,6 +4,7 @@ import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
 import { nextTickPromise } from '../-utils';
+import Target from './-target';
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
@@ -15,7 +16,7 @@ import { nextTickPromise } from '../-utils';
   @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
 */
-export default function fillIn(target: any, text: string): Promise<void> {
+export default function fillIn(target: Target, text: string): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `fillIn`.');

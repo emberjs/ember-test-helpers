@@ -3,6 +3,7 @@ import fireEvent from './fire-event';
 import { __click__ } from './click';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
+import Target from './-target';
 
 /**
   Taps on the specified target.
@@ -32,14 +33,14 @@ import { nextTickPromise } from '../-utils';
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle tapping on a given element.
 
-  Use the `options` hash to change the parameters of the tap events. 
+  Use the `options` hash to change the parameters of the tap events.
 
   @public
   @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be merged into the touch events
   @return {Promise<void>} resolves when settled
 */
-export default function tap(target, options = {}) {
+export default function tap(target: Target, options = {}) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `tap`.');

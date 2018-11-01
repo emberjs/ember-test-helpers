@@ -5,6 +5,7 @@ import isFormControl from './-is-form-control';
 import { __focus__ } from './focus';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
+import Target from './-target';
 
 /**
  * Mimics character by character entry into the target `input` or `textarea` element.
@@ -23,7 +24,7 @@ import fireEvent from './fire-event';
  * @param {Object} options {delay: x} (default 50) number of milliseconds to wait per keypress
  * @return {Promise<void>} resolves when the application is settled
  */
-export default function typeIn(target, text, options = { delay: 50 }) {
+export default function typeIn(target: Target, text, options = { delay: 50 }) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `typeIn`.');

@@ -3,6 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
+import Target from './-target';
 
 /**
   @private
@@ -45,7 +46,7 @@ export function __focus__(element) {
   @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
 */
-export default function focus(target) {
+export default function focus(target: Target) {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `focus`.');
