@@ -7,7 +7,7 @@ import {
 } from 'ember-test-helpers';
 import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 
-module('setupRenderingContext', function(hooks) {
+module('teardownRenderingContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
