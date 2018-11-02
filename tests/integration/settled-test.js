@@ -8,6 +8,8 @@ import {
   teardownContext,
   teardownRenderingContext,
   click,
+  isSettled,
+  getSettledState,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
@@ -142,6 +144,15 @@ module('settled real-world scenarios', function(hooks) {
 
     await teardownRenderingContext(this);
     await teardownContext(this);
+  });
+
+  test('basic behavior', async function(assert) {
+    await settled();
+
+    assert.ok(
+      isSettled(),
+      `should be settled after awaiting: ${JSON.stringify(getSettledState())}`
+    );
   });
 
   test('it works when async exists in `init`', async function(assert) {
