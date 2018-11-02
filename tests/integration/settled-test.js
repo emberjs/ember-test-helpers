@@ -7,12 +7,12 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
-} from 'ember-test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+  click,
+} from '@ember/test-helpers';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Pretender from 'pretender';
-import { click } from '@ember/test-helpers';
 import ajax from '../helpers/ajax';
 
 const TestComponent1 = Component.extend({

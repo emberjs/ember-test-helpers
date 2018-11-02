@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 /*
  * Event order based on https://jsbin.com/zitazuxabe/edit?html,js,console,output

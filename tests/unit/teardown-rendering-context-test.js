@@ -4,8 +4,8 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
-} from 'ember-test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+} from '@ember/test-helpers';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('teardownRenderingContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {

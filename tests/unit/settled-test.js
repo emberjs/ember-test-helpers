@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { isSettled, getSettledState } from 'ember-test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import { isSettled, getSettledState } from '@ember/test-helpers';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
 import Pretender from 'pretender';

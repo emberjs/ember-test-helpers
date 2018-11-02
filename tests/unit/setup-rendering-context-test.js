@@ -13,11 +13,14 @@ import {
   clearRender,
   setApplication,
   setResolver,
-} from 'ember-test-helpers';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+  triggerEvent,
+  focus,
+  blur,
+  click,
+} from '@ember/test-helpers';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import hasjQuery from '../helpers/has-jquery';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
-import { triggerEvent, focus, blur, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('setupRenderingContext', function(hooks) {

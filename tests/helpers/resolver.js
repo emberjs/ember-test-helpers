@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { dasherize } from '@ember/string';
 import { assign } from '@ember/polyfills';
 import { setRegistry } from '../../resolver';
-import { setResolver, setApplication } from 'ember-test-helpers';
+import { setResolver, setApplication } from '@ember/test-helpers';
 import require from 'require';
 import App from '../../app';
 import config from '../../config/environment';
