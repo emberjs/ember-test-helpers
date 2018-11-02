@@ -9,7 +9,6 @@ module.exports = function() {
     getChannelURL('canary'),
   ]).then(urls => {
     let env = {
-      EMBER_CLI_IGNORE_ADDON_NAME_MISMATCH: true,
       EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': false }),
     };
 

@@ -4,7 +4,7 @@ const BroccoliDebug = require('broccoli-debug');
 const debugTree = BroccoliDebug.buildDebugCallback('ember-test-helpers');
 
 module.exports = {
-  name: 'ember-test-helpers',
+  name: require('./package').name,
 
   init() {
     this._super.init && this._super.init.apply(this, arguments);

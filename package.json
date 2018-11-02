@@ -28,7 +28,7 @@
     "docs": "scripts/precompile.sh && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml -f md -o API.md && ember ts:clean",
     "lint": "eslint --ext=js,ts --cache . && tsc -p tsconfig.json --noEmit",
     "start": "ember serve",
-    "test": "EMBER_CLI_IGNORE_ADDON_NAME_MISMATCH=1 ember test",
+    "test": "ember test",
     "test:all": "ember try:each",
     "prepublishOnly": "scripts/precompile.sh",
     "postpublish": "ember ts:clean"
