@@ -60,6 +60,12 @@ module('teardownContext', function(hooks) {
     assert.strictEqual(getContext(), undefined, 'context is unset');
   });
 
+  test('it is settled', async function(assert) {
+    await teardownContext(context);
+
+    assert.ok(isSettled(), `is settled: ${JSON.stringify(getSettledState())}`);
+  });
+
   if (hasjQuery()) {
     test('out of balance xhr semaphores are cleaned up on teardown', async function(assert) {
       this.pretender.unhandledRequest = function(/* verb, path, request */) {
@@ -72,7 +78,9 @@ module('teardownContext', function(hooks) {
 
       assert.ok(
         isSettled(),
-        `out of balance xhr semaphores are cleaned up on teardown: ${getSettledState()}`
+        `out of balance xhr semaphores are cleaned up on teardown: ${JSON.stringify(
+          getSettledState()
+        )}`
       );
     });
   }
