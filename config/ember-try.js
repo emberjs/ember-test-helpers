@@ -8,11 +8,17 @@ module.exports = function() {
     getChannelURL('beta'),
     getChannelURL('canary'),
   ]).then(urls => {
+    let env = {
+      EMBER_CLI_IGNORE_ADDON_NAME_MISMATCH: true,
+      EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': false }),
+    };
+
     return {
       useYarn: true,
       scenarios: [
         {
           name: 'ember-2.0',
+          env,
           bower: {
             dependencies: {
               ember: '~2.0.0',
@@ -27,6 +33,7 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.4',
+          env,
           bower: {
             dependencies: {
               ember: 'components/ember#lts-2-4',
@@ -44,6 +51,7 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.8',
+          env,
           bower: {
             dependencies: {
               ember: 'components/ember#lts-2-8',
@@ -61,6 +69,7 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.12',
+          env,
           npm: {
             devDependencies: {
               'ember-source': '~2.12.0',
@@ -70,6 +79,7 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.16',
+          env,
           npm: {
             devDependencies: {
               'ember-source': '~2.16.0-beta.1',
@@ -79,6 +89,7 @@ module.exports = function() {
         },
         {
           name: 'ember-release',
+          env,
           npm: {
             devDependencies: {
               'ember-source': urls[0],
@@ -87,6 +98,7 @@ module.exports = function() {
         },
         {
           name: 'ember-beta',
+          env,
           npm: {
             devDependencies: {
               'ember-source': urls[1],
@@ -95,6 +107,7 @@ module.exports = function() {
         },
         {
           name: 'ember-canary',
+          env,
           npm: {
             devDependencies: {
               'ember-source': urls[2],
@@ -103,9 +116,9 @@ module.exports = function() {
         },
         {
           name: 'ember-without-application-wrapper',
-          env: {
+          env: Object.assign({}, env, {
             EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
-          },
+          }),
           npm: {
             devDependencies: {
               'ember-source': urls[2],
@@ -114,6 +127,9 @@ module.exports = function() {
         },
         {
           name: 'ember-default-with-jquery',
+          env: Object.assign({}, env, {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+          }),
           npm: {
             devDependencies: {
               'ember-fetch': null,
@@ -122,6 +138,7 @@ module.exports = function() {
         },
         {
           name: 'ember-default',
+          env,
           npm: {
             devDependencies: {},
           },
