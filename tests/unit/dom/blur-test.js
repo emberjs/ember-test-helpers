@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { focus, blur, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];

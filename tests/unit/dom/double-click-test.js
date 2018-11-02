@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { doubleClick, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: doubleClick', function(hooks) {
   if (!hasEmberVersion(2, 4)) {

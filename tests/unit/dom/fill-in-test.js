@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 

@@ -1,9 +1,14 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { isSettled, getSettledState } from '@ember/test-helpers';
-import { getContext, setupContext, teardownContext } from 'ember-test-helpers';
+import {
+  getContext,
+  setupContext,
+  teardownContext,
+  isSettled,
+  getSettledState,
+} from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import Ember from 'ember';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';

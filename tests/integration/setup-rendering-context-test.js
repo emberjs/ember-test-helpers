@@ -12,7 +12,7 @@ import {
   click,
 } from '@ember/test-helpers';
 
-import hasEmberVersion from 'ember-test-helpers/has-ember-version';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import hbs from 'htmlbars-inline-precompile';
 import { defer } from 'rsvp';
