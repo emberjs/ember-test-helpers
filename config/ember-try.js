@@ -27,6 +27,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-fetch': null,
+              'ember-data': '~3.1.0',
             },
           },
         },
@@ -71,6 +72,7 @@ module.exports = function() {
           env,
           npm: {
             devDependencies: {
+              '@ember/jquery': '^0.5.2',
               'ember-source': '~2.12.0',
               'ember-fetch': null,
             },
