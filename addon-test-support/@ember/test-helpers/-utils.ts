@@ -37,7 +37,7 @@ const ORIGINAL_RSVP_ASYNC: Function = RSVP.configure('async');
   ```
 
   Unfortunately, without the custom `RSVP` `async` configuration we cannot ensure that `isSettled()` will
-  be truthy. This is due to the fact that Ember has configurate `RSVP` to resolve all promises in the run
+  be truthy. This is due to the fact that Ember has configured `RSVP` to resolve all promises in the run
   loop. What that means practically is this:
 
   1. all checks within `waitUntil` (used by `settled()` internally) are completed and we are "settled"
