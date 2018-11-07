@@ -1,5 +1,4 @@
-import { Promise } from 'rsvp';
-import { futureTick } from './-utils';
+import { futureTick, _Promise as Promise } from './-utils';
 
 const TIMEOUTS = [0, 1, 2, 5, 7];
 const MAX_TIMEOUT = 10;
