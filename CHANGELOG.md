@@ -1,5 +1,25 @@
 # Change Log
 
+## v1.0.1 (2018-11-07)
+
+#### :bug: Bug Fix
+* [#458](https://github.com/emberjs/ember-test-helpers/pull/458) Ensure the world is settled after `await settled()` ([@wagenet](https://github.com/wagenet))
+
+#### :house: Internal
+* [#466](https://github.com/emberjs/ember-test-helpers/pull/466) Fix precompile errors and prevent regressions. ([@rwjblue](https://github.com/rwjblue))
+* [#452](https://github.com/emberjs/ember-test-helpers/pull/452) Import type definitions from `@types/ember__test-helpers` ([@Turbo87](https://github.com/Turbo87))
+* [#450](https://github.com/emberjs/ember-test-helpers/pull/450) Convert to TypeScript ([@Turbo87](https://github.com/Turbo87))
+* [#464](https://github.com/emberjs/ember-test-helpers/pull/464) Add *.ts to `.npmignore`. ([@rwjblue](https://github.com/rwjblue))
+* [#462](https://github.com/emberjs/ember-test-helpers/pull/462) Improve ESLint usage ([@Turbo87](https://github.com/Turbo87))
+* [#456](https://github.com/emberjs/ember-test-helpers/pull/456)  tests: Adjust import paths to use `@ember/test-helpers`  ([@Turbo87](https://github.com/Turbo87))
+* [#449](https://github.com/emberjs/ember-test-helpers/pull/449) CI: Only run for `master`, PRs and version tags and branches ([@Turbo87](https://github.com/Turbo87))
+* [#448](https://github.com/emberjs/ember-test-helpers/pull/448) CI: Use `name` property instead of `NAME` env var workaround ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 3
+- Peter Wagenet ([@wagenet](https://github.com/wagenet))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v1.0.0 (2018-10-29)
 
 #### :boom: Breaking Change
