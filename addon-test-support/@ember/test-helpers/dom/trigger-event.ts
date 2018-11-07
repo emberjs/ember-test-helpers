@@ -2,6 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
+import Target from './-target';
 
 /**
  * Triggers an event on the specified target.
@@ -24,7 +25,11 @@ import { nextTickPromise } from '../-utils';
  *   [new Blob(['Ember Rules!'])]
  * );
  */
-export default function triggerEvent(target, eventType, options) {
+export default function triggerEvent(
+  target: Target,
+  eventType: string,
+  options?: object
+): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerEvent`.');

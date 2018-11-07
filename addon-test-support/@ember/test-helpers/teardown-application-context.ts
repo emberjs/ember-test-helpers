@@ -7,6 +7,6 @@ import settled from './settled';
   @param {Object} context the context to setup
   @returns {Promise<void>} resolves when settled
 */
-export default function() {
+export default function(context: object): Promise<void> {
   return settled();
 }

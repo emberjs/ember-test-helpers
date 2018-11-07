@@ -5,6 +5,7 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
+import Target from './-target';
 
 /**
   @private
@@ -46,14 +47,14 @@ export function __click__(element, options) {
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
-  Use the `options` hash to change the parameters of the MouseEvents. 
+  Use the `options` hash to change the parameters of the MouseEvents.
 
   @public
   @param {string|Element} target the element or selector to click on
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
-export default function click(target, options = {}) {
+export default function click(target: Target, options: object = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `click`.');

@@ -139,6 +139,14 @@ function checkWaiters() {
   return false;
 }
 
+export interface SettledState {
+  hasRunLoop: boolean;
+  hasPendingTimers: boolean;
+  hasPendingWaiters: boolean;
+  hasPendingRequests: boolean;
+  pendingRequestCount: number;
+}
+
 /**
   Check various settledness metrics, and return an object with the following properties:
 
@@ -158,7 +166,7 @@ function checkWaiters() {
   @public
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
-export function getSettledState() {
+export function getSettledState(): SettledState {
   let pendingRequestCount = pendingRequests();
 
   return {
@@ -180,7 +188,7 @@ export function getSettledState() {
   @public
   @returns {boolean} `true` if settled, `false` otherwise
 */
-export function isSettled() {
+export function isSettled(): boolean {
   let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
 
   if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters) {
