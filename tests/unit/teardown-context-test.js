@@ -1,12 +1,6 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import {
-  getContext,
-  setupContext,
-  teardownContext,
-  isSettled,
-  getSettledState,
-} from '@ember/test-helpers';
+import { getContext, setupContext, teardownContext, getSettledState } from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import Ember from 'ember';
@@ -70,10 +64,9 @@ module('teardownContext', function(hooks) {
 
       await teardownContext(context);
 
-      assert.ok(
-        isSettled(),
-        `out of balance xhr semaphores are cleaned up on teardown: ${getSettledState()}`
-      );
+      let state = getSettledState();
+      assert.equal(state.hasPendingRequests, false, 'hasPendingRequests is false');
+      assert.equal(state.pendingRequestCount, 0, 'pendingRequestCount is 0');
     });
   }
 });

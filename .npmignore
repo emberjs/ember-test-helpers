@@ -1,39 +1,26 @@
 # compiled output
-/dist
-/docs
-/tmp
-
-# dependencies
-/node_modules
-/bower_components
+/dist/
+/tmp/
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage/*
-/libpeerconnection.log
-npm-debug.log*
-yarn-error.log
-testem.log
-/tests
-**/.gitkeep
-.bowerrc
-.editorconfig
-.ember-cli
-.eslintrc.js
-.gitignore
-.watchmanconfig
-.travis.yml
-bower.json
-ember-cli-build.js
-testem.js
-yarn.lock
+/.editorconfig
+/.ember-cli
+/.eslintignore
+/.eslintrc.js
+/.gitignore
+/.template-lintrc.js
+/.travis.yml
+/.watchmanconfig
+/config/ember-try.js
+/ember-cli-build.js
+/testem.js
+/tests/
+/yarn.lock
+.gitkeep
 
 # ember-try
-.node_modules.ember-try/
-bower.json.ember-try
-package.json.ember-try
-/config/ember-try.js
+/.node_modules.ember-try/
+/package.json.ember-try
 
 # typescript
 #

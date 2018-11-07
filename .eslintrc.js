@@ -49,8 +49,8 @@ module.exports = {
       rules: {
         // the TypeScript compiler already takes care of this and
         // leaving it enabled results in false positives for interface imports
-        'no-unused-vars': false,
-        'no-undef': false,
+        'no-unused-vars': 0,
+        'no-undef': 0,
       },
     },
     {
