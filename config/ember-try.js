@@ -8,7 +8,7 @@ module.exports = function() {
     getChannelURL('beta'),
     getChannelURL('canary'),
   ]).then(urls => {
-    let env = {
+    let envWithoutJQuery = {
       EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': false }),
     };
 
@@ -17,7 +17,6 @@ module.exports = function() {
       scenarios: [
         {
           name: 'ember-2.0',
-          env,
           bower: {
             dependencies: {
               ember: '~2.0.0',
@@ -33,7 +32,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.4',
-          env,
           bower: {
             dependencies: {
               ember: 'components/ember#lts-2-4',
@@ -51,7 +49,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.8',
-          env,
           bower: {
             dependencies: {
               ember: 'components/ember#lts-2-8',
@@ -69,7 +66,6 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.12',
-          env,
           npm: {
             devDependencies: {
               '@ember/jquery': '^0.5.2',
@@ -80,17 +76,36 @@ module.exports = function() {
         },
         {
           name: 'ember-lts-2.16',
-          env,
+          env: envWithoutJQuery,
           npm: {
             devDependencies: {
-              'ember-source': '~2.16.0-beta.1',
+              'ember-source': '~2.16.0',
               'ember-native-dom-event-dispatcher': '^0.6.4',
             },
           },
         },
         {
+          name: 'ember-2.18',
+          env: envWithoutJQuery,
+          npm: {
+            devDependencies: {
+              'ember-source': '~2.18.0',
+              'ember-native-dom-event-dispatcher': '^0.6.4',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-3.4',
+          env: envWithoutJQuery,
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.4.0',
+            },
+          },
+        },
+        {
           name: 'ember-release',
-          env,
+          env: envWithoutJQuery,
           npm: {
             devDependencies: {
               'ember-source': urls[0],
@@ -99,7 +114,7 @@ module.exports = function() {
         },
         {
           name: 'ember-beta',
-          env,
+          env: envWithoutJQuery,
           npm: {
             devDependencies: {
               'ember-source': urls[1],
@@ -108,7 +123,7 @@ module.exports = function() {
         },
         {
           name: 'ember-canary',
-          env,
+          env: envWithoutJQuery,
           npm: {
             devDependencies: {
               'ember-source': urls[2],
@@ -117,7 +132,7 @@ module.exports = function() {
         },
         {
           name: 'ember-without-application-wrapper',
-          env: Object.assign({}, env, {
+          env: Object.assign({}, envWithoutJQuery, {
             EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
           }),
           npm: {
@@ -128,9 +143,9 @@ module.exports = function() {
         },
         {
           name: 'ember-default-with-jquery',
-          env: Object.assign({}, env, {
+          env: {
             EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
-          }),
+          },
           npm: {
             devDependencies: {
               'ember-fetch': null,
@@ -139,7 +154,7 @@ module.exports = function() {
         },
         {
           name: 'ember-default',
-          env,
+          env: envWithoutJQuery,
           npm: {
             devDependencies: {},
           },
