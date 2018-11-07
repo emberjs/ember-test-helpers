@@ -75,6 +75,7 @@ function keyEntry(element: FormControl, character: string): () => void {
     bubbles: true,
     cancellable: true,
     charCode,
+    key: character,
   };
 
   const keyEvents = {

@@ -77,6 +77,25 @@ module('DOM Helper: typeIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
+  test('it triggers key events with correct arguments', async function(assert) {
+    element = buildInstrumentedElement('input', ['key', 'charCode']);
+    await typeIn(element, 'foo');
+
+    let chars = ['f', 'o', 'o'];
+    let expectedEventsWithArguments = expectedEvents.map(eventName => {
+      // Only key events get the key arguments
+      if (!['keydown', 'keypress', 'keyup'].includes(eventName)) {
+        return `${eventName} undefined undefined`;
+      }
+      // After each keyup, the next character comes up
+      let char = eventName === 'keyup' ? chars.shift() : chars[0];
+
+      return `${eventName} ${char} ${char.charCodeAt()}`;
+    });
+
+    assert.verifySteps(expectedEventsWithArguments);
+  });
+
   test('filling in an input with a delay', async function(assert) {
     element = buildInstrumentedElement('input');
     await typeIn(element, 'foo', { delay: 150 });
