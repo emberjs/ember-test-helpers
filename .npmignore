@@ -34,3 +34,9 @@ yarn.lock
 bower.json.ember-try
 package.json.ember-try
 /config/ember-try.js
+
+# typescript
+#
+# avoid publishing .d.ts or .ts files
+# until they have become enforced "public" APIs
+*.ts
