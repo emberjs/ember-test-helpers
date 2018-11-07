@@ -75,7 +75,7 @@
     "fs-extra": "^7.0.0",
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.2.3",
-    "prettier": "^1.7.4",
+    "prettier": "^1.15.1",
     "qunit": "^2.8.0",
     "typescript": "^3.1.6",
     "typescript-eslint-parser": "^20.1.1"
