@@ -3,7 +3,7 @@
 import RSVP from 'rsvp';
 import hasEmberVersion from './has-ember-version';
 
-export class _Promise extends RSVP.Promise<void> {}
+export class _Promise<T> extends RSVP.Promise<T> {}
 
 const ORIGINAL_RSVP_ASYNC: Function = RSVP.configure('async');
 
@@ -52,7 +52,7 @@ const ORIGINAL_RSVP_ASYNC: Function = RSVP.configure('async');
 
   😩😫🙀
 */
-RSVP.configure('async', (callback, promise) => {
+RSVP.configure('async', (callback: any, promise: any) => {
   if (promise instanceof _Promise) {
     // @ts-ignore - avoid erroring about useless `Promise !== RSVP.Promise` comparison
     // (this handles when folks have polyfilled via Promise = Ember.RSVP.Promise)
