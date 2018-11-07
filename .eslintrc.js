@@ -2,10 +2,7 @@ module.exports = {
   root: true,
   extends: ['eslint:recommended', 'prettier'],
   parser: 'typescript-eslint-parser',
-  plugins: [
-    'prettier',
-    'typescript',
-  ],
+  plugins: ['prettier', 'typescript'],
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module',
@@ -14,15 +11,18 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'prettier/prettier': ['error', {
-      singleQuote: true,
-      trailingComma: 'es5',
-      printWidth: 100,
-    }],
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        printWidth: 100,
+      },
+    ],
   },
   overrides: [
     {
-      files: ['index.js', 'config/ember-try.js', 'scripts/**'],
+      files: ['.eslintrc.js', 'index.js', 'config/ember-try.js', 'scripts/**'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         ecmaVersion: 2015,
@@ -31,7 +31,7 @@ module.exports = {
       env: {
         browser: false,
         node: true,
-        es6: true
+        es6: true,
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
@@ -41,8 +41,8 @@ module.exports = {
     {
       files: ['tests/**/*.[jt]s'],
       env: {
-        qunit: true
-      }
+        qunit: true,
+      },
     },
     {
       files: ['**/*.ts'],
@@ -51,33 +51,34 @@ module.exports = {
         // leaving it enabled results in false positives for interface imports
         'no-unused-vars': false,
         'no-undef': false,
-      }
+      },
     },
     {
       files: ['index.js', 'addon-test-support/**/*.[jt]s', 'config/**/*.js'],
-      plugins: [
-        'disable-features',
-      ],
+      plugins: ['disable-features'],
       rules: {
         'disable-features/disable-async-await': 'error',
         'disable-features/disable-generator-functions': 'error',
-      }
+      },
     },
     {
       files: ['addon-test-support/**/*.[jt]s'],
       excludedFiles: ['addon-test-support/ember-test-helpers/legacy-0-6-x/**'],
       rules: {
-        'valid-jsdoc': ['error', {
-          prefer: {
-            'method': 'do-not-use-redundant-method-tag',
+        'valid-jsdoc': [
+          'error',
+          {
+            prefer: {
+              method: 'do-not-use-redundant-method-tag',
+            },
+            preferType: {
+              String: 'string',
+            },
+            requireReturn: false,
           },
-          preferType: {
-            'String': 'string',
-          },
-          requireReturn: false,
-        }],
+        ],
         'require-jsdoc': 'error',
-      }
+      },
     },
-  ]
+  ],
 };

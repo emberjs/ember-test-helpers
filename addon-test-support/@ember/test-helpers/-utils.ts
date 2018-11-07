@@ -59,7 +59,7 @@ RSVP.configure('async', (callback, promise) => {
     if (typeof Promise !== 'undefined' && Promise !== RSVP.Promise) {
       // use real native promise semantics whenever possible
       Promise.resolve().then(() => callback(promise));
-    }  else {
+    } else {
       // fallback to using RSVP's natural `asap` (**not** the fake
       // one configured by Ember...)
       RSVP.asap(callback, promise);
@@ -81,7 +81,7 @@ export const futureTick = setTimeout;
 export function nextTickPromise() {
   // Ember 3.4 removed the auto-run assertion, in 3.4+ we can (and should) avoid the "psuedo promisey" run loop configuration
   // for our `nextTickPromise` implementation. This allows us to have real microtask based next tick timing...
-  if (hasEmberVersion(3,4)) {
+  if (hasEmberVersion(3, 4)) {
     return _Promise.resolve();
   } else {
     // on older Ember's fallback to RSVP.Promise + a setTimeout

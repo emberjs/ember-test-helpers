@@ -182,7 +182,8 @@ export default function setupRenderingContext(context) {
       // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
-        let dispatcher = owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
+        let dispatcher =
+          owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
         dispatcher.setup({}, '#ember-testing');
       }
 
