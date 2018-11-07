@@ -26,7 +26,7 @@
     "build": "ember build",
     "changelog": "lerna-changelog",
     "docs": "scripts/precompile.sh && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml -f md -o API.md && ember ts:clean",
-    "lint": "eslint *.js addon addon-test-support app config lib node-tests server tests test-support",
+    "lint": "eslint --ext=js,ts *.js addon addon-test-support app config lib node-tests server tests test-support",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
