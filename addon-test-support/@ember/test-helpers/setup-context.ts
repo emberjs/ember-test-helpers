@@ -3,7 +3,7 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Resolver from '@ember/application/resolver';
 
-import buildOwner from './build-owner';
+import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks } from './settled';
 import Ember from 'ember';
 import { Promise } from 'rsvp';
@@ -13,7 +13,28 @@ import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { nextTickPromise } from './-utils';
 
-let __test_context__: any | undefined;
+export interface BaseContext {
+  [key: string]: any;
+}
+
+export interface TestContext extends BaseContext {
+  owner: Owner;
+
+  set(key: string, value: any): any;
+  setProperties(hash: { [key: string]: any }): { [key: string]: any };
+  get(key: string): any;
+  getProperties(...args: string[]): Pick<BaseContext, string>;
+
+  pauseTest(): Promise<void>;
+  resumeTest(): Promise<void>;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isTestContext(context: BaseContext): context is TestContext {
+  return typeof context.pauseTest === 'function' && typeof context.resumeTest === 'function';
+}
+
+let __test_context__: BaseContext | undefined;
 
 /**
   Stores the provided context as the "global testing context".
@@ -23,7 +44,7 @@ let __test_context__: any | undefined;
   @public
   @param {Object} context the context to use
 */
-export function setContext(context: any): void {
+export function setContext(context: BaseContext): void {
   __test_context__ = context;
 }
 
@@ -33,7 +54,7 @@ export function setContext(context: any): void {
   @public
   @returns {Object} the previously stored testing context
 */
-export function getContext(): any | undefined {
+export function getContext(): BaseContext | undefined {
   return __test_context__;
 }
 
@@ -85,7 +106,7 @@ export function unsetContext(): void {
 export function pauseTest(): Promise<void> {
   let context = getContext();
 
-  if (!context || typeof context.pauseTest !== 'function') {
+  if (!context || !isTestContext(context)) {
     throw new Error(
       'Cannot call `pauseTest` without having first called `setupTest` or `setupRenderingTest`.'
     );
@@ -102,7 +123,7 @@ export function pauseTest(): Promise<void> {
 export function resumeTest(): void {
   let context = getContext();
 
-  if (!context || typeof context.resumeTest !== 'function') {
+  if (!context || !isTestContext(context)) {
     throw new Error(
       'Cannot call `resumeTest` without having first called `setupTest` or `setupRenderingTest`.'
     );
@@ -130,10 +151,10 @@ export const CLEANUP = Object.create(null);
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function<Context extends any>(
-  context: Context,
+export default function(
+  context: BaseContext,
   options: { resolver?: Resolver } = {}
-): Promise<Context> {
+): Promise<TestContext> {
   (Ember as any).testing = true;
   setContext(context);
 
@@ -183,7 +204,7 @@ export default function<Context extends any>(
       Object.defineProperty(context, 'set', {
         configurable: true,
         enumerable: true,
-        value(key, value) {
+        value(key: string, value: any): any {
           let ret = run(function() {
             return set(context, key, value);
           });
@@ -196,7 +217,7 @@ export default function<Context extends any>(
       Object.defineProperty(context, 'setProperties', {
         configurable: true,
         enumerable: true,
-        value(hash) {
+        value(hash: { [key: string]: any }): { [key: string]: any } {
           let ret = run(function() {
             return setProperties(context, hash);
           });
@@ -209,7 +230,7 @@ export default function<Context extends any>(
       Object.defineProperty(context, 'get', {
         configurable: true,
         enumerable: true,
-        value(key) {
+        value(key: string): any {
           return get(context, key);
         },
         writable: false,
@@ -218,16 +239,16 @@ export default function<Context extends any>(
       Object.defineProperty(context, 'getProperties', {
         configurable: true,
         enumerable: true,
-        value(...args) {
+        value(...args: string[]): Pick<BaseContext, string> {
           return getProperties(context, args);
         },
         writable: false,
       });
 
-      let resume;
+      let resume: Function | undefined;
       context.resumeTest = function resumeTest() {
-        assert('Testing has not been paused. There is nothing to resume.', resume);
-        resume();
+        assert('Testing has not been paused. There is nothing to resume.', Boolean(resume));
+        (resume as Function)();
         global.resumeTest = resume = undefined;
       };
 
@@ -242,6 +263,6 @@ export default function<Context extends any>(
 
       _setupAJAXHooks();
 
-      return context;
+      return context as TestContext;
     });
 }

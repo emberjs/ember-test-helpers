@@ -28,7 +28,7 @@ const _internalPendingRequests = (() => {
   return () => 0;
 })();
 
-let requests;
+let requests: XMLHttpRequest[];
 
 /**
   @private
@@ -46,7 +46,7 @@ function pendingRequests() {
   @param {Event} event (unused)
   @param {XMLHTTPRequest} xhr the XHR that has initiated a request
 */
-function incrementAjaxPendingRequests(event, xhr) {
+function incrementAjaxPendingRequests(event: any, xhr: XMLHttpRequest): void {
   requests.push(xhr);
 }
 
@@ -55,7 +55,7 @@ function incrementAjaxPendingRequests(event, xhr) {
   @param {Event} event (unused)
   @param {XMLHTTPRequest} xhr the XHR that has initiated a request
 */
-function decrementAjaxPendingRequests(event, xhr) {
+function decrementAjaxPendingRequests(event: any, xhr: XMLHttpRequest): void {
   // In most Ember versions to date (current version is 2.16) RSVP promises are
   // configured to flush in the actions queue of the Ember run loop, however it
   // is possible that in the future this changes to use "true" micro-task
@@ -112,7 +112,7 @@ export function _setupAJAXHooks() {
   jQuery(document).on('ajaxComplete', decrementAjaxPendingRequests);
 }
 
-let _internalCheckWaiters;
+let _internalCheckWaiters: Function;
 
 let loader = (Ember as any).__loader;
 if (loader.registry['ember-testing/test/waiters']) {
@@ -128,10 +128,13 @@ if (loader.registry['ember-testing/test/waiters']) {
   @returns {boolean} true if waiters are still pending
 */
 function checkWaiters() {
+  type Waiter = [any, Function];
+  let EmberTest = (Ember.Test as any) as { waiters: Array<Waiter> };
+
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
-  } else if ((Ember.Test as any).waiters) {
-    if ((Ember.Test as any).waiters.any(([context, callback]) => !callback.call(context))) {
+  } else if (EmberTest.waiters) {
+    if (EmberTest.waiters.some(([context, callback]) => !callback.call(context))) {
       return true;
     }
   }

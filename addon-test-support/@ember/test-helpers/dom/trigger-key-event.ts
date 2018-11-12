@@ -2,11 +2,9 @@ import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { KEYBOARD_EVENT_TYPES } from './fire-event';
+import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
-
-export type KeyEvent = 'keydown' | 'keyup' | 'keypress';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -23,7 +21,7 @@ const DEFAULT_MODIFIERS: KeyModifiers = Object.freeze({
 });
 
 // This is not a comprehensive list, but it is better than nothing.
-const keyFromKeyCode = {
+const keyFromKeyCode: { [key: number]: string } = {
   8: 'Backspace',
   9: 'Tab',
   13: 'Enter',
@@ -87,7 +85,7 @@ const keyFromKeyCode = {
   @param {object} modifiers The modifiers of the event.
   @returns {string} The key string for the event.
  */
-function keyFromKeyCodeAndModifiers(keycode, modifiers) {
+function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): string | void {
   if (keycode > 64 && keycode < 91) {
     if (modifiers.shiftKey) {
       return String.fromCharCode(keycode);
@@ -106,11 +104,11 @@ function keyFromKeyCodeAndModifiers(keycode, modifiers) {
  * @param {string} key The KeyboardEvent#key string
  * @returns {number} The keycode for the given key
  */
-function keyCodeFromKey(key) {
+function keyCodeFromKey(key: string) {
   let keys = Object.keys(keyFromKeyCode);
-  let keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key);
+  let keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key);
   if (!keyCode) {
-    keyCode = keys.find(keyCode => keyFromKeyCode[keyCode] === key.toLowerCase());
+    keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key.toLowerCase());
   }
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
@@ -134,7 +132,7 @@ function keyCodeFromKey(key) {
 */
 export default function triggerKeyEvent(
   target: Target,
-  eventType: KeyEvent,
+  eventType: KeyboardEventType,
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
@@ -152,7 +150,7 @@ export default function triggerKeyEvent(
       throw new Error(`Must provide an \`eventType\` to \`triggerKeyEvent\``);
     }
 
-    if (KEYBOARD_EVENT_TYPES.indexOf(eventType) === -1) {
+    if (!isKeyboardEventType(eventType)) {
       let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
       throw new Error(
         `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`

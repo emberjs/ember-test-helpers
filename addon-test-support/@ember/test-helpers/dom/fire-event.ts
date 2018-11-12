@@ -1,5 +1,7 @@
 import { assign } from '@ember/polyfills';
 import { deprecate } from '@ember/application/deprecations';
+import { isDocument, isElement } from './-target';
+import tuple from '../-tuple';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -11,8 +13,16 @@ const MOUSE_EVENT_CONSTRUCTOR = (() => {
   }
 })();
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
-export const KEYBOARD_EVENT_TYPES = Object.freeze(['keydown', 'keypress', 'keyup']);
-const MOUSE_EVENT_TYPES = [
+
+export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
+export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
+
+// eslint-disable-next-line require-jsdoc
+export function isKeyboardEventType(eventType: any): eventType is KeyboardEventType {
+  return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+const MOUSE_EVENT_TYPES = tuple(
   'click',
   'mousedown',
   'mouseup',
@@ -21,9 +31,41 @@ const MOUSE_EVENT_TYPES = [
   'mouseleave',
   'mousemove',
   'mouseout',
-  'mouseover',
-];
-const FILE_SELECTION_EVENT_TYPES = ['change'];
+  'mouseover'
+);
+export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
+
+// eslint-disable-next-line require-jsdoc
+export function isMouseEventType(eventType: any): eventType is MouseEventType {
+  return MOUSE_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+const FILE_SELECTION_EVENT_TYPES = tuple('change');
+export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
+
+// eslint-disable-next-line require-jsdoc
+export function isFileSelectionEventType(eventType: any): eventType is FileSelectionEventType {
+  return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isFileSelectionInput(element: any): element is HTMLInputElement {
+  return element.files;
+}
+
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: KeyboardEventType,
+  options?: any
+): Event;
+
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: MouseEventType,
+  options?: any
+): Event | void;
+
+function fireEvent(element: Element | Document | Window, eventType: string, options?: any): Event;
 
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
@@ -34,21 +76,25 @@ const FILE_SELECTION_EVENT_TYPES = ['change'];
   @param {Object} [options] additional properties to be set on the event
   @returns {Event} the event that was dispatched
 */
-export default function fireEvent(element, eventType, options = {}) {
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: string,
+  options = {}
+): Event | void {
   if (!element) {
     throw new Error('Must pass an element to `fireEvent`');
   }
 
   let event;
-  if (KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1) {
+  if (isKeyboardEventType(eventType)) {
     event = buildKeyboardEvent(eventType, options);
-  } else if (MOUSE_EVENT_TYPES.indexOf(eventType) > -1) {
+  } else if (isMouseEventType(eventType)) {
     let rect;
     if (element instanceof Window && element.document.documentElement) {
       rect = element.document.documentElement.getBoundingClientRect();
-    } else if (element.nodeType === Node.DOCUMENT_NODE) {
-      rect = element.documentElement.getBoundingClientRect();
-    } else if (element.nodeType === Node.ELEMENT_NODE) {
+    } else if (isDocument(element)) {
+      rect = element.documentElement!.getBoundingClientRect();
+    } else if (isElement(element)) {
       rect = element.getBoundingClientRect();
     } else {
       return;
@@ -64,7 +110,7 @@ export default function fireEvent(element, eventType, options = {}) {
     };
 
     event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
-  } else if (FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1 && element.files) {
+  } else if (isFileSelectionEventType(eventType) && isFileSelectionInput(element)) {
     event = buildFileEvent(eventType, element, options);
   } else {
     event = buildBasicEvent(eventType, options);
@@ -74,8 +120,10 @@ export default function fireEvent(element, eventType, options = {}) {
   return event;
 }
 
+export default fireEvent;
+
 // eslint-disable-next-line require-jsdoc
-function buildBasicEvent(type, options: any = {}) {
+function buildBasicEvent(type: string, options: any = {}): Event {
   let event = document.createEvent('Events');
 
   let bubbles = options.bubbles !== undefined ? options.bubbles : true;
@@ -92,7 +140,7 @@ function buildBasicEvent(type, options: any = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildMouseEvent(type, options = {}) {
+function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
   let eventOpts: any = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
@@ -126,9 +174,10 @@ function buildMouseEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildKeyboardEvent(type, options = {}) {
+function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
   let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
-  let event, eventMethodName;
+  let event: Event | undefined;
+  let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
   try {
     event = new KeyboardEvent(type, eventOpts);
@@ -174,8 +223,8 @@ function buildKeyboardEvent(type, options = {}) {
     }
   }
 
-  if (event) {
-    event[eventMethodName](
+  if (event && eventMethodName) {
+    (event as any)[eventMethodName](
       type,
       eventOpts.bubbles,
       eventOpts.cancelable,
@@ -195,7 +244,11 @@ function buildKeyboardEvent(type, options = {}) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildFileEvent(type, element, options: any = {}) {
+function buildFileEvent(
+  type: FileSelectionEventType,
+  element: HTMLInputElement,
+  options: any = {}
+): Event {
   let event = buildBasicEvent(type);
   let files;
   if (Array.isArray(options)) {
@@ -215,7 +268,7 @@ function buildFileEvent(type, element, options: any = {}) {
 
   if (files.length > 0) {
     Object.defineProperty(files, 'item', {
-      value(index) {
+      value(index: number) {
         return typeof index === 'number' ? this[index] : null;
       },
     });

@@ -1,6 +1,20 @@
+import Application from '@ember/application';
+import Resolver from '@ember/application/resolver';
+
 import { Promise } from 'rsvp';
 
 import legacyBuildRegistry from 'ember-test-helpers/legacy-0-6-x/build-registry';
+import ContainerProxyMixin from '@ember/engine/-private/container-proxy-mixin';
+import RegistryProxyMixin from '@ember/engine/-private/registry-proxy-mixin';
+import CoreObject from '@ember/object/core';
+
+export interface Owner extends CoreObject, ContainerProxyMixin, RegistryProxyMixin {
+  _emberTestHelpersMockOwner?: boolean;
+
+  _lookupFactory?(key: string): any;
+
+  visit(url: string, options?: { [key: string]: any }): Promise<any>;
+}
 
 /**
   Creates an "owner" (an object that either _is_ or duck-types like an
@@ -21,9 +35,14 @@ import legacyBuildRegistry from 'ember-test-helpers/legacy-0-6-x/build-registry'
   @param {Ember.Resolver} [resolver] the resolver to use to back a "mock owner"
   @returns {Promise<Ember.ApplicationInstance>} a promise resolving to the generated "owner"
 */
-export default function buildOwner(application, resolver) {
+export default function buildOwner(
+  application: Application | undefined | null,
+  resolver: Resolver | undefined | null
+): Promise<Owner> {
   if (application) {
-    return application.boot().then(app => app.buildInstance().boot());
+    return (application.boot().then(app => app.buildInstance().boot()) as unknown) as Promise<
+      Owner
+    >;
   }
 
   if (!resolver) {
@@ -32,6 +51,6 @@ export default function buildOwner(application, resolver) {
     );
   }
 
-  let { owner } = legacyBuildRegistry(resolver);
+  let { owner } = legacyBuildRegistry(resolver) as { owner: Owner };
   return Promise.resolve(owner);
 }

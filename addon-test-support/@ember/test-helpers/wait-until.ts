@@ -3,6 +3,8 @@ import { futureTick, _Promise as Promise } from './-utils';
 const TIMEOUTS = [0, 1, 2, 5, 7];
 const MAX_TIMEOUT = 10;
 
+type Falsy = false | 0 | '' | null | undefined;
+
 export interface Options {
   timeout?: number;
   timeoutMessage?: string;
@@ -22,7 +24,7 @@ export interface Options {
   @returns {Promise} resolves with the callback value when it returns a truthy value
 */
 export default function waitUntil<T>(
-  callback: () => T | void | false | null | undefined | '',
+  callback: () => T | void | Falsy,
   options: Options = {}
 ): Promise<T> {
   let timeout = 'timeout' in options ? (options.timeout as number) : 1000;
@@ -35,7 +37,7 @@ export default function waitUntil<T>(
     let time = 0;
 
     // eslint-disable-next-line require-jsdoc
-    function scheduleCheck(timeoutsIndex) {
+    function scheduleCheck(timeoutsIndex: number) {
       let interval = TIMEOUTS[timeoutsIndex];
       if (interval === undefined) {
         interval = MAX_TIMEOUT;
@@ -44,7 +46,7 @@ export default function waitUntil<T>(
       futureTick(function() {
         time += interval;
 
-        let value;
+        let value: T | void | Falsy;
         try {
           value = callback();
         } catch (error) {

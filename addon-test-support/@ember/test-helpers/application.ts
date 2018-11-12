@@ -2,7 +2,7 @@ import Application from '@ember/application';
 
 import { getResolver, setResolver } from './resolver';
 
-var __application__: Application;
+var __application__: Application | undefined;
 
 /**
   Stores the provided application instance so that tests being ran will be aware of the application under test.
@@ -30,6 +30,6 @@ export function setApplication(application: Application): void {
   @public
   @returns {Ember.Application} the previously stored application instance under test
 */
-export function getApplication(): Application {
+export function getApplication(): Application | undefined {
   return __application__;
 }

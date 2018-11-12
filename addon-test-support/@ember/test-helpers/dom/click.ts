@@ -12,7 +12,7 @@ import Target from './-target';
   @param {Element} element the element to click on
   @param {Object} options the options to be merged into the mouse events
 */
-export function __click__(element, options) {
+export function __click__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
@@ -54,7 +54,7 @@ export function __click__(element, options) {
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 */
-export default function click(target: Target, options: object = {}): Promise<void> {
+export default function click(target: Target, options: MouseEventInit = {}): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `click`.');
@@ -65,7 +65,7 @@ export default function click(target: Target, options: object = {}): Promise<voi
       throw new Error(`Element not found when calling \`click('${target}')\`.`);
     }
 
-    let isDisabledFormControl = isFormControl(element) && element.disabled === true;
+    let isDisabledFormControl = isFormControl(element) && element.disabled;
 
     if (!isDisabledFormControl) {
       __click__(element, options);

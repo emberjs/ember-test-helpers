@@ -4,6 +4,12 @@ import getElements from './-get-elements';
 import toArray from './-to-array';
 import { nextTickPromise } from '../-utils';
 
+export interface Options {
+  timeout?: number;
+  count?: number | null;
+  timeoutMessage?: string;
+}
+
 /**
   Used to wait for a particular selector to appear in the DOM. Due to the fact
   that it does not wait for general settledness, this is quite useful for testing
@@ -16,18 +22,20 @@ import { nextTickPromise } from '../-utils';
   @return {Promise<Element|Element[]>} resolves when the element(s) appear on the page
 */
 export default function waitFor(
-  selector,
-  { timeout = 1000, count = null, timeoutMessage = '' } = {}
+  selector: string,
+  options: Options = {}
 ): Promise<Element | Element[]> {
   return nextTickPromise().then(() => {
     if (!selector) {
       throw new Error('Must pass a selector to `waitFor`.');
     }
+
+    let { timeout = 1000, count = null, timeoutMessage } = options;
     if (!timeoutMessage) {
       timeoutMessage = `waitFor timed out waiting for selector "${selector}"`;
     }
 
-    let callback: () => Element | Element[] | void;
+    let callback: () => Element | Element[] | void | null;
     if (count !== null) {
       callback = () => {
         let elements = getElements(selector);

@@ -3,22 +3,41 @@ import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
-import { getContext } from './setup-context';
+import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
 import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
+import { Owner } from './build-owner';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
+
+export interface RenderingTestContext extends TestContext {
+  render(template: TemplateFactory): Promise<void>;
+  clearRender(): Promise<void>;
+
+  $?(selector: string): any;
+
+  element: Element | Document;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isRenderingTestContext(context: BaseContext): context is RenderingTestContext {
+  return (
+    isTestContext(context) &&
+    typeof context.render === 'function' &&
+    typeof context.clearRender === 'function'
+  );
+}
 
 /**
   @private
   @param {Ember.ApplicationInstance} owner the current owner instance
   @returns {Template} a template representing {{outlet}}
 */
-function lookupOutletTemplate(owner) {
+function lookupOutletTemplate(owner: Owner): any {
   let OutletTemplate = owner.lookup('template:-outlet');
   if (!OutletTemplate) {
     owner.register('template:-outlet', OUTLET_TEMPLATE);
@@ -33,8 +52,8 @@ function lookupOutletTemplate(owner) {
   @param {string} [selector] the selector to search for relative to element
   @returns {jQuery} a jQuery object representing the selector (or element itself if no selector)
 */
-function jQuerySelector(selector) {
-  let { element } = getContext();
+function jQuerySelector(selector: string): any {
+  let { element } = getContext() as RenderingTestContext;
 
   // emulates Ember internal behavor of `this.$` in a component
   // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
@@ -57,6 +76,10 @@ export function render(template: TemplateFactory): Promise<void> {
   }
 
   return nextTickPromise().then(() => {
+    if (!context || !isRenderingTestContext(context)) {
+      throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
+    }
+
     let { owner } = context;
 
     let toplevelView = owner.lookup('-top-level-view:main');
@@ -115,7 +138,7 @@ export function render(template: TemplateFactory): Promise<void> {
 export function clearRender(): Promise<void> {
   let context = getContext();
 
-  if (!context || typeof context.clearRender !== 'function') {
+  if (!context || !isRenderingTestContext(context)) {
     throw new Error(
       'Cannot call `clearRender` without having first called `setupRenderingContext`.'
     );
@@ -143,9 +166,7 @@ export function clearRender(): Promise<void> {
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupRenderingContext<Context extends { owner: any }>(
-  context: Context
-): Promise<Context> {
+export default function setupRenderingContext(context: TestContext): Promise<RenderingTestContext> {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
 
@@ -191,7 +212,7 @@ export default function setupRenderingContext<Context extends { owner: any }>(
 
       let OutletView = owner.factoryFor
         ? owner.factoryFor('view:-outlet')
-        : owner._lookupFactory('view:-outlet');
+        : owner._lookupFactory!('view:-outlet');
       let toplevelView = OutletView.create();
 
       owner.register('-top-level-view:main', {
@@ -226,6 +247,6 @@ export default function setupRenderingContext<Context extends { owner: any }>(
         writable: false,
       });
 
-      return context;
+      return context as RenderingTestContext;
     });
 }
