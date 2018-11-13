@@ -160,4 +160,100 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, '');
   });
+
+  test('filling a select via selector with context set', async function(assert) {
+    element = buildInstrumentedElement('select');
+
+    element.innerHTML = `
+<option value="value1">Value 1</option>
+<option value="value2">Value 2</option>
+<option value="value3">Value 3</option>
+`;
+
+    await setupContext(context);
+    await fillIn(`#${element.id}`, 'value1');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.equal(element.value, 'value1');
+  });
+
+  test('filling a select via selector with context set with a non-existing value', async function(assert) {
+    element = buildInstrumentedElement('select');
+
+    element.innerHTML = `
+<option value="value1">Value 1</option>
+<option value="value2">Value 2</option>
+<option value="value3">Value 3</option>
+`;
+
+    await setupContext(context);
+    await fillIn(`#${element.id}`, 'foo');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.equal(element.value, '');
+  });
+
+  test('filling a multi-select via selector with context set', async function(assert) {
+    element = buildInstrumentedElement('select');
+
+    element.innerHTML = `
+<option value="value1">Value 1</option>
+<option value="value2">Value 2</option>
+<option value="value3">Value 3</option>
+`;
+
+    element.multiple = true;
+
+    await setupContext(context);
+    await fillIn(`#${element.id}`, 'value1');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.deepEqual(
+      Array.from(element.selectedOptions).map(option => option.value),
+      ['value1'],
+      'selected options updated'
+    );
+  });
+
+  test('filling a multi-select via selector with context set with an array', async function(assert) {
+    element = buildInstrumentedElement('select');
+
+    element.innerHTML = `
+<option value="value1">Value 1</option>
+<option value="value2">Value 2</option>
+<option value="value3">Value 3</option>
+`;
+
+    element.multiple = true;
+
+    await setupContext(context);
+    await fillIn(`#${element.id}`, ['value1', 'value2']);
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.deepEqual(
+      Array.from(element.selectedOptions).map(option => option.value),
+      ['value1', 'value2'],
+      'selected options updated'
+    );
+  });
+
+  test('filling a single select with an array', async function(assert) {
+    element = buildInstrumentedElement('select');
+
+    element.innerHTML = `
+<option value="value1">Value 1</option>
+<option value="value2">Value 2</option>
+<option value="value3">Value 3</option>
+`;
+
+    await setupContext(context);
+    assert.rejects(
+      fillIn(`#${element.id}`, ['value1']),
+      /You can only provide an array of texts for multi selects./
+    );
+  });
 });

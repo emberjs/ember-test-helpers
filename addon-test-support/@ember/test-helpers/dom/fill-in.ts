@@ -13,10 +13,10 @@ import Target from './-target';
 
   @public
   @param {string|Element} target the element or selector to enter text into
-  @param {string} text the text to fill into the target element
+  @param {string|Array} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
 */
-export default function fillIn(target: Target, text: string): Promise<void> {
+export default function fillIn(target: Target, text: string | Array<string>): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `fillIn`.');
@@ -35,9 +35,15 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       throw new Error('Must provide `text` when calling `fillIn`.');
     }
 
+    if (Array.isArray(text) && (element.tagName !== 'SELECT' || !element.multiple)) {
+      throw new Error('You can only provide an array of texts for multi selects.');
+    }
+
     __focus__(element);
 
-    if (isControl) {
+    if (Array.isArray(text)) {
+      fillInMultiSelect(element, text);
+    } else if (isControl) {
       element.value = text;
     } else {
       element.innerHTML = text;
@@ -47,5 +53,14 @@ export default function fillIn(target: Target, text: string): Promise<void> {
     fireEvent(element, 'change');
 
     return settled();
+  });
+}
+
+// eslint-disable-next-line require-jsdoc
+function fillInMultiSelect(element: HTMLElement, values: Array<string>) {
+  let options = element.querySelectorAll('option');
+
+  options.forEach((option: HTMLOptionElement) => {
+    option.selected = values.includes(option.value);
   });
 }
