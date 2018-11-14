@@ -78,7 +78,7 @@
     "prettier": "^1.15.2",
     "qunit": "^2.8.0",
     "typescript": "^3.1.6",
-    "typescript-eslint-parser": "^20.1.1"
+    "typescript-eslint-parser": "^21.0.0"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
