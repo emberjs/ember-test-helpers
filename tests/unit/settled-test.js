@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { isSettled, getSettledState, setContext } from '@ember/test-helpers';
+import { isSettled, getSettledState, setContext, unsetContext } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
@@ -169,6 +169,7 @@ module('settled', function(hooks) {
         }),
       };
       assert.strictEqual(isSettled(), true);
+      this.owner = undefined;
     });
   });
 
@@ -344,6 +345,7 @@ module('settled', function(hooks) {
         }),
       };
       assert.strictEqual(isSettled(), true, 'post cond');
+      this.owner = undefined;
     });
 
     test('all the things!', function(assert) {
