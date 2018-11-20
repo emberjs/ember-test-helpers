@@ -11,18 +11,11 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        trailingComma: 'es5',
-        printWidth: 100,
-      },
-    ],
+    'prettier/prettier': 'error',
   },
   overrides: [
     {
-      files: ['.eslintrc.js', 'index.js', 'config/ember-try.js', 'scripts/**'],
+      files: ['.eslintrc.js', '.prettierrc.js', 'index.js', 'config/ember-try.js', 'scripts/**'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         ecmaVersion: 2015,
