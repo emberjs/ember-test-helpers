@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { isSettled, getSettledState } from '@ember/test-helpers';
+import { isSettled, getSettledState, setContext } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
@@ -26,6 +26,7 @@ module('settled', function(hooks) {
               hasPendingRequests: false,
               hasPendingTimers: false,
               hasPendingWaiters: false,
+              hasPendingTransitions: false,
               hasRunLoop: false,
               pendingRequestCount: 0,
             },
@@ -144,6 +145,31 @@ module('settled', function(hooks) {
 
       assert.strictEqual(isSettled(), true, 'post cond');
     });
+
+    test('when router is transitioning', async function(assert) {
+      assert.expect(3);
+
+      setContext(this);
+      assert.strictEqual(isSettled(), true);
+
+      this.owner = {
+        lookup: () => ({
+          _routerMicrolib: {
+            activeTransition: {},
+          },
+        }),
+      };
+      assert.strictEqual(isSettled(), false);
+
+      this.owner = {
+        lookup: () => ({
+          _routerMicrolib: {
+            activeTransition: null,
+          },
+        }),
+      };
+      assert.strictEqual(isSettled(), true);
+    });
   });
 
   module('getSettledState', function() {
@@ -152,6 +178,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: false,
+        hasPendingTransitions: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -169,6 +196,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: false,
         hasRunLoop: true,
         pendingRequestCount: 0,
       });
@@ -187,6 +215,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -205,6 +234,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -220,6 +250,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: false,
+          hasPendingTransitions: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -247,6 +278,7 @@ module('settled', function(hooks) {
           hasPendingRequests: true,
           hasPendingTimers: false,
           hasPendingWaiters: false,
+          hasPendingTransitions: false,
           hasRunLoop: false,
           pendingRequestCount: 1,
         });
@@ -255,6 +287,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: true,
+          hasPendingTransitions: false,
           hasRunLoop: false,
           pendingRequestCount: 0,
         });
@@ -272,12 +305,44 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: true,
+        hasPendingTransitions: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
 
       this.isWaiterPending = false;
 
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
+
+    test('when router is transitioning', function(assert) {
+      assert.expect(3);
+      assert.strictEqual(isSettled(), true);
+
+      setContext(this);
+      this.owner = {
+        lookup: () => ({
+          _routerMicrolib: {
+            activeTransition: {},
+          },
+        }),
+      };
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: false,
+        hasPendingTransitions: true,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+
+      this.owner = {
+        lookup: () => ({
+          _routerMicrolib: {
+            activeTransition: null,
+          },
+        }),
+      };
       assert.strictEqual(isSettled(), true, 'post cond');
     });
 
@@ -292,6 +357,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: true,
+        hasPendingTransitions: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -301,6 +367,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: true,
+          hasPendingTransitions: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -311,6 +378,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: true,
           hasPendingWaiters: true,
+          hasPendingTransitions: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });

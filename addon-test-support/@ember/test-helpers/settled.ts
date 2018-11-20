@@ -3,6 +3,8 @@ import { run } from '@ember/runloop';
 import jQuery from 'jquery';
 
 import Ember from 'ember';
+
+import { getContext } from './setup-context'
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 
@@ -39,6 +41,23 @@ function pendingRequests() {
   let internalRequestsPending = _internalPendingRequests();
 
   return localRequestsPending + internalRequestsPending;
+}
+
+/**
+  @private
+  @returns {boolean} if there are any pending router transitions
+*/
+function hasPendingTransitions() {
+  const context = getContext();
+  const owner = context && context.owner;
+
+  if (!owner) {
+    return false;
+  }
+
+  const router = owner.lookup('router:main');
+  const isLoading = router._routerMicrolib && !!router._routerMicrolib.activeTransition;
+  return isLoading;
 }
 
 /**
@@ -147,6 +166,7 @@ export interface SettledState {
   hasPendingTimers: boolean;
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
+  hasPendingTransitions: boolean;
   pendingRequestCount: number;
 }
 
@@ -177,6 +197,7 @@ export function getSettledState(): SettledState {
     hasRunLoop: Boolean((run as any).currentRunLoop),
     hasPendingWaiters: checkWaiters(),
     hasPendingRequests: pendingRequestCount > 0,
+    hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
   };
 }
@@ -192,9 +213,9 @@ export function getSettledState(): SettledState {
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled(): boolean {
-  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
+  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters, hasPendingTransitions } = getSettledState();
 
-  if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters) {
+  if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters || hasPendingTransitions) {
     return false;
   }
 
