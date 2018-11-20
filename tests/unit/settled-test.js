@@ -169,7 +169,7 @@ module('settled', function(hooks) {
         }),
       };
       assert.strictEqual(isSettled(), true);
-      this.owner = undefined;
+      unsetContext();
     });
   });
 
@@ -345,7 +345,7 @@ module('settled', function(hooks) {
         }),
       };
       assert.strictEqual(isSettled(), true, 'post cond');
-      this.owner = undefined;
+      unsetContext();
     });
 
     test('all the things!', function(assert) {
