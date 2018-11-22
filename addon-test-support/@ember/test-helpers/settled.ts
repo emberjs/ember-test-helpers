@@ -4,7 +4,7 @@ import jQuery from 'jquery';
 
 import Ember from 'ember';
 
-import { getContext } from './setup-context'
+import { getContext } from './setup-context';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 
@@ -213,9 +213,21 @@ export function getSettledState(): SettledState {
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled(): boolean {
-  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters, hasPendingTransitions } = getSettledState();
+  let {
+    hasPendingTimers,
+    hasRunLoop,
+    hasPendingRequests,
+    hasPendingWaiters,
+    hasPendingTransitions,
+  } = getSettledState();
 
-  if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters || hasPendingTransitions) {
+  if (
+    hasPendingTimers ||
+    hasRunLoop ||
+    hasPendingRequests ||
+    hasPendingWaiters ||
+    hasPendingTransitions
+  ) {
     return false;
   }
 

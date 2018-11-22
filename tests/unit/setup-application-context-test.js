@@ -35,7 +35,6 @@ module('setupApplicationContext', function(hooks) {
   }
   let isolatedApp;
   hooks.beforeEach(async function() {
-
     const AppConfig = assign({ autoboot: false }, config.APP);
     // .extend() because initializers are stored in the constructor, and we
     // don't want to pollute other tests using an application created from the
