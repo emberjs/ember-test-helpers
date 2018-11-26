@@ -8,19 +8,15 @@ import {
   setupApplicationContext,
   teardownContext,
   teardownApplicationContext,
-  setApplication,
   click,
   visit,
   currentRouteName,
   currentURL,
-  setResolver,
+  setContext,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import hbs from 'htmlbars-inline-precompile';
-import { assign } from '@ember/polyfills';
-import App from '../../app';
-import config from '../../config/environment';
 
 const Router = EmberRouter.extend({ location: 'none' });
 Router.map(function() {
@@ -36,21 +32,8 @@ module('setupApplicationContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
-  let isolatedApp;
+
   hooks.beforeEach(async function(assert) {
-    const AppConfig = assign({ autoboot: false }, config.APP);
-    // .extend() because initializers are stored in the constructor, and we
-    // don't want to pollute other tests using an application created from the
-    // same constructor.
-    isolatedApp = App.extend({}).create(AppConfig);
-    let resolver = isolatedApp.Resolver.create({
-      namespace: isolatedApp,
-      isResolverFromTestHelpers: true,
-    });
-
-    setResolver(resolver);
-    setApplication(isolatedApp);
-
     setResolverRegistry({
       'router:main': Router,
       'template:application': hbs`
@@ -85,6 +68,7 @@ module('setupApplicationContext', function(hooks) {
       }),
     });
 
+    setContext(this);
     await setupContext(this);
     await setupApplicationContext(this);
   });
