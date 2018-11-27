@@ -4,9 +4,9 @@ import jQuery from 'jquery';
 
 import Ember from 'ember';
 
-import { getContext } from './setup-context';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
+import { hasPendingTransitions } from './setup-application-context';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -41,23 +41,6 @@ function pendingRequests() {
   let internalRequestsPending = _internalPendingRequests();
 
   return localRequestsPending + internalRequestsPending;
-}
-
-/**
-  @private
-  @returns {boolean} if there are any pending router transitions
-*/
-function hasPendingTransitions() {
-  const context = getContext();
-  const owner = context && context.owner;
-
-  if (!owner) {
-    return false;
-  }
-
-  const router = owner.lookup('router:main');
-  const isLoading = router._routerMicrolib && !!router._routerMicrolib.activeTransition;
-  return isLoading;
 }
 
 /**
@@ -166,7 +149,7 @@ export interface SettledState {
   hasPendingTimers: boolean;
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
-  hasPendingTransitions: boolean;
+  hasPendingTransitions: boolean | null;
   pendingRequestCount: number;
 }
 
