@@ -4021,10 +4021,10 @@ ember-disable-prototype-extensions@^1.1.3:
   resolved "https://registry.yarnpkg.com/ember-disable-prototype-extensions/-/ember-disable-prototype-extensions-1.1.3.tgz#1969135217654b5e278f9fe2d9d4e49b5720329e"
   integrity sha1-GWkTUhdlS14nj5/i2dTkm1cgMp4=
 
-ember-fetch@^6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.2.1.tgz#5d6f028e4a2b9a99468ca82c44555b245043659e"
-  integrity sha512-L5FJzMS7oOWQvTmpns4C8PhiUd3b8/mOvuqrNZ64xlZl3Qaw0OvHZladnQMoxHbnswwuV0B0k/l2HB5KKM8+/w==
+ember-fetch@^6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.2.2.tgz#ae5429d0053a77c54e209b7f33062c55a67e2abb"
+  integrity sha512-sTP4/0zGwCu8M+WswixHdh1YheggrpibB3lYfm+Ekq82z1ixQK8ffGLjj26a5XZza+gXtZVfbhN1HAPKO9nP4g==
   dependencies:
     abortcontroller-polyfill "^1.1.9"
     broccoli-concat "^3.2.2"
