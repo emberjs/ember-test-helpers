@@ -4,8 +4,10 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
+  settled,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { later } from '@ember/runloop';
 
 module('teardownRenderingContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -53,5 +55,18 @@ module('teardownRenderingContext', function(hooks) {
       document.body.contains(beforeTeardownEl),
       'previous ember-testing element is no longer in DOM'
     );
+  });
+
+  test('can opt out of waiting for settledness', async function(assert) {
+    later(() => assert.step('later'), 200);
+
+    await teardownRenderingContext(this, { waitForSettled: false });
+    await teardownContext(this, { waitForSettled: false });
+
+    assert.step('after teardown');
+
+    await settled();
+
+    assert.verifySteps(['after teardown', 'later']);
   });
 });

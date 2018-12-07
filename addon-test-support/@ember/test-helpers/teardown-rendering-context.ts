@@ -13,14 +13,28 @@ import settled from './settled';
 
   @public
   @param {Object} context the context to setup
+  @param {Object} [options] options used to override defaults
+  @param {boolean} [options.waitForSettled=true] should the teardown wait for `settled()`ness
   @returns {Promise<void>} resolves when settled
 */
-export default function teardownRenderingContext(context: RenderingTestContext): Promise<void> {
+export default function teardownRenderingContext(
+  context: RenderingTestContext,
+  options?: { waitForSettled?: boolean }
+): Promise<void> {
+  let waitForSettled = true;
+  if (options !== undefined && 'waitForSettled' in options) {
+    waitForSettled = options.waitForSettled!;
+  }
+
   return nextTickPromise().then(() => {
     let contextGuid = guidFor(context);
 
     runDestroyablesFor(RENDERING_CLEANUP, contextGuid);
 
-    return settled();
+    if (waitForSettled) {
+      return settled();
+    }
+
+    return nextTickPromise();
   });
 }

@@ -1,12 +1,19 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { getContext, setupContext, teardownContext, getSettledState } from '@ember/test-helpers';
+import {
+  getContext,
+  setupContext,
+  teardownContext,
+  getSettledState,
+  settled,
+} from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import Ember from 'ember';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 import Pretender from 'pretender';
+import { later } from '@ember/runloop';
 
 module('teardownContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -69,4 +76,16 @@ module('teardownContext', function(hooks) {
       assert.equal(state.pendingRequestCount, 0, 'pendingRequestCount is 0');
     });
   }
+
+  test('can opt out of waiting for settledness', async function(assert) {
+    later(() => assert.step('later'), 200);
+
+    await teardownContext(context, { waitForSettled: false });
+
+    assert.step('after teardown');
+
+    await settled();
+
+    assert.verifySteps(['after teardown', 'later']);
+  });
 });
