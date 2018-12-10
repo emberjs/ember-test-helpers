@@ -3987,7 +3987,7 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-documentation@9.0.0:
+documentation@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/documentation/-/documentation-9.0.0.tgz#057ff130da929571482f4d86fe4277a4628ee2e2"
   integrity sha512-t3dGislR8S8fmJQ19Zp7KhmohgjeetkjMlwzd/RxHKmZuyaZvA2jM5J5vWKsluponErGE7N6URTz2ds0Tvam3Q==
