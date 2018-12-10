@@ -1,5 +1,25 @@
 # Change Log
 
+## v1.1.0 (2018-12-10)
+
+#### :rocket: Enhancement
+* [#498](https://github.com/emberjs/ember-test-helpers/pull/498) Add ability to opt-out of automatic settledness waiting in teardown. ([@rwjblue](https://github.com/rwjblue))
+
+#### :bug: Bug Fix
+* [#497](https://github.com/emberjs/ember-test-helpers/pull/497) Only customize RSVP's async for Ember older than 1.7. ([@rwjblue](https://github.com/rwjblue))
+* [#481](https://github.com/emberjs/ember-test-helpers/pull/481) Allow ember-cli-htmlbars-inline-precompile 2.x and 1.x ([@mydea](https://github.com/mydea))
+
+#### :house: Internal
+* [#491](https://github.com/emberjs/ember-test-helpers/pull/491) TravisCI: Remove deprecated `sudo: false` option ([@Turbo87](https://github.com/Turbo87))
+* [#480](https://github.com/emberjs/ember-test-helpers/pull/480) Extract Prettier configuration to .prettierrc.js file. ([@rwjblue](https://github.com/rwjblue))
+* [#463](https://github.com/emberjs/ember-test-helpers/pull/463) Improve type declarations ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 4
+- Francesco Novy ([@mydea](https://github.com/mydea))
+- Peter Wagenet ([@wagenet](https://github.com/wagenet))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v1.0.1 (2018-11-07)
 
 #### :bug: Bug Fix
