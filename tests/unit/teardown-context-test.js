@@ -1,17 +1,27 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import { getContext, setupContext, teardownContext, getSettledState } from '@ember/test-helpers';
+import {
+  getContext,
+  setupContext,
+  teardownContext,
+  getSettledState,
+  settled,
+  isSettled,
+} from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import Ember from 'ember';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 import Pretender from 'pretender';
+import setupManualTestWaiter from '../helpers/manual-test-waiter';
 
 module('teardownContext', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
+
+  setupManualTestWaiter(hooks);
 
   let context;
   hooks.beforeEach(function() {
@@ -69,4 +79,19 @@ module('teardownContext', function(hooks) {
       assert.equal(state.pendingRequestCount, 0, 'pendingRequestCount is 0');
     });
   }
+
+  test('can opt out of waiting for settledness', async function(assert) {
+    this.shouldWait = true;
+
+    assert.equal(isSettled(), false, 'should not be settled');
+
+    await teardownContext(context, { waitForSettled: false });
+
+    assert.equal(isSettled(), false, 'should not be settled');
+
+    this.shouldWait = false;
+    await settled();
+
+    assert.equal(isSettled(), true, 'should be settled');
+  });
 });
