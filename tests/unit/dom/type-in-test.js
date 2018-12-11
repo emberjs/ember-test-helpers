@@ -78,10 +78,11 @@ module('DOM Helper: typeIn', function(hooks) {
   });
 
   test('it triggers key events with correct arguments', async function(assert) {
-    element = buildInstrumentedElement('input', ['key', 'charCode']);
-    await typeIn(element, 'foo');
+    element = buildInstrumentedElement('input', ['key', 'shiftKey']);
+    await typeIn(element, 'F o');
 
-    let chars = ['f', 'o', 'o'];
+    let chars = ['F', ' ', 'o'];
+    let shiftKeys = [true, false, false];
     let expectedEventsWithArguments = expectedEvents.map(eventName => {
       // Only key events get the key arguments
       if (!['keydown', 'keypress', 'keyup'].includes(eventName)) {
@@ -89,8 +90,9 @@ module('DOM Helper: typeIn', function(hooks) {
       }
       // After each keyup, the next character comes up
       let char = eventName === 'keyup' ? chars.shift() : chars[0];
+      let shiftKey = eventName === 'keyup' ? shiftKeys.shift() : shiftKeys[0];
 
-      return `${eventName} ${char} ${char.charCodeAt()}`;
+      return `${eventName} ${char.toUpperCase()} ${shiftKey}`;
     });
 
     assert.verifySteps(expectedEventsWithArguments);

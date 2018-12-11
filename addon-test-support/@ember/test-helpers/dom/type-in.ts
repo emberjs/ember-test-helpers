@@ -7,6 +7,7 @@ import isFocusable from './-is-focusable';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import Target from './-target';
+import triggerKeyEvent from './trigger-key-event';
 
 export interface Options {
   delay?: number;
@@ -69,27 +70,18 @@ function fillOut(element: FormControl, text: string, delay: number) {
 
 // eslint-disable-next-line require-jsdoc
 function keyEntry(element: FormControl, character: string): () => void {
-  const charCode = character.charCodeAt(0);
-
-  const eventOptions = {
-    bubbles: true,
-    cancellable: true,
-    charCode,
-    key: character,
-  };
-
-  const keyEvents = {
-    down: new KeyboardEvent('keydown', eventOptions),
-    press: new KeyboardEvent('keypress', eventOptions),
-    up: new KeyboardEvent('keyup', eventOptions),
-  };
+  let shiftKey = character === character.toUpperCase() && character !== character.toLowerCase();
+  let options = { shiftKey };
+  let characterKey = character.toUpperCase();
 
   return function() {
-    element.dispatchEvent(keyEvents.down);
-    element.dispatchEvent(keyEvents.press);
-    element.value = element.value + character;
-    fireEvent(element, 'input');
-    element.dispatchEvent(keyEvents.up);
+    return triggerKeyEvent(element, 'keydown', characterKey, options)
+      .then(() => triggerKeyEvent(element, 'keypress', characterKey, options))
+      .then(() => {
+        element.value = element.value + character;
+        fireEvent(element, 'input');
+      })
+      .then(() => triggerKeyEvent(element, 'keyup', characterKey, options));
   };
 }
 
