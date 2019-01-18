@@ -2,14 +2,15 @@ import getElements from './-get-elements';
 import toArray from './-to-array';
 
 /**
-  Find all elements matched by the given selector. Equivalent to calling
-  `querySelectorAll()` on the test root element.
+  Find all elements matched by the given selector. Similar to calling
+  `querySelectorAll()` on the test root element, but returns an array instead
+  of a `NodeList`.
 
   @public
   @param {string} selector the selector to search for
   @return {Array} array of matched elements
 */
-export default function find(selector: string): Element[] {
+export default function findAll(selector: string): Element[] {
   if (!selector) {
     throw new Error('Must pass a selector to `findAll`.');
   }
