@@ -77,7 +77,7 @@ module.exports = function() {
           name: 'ember-lts-2.12',
           npm: {
             devDependencies: {
-              '@ember/jquery': '^0.5.2',
+              '@ember/jquery': '^0.6.0',
               'ember-source': '~2.12.0',
               'ember-fetch': null,
             },
@@ -141,9 +141,12 @@ module.exports = function() {
         },
         {
           name: 'ember-without-application-wrapper',
-          env: Object.assign({}, envWithoutJQuery, {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
-          }),
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'application-template-wrapper': false,
+              'jquery-integration': false,
+            }),
+          },
           npm: {
             devDependencies: {
               'ember-source': urls[2],
@@ -157,6 +160,7 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
+              '@ember/jquery': '^0.6.0',
               'ember-fetch': null,
             },
           },
