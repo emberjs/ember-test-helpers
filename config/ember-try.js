@@ -141,9 +141,12 @@ module.exports = function() {
         },
         {
           name: 'ember-without-application-wrapper',
-          env: Object.assign({}, envWithoutJQuery, {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'application-template-wrapper': false }),
-          }),
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'application-template-wrapper': false,
+              'jquery-integration': false,
+            }),
+          },
           npm: {
             devDependencies: {
               'ember-source': urls[2],
