@@ -1,6 +1,6 @@
 import { nextTickPromise } from './-utils';
 import settled from './settled';
-import { resetRouterTransitionPendingState } from './setup-application-context';
+
 /**
   Used by test framework addons to tear down the provided context after testing is completed.
 
@@ -11,8 +11,6 @@ import { resetRouterTransitionPendingState } from './setup-application-context';
   @returns {Promise<void>} resolves when settled
 */
 export default function(context: object, options?: { waitForSettled?: boolean }): Promise<void> {
-  resetRouterTransitionPendingState();
-
   let waitForSettled = true;
   if (options !== undefined && 'waitForSettled' in options) {
     waitForSettled = options.waitForSettled!;

@@ -10,22 +10,13 @@ export interface ApplicationTestContext extends TestContext {
 }
 
 const CAN_USE_ROUTER_EVENTS = hasEmberVersion(3, 6);
-let routerTransitionsPending = false;
+let routerTransitionsPending: boolean | null = null;
 const ROUTER = new WeakMap();
+const HAS_SETUP_ROUTER = new WeakMap();
 
 // eslint-disable-next-line require-jsdoc
 export function isApplicationTestContext(context: BaseContext): context is ApplicationTestContext {
   return isTestContext(context);
-}
-
-/**
-  Resets the flag determining if transitions are pending (used by hasPendingTransitions)
-
-  @public
-  @returns {undefined}
-*/
-export function resetRouterTransitionPendingState() {
-  routerTransitionsPending = false;
 }
 
 /**
@@ -65,6 +56,50 @@ export function hasPendingTransitions(): boolean | null {
 }
 
 /**
+  Setup the current router instance with settledness tracking. Generally speaking this
+  is done automatically (during a `visit('/some-url')` invocation), but under some
+  circumstances (e.g. a non-application test where you manually call `this.owner.setupRouter()`)
+  you may want to call it yourself.
+
+  @public
+ */
+export function setupRouterSettlednessTracking() {
+  const context = getContext();
+  if (context === undefined) {
+    throw new Error('Cannot setupRouterSettlednessTracking outside of a test context');
+  }
+
+  // avoid setting up many times for the same context
+  if (HAS_SETUP_ROUTER.get(context)) {
+    return;
+  }
+  HAS_SETUP_ROUTER.set(context, true);
+
+  let { owner } = context;
+  let router;
+  if (CAN_USE_ROUTER_EVENTS) {
+    router = owner.lookup('service:router');
+
+    // track pending transitions via the public routeWillChange / routeDidChange APIs
+    // routeWillChange can fire many times and is only useful to know when we have _started_
+    // transitioning, we can then use routeDidChange to signal that the transition has settled
+    router.on('routeWillChange', () => (routerTransitionsPending = true));
+    router.on('routeDidChange', () => (routerTransitionsPending = false));
+  } else {
+    router = owner.lookup('router:main');
+    ROUTER.set(context, router);
+  }
+
+  // hook into teardown to reset local settledness state
+  let ORIGINAL_WILL_DESTROY = router.willDestroy;
+  router.willDestroy = function() {
+    routerTransitionsPending = null;
+
+    return ORIGINAL_WILL_DESTROY.apply(this, arguments);
+  };
+}
+
+/**
   Navigate the application to the provided URL.
 
   @public
@@ -84,18 +119,7 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
     .then(() => {
       let visitResult = owner.visit(url, options);
 
-      if (CAN_USE_ROUTER_EVENTS) {
-        let router = owner.lookup('service:router');
-
-        // track pending transitions via the public routeWillChange / routeDidChange APIs
-        // routeWillChange can fire many times and is only useful to know when we have _started_
-        // transitioning, we can then use routeDidChange to signal that the transition has settled
-        router.on('routeWillChange', () => (routerTransitionsPending = true));
-        router.on('routeDidChange', () => (routerTransitionsPending = false));
-      } else {
-        let router = owner.lookup('router:main');
-        ROUTER.set(context, router);
-      }
+      setupRouterSettlednessTracking();
 
       return visitResult;
     })
