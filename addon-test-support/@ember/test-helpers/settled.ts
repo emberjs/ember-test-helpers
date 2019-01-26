@@ -3,8 +3,10 @@ import { run } from '@ember/runloop';
 import jQuery from 'jquery';
 
 import Ember from 'ember';
+
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
+import { hasPendingTransitions } from './setup-application-context';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -147,6 +149,7 @@ export interface SettledState {
   hasPendingTimers: boolean;
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
+  hasPendingTransitions: boolean | null;
   pendingRequestCount: number;
 }
 
@@ -164,6 +167,9 @@ export interface SettledState {
   - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
     `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
     are pending requests, this will be `true`, otherwise `false`.
+  - `hasPendingTransitions` - Checks if there are pending route transitions. If the
+    router has not been instantiated / setup for the test yet this will return `null`,
+    if there are pending transitions, this will be `true`, otherwise `false`.
   - `pendingRequestCount` - The count of pending AJAX requests.
 
   @public
@@ -177,6 +183,7 @@ export function getSettledState(): SettledState {
     hasRunLoop: Boolean((run as any).currentRunLoop),
     hasPendingWaiters: checkWaiters(),
     hasPendingRequests: pendingRequestCount > 0,
+    hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
   };
 }
@@ -192,9 +199,21 @@ export function getSettledState(): SettledState {
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled(): boolean {
-  let { hasPendingTimers, hasRunLoop, hasPendingRequests, hasPendingWaiters } = getSettledState();
+  let {
+    hasPendingTimers,
+    hasRunLoop,
+    hasPendingRequests,
+    hasPendingWaiters,
+    hasPendingTransitions,
+  } = getSettledState();
 
-  if (hasPendingTimers || hasRunLoop || hasPendingRequests || hasPendingWaiters) {
+  if (
+    hasPendingTimers ||
+    hasRunLoop ||
+    hasPendingRequests ||
+    hasPendingWaiters ||
+    hasPendingTransitions
+  ) {
     return false;
   }
 

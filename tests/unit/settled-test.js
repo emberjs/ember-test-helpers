@@ -26,6 +26,7 @@ module('settled', function(hooks) {
               hasPendingRequests: false,
               hasPendingTimers: false,
               hasPendingWaiters: false,
+              hasPendingTransitions: null,
               hasRunLoop: false,
               pendingRequestCount: 0,
             },
@@ -152,6 +153,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: false,
+        hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -169,6 +171,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: null,
         hasRunLoop: true,
         pendingRequestCount: 0,
       });
@@ -187,6 +190,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -205,6 +209,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: true,
         hasPendingWaiters: false,
+        hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -220,6 +225,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: false,
+          hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -247,6 +253,7 @@ module('settled', function(hooks) {
           hasPendingRequests: true,
           hasPendingTimers: false,
           hasPendingWaiters: false,
+          hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 1,
         });
@@ -255,6 +262,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: true,
+          hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 0,
         });
@@ -272,6 +280,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: true,
+        hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -292,6 +301,7 @@ module('settled', function(hooks) {
         hasPendingRequests: false,
         hasPendingTimers: false,
         hasPendingWaiters: true,
+        hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -301,6 +311,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: true,
+          hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -311,6 +322,7 @@ module('settled', function(hooks) {
           hasPendingRequests: false,
           hasPendingTimers: true,
           hasPendingWaiters: true,
+          hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });

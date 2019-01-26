@@ -174,7 +174,7 @@ export const CLEANUP = Object.create(null);
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function(
+export default function setupContext(
   context: BaseContext,
   options: { resolver?: Resolver } = {}
 ): Promise<TestContext> {
