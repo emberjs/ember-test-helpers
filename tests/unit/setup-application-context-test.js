@@ -33,7 +33,7 @@ module('setupApplicationContext', function(hooks) {
     return;
   }
 
-  hooks.beforeEach(async function(assert) {
+  hooks.beforeEach(async function() {
     setResolverRegistry({
       'router:main': Router,
       'template:application': hbs`
@@ -57,10 +57,10 @@ module('setupApplicationContext', function(hooks) {
       }),
       'route:slow': Route.extend({
         model() {
-          assert.step('model start');
+          QUnit.config.current.assert.step('model start');
           return new Promise(resolve => {
             setTimeout(() => {
-              assert.step('model resolving');
+              QUnit.config.current.assert.step('model resolving');
               resolve();
             }, 50);
           });
