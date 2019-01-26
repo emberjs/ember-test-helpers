@@ -167,6 +167,9 @@ export interface SettledState {
   - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
     `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
     are pending requests, this will be `true`, otherwise `false`.
+  - `hasPendingTransitions` - Checks if there are pending route transitions. If the
+    router has not been instantiated / setup for the test yet this will return `null`,
+    if there are pending transitions, this will be `true`, otherwise `false`.
   - `pendingRequestCount` - The count of pending AJAX requests.
 
   @public
