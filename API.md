@@ -469,6 +469,9 @@ Check various settledness metrics, and return an object with the following prope
 -   `hasPendingRequests` - Checks if there are pending AJAX requests (based on
     `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
     are pending requests, this will be `true`, otherwise `false`.
+-   `hasPendingTransitions` - Checks if there are pending route transitions. If the
+    router has not been instantiated / setup for the test yet this will return `null`,
+    if there are pending transitions, this will be `true`, otherwise `false`.
 -   `pendingRequestCount` - The count of pending AJAX requests.
 
 Returns **[Object][79]** object with properties for each of the metrics used to determine settledness
