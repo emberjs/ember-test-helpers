@@ -12,7 +12,6 @@ import {
   visit,
   currentRouteName,
   currentURL,
-  setContext,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
@@ -68,7 +67,6 @@ module('setupApplicationContext', function(hooks) {
       }),
     });
 
-    setContext(this);
     await setupContext(this);
     await setupApplicationContext(this);
   });
