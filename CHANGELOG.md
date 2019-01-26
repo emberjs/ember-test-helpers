@@ -1,5 +1,16 @@
 # Change Log
 
+## v1.2.1 (2019-01-26)
+
+#### :bug: Bug Fix
+* [#482](https://github.com/emberjs/ember-test-helpers/pull/482) Wait for pending route transitions as part of settledness check ([@AlexTraher](https://github.com/AlexTraher)) ([@dexturr](https://github.com/dexturr)) ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Alex ([@AlexTraher](https://github.com/AlexTraher))
+- Dexter Edwards ([@dexturr](https://github.com/dexturr))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v1.2.0 (2019-01-26)
 
 #### :rocket: Enhancement
