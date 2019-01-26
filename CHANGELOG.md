@@ -1,5 +1,25 @@
 # Change Log
 
+## v1.2.0 (2019-01-26)
+
+#### :rocket: Enhancement
+* [#540](https://github.com/emberjs/ember-test-helpers/pull/540) Adds `setupOnerror` utility to allow patching `Ember.onerror` in individual tests ([@scalvert](https://github.com/scalvert))
+* [#505](https://github.com/emberjs/ember-test-helpers/pull/505) Update dependency on ember-cli-htmlbars-inline-precompile to ^2.1.0. ([@rwjblue](https://github.com/rwjblue))
+
+#### :bug: Bug Fix
+* [#541](https://github.com/emberjs/ember-test-helpers/pull/541) Fix issues around `Ember.$` deprecation. ([@rwjblue](https://github.com/rwjblue))
+* [#465](https://github.com/emberjs/ember-test-helpers/pull/465) Ensure `typeIn` has correct key option ([@mydea](https://github.com/mydea))
+
+#### :memo: Documentation
+* [#529](https://github.com/emberjs/ember-test-helpers/pull/529) Fix docs for return type of findAll ([@yandavid](https://github.com/yandavid))
+
+#### Committers: 4
+- David Yan ([@yandavid](https://github.com/yandavid))
+- Francesco Novy ([@mydea](https://github.com/mydea))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
+
 ## v1.1.0 (2018-12-10)
 
 #### :rocket: Enhancement
