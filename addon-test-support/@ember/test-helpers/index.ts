@@ -7,6 +7,7 @@ export {
   unsetContext,
   pauseTest,
   resumeTest,
+  setupOnerror,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
 export { default as setupRenderingContext, render, clearRender } from './setup-rendering-context';
