@@ -2,51 +2,81 @@
 
 ### Table of Contents
 
--   [DOM Interaction Helpers](#dom-interaction-helpers)
-    -   [blur](#blur)
-    -   [click](#click)
-    -   [doubleClick](#doubleclick)
-    -   [fillIn](#fillin)
-    -   [focus](#focus)
-    -   [tap](#tap)
-    -   [triggerEvent](#triggerevent)
-    -   [triggerKeyEvent](#triggerkeyevent)
-    -   [typeIn](#typein)
--   [DOM Query Helpers](#dom-query-helpers)
-    -   [find](#find)
-    -   [findAll](#findall)
-    -   [getRootElement](#getrootelement)
--   [Routing Helpers](#routing-helpers)
-    -   [visit](#visit)
-    -   [currentRouteName](#currentroutename)
-    -   [currentURL](#currenturl)
--   [Rendering Helpers](#rendering-helpers)
-    -   [render](#render)
-    -   [clearRender](#clearrender)
--   [Wait Helpers](#wait-helpers)
-    -   [waitFor](#waitfor)
-    -   [waitUntil](#waituntil)
-    -   [settled](#settled)
-    -   [isSettled](#issettled)
-    -   [getSettledState](#getsettledstate)
--   [Pause Helpers](#pause-helpers)
-    -   [pauseTest](#pausetest)
-    -   [resumeTest](#resumetest)
--   [Test Framework APIs](#test-framework-apis)
-    -   [setResolver](#setresolver)
-    -   [getResolver](#getresolver)
-    -   [setupContext](#setupcontext)
-    -   [getContext](#getcontext)
-    -   [setContext](#setcontext)
-    -   [unsetContext](#unsetcontext)
-    -   [teardownContext](#teardowncontext)
-    -   [setupRenderingContext](#setuprenderingcontext)
-    -   [teardownRenderingContext](#teardownrenderingcontext)
-    -   [getApplication](#getapplication)
-    -   [setApplication](#setapplication)
-    -   [setupApplicationContext](#setupapplicationcontext)
-    -   [teardownApplicationContext](#teardownapplicationcontext)
-    -   [validateErrorHandler](#validateerrorhandler)
+-   [DOM Interaction Helpers][1]
+    -   [blur][2]
+        -   [Parameters][3]
+    -   [click][4]
+        -   [Parameters][5]
+    -   [doubleClick][6]
+        -   [Parameters][7]
+    -   [fillIn][8]
+        -   [Parameters][9]
+    -   [focus][10]
+        -   [Parameters][11]
+    -   [tap][12]
+        -   [Parameters][13]
+    -   [triggerEvent][14]
+        -   [Parameters][15]
+        -   [Examples][16]
+    -   [triggerKeyEvent][17]
+        -   [Parameters][18]
+    -   [typeIn][19]
+        -   [Parameters][20]
+-   [DOM Query Helpers][21]
+    -   [find][22]
+        -   [Parameters][23]
+    -   [findAll][24]
+        -   [Parameters][25]
+    -   [getRootElement][26]
+-   [Routing Helpers][27]
+    -   [visit][28]
+        -   [Parameters][29]
+    -   [currentRouteName][30]
+    -   [currentURL][31]
+-   [Rendering Helpers][32]
+    -   [render][33]
+        -   [Parameters][34]
+    -   [clearRender][35]
+-   [Wait Helpers][36]
+    -   [waitFor][37]
+        -   [Parameters][38]
+    -   [waitUntil][39]
+        -   [Parameters][40]
+    -   [settled][41]
+    -   [isSettled][42]
+    -   [getSettledState][43]
+-   [Pause Helpers][44]
+    -   [pauseTest][45]
+        -   [Examples][46]
+    -   [resumeTest][47]
+-   [Test Framework APIs][48]
+    -   [setResolver][49]
+        -   [Parameters][50]
+    -   [getResolver][51]
+    -   [setupContext][52]
+        -   [Parameters][53]
+    -   [getContext][54]
+    -   [setContext][55]
+        -   [Parameters][56]
+    -   [unsetContext][57]
+    -   [teardownContext][58]
+        -   [Parameters][59]
+    -   [setupRenderingContext][60]
+        -   [Parameters][61]
+    -   [teardownRenderingContext][62]
+        -   [Parameters][63]
+    -   [getApplication][64]
+    -   [setApplication][65]
+        -   [Parameters][66]
+    -   [setupApplicationContext][67]
+        -   [Parameters][68]
+    -   [teardownApplicationContext][69]
+        -   [Parameters][70]
+    -   [validateErrorHandler][71]
+        -   [Parameters][72]
+        -   [Examples][73]
+-   [setupOnerror][74]
+    -   [Parameters][75]
 
 ## DOM Interaction Helpers
 
@@ -68,11 +98,11 @@ The following events are triggered (in order):
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle unfocusing a given element.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to unfocus (optional, default `document.activeElement`)
+-   `target` **([string][76] \| [Element][77])** the element or selector to unfocus (optional, default `document.activeElement`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### click
 
@@ -101,12 +131,12 @@ to continue to emulate how actual browsers handle clicking a given element.
 
 Use the `options` hash to change the parameters of the MouseEvents.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to click on
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the mouse events (optional, default `{}`)
+-   `target` **([string][76] \| [Element][77])** the element or selector to click on
+-   `options` **[Object][79]** the options to be merged into the mouse events (optional, default `{}`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### doubleClick
 
@@ -143,12 +173,12 @@ to continue to emulate how actual browsers handle clicking a given element.
 
 Use the `options` hash to change the parameters of the MouseEvents.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to double-click on
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the mouse events (optional, default `{}`)
+-   `target` **([string][76] \| [Element][77])** the element or selector to double-click on
+-   `options` **[Object][79]** the options to be merged into the mouse events (optional, default `{}`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### fillIn
 
@@ -156,12 +186,12 @@ Fill the provided text into the `value` property (or set `.innerHTML` when
 the target is a content editable element) then trigger `change` and `input`
 events on the specified target.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to enter text into
--   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the text to fill into the target element
+-   `target` **([string][76] \| [Element][77])** the element or selector to enter text into
+-   `text` **[string][76]** the text to fill into the target element
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+Returns **[Promise][78]&lt;void>** resolves when the application is settled
 
 ### focus
 
@@ -178,11 +208,11 @@ The following events are triggered (in order):
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle focusing a given element.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to focus
+-   `target` **([string][76] \| [Element][77])** the element or selector to focus
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+Returns **[Promise][78]&lt;void>** resolves when the application is settled
 
 ### tap
 
@@ -215,58 +245,60 @@ to continue to emulate how actual browsers handle tapping on a given element.
 
 Use the `options` hash to change the parameters of the tap events.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to tap on
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the options to be merged into the touch events (optional, default `{}`)
+-   `target` **([string][76] \| [Element][77])** the element or selector to tap on
+-   `options` **[Object][79]** the options to be merged into the touch events (optional, default `{}`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### triggerEvent
 
 Triggers an event on the specified target.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to trigger the event on
--   `eventType` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the type of event to trigger
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** additional properties to be set on the event
+-   `target` **([string][76] \| [Element][77])** the element or selector to trigger the event on
+-   `eventType` **[string][76]** the type of event to trigger
+-   `options` **[Object][79]** additional properties to be set on the event
 
-**Examples**
+#### Examples
 
 Using triggerEvent to Upload a file
-When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the `options` param as an object with a key `files` containing an array of [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the
+`options` param as an object with a key `files` containing an array of
+[Blob][80].
 
 
 ```javascript
 triggerEvent(
   'input.fileUpload',
   'change',
-  { files: [new Blob(['Ember Rules!'])] }
+  [new Blob(['Ember Rules!'])]
 );
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+Returns **[Promise][78]&lt;void>** resolves when the application is settled
 
 ### triggerKeyEvent
 
 Triggers a keyboard event of given type in the target element.
-It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
-or the numeric [`keyCode`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) of the pressed key.
+It also requires the developer to provide either a string with the [`key`][81]
+or the numeric [`keyCode`][82] of the pressed key.
 Optionally the user can also provide a POJO with extra modifiers for the event.
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to trigger the event on
+-   `target` **([string][76] \| [Element][77])** the element or selector to trigger the event on
 -   `eventType` **(`"keydown"` \| `"keyup"` \| `"keypress"`)** the type of event to trigger
--   `key` **([number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** the `keyCode`(number) or `key`(string) of the event being triggered
--   `modifiers` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
-    -   `modifiers.ctrlKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
-    -   `modifiers.altKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
-    -   `modifiers.shiftKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
-    -   `modifiers.metaKey` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
+-   `key` **([number][83] \| [string][76])** the `keyCode`(number) or `key`(string) of the event being triggered
+-   `modifiers` **[Object][79]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
+    -   `modifiers.ctrlKey` **[boolean][84]** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
+    -   `modifiers.altKey` **[boolean][84]** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
+    -   `modifiers.shiftKey` **[boolean][84]** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
+    -   `modifiers.metaKey` **[boolean][84]** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+Returns **[Promise][78]&lt;void>** resolves when the application is settled
 
 ### typeIn
 
@@ -280,13 +312,13 @@ keyboard events as well as `input` and `change`.
 Typically this looks like `focus` -> `focusin` -> `keydown` -> `keypress` -> `keyup` -> `input` -> `change`
 per character of the passed text (this may vary on some browsers).
 
-**Parameters**
+#### Parameters
 
--   `target` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Element](https://developer.mozilla.org/docs/Web/API/Element))** the element or selector to enter text into
--   `text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the test to fill the element with
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{delay:50}`)
+-   `target` **([string][76] \| [Element][77])** the element or selector to enter text into
+-   `text` **[string][76]** the test to fill the element with
+-   `options` **[Object][79]** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{}`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when the application is settled
+Returns **[Promise][78]&lt;void>** resolves when the application is settled
 
 ## DOM Query Helpers
 
@@ -298,28 +330,29 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 Find the first element matched by the given selector. Equivalent to calling
 `querySelector()` on the test root element.
 
-**Parameters**
+#### Parameters
 
--   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
+-   `selector` **[string][76]** the selector to search for
 
-Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** matched element or null
+Returns **[Element][77]** matched element or null
 
 ### findAll
 
-Find all elements matched by the given selector. Equivalent to calling
-`querySelectorAll()` on the test root element.
+Find all elements matched by the given selector. Similar to calling
+`querySelectorAll()` on the test root element, but returns an array instead
+of a `NodeList`.
 
-**Parameters**
+#### Parameters
 
--   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to search for
+-   `selector` **[string][76]** the selector to search for
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** array of matched elements
+Returns **[Array][85]** array of matched elements
 
 ### getRootElement
 
 Get the root element of the application under test (usually `#ember-testing`)
 
-Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** the root element
+Returns **[Element][77]** the root element
 
 ## Routing Helpers
 
@@ -330,15 +363,20 @@ Returns **[Element](https://developer.mozilla.org/docs/Web/API/Element)** the ro
 
 Navigate the application to the provided URL.
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+#### Parameters
+
+-   `url` **[string][76]** The URL to visit (e.g. `/posts`)
+-   `options` **[object][79]** app boot options
+
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### currentRouteName
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the currently active route name
+Returns **[string][76]** the currently active route name
 
 ### currentURL
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the applications current url
+Returns **[string][76]** the applications current url
 
 ## Rendering Helpers
 
@@ -349,11 +387,11 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Renders the provided template and appends it to the DOM.
 
-**Parameters**
+#### Parameters
 
 -   `template` **CompiledTemplate** the template to render
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### clearRender
 
@@ -361,7 +399,7 @@ Clears any templates previously rendered. This is commonly used for
 confirming behavior that is triggered by teardown (e.g.
 `willDestroyElement`).
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ## Wait Helpers
 
@@ -374,15 +412,14 @@ Used to wait for a particular selector to appear in the DOM. Due to the fact
 that it does not wait for general settledness, this is quite useful for testing
 interim DOM states (e.g. loading states, pending promises, etc).
 
-**Parameters**
+#### Parameters
 
--   `selector` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the selector to wait for
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** the options to be used (optional, default `{}`)
-    -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the time to wait (in ms) for a match (optional, default `1000`)
-    -   `options.count` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
-    -   `options.timeoutMessage`  
+-   `selector` **[string][76]** the selector to wait for
+-   `options` **[Object][79]?** the options to be used (optional, default `{}`)
+    -   `options.timeout` **[number][83]** the time to wait (in ms) for a match (optional, default `1000`)
+    -   `options.count` **[number][83]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;([Element](https://developer.mozilla.org/docs/Web/API/Element) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Element](https://developer.mozilla.org/docs/Web/API/Element)>)>** resolves when the element(s) appear on the page
+Returns **[Promise][78]&lt;([Element][77] \| [Array][85]&lt;[Element][77]>)>** resolves when the element(s) appear on the page
 
 ### waitUntil
 
@@ -391,21 +428,21 @@ Wait for the provided callback to return a truthy value.
 This does not leverage `settled()`, and as such can be used to manage async
 while _not_ settled (e.g. "loading" or "pending" states).
 
-**Parameters**
+#### Parameters
 
--   `callback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the callback to use for testing when waiting should stop
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** options used to override defaults (optional, default `{}`)
-    -   `options.timeout` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** the maximum amount of time to wait (optional, default `1000`)
-    -   `options.timeoutMessage` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
+-   `callback` **[Function][86]** the callback to use for testing when waiting should stop
+-   `options` **[Object][79]?** options used to override defaults (optional, default `{}`)
+    -   `options.timeout` **[number][83]** the maximum amount of time to wait (optional, default `1000`)
+    -   `options.timeoutMessage` **[string][76]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** resolves with the callback value when it returns a truthy value
+Returns **[Promise][78]** resolves with the callback value when it returns a truthy value
 
 ### settled
 
 Returns a promise that resolves when in a settled state (see `isSettled` for
 a definition of "settled state").
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### isSettled
 
@@ -415,7 +452,7 @@ Settled generally means that there are no pending timers, no pending waiters,
 no pending AJAX requests, and no current run loop. However, new settledness
 metrics may be added and used as they become available.
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** `true` if settled, `false` otherwise
+Returns **[boolean][84]** `true` if settled, `false` otherwise
 
 ### getSettledState
 
@@ -434,7 +471,7 @@ Check various settledness metrics, and return an object with the following prope
     are pending requests, this will be `true`, otherwise `false`.
 -   `pendingRequestCount` - The count of pending AJAX requests.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object with properties for each of the metrics used to determine settledness
+Returns **[Object][79]** object with properties for each of the metrics used to determine settledness
 
 ## Pause Helpers
 
@@ -452,7 +489,7 @@ The test framework wrapper (e.g. `ember-qunit` or `ember-mocha`) should
 ensure that when `pauseTest()` is used, any framework specific test timeouts
 are disabled.
 
-**Examples**
+#### Examples
 
 Usage via ember-qunit
 
@@ -479,7 +516,7 @@ module('awesome-sauce', function(hooks) {
 });
 ```
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves _only_ when `resumeTest()` is invoked
+Returns **[Promise][78]&lt;void>** resolves _only_ when `resumeTest()` is invoked
 
 ### resumeTest
 
@@ -497,7 +534,7 @@ objects in the same way as a normal application.
 
 Used by `setupContext` and `setupRenderingContext` as a fallback when `setApplication` was _not_ used.
 
-**Parameters**
+#### Parameters
 
 -   `resolver` **Ember.Resolver** the resolver to be used for testing
 
@@ -519,19 +556,19 @@ Responsible for:
 -   setting up AJAX listeners
 -   setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** options used to override defaults (optional, default `{}`)
+-   `context` **[Object][79]** the context to setup
+-   `options` **[Object][79]?** options used to override defaults (optional, default `{}`)
     -   `options.resolver` **Resolver?** a resolver to use for customizing normal resolution
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves with the context that was setup
+Returns **[Promise][78]&lt;[Object][79]>** resolves with the context that was setup
 
 ### getContext
 
 Retrive the "global testing context" as stored by `setContext`.
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the previously stored testing context
+Returns **[Object][79]** the previously stored testing context
 
 ### setContext
 
@@ -539,9 +576,9 @@ Stores the provided context as the "global testing context".
 
 Generally setup automatically by `setupContext`.
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to use
+-   `context` **[Object][79]** the context to use
 
 ### unsetContext
 
@@ -559,11 +596,13 @@ Responsible for:
 -   destroy the contexts owner object
 -   remove AJAX listeners
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
+-   `context` **[Object][79]** the context to setup
+-   `options` **[Object][79]?** options used to override defaults
+    -   `options.waitForSettled` **[boolean][84]** should the teardown wait for `settled()`ness (optional, default `true`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### setupRenderingContext
 
@@ -581,11 +620,11 @@ Responsible for:
     container (things rendered via `render` will go _into_ this
     element).
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup for rendering
+-   `context` **[Object][79]** the context to setup for rendering
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves with the context that was setup
+Returns **[Promise][78]&lt;[Object][79]>** resolves with the context that was setup
 
 ### teardownRenderingContext
 
@@ -596,11 +635,13 @@ Responsible for:
 -   resetting the `ember-testing-container` to its original state (the value
     when `setupRenderingContext` was called).
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
+-   `context` **[Object][79]** the context to setup
+-   `options` **[Object][79]?** options used to override defaults
+    -   `options.waitForSettled` **[boolean][84]** should the teardown wait for `settled()`ness (optional, default `true`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### getApplication
 
@@ -615,7 +656,7 @@ Stores the provided application instance so that tests being ran will be aware o
 -   Required by `setupApplicationContext` method.
 -   Used by `setupContext` and `setupRenderingContext` when present.
 
-**Parameters**
+#### Parameters
 
 -   `application` **Ember.Application** the application that will be tested
 
@@ -629,21 +670,23 @@ an application (e.g. routing).
 
 Sets up the basic framework used by application tests.
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
+-   `context` **[Object][79]** the context to setup
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves with the context that was setup
+Returns **[Promise][78]&lt;[Object][79]>** resolves with the context that was setup
 
 ### teardownApplicationContext
 
 Used by test framework addons to tear down the provided context after testing is completed.
 
-**Parameters**
+#### Parameters
 
--   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the context to setup
+-   `context` **[Object][79]** the context to setup
+-   `options` **[Object][79]?** options used to override defaults
+    -   `options.waitForSettled` **[boolean][84]** should the teardown wait for `settled()`ness (optional, default `true`)
 
-Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>** resolves when settled
+Returns **[Promise][78]&lt;void>** resolves when settled
 
 ### validateErrorHandler
 
@@ -656,11 +699,11 @@ this, `Ember.onerror` could _easily_ swallow all errors and make it _seem_
 like everything is just fine (and have green tests) when in reality
 everything is on fire...
 
-**Parameters**
+#### Parameters
 
--   `callback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the callback to validate (optional, default `Ember.onerror`)
+-   `callback` **[Function][86]** the callback to validate (optional, default `Ember.onerror`)
 
-**Examples**
+#### Examples
 
 Example implementation for `ember-qunit`
 
@@ -674,4 +717,185 @@ test('Ember.onerror is functioning properly', function(assert) {
 });
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object with `isValid` and `message`
+Returns **[Object][79]** object with `isValid` and `message`
+
+## setupOnerror
+
+Sets the Ember.onerror function for the duration of a single test. This
+value is reset after each test to ensure correct test isolation.
+
+### Parameters
+
+-   `onError` **[Function][86]** the onError function to be set on Ember.onerror
+
+[1]: #dom-interaction-helpers
+
+[2]: #blur
+
+[3]: #parameters
+
+[4]: #click
+
+[5]: #parameters-1
+
+[6]: #doubleclick
+
+[7]: #parameters-2
+
+[8]: #fillin
+
+[9]: #parameters-3
+
+[10]: #focus
+
+[11]: #parameters-4
+
+[12]: #tap
+
+[13]: #parameters-5
+
+[14]: #triggerevent
+
+[15]: #parameters-6
+
+[16]: #examples
+
+[17]: #triggerkeyevent
+
+[18]: #parameters-7
+
+[19]: #typein
+
+[20]: #parameters-8
+
+[21]: #dom-query-helpers
+
+[22]: #find
+
+[23]: #parameters-9
+
+[24]: #findall
+
+[25]: #parameters-10
+
+[26]: #getrootelement
+
+[27]: #routing-helpers
+
+[28]: #visit
+
+[29]: #parameters-11
+
+[30]: #currentroutename
+
+[31]: #currenturl
+
+[32]: #rendering-helpers
+
+[33]: #render
+
+[34]: #parameters-12
+
+[35]: #clearrender
+
+[36]: #wait-helpers
+
+[37]: #waitfor
+
+[38]: #parameters-13
+
+[39]: #waituntil
+
+[40]: #parameters-14
+
+[41]: #settled
+
+[42]: #issettled
+
+[43]: #getsettledstate
+
+[44]: #pause-helpers
+
+[45]: #pausetest
+
+[46]: #examples-1
+
+[47]: #resumetest
+
+[48]: #test-framework-apis
+
+[49]: #setresolver
+
+[50]: #parameters-15
+
+[51]: #getresolver
+
+[52]: #setupcontext
+
+[53]: #parameters-16
+
+[54]: #getcontext
+
+[55]: #setcontext
+
+[56]: #parameters-17
+
+[57]: #unsetcontext
+
+[58]: #teardowncontext
+
+[59]: #parameters-18
+
+[60]: #setuprenderingcontext
+
+[61]: #parameters-19
+
+[62]: #teardownrenderingcontext
+
+[63]: #parameters-20
+
+[64]: #getapplication
+
+[65]: #setapplication
+
+[66]: #parameters-21
+
+[67]: #setupapplicationcontext
+
+[68]: #parameters-22
+
+[69]: #teardownapplicationcontext
+
+[70]: #parameters-23
+
+[71]: #validateerrorhandler
+
+[72]: #parameters-24
+
+[73]: #examples-2
+
+[74]: #setuponerror
+
+[75]: #parameters-25
+
+[76]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[77]: https://developer.mozilla.org/docs/Web/API/Element
+
+[78]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[79]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[80]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+
+[81]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+
+[82]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+
+[83]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[84]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[85]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[86]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
