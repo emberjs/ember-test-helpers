@@ -9,6 +9,7 @@ import settled from './settled';
 import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
+import { deprecate } from '@ember/application/deprecations';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -53,6 +54,17 @@ function lookupOutletTemplate(owner: Owner): any {
   @returns {jQuery} a jQuery object representing the selector (or element itself if no selector)
 */
 function jQuerySelector(selector: string): any {
+  deprecate(
+    'Using this.$() in a rendering test has been deprecated, consider using this.element instead.',
+    false,
+    {
+      id: 'ember-test-helpers.rendering-context.jquery-element',
+      until: '2.0.0',
+      // @ts-ignore
+      url: 'https://emberjs.com/deprecations/v3.x#toc_jquery-apis',
+    }
+  );
+
   let { element } = getContext() as RenderingTestContext;
 
   // emulates Ember internal behavor of `this.$` in a component
