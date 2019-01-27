@@ -128,6 +128,9 @@ module('setupRenderingContext', function(hooks) {
       await this.render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.$().text(), 'Hello!');
+      assert.deprecationsInclude(
+        'Using this.$() in a rendering test has been deprecated, consider using this.element instead.'
+      );
     });
 
     test('can invoke template only components', async function(assert) {
