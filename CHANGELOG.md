@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.3.0 (2019-01-27)
+
+#### :rocket: Enhancement
+* [#543](https://github.com/emberjs/ember-test-helpers/pull/543) Add deprecation for this.$ in rendering tests ([@simonihmig](https://github.com/simonihmig))
+
+#### Committers: 1
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+
+
 ## v1.2.1 (2019-01-26)
 
 #### :bug: Bug Fix
