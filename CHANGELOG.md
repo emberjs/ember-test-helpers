@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.3.1 (2019-01-28)
+
+#### :bug: Bug Fix
+* [#546](https://github.com/emberjs/ember-test-helpers/pull/546) Avoid importing jQuery, depend on self.jQuery instead. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v1.3.0 (2019-01-27)
 
 #### :rocket: Enhancement
