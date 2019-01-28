@@ -1,6 +1,5 @@
-/* globals EmberENV */
+/* globals EmberENV, jQuery */
 import { set, setProperties, get, getProperties } from '@ember/object';
-import $ from 'jquery';
 import { isArray } from '@ember/array';
 import { tryInvoke } from '@ember/utils';
 import { run } from '@ember/runloop';
@@ -292,7 +291,7 @@ export function setupComponentIntegrationTest() {
   context.$ = function(selector) {
     // emulates Ember internal behavor of `this.$` in a component
     // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-    return selector ? $(selector, element) : $(element);
+    return selector ? jQuery(selector, element) : jQuery(element);
   };
 
   context.set = function(key, value) {

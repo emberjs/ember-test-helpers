@@ -1,7 +1,5 @@
+/* globals jQuery */
 import { run } from '@ember/runloop';
-
-import jQuery from 'jquery';
-
 import Ember from 'ember';
 
 import { nextTick } from './-utils';
@@ -90,7 +88,7 @@ export function _teardownAJAXHooks() {
   // We can no longer handle any remaining requests
   requests = [];
 
-  if (!jQuery) {
+  if (typeof jQuery === 'undefined') {
     return;
   }
 
@@ -106,7 +104,7 @@ export function _teardownAJAXHooks() {
 export function _setupAJAXHooks() {
   requests = [];
 
-  if (!jQuery) {
+  if (typeof jQuery === 'undefined') {
     return;
   }
 
