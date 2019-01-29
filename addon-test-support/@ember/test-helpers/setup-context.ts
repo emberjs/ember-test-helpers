@@ -132,29 +132,6 @@ export function resumeTest(): void {
   context.resumeTest();
 }
 
-const ORIGINAL_EMBER_ONERROR: (error: Error) => void | undefined = Ember.onerror;
-
-/**
-  Sets the Ember.onerror function for the duration of a single test. This
-  value is reset after each test to ensure correct test isolation.
-
-  @public
-  @param {Function} onError the onError function to be set on Ember.onerror
-*/
-export function setupOnerror(onError: (error: Error) => void): void {
-  let context = getContext();
-  let contextGuid = guidFor(context);
-  let contextCleanup = CLEANUP[contextGuid];
-
-  if (!Array.isArray(contextCleanup)) {
-    throw new Error(
-      'You must use `setupContext` / `setupRenderingContext` / `setupApplicationContext` in order to use `setupOnerror`'
-    );
-  }
-
-  Ember.onerror = onError;
-}
-
 export const CLEANUP = Object.create(null);
 
 /**
@@ -283,10 +260,6 @@ export default function setupContext(
           global.resumeTest = resumeTest;
         }, 'TestAdapter paused promise');
       };
-
-      CLEANUP[contextGuid].push(() => {
-        Ember.onerror = ORIGINAL_EMBER_ONERROR;
-      });
 
       _setupAJAXHooks();
 

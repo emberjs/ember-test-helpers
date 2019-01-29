@@ -7,7 +7,6 @@ export {
   unsetContext,
   pauseTest,
   resumeTest,
-  setupOnerror,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
 export { default as setupRenderingContext, render, clearRender } from './setup-rendering-context';
@@ -22,6 +21,7 @@ export { default as teardownApplicationContext } from './teardown-application-co
 export { default as settled, isSettled, getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
+export { default as setupOnerror, resetOnerror } from './setup-onerror';
 
 // DOM Helpers
 export { default as click } from './dom/click';
