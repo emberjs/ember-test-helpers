@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { isSettled, getSettledState } from '@ember/test-helpers';
+import { isSettled, getSettledState, DebugInfo } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
@@ -29,6 +29,7 @@ module('settled', function(hooks) {
               hasPendingTransitions: null,
               hasRunLoop: false,
               pendingRequestCount: 0,
+              debugInfo: new DebugInfo(false, false, false, false),
             },
             'post cond - getSettledState'
           );
@@ -156,6 +157,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(false, false, false, false),
       });
     });
 
@@ -174,6 +176,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: true,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(true, true, false, false),
       });
     });
 
@@ -193,6 +196,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(true, false, false, false),
       });
     });
 
@@ -212,6 +216,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(true, false, false, false),
       });
     });
 
@@ -228,6 +233,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
+          debugInfo: new DebugInfo(false, true, false, false),
         });
       });
 
@@ -256,6 +262,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 1,
+          debugInfo: new DebugInfo(false, false, false, true),
         });
       } else {
         assert.deepEqual(getSettledState(), {
@@ -265,6 +272,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 0,
+          debugInfo: new DebugInfo(false, false, true, false),
         });
       }
     });
@@ -283,6 +291,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(false, false, true, false),
       });
 
       this.isWaiterPending = false;
@@ -304,6 +313,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        debugInfo: new DebugInfo(false, false, true, false),
       });
 
       run(() => {
@@ -314,6 +324,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
+          debugInfo: new DebugInfo(false, true, true, false),
         });
 
         next(this.confirmSettles(done));
@@ -325,6 +336,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
+          debugInfo: new DebugInfo(true, true, true, false),
         });
 
         this.isWaiterPending = false;

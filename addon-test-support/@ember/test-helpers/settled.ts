@@ -5,6 +5,7 @@ import Ember from 'ember';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
+import DebugInfo from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -149,6 +150,7 @@ export interface SettledState {
   hasPendingRequests: boolean;
   hasPendingTransitions: boolean | null;
   pendingRequestCount: number;
+  debugInfo?: DebugInfo;
 }
 
 /**
@@ -174,15 +176,20 @@ export interface SettledState {
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState(): SettledState {
+  let hasPendingTimers = Boolean((run as any).hasScheduledTimers());
+  let hasRunLoop = Boolean((run as any).currentRunLoop);
+  let hasPendingWaiters = checkWaiters();
   let pendingRequestCount = pendingRequests();
+  let hasPendingRequests = pendingRequestCount > 0;
 
   return {
-    hasPendingTimers: Boolean((run as any).hasScheduledTimers()),
-    hasRunLoop: Boolean((run as any).currentRunLoop),
-    hasPendingWaiters: checkWaiters(),
-    hasPendingRequests: pendingRequestCount > 0,
+    hasPendingTimers,
+    hasRunLoop,
+    hasPendingWaiters,
+    hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
+    debugInfo: new DebugInfo(hasPendingTimers, hasRunLoop, hasPendingWaiters, hasPendingRequests),
   };
 }
 
