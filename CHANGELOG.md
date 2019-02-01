@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.3.2 (2019-02-01)
+
+#### :bug: Bug Fix
+* [#548](https://github.com/emberjs/ember-test-helpers/pull/548) Refactors setupOnerror to be a pure setup/teardown approach ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 1
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
+
 ## v1.3.1 (2019-01-28)
 
 #### :bug: Bug Fix
