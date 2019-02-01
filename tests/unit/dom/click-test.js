@@ -104,6 +104,17 @@ module('DOM Helper: click', function(hooks) {
       assert.verifySteps(['mousedown 13 17 2', 'mouseup 13 17 2', 'click 13 17 2']);
     });
 
+    test('clicking accepts modifiers', async function(assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+      let handler = e => {
+        assert.equal(e.altKey, true);
+      };
+      element.addEventListener('click', handler);
+      await click(element, { clientX: 13, clientY: 17, altKey: true });
+      assert.verifySteps(['mousedown 13 17 0', 'mouseup 13 17 0', 'click 13 17 0']);
+      element.removeEventListener('click', handler);
+    });
+
     test('clicking a div has window set as view by default', async function(assert) {
       element = buildInstrumentedElement('div', ['view']);
 

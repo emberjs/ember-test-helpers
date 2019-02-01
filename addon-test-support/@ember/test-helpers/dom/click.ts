@@ -47,7 +47,10 @@ export function __click__(element: Element | Document, options: MouseEventInit):
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
-  Use the `options` hash to change the parameters of the MouseEvents.
+  Use the `options` hash to change the parameters of the MouseEvents. You can use this to specifiy modifier keys as well. For example:
+  ```javascript
+  await click('div', { shiftKey: true });
+  ```
 
   @public
   @param {string|Element} target the element or selector to click on
