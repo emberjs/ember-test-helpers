@@ -52,7 +52,7 @@
     "ember-cli-dependency-checker": "^3.1.0",
     "ember-cli-htmlbars": "^3.0.1",
     "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-pretender": "^3.1.0",
+    "ember-cli-pretender": "^3.1.1",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-test-loader": "^2.2.0",
     "ember-cli-typescript": "^1.5.0",
