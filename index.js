@@ -28,7 +28,7 @@ module.exports = {
   treeForAddonTestSupport(tree) {
     // intentionally not calling _super here
     // so that can have our `import`'s be
-    // import { ... } from 'ember-test-helpers';
+    // import { ... } from '@ember/test-helpers';
 
     let input = debugTree(tree, 'addon-test-support:input');
 

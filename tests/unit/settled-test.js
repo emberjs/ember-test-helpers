@@ -1,12 +1,13 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import { isSettled, getSettledState } from '@ember/test-helpers';
+import { isSettled, getSettledState, pauseTestFor } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
 import Pretender from 'pretender';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
+import RSVP from 'rsvp';
 
 module('settled', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -27,6 +28,7 @@ module('settled', function(hooks) {
               hasPendingTimers: false,
               hasPendingWaiters: false,
               hasPendingTransitions: null,
+              hasPendingPauseTestForPromises: false,
               hasRunLoop: false,
               pendingRequestCount: 0,
             },
@@ -145,6 +147,34 @@ module('settled', function(hooks) {
 
       assert.strictEqual(isSettled(), true, 'post cond');
     });
+
+    test('when promises are pending', function(assert) {
+      assert.expect(4);
+
+      let done = assert.async();
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      let promise = pauseTestFor(
+        new RSVP.Promise(resolve => {
+          setTimeout(() => {
+            assert.strictEqual(isSettled(), false);
+
+            resolve();
+
+            setTimeout(() => {
+              assert.strictEqual(isSettled(), true, 'post cond');
+
+              done();
+            });
+          }, 100);
+        })
+      );
+
+      assert.strictEqual(isSettled(), false);
+
+      return promise;
+    });
   });
 
   module('getSettledState', function() {
@@ -154,6 +184,7 @@ module('settled', function(hooks) {
         hasPendingTimers: false,
         hasPendingWaiters: false,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -172,6 +203,7 @@ module('settled', function(hooks) {
         hasPendingTimers: true,
         hasPendingWaiters: false,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: true,
         pendingRequestCount: 0,
       });
@@ -191,6 +223,7 @@ module('settled', function(hooks) {
         hasPendingTimers: true,
         hasPendingWaiters: false,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -210,6 +243,7 @@ module('settled', function(hooks) {
         hasPendingTimers: true,
         hasPendingWaiters: false,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -226,6 +260,7 @@ module('settled', function(hooks) {
           hasPendingTimers: false,
           hasPendingWaiters: false,
           hasPendingTransitions: null,
+          hasPendingPauseTestForPromises: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -254,6 +289,7 @@ module('settled', function(hooks) {
           hasPendingTimers: false,
           hasPendingWaiters: false,
           hasPendingTransitions: null,
+          hasPendingPauseTestForPromises: false,
           hasRunLoop: false,
           pendingRequestCount: 1,
         });
@@ -263,6 +299,7 @@ module('settled', function(hooks) {
           hasPendingTimers: false,
           hasPendingWaiters: true,
           hasPendingTransitions: null,
+          hasPendingPauseTestForPromises: false,
           hasRunLoop: false,
           pendingRequestCount: 0,
         });
@@ -281,6 +318,7 @@ module('settled', function(hooks) {
         hasPendingTimers: false,
         hasPendingWaiters: true,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -290,6 +328,41 @@ module('settled', function(hooks) {
       assert.strictEqual(isSettled(), true, 'post cond');
     });
 
+    test('when promises are pending', function(assert) {
+      assert.expect(4);
+
+      let done = assert.async();
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      let promise = pauseTestFor(
+        new RSVP.Promise(resolve => {
+          setTimeout(() => {
+            assert.strictEqual(isSettled(), false);
+
+            resolve();
+
+            setTimeout(() => {
+              assert.strictEqual(isSettled(), true, 'post cond');
+
+              done();
+            });
+          }, 100);
+        })
+      );
+
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: false,
+        hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: true,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+      });
+
+      return promise;
+    });
     test('all the things!', function(assert) {
       assert.expect(6);
       let done = assert.async();
@@ -302,6 +375,7 @@ module('settled', function(hooks) {
         hasPendingTimers: false,
         hasPendingWaiters: true,
         hasPendingTransitions: null,
+        hasPendingPauseTestForPromises: false,
         hasRunLoop: false,
         pendingRequestCount: 0,
       });
@@ -312,6 +386,7 @@ module('settled', function(hooks) {
           hasPendingTimers: false,
           hasPendingWaiters: true,
           hasPendingTransitions: null,
+          hasPendingPauseTestForPromises: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });
@@ -323,6 +398,7 @@ module('settled', function(hooks) {
           hasPendingTimers: true,
           hasPendingWaiters: true,
           hasPendingTransitions: null,
+          hasPendingPauseTestForPromises: false,
           hasRunLoop: true,
           pendingRequestCount: 0,
         });

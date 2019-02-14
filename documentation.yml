@@ -35,6 +35,7 @@ toc:
       - settled
       - isSettled
       - getSettledState
+      - pauseTestFor
 
   - name: Pause Helpers
     children:

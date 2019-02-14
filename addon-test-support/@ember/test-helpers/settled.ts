@@ -1,4 +1,5 @@
 /* globals jQuery */
+
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 
@@ -142,12 +143,52 @@ function checkWaiters() {
   return false;
 }
 
+interface IPauseTestPromiseDetails {
+  label: undefined | string;
+  error: Error;
+}
+
+let currentPauseTestPromises = new Map<Promise<unknown>, IPauseTestPromiseDetails>();
+
+/**
+  Ensures that tests wait for the provided promise before being considered "settled".
+
+  This function is expected to be used in application/addon code (aka non-test code).
+  When used during a test run, it ensures that the next `await settled()` check does
+  not result until after the promise has settled, when used outside of a test it is a
+  simple "pass through" function.
+
+  @public
+  @param {Promise<T>} promise the promise to wait for
+  @param {string} [label] an optional label for the promise
+  @returns {Promise<T>} the passed in promise
+*/
+export function pauseTestFor<T>(promise: Promise<T>, label?: string): Promise<T> {
+  let error = new Error();
+
+  currentPauseTestPromises.set(promise, { label, error });
+
+  return promise.then(
+    result => {
+      currentPauseTestPromises.delete(promise);
+
+      return result;
+    },
+    error => {
+      currentPauseTestPromises.delete(promise);
+
+      throw error;
+    }
+  );
+}
+
 export interface SettledState {
   hasRunLoop: boolean;
   hasPendingTimers: boolean;
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
   hasPendingTransitions: boolean | null;
+  hasPendingPauseTestForPromises: boolean;
   pendingRequestCount: number;
 }
 
@@ -182,6 +223,7 @@ export function getSettledState(): SettledState {
     hasPendingWaiters: checkWaiters(),
     hasPendingRequests: pendingRequestCount > 0,
     hasPendingTransitions: hasPendingTransitions(),
+    hasPendingPauseTestForPromises: currentPauseTestPromises.size !== 0,
     pendingRequestCount,
   };
 }
@@ -203,6 +245,7 @@ export function isSettled(): boolean {
     hasPendingRequests,
     hasPendingWaiters,
     hasPendingTransitions,
+    hasPendingPauseTestForPromises,
   } = getSettledState();
 
   if (
@@ -210,7 +253,8 @@ export function isSettled(): boolean {
     hasRunLoop ||
     hasPendingRequests ||
     hasPendingWaiters ||
-    hasPendingTransitions
+    hasPendingTransitions ||
+    hasPendingPauseTestForPromises
   ) {
     return false;
   }
