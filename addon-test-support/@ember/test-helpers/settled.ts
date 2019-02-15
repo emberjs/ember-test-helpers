@@ -155,7 +155,7 @@ let currentPauseTestPromises = new Map<Promise<unknown>, IPauseTestPromiseDetail
 
   This function is expected to be used in application/addon code (aka non-test code).
   When used during a test run, it ensures that the next `await settled()` check does
-  not result until after the promise has settled, when used outside of a test it is a
+  not resolve until after the promise has settled, when used outside of a test it is a
   simple "pass through" function.
 
   @public
