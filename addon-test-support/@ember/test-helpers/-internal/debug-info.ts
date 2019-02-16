@@ -13,14 +13,14 @@ const SCHEDULED_AUTORUN = 'Scheduled autorun';
 
 type MaybeDebugInfo = BackburnerDebugInfo | null;
 
-interface ISettledState {
+interface SettledState {
   hasPendingTimers: boolean;
   hasRunLoop: boolean;
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
 }
 
-interface ISummaryInfo {
+interface SummaryInfo {
   hasPendingRequests: boolean;
   hasPendingWaiters: boolean;
   autorunStackTrace: string | undefined | null;
@@ -32,6 +32,14 @@ interface ISummaryInfo {
   hasRunLoop: boolean;
 }
 
+export default interface DebugInfo {
+  toConsole: () => void;
+}
+
+export function backburnerDebugInfoAvailable() {
+  return typeof run.backburner.getDebugInfo === 'function';
+}
+
 /**
  * Retrieves debug information from backburner's current deferred actions queue (runloop instance).
  * If the `getDebugInfo` method isn't available, it returns `null`.
@@ -40,10 +48,7 @@ interface ISummaryInfo {
  * @returns {MaybeDebugInfo | null} Backburner debugInfo or, if the getDebugInfo method is not present, null
  */
 export function getDebugInfo(): MaybeDebugInfo {
-  let debugEnabled = run.backburner.DEBUG === true;
-  let getDebugInfoAvailable = typeof run.backburner.getDebugInfo === 'function';
-
-  return debugEnabled && getDebugInfoAvailable
+  return run.backburner.DEBUG === true && backburnerDebugInfoAvailable()
     ? <BackburnerDebugInfo>run.backburner.getDebugInfo()
     : null;
 }
@@ -59,10 +64,10 @@ export function getDebugInfo(): MaybeDebugInfo {
  * - info provided by backburner's getDebugInfo method (timers, schedules, and stack trace info)
  *
  */
-export default class DebugInfo {
-  private _settledState: ISettledState;
+export class TestDebugInfo implements DebugInfo {
+  private _settledState: SettledState;
   private _debugInfo: MaybeDebugInfo;
-  private _summaryInfo: ISummaryInfo | undefined = undefined;
+  private _summaryInfo: SummaryInfo | undefined = undefined;
 
   constructor(
     hasPendingTimers: boolean,
@@ -81,9 +86,9 @@ export default class DebugInfo {
     this._debugInfo = debugInfo;
   }
 
-  get summary(): ISummaryInfo {
+  get summary(): SummaryInfo {
     if (!this._summaryInfo) {
-      this._summaryInfo = assign(<ISummaryInfo>{}, this._settledState);
+      this._summaryInfo = assign(<SummaryInfo>{}, this._settledState);
 
       if (this._debugInfo) {
         this._summaryInfo.autorunStackTrace =
@@ -118,11 +123,6 @@ export default class DebugInfo {
     }
 
     return this._summaryInfo;
-  }
-
-  get message(): string {
-    return `Test is not isolated (async execution is extending beyond the duration of the test).\n
-    More information has been printed to the console. Please use that information to help in debugging.\n\n`;
   }
 
   toConsole(_console = console): void {

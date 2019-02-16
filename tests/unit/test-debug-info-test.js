@@ -1,10 +1,17 @@
 import { module, test } from 'qunit';
 import { run } from '@ember/runloop';
-import DebugInfo, { getDebugInfo } from '@ember/test-helpers/-internal/debug-info';
+import {
+  TestDebugInfo,
+  backburnerDebugInfoAvailable,
+} from '@ember/test-helpers/-internal/debug-info';
 import MockStableError, { overrideError, resetError } from './utils/mock-stable-error';
 import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
 
-module('TestDebugInfo', function() {
+module('TestDebugInfo', function(hooks) {
+  hooks.beforeEach(function() {
+    run.backburner.DEBUG = false;
+  });
+
   test('summary returns minimal information when debugInfo is not present', function(assert) {
     assert.expect(1);
 
@@ -12,7 +19,7 @@ module('TestDebugInfo', function() {
     let hasPendingWaiters = getRandomBoolean();
     let hasRunLoop = getRandomBoolean();
     let hasPendingRequests = Boolean(Math.floor(Math.random(10)) > 0);
-    let testDebugInfo = new DebugInfo(
+    let testDebugInfo = new TestDebugInfo(
       hasPendingTimers,
       hasRunLoop,
       hasPendingWaiters,
@@ -27,37 +34,13 @@ module('TestDebugInfo', function() {
     });
   });
 
-  test('summary returns full information when debugInfo is present', function(assert) {
-    assert.expect(1);
-
-    run.backburner.DEBUG = false;
-
-    let testDebugInfo = new DebugInfo(
-      false,
-      false,
-      false,
-      false,
-      getMockDebugInfo(false, 2, [{ name: 'one', count: 1 }, { name: 'two', count: 1 }])
-    );
-
-    assert.deepEqual(testDebugInfo.summary, {
-      autorunStackTrace: undefined,
-      hasPendingRequests: false,
-      hasPendingTimers: false,
-      hasPendingWaiters: false,
-      hasRunLoop: false,
-      pendingScheduledQueueItemCount: 2,
-      pendingScheduledQueueItemStackTraces: ['STACK', 'STACK'],
-      pendingTimersCount: 2,
-      pendingTimersStackTraces: ['STACK', 'STACK'],
-    });
-  });
-
-  if (getDebugInfo()) {
+  if (backburnerDebugInfoAvailable()) {
     module('when using backburner', function(hooks) {
       let cancelIds;
 
       hooks.beforeEach(function() {
+        run.backburner.DEBUG = true;
+
         cancelIds = [];
         overrideError(MockStableError);
       });
@@ -73,12 +56,10 @@ module('TestDebugInfo', function() {
       test('summary returns full information when debugInfo is present', function(assert) {
         assert.expect(1);
 
-        run.backburner.DEBUG = true;
-
         cancelIds.push(run.later(() => {}, 5000));
         cancelIds.push(run.later(() => {}, 10000));
 
-        let testDebugInfo = new DebugInfo(
+        let testDebugInfo = new TestDebugInfo(
           false,
           false,
           false,
@@ -87,6 +68,7 @@ module('TestDebugInfo', function() {
         );
 
         assert.deepEqual(testDebugInfo.summary, {
+          autorunStackTrace: null,
           hasPendingRequests: false,
           hasPendingTimers: false,
           hasPendingWaiters: false,
@@ -105,7 +87,7 @@ module('TestDebugInfo', function() {
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(false, false, false, false);
+    let testDebugInfo = new TestDebugInfo(false, false, false, false);
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -117,7 +99,7 @@ module('TestDebugInfo', function() {
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(
+    let testDebugInfo = new TestDebugInfo(
       false,
       true,
       false,
@@ -139,7 +121,7 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(false, false, false, true);
+    let testDebugInfo = new TestDebugInfo(false, false, false, true);
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -151,7 +133,7 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(false, false, true, false);
+    let testDebugInfo = new TestDebugInfo(false, false, true, false);
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -163,7 +145,7 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(
+    let testDebugInfo = new TestDebugInfo(
       true,
       true,
       false,
@@ -188,7 +170,7 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new DebugInfo(
+    let testDebugInfo = new TestDebugInfo(
       false,
       false,
       false,

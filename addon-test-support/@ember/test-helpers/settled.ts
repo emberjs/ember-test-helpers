@@ -5,7 +5,7 @@ import Ember from 'ember';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
-import DebugInfo from './-internal/debug-info';
+import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -171,6 +171,8 @@ export interface SettledState {
     router has not been instantiated / setup for the test yet this will return `null`,
     if there are pending transitions, this will be `true`, otherwise `false`.
   - `pendingRequestCount` - The count of pending AJAX requests.
+  - `debugInfo` - Debug information that's combined with info return from backburner's
+    getDebugInfo method.
 
   @public
   @returns {Object} object with properties for each of the metrics used to determine settledness
@@ -189,7 +191,12 @@ export function getSettledState(): SettledState {
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
-    debugInfo: new DebugInfo(hasPendingTimers, hasRunLoop, hasPendingWaiters, hasPendingRequests),
+    debugInfo: new TestDebugInfo(
+      hasPendingTimers,
+      hasRunLoop,
+      hasPendingWaiters,
+      hasPendingRequests
+    ),
   };
 }
 
