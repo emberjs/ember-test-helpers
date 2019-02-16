@@ -3,6 +3,7 @@ import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
+import { run } from '@ember/runloop';
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
@@ -55,6 +56,7 @@ QUnit.testStart(function() {
 });
 
 QUnit.testDone(function({ module, name }) {
+  run.backburner.DEBUG = true;
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
   if (Ember.testing) {
     let message = `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`;
