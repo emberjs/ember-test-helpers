@@ -36,6 +36,12 @@ export default interface DebugInfo {
   toConsole: () => void;
 }
 
+/**
+ * Determins if the `getDebugInfo` method is available in the
+ * running verison of backburner.
+ *
+ * @returns {boolean} True if `getDebugInfo` is present in backburner, otherwise false.
+ */
 export function backburnerDebugInfoAvailable() {
   return typeof run.backburner.getDebugInfo === 'function';
 }
