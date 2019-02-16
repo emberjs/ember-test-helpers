@@ -98,5 +98,8 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "resolutions": {
+    "@types/handlebars": "npm:handlebars@^4.1.0"
   }
 }
