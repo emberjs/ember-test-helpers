@@ -19,6 +19,7 @@ export default class {
 
   setup(assert) {
     Ember.testing = true;
+    Ember.run.backburner.DEBUG = true;
     return this.invokeSteps(this.setupSteps, this, assert).then(() => {
       this.contextualizeCallbacks();
       return this.invokeSteps(this.contextualizedSetupSteps, this.context, assert);

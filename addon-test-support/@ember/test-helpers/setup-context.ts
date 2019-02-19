@@ -161,6 +161,8 @@ export default function setupContext(
   let contextGuid = guidFor(context);
   CLEANUP[contextGuid] = [];
 
+  run.backburner.DEBUG = true;
+
   return nextTickPromise()
     .then(() => {
       let application = getApplication();
