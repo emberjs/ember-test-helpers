@@ -1,5 +1,21 @@
 # Change Log
 
+## v1.4.0 (2019-02-19)
+
+#### :rocket: Enhancement
+* [#554](https://github.com/emberjs/ember-test-helpers/pull/554) Moving test isolation validation primatives into @ember/test-helpers ([@scalvert](https://github.com/scalvert))
+
+#### :memo: Documentation
+* [#553](https://github.com/emberjs/ember-test-helpers/pull/553) Test and document specifying options to click ([@efx](https://github.com/efx))
+
+#### :house: Internal
+* [#566](https://github.com/emberjs/ember-test-helpers/pull/566) Refresh `yarn.lock`. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Eli Flanagan ([@efx](https://github.com/efx))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
 ## v1.3.2 (2019-02-01)
 
 #### :bug: Bug Fix
