@@ -13,6 +13,8 @@ let moduleLoadFailures = [];
 let cleanupFailures = [];
 let asyncLeakageFailures = [];
 
+run.backburner.DEBUG = true;
+
 QUnit.done(function() {
   if (moduleLoadFailures.length) {
     throw new Error('\n' + moduleLoadFailures.join('\n'));
@@ -56,7 +58,16 @@ QUnit.testStart(function() {
 });
 
 QUnit.testDone(function({ module, name }) {
-  run.backburner.DEBUG = true;
+  // ensure no test accidentally change state of run.backburner.DEBUG
+  if (run.backburner.DEBUG !== true) {
+    let message = `Ember.run.backburner.DEBUG should be reset (to true) after test has completed. ${module}: ${name} did not.`;
+    cleanupFailures.push(message);
+
+    // eslint-disable-next-line
+    console.error(message);
+    run.backburner.DEBUG = true;
+  }
+
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
   if (Ember.testing) {
     let message = `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`;

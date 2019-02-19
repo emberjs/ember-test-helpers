@@ -12,6 +12,10 @@ module('TestDebugInfo', function(hooks) {
     run.backburner.DEBUG = false;
   });
 
+  hooks.afterEach(function() {
+    run.backburner.DEBUG = true;
+  });
+
   test('summary returns minimal information when debugInfo is not present', function(assert) {
     assert.expect(1);
 
