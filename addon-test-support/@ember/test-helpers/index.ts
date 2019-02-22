@@ -22,6 +22,7 @@ export { default as settled, isSettled, getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
+export { getDebugInfo } from './-internal/debug-info';
 
 // DOM Helpers
 export { default as click } from './dom/click';
