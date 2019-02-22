@@ -76,7 +76,7 @@
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.7.0",
     "prettier": "^1.16.4",
-    "qunit": "^2.9.1",
+    "qunit": "^2.9.2",
     "typescript": "^3.3.3",
     "typescript-eslint-parser": "^20.1.1"
   },
