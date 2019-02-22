@@ -1,5 +1,13 @@
 # Change Log
 
+## v1.5.0 (2019-02-22)
+
+#### :rocket: Enhancement
+* [#575](https://github.com/emberjs/ember-test-helpers/pull/575) Exporting getDebugInfo as public ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 1
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
 ## v1.4.0 (2019-02-19)
 
 #### :rocket: Enhancement
