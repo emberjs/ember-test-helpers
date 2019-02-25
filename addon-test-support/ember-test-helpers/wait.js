@@ -1,9 +1,4 @@
-export {
-  _setupAJAXHooks,
-  _setupPromiseListeners,
-  _teardownAJAXHooks,
-  _teardownPromiseListeners,
-} from '@ember/test-helpers/settled';
+export { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 
 import { waitUntil, getSettledState } from '@ember/test-helpers';
 
