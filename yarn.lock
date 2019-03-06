@@ -969,10 +969,10 @@
   dependencies:
     "@types/estree" "*"
 
-"@types/ember-data@^3.1.4":
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/@types/ember-data/-/ember-data-3.1.4.tgz#ff3f184b19d2b261a44e190fd05a0cb625e567c6"
-  integrity sha512-/6bT6sfPB2+u9O3HBmNjMypQmevuOdqnMoiDgvMtQceYOzrBrNazBLFlq7WSzUtdjBnHbBygoGiQH8WwFUKgPw==
+"@types/ember-data@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@types/ember-data/-/ember-data-3.1.5.tgz#62c00698f0fec9279704947e0322e55c72605f8c"
+  integrity sha512-d5HPjRc3kT9FKdxSfyjcm6hSxsWojOQASXEpMmNEblO9Cpr0/ppE74HTic9SHvAyy8pz0cIBeueUnCiMsKl44g==
   dependencies:
     "@types/ember" "*"
     "@types/ember__object" "*"
