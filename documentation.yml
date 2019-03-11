@@ -41,6 +41,10 @@ toc:
       - pauseTest
       - resumeTest
 
+  - name: Debug Helpers
+    children:
+      - getDebugInfo
+
   - name: Test Framework APIs
     children:
       - setResolver
@@ -57,3 +61,5 @@ toc:
       - setupApplicationContext
       - teardownApplicationContext
       - validateErrorHandler
+      - setupOnerror
+      - resetOnerror

@@ -29,6 +29,13 @@ export interface Options {
  * @param {string} text the test to fill the element with
  * @param {Object} options {delay: x} (default 50) number of milliseconds to wait per keypress
  * @return {Promise<void>} resolves when the application is settled
+ * 
+ * @example
+ * <caption>
+ *   Emulating typing in an input using `typeIn`
+ * </caption>
+ * 
+ * typeIn('hello world');
  */
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
   return nextTickPromise().then(() => {

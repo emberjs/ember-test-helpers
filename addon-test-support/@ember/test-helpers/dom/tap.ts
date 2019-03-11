@@ -39,6 +39,13 @@ import Target from './-target';
   @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be merged into the touch events
   @return {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Emulating tapping a button using `tap`
+  </caption>
+
+  tap('button');
 */
 export default function tap(target: Target, options: object = {}): Promise<void> {
   return nextTickPromise().then(() => {

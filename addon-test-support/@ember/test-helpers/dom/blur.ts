@@ -42,6 +42,13 @@ export function __blur__(element: HTMLElement | SVGElement): void {
   @public
   @param {string|Element} [target=document.activeElement] the element or selector to unfocus
   @return {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Emulating blurring an input using `blur`
+  </caption>
+
+  blur('input');
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
   return nextTickPromise().then(() => {

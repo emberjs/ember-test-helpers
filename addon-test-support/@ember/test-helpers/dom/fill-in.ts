@@ -15,6 +15,13 @@ import Target from './-target';
   @param {string|Element} target the element or selector to enter text into
   @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
+
+  @example
+  <caption>
+    Emulating filling an input with text using `fillIn`
+  </caption>
+
+  fillIn('input', 'hello world');
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
   return nextTickPromise().then(() => {

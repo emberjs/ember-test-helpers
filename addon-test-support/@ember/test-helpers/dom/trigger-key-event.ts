@@ -129,6 +129,12 @@ function keyCodeFromKey(key: string) {
   @param {boolean} [modifiers.shiftKey=false] if true the generated event will indicate the shift key was pressed during the key event
   @param {boolean} [modifiers.metaKey=false] if true the generated event will indicate the meta key was pressed during the key event
   @return {Promise<void>} resolves when the application is settled
+
+  @example
+  <caption>
+    Emulating pressing the `ENTER` key on a button using `triggerKeyEvent`
+  </caption>
+  triggerKeyEvent('button', 'keydown', 'Enter');
 */
 export default function triggerKeyEvent(
   target: Target,

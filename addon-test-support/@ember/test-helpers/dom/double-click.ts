@@ -58,12 +58,26 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
-  Use the `options` hash to change the parameters of the MouseEvents.
+  Use the `options` hash to change the parameters of the [MouseEvents](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent).
 
   @public
   @param {string|Element} target the element or selector to double-click on
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Emulating double clicking a button using `doubleClick`
+  </caption>
+
+  doubleClick('button');
+
+  @example
+  <caption>
+    Emulating double clicking a button and pressing the `shift` key simultaneously using `click` with `options`.
+  </caption>
+
+  doubleClick('button', { shiftKey: true });
 */
 export default function doubleClick(target: Target, options: MouseEventInit = {}): Promise<void> {
   return nextTickPromise().then(() => {

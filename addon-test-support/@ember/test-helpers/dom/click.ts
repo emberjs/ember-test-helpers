@@ -47,15 +47,26 @@ export function __click__(element: Element | Document, options: MouseEventInit):
   The exact listing of events that are triggered may change over time as needed
   to continue to emulate how actual browsers handle clicking a given element.
 
-  Use the `options` hash to change the parameters of the MouseEvents. You can use this to specifiy modifier keys as well. For example:
-  ```javascript
-  await click('div', { shiftKey: true });
-  ```
+  Use the `options` hash to change the parameters of the [MouseEvents](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent).
+  You can use this to specifiy modifier keys as well.
 
   @public
   @param {string|Element} target the element or selector to click on
   @param {Object} options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Emulating clicking a button using `click`
+  </caption>
+  click('button');
+
+  @example
+  <caption>
+    Emulating clicking a button and pressing the `shift` key simultaneously using `click` with `options`.
+  </caption>
+
+  click('button', { shiftKey: true });
 */
 export default function click(target: Target, options: MouseEventInit = {}): Promise<void> {
   return nextTickPromise().then(() => {
