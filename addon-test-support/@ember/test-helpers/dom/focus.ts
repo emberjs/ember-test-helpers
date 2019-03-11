@@ -45,6 +45,13 @@ export function __focus__(element: HTMLElement | SVGElement): void {
   @public
   @param {string|Element} target the element or selector to focus
   @return {Promise<void>} resolves when the application is settled
+
+  @example
+  <caption>
+    Emulating focusing an input using `focus`
+  </caption>
+
+  focus('input');
 */
 export default function focus(target: Target): Promise<void> {
   return nextTickPromise().then(() => {
