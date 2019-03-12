@@ -22,7 +22,7 @@ import Target from './-target';
  * triggerEvent(
  *   'input.fileUpload',
  *   'change',
- *   [new Blob(['Ember Rules!'])]
+ *   { files: [new Blob(['Ember Rules!'])] }
  * );
  */
 export default function triggerEvent(
