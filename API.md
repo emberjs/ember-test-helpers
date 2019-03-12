@@ -356,7 +356,7 @@ When using triggerEvent to upload a file the `eventType` must be `change` and yo
 triggerEvent(
   'input.fileUpload',
   'change',
-  [new Blob(['Ember Rules!'])]
+  { files: [new Blob(['Ember Rules!'])] }
 );
 ```
 
