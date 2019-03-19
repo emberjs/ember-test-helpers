@@ -23,6 +23,7 @@ export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
 export { getDebugInfo } from './-internal/debug-info';
+export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
 
 // DOM Helpers
 export { default as click } from './dom/click';
