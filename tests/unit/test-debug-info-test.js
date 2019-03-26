@@ -7,6 +7,7 @@ import {
 import MockStableError, { overrideError, resetError } from './utils/mock-stable-error';
 import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
 import { registerDebugInfoHelper } from '@ember/test-helpers';
+import { debugInfoHelpers } from '@ember/test-helpers/-internal/debug-info-helpers';
 
 module('TestDebugInfo', function(hooks) {
   hooks.beforeEach(function() {
@@ -211,5 +212,7 @@ STACK`
     testDebugInfo.toConsole(mockConsole);
 
     assert.equal(mockConsole.toString(), 'Date override');
+
+    debugInfoHelpers.clear();
   });
 });
