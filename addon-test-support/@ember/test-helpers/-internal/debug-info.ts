@@ -170,7 +170,9 @@ export class TestDebugInfo implements DebugInfo {
     }
 
     debugInfoHelpers.forEach((helper: DebugInfoHelper) => {
-      helper.toConsole();
+      if (helper.hasDebugInfo()) {
+        helper.toConsole();
+      }
     });
   }
 

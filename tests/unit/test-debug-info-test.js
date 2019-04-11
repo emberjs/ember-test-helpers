@@ -200,6 +200,10 @@ STACK`
     let mockConsole = new MockConsole();
 
     let debugInfoHelper = {
+      hasDebugInfo() {
+        return true;
+      },
+
       toConsole() {
         mockConsole.log('Date override');
       },

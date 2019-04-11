@@ -1,4 +1,5 @@
 export interface DebugInfoHelper {
+  hasDebugInfo: () => boolean;
   toConsole: () => void;
 }
 
