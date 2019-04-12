@@ -200,12 +200,18 @@ STACK`
     let mockConsole = new MockConsole();
 
     let debugInfoHelper = {
-      hasDebugInfo() {
+      name: 'Date override info',
+
+      hasDateOverride() {
         return true;
       },
 
       toConsole() {
-        mockConsole.log('Date override');
+        mockConsole.log(this.name);
+
+        if (this.hasDateOverride()) {
+          mockConsole.log('Date is overridden');
+        }
       },
     };
 
@@ -215,7 +221,11 @@ STACK`
 
     testDebugInfo.toConsole(mockConsole);
 
-    assert.equal(mockConsole.toString(), 'Date override');
+    assert.equal(
+      mockConsole.toString(),
+      `Date override info
+Date is overridden`
+    );
 
     debugInfoHelpers.clear();
   });
