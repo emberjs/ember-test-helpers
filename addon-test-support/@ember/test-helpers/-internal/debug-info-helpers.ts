@@ -10,6 +10,19 @@ export const debugInfoHelpers = new Set<DebugInfoHelper>();
  *
  * @public
  * @param {DebugInfoHelper} debugHelper a custom debug info helper
+ * @example
+ *
+ * import { registerDebugInfoHelper } from '@ember/test-helpers';
+ *
+ * registerDebugInfoHelper({
+ *   name: 'Date override detection',
+ *   log() {
+ *     if (dateIsOverridden()) {
+ *       console.log(this.name);
+ *       console.log('The date object has been overridden');
+ *     }
+ *   }
+ * })
  */
 export default function registerDebugInfoHelper(debugHelper: DebugInfoHelper) {
   debugInfoHelpers.add(debugHelper);

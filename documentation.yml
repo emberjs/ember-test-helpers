@@ -44,6 +44,7 @@ toc:
   - name: Debug Helpers
     children:
       - getDebugInfo
+      - registerDebugInfoHelper
 
   - name: Test Framework APIs
     children:
