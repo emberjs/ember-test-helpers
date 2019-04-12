@@ -1,6 +1,6 @@
 export interface DebugInfoHelper {
   name: string;
-  toConsole: () => void;
+  log: () => void;
 }
 
 export const debugInfoHelpers = new Set<DebugInfoHelper>();

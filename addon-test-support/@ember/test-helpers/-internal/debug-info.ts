@@ -170,7 +170,7 @@ export class TestDebugInfo implements DebugInfo {
     }
 
     debugInfoHelpers.forEach((helper: DebugInfoHelper) => {
-      helper.toConsole();
+      helper.log();
     });
   }
 

@@ -206,7 +206,7 @@ STACK`
         return true;
       },
 
-      toConsole() {
+      log() {
         mockConsole.log(this.name);
 
         if (this.hasDateOverride()) {
