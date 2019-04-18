@@ -4548,6 +4548,12 @@ ember-source@~3.9.1:
     jquery "^3.3.1"
     resolve "^1.10.0"
 
+ember-test-waiters@scalvert/ember-test-waiters#76c5bb14b4954ac8f6feb124288153721e54a919:
+  version "0.0.0"
+  resolved "https://codeload.github.com/scalvert/ember-test-waiters/tar.gz/76c5bb14b4954ac8f6feb124288153721e54a919"
+  dependencies:
+    ember-cli-babel "^7.1.2"
+
 ember-try-config@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ember-try-config/-/ember-try-config-3.0.0.tgz#012d8c90cae9eb624e2b62040bf7e76a1aa58edc"
