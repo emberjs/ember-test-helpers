@@ -5,6 +5,7 @@ import Ember from 'ember';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
+import { hasPendingWaiters } from 'ember-test-waiters';
 import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
@@ -146,7 +147,8 @@ function checkWaiters() {
 export interface SettledState {
   hasRunLoop: boolean;
   hasPendingTimers: boolean;
-  hasPendingWaiters: boolean;
+  hasPendingLegacyWaiters: boolean;
+  hasPendingTestWaiters: boolean;
   hasPendingRequests: boolean;
   hasPendingTransitions: boolean | null;
   pendingRequestCount: number;
@@ -161,7 +163,10 @@ export interface SettledState {
   - `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
     These pending timers are primarily registered by `Ember.run.schedule`. If
     there are pending timers, this will be `true`, otherwise `false`.
-  - `hasPendingWaiters` - Checks if any registered test waiters are still
+  - `hasPendingLegacyWaiters` - Checks if any registered legacy test waiters are still
+    pending (e.g. the waiter returns `true`). If there are pending waiters,
+    this will be `true`, otherwise `false`.
+  - `hasPendingTestWaiters` - Checks if any registered ember test waiters are still
     pending (e.g. the waiter returns `true`). If there are pending waiters,
     this will be `true`, otherwise `false`.
   - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
@@ -180,21 +185,24 @@ export interface SettledState {
 export function getSettledState(): SettledState {
   let hasPendingTimers = Boolean((run as any).hasScheduledTimers());
   let hasRunLoop = Boolean((run as any).currentRunLoop);
-  let hasPendingWaiters = checkWaiters();
+  let hasPendingLegacyWaiters = checkWaiters();
+  let hasPendingTestWaiters = hasPendingWaiters();
   let pendingRequestCount = pendingRequests();
   let hasPendingRequests = pendingRequestCount > 0;
 
   return {
     hasPendingTimers,
     hasRunLoop,
-    hasPendingWaiters,
+    hasPendingLegacyWaiters,
+    hasPendingTestWaiters,
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
     debugInfo: new TestDebugInfo(
       hasPendingTimers,
       hasRunLoop,
-      hasPendingWaiters,
+      hasPendingLegacyWaiters,
+      hasPendingTestWaiters,
       hasPendingRequests
     ),
   };
@@ -215,7 +223,8 @@ export function isSettled(): boolean {
     hasPendingTimers,
     hasRunLoop,
     hasPendingRequests,
-    hasPendingWaiters,
+    hasPendingLegacyWaiters,
+    hasPendingTestWaiters,
     hasPendingTransitions,
   } = getSettledState();
 
@@ -223,7 +232,8 @@ export function isSettled(): boolean {
     hasPendingTimers ||
     hasRunLoop ||
     hasPendingRequests ||
-    hasPendingWaiters ||
+    hasPendingLegacyWaiters ||
+    hasPendingTestWaiters ||
     hasPendingTransitions
   ) {
     return false;
