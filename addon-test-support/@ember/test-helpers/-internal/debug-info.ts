@@ -6,7 +6,6 @@ import {
 } from '@ember/runloop';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { assign } from '@ember/polyfills';
-// @ts-ignore
 import {
   getPendingWaiterState,
   IPendingWaiterState,
