@@ -164,7 +164,7 @@ export class TestDebugInfo implements DebugInfo {
 
       Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiter => {
         _console.log(waiter);
-        // array of { stack: string, label: string }
+
         let waiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiter];
 
         if (Array.isArray(waiterDebugInfo)) {
