@@ -6,6 +6,8 @@ import {
 } from '@ember/test-helpers/-internal/debug-info';
 import MockStableError, { overrideError, resetError } from './utils/mock-stable-error';
 import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
+import { registerDebugInfoHelper } from '@ember/test-helpers';
+import { debugInfoHelpers } from '@ember/test-helpers/-internal/debug-info-helpers';
 
 module('TestDebugInfo', function(hooks) {
   hooks.beforeEach(function() {
@@ -190,5 +192,41 @@ STACK`
 STACK
 STACK`
     );
+  });
+
+  test('registerDebugInfoHelper registers a custom helper', function(assert) {
+    assert.expect(1);
+
+    let mockConsole = new MockConsole();
+
+    let debugInfoHelper = {
+      name: 'Date override info',
+
+      hasDateOverride() {
+        return true;
+      },
+
+      log() {
+        mockConsole.log(this.name);
+
+        if (this.hasDateOverride()) {
+          mockConsole.log('Date is overridden');
+        }
+      },
+    };
+
+    registerDebugInfoHelper(debugInfoHelper);
+
+    let testDebugInfo = new TestDebugInfo(false, false, false, false);
+
+    testDebugInfo.toConsole(mockConsole);
+
+    assert.equal(
+      mockConsole.toString(),
+      `Date override info
+Date is overridden`
+    );
+
+    debugInfoHelpers.clear();
   });
 });

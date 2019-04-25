@@ -4,6 +4,7 @@ import {
   QueueItem,
   DeferredActionQueues,
 } from '@ember/runloop';
+import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { assign } from '@ember/polyfills';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
@@ -167,6 +168,10 @@ export class TestDebugInfo implements DebugInfo {
         _console.log(summary.autorunStackTrace);
       }
     }
+
+    debugInfoHelpers.forEach((helper: DebugInfoHelper) => {
+      helper.log();
+    });
   }
 
   _formatCount(title: string, count: Number): string {
