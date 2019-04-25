@@ -18,6 +18,7 @@ const SCHEDULED_ASYNC = 'Scheduled async';
 const SCHEDULED_AUTORUN = 'Scheduled autorun';
 
 type MaybeDebugInfo = BackburnerDebugInfo | null;
+type WaiterDebugInfo = true | unknown[];
 
 interface SettledState {
   hasPendingTimers: boolean;
@@ -165,7 +166,7 @@ export class TestDebugInfo implements DebugInfo {
       Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiter => {
         _console.log(waiter);
 
-        let waiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiter];
+        let waiterDebugInfo: WaiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiter];
 
         if (Array.isArray(waiterDebugInfo)) {
           waiterDebugInfo.forEach((debugInfo: ITestWaiterDebugInfo) => {
