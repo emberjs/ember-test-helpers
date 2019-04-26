@@ -29,8 +29,7 @@ export default function wait(options = {}) {
         hasPendingTimers,
         hasRunLoop,
         hasPendingRequests,
-        hasPendingLegacyWaiters,
-        hasPendingTestWaiters,
+        hasPendingWaiters,
       } = getSettledState();
 
       if (waitForTimers && (hasPendingTimers || hasRunLoop)) {
@@ -41,7 +40,7 @@ export default function wait(options = {}) {
         return false;
       }
 
-      if (waitForWaiters && (hasPendingLegacyWaiters || hasPendingTestWaiters)) {
+      if (waitForWaiters && hasPendingWaiters) {
         return false;
       }
 
