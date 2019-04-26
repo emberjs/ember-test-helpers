@@ -29,8 +29,7 @@ module('settled', function(hooks) {
             {
               hasPendingRequests: false,
               hasPendingTimers: false,
-              hasPendingLegacyWaiters: false,
-              hasPendingTestWaiters: false,
+              hasPendingWaiters: false,
               hasPendingTransitions: null,
               hasRunLoop: false,
               pendingRequestCount: 0,
@@ -177,8 +176,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: false,
-        hasPendingLegacyWaiters: false,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -197,8 +195,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: true,
-        hasPendingLegacyWaiters: false,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: true,
         pendingRequestCount: 0,
@@ -218,8 +215,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: true,
-        hasPendingLegacyWaiters: false,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -239,8 +235,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: true,
-        hasPendingLegacyWaiters: false,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -257,8 +252,7 @@ module('settled', function(hooks) {
         assert.deepEqual(getSettledState(), {
           hasPendingRequests: false,
           hasPendingTimers: false,
-          hasPendingLegacyWaiters: false,
-          hasPendingTestWaiters: false,
+          hasPendingWaiters: false,
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
@@ -287,8 +281,7 @@ module('settled', function(hooks) {
         assert.deepEqual(getSettledState(), {
           hasPendingRequests: true,
           hasPendingTimers: false,
-          hasPendingLegacyWaiters: false,
-          hasPendingTestWaiters: false,
+          hasPendingWaiters: false,
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 1,
@@ -298,8 +291,7 @@ module('settled', function(hooks) {
         assert.deepEqual(getSettledState(), {
           hasPendingRequests: false,
           hasPendingTimers: false,
-          hasPendingLegacyWaiters: true,
-          hasPendingTestWaiters: false,
+          hasPendingWaiters: true,
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 0,
@@ -318,8 +310,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: false,
-        hasPendingLegacyWaiters: true,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: true,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -343,8 +334,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: false,
-        hasPendingLegacyWaiters: false,
-        hasPendingTestWaiters: true,
+        hasPendingWaiters: true,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -366,8 +356,7 @@ module('settled', function(hooks) {
       assert.deepEqual(getSettledState(), {
         hasPendingRequests: false,
         hasPendingTimers: false,
-        hasPendingLegacyWaiters: true,
-        hasPendingTestWaiters: false,
+        hasPendingWaiters: true,
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
@@ -378,8 +367,7 @@ module('settled', function(hooks) {
         assert.deepEqual(getSettledState(), {
           hasPendingRequests: false,
           hasPendingTimers: false,
-          hasPendingLegacyWaiters: true,
-          hasPendingTestWaiters: false,
+          hasPendingWaiters: true,
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
@@ -391,8 +379,7 @@ module('settled', function(hooks) {
         assert.deepEqual(getSettledState(), {
           hasPendingRequests: false,
           hasPendingTimers: true,
-          hasPendingLegacyWaiters: true,
-          hasPendingTestWaiters: false,
+          hasPendingWaiters: true,
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,

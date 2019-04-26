@@ -147,8 +147,7 @@ function checkWaiters() {
 export interface SettledState {
   hasRunLoop: boolean;
   hasPendingTimers: boolean;
-  hasPendingLegacyWaiters: boolean;
-  hasPendingTestWaiters: boolean;
+  hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
   hasPendingTransitions: boolean | null;
   pendingRequestCount: number;
@@ -163,10 +162,7 @@ export interface SettledState {
   - `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
     These pending timers are primarily registered by `Ember.run.schedule`. If
     there are pending timers, this will be `true`, otherwise `false`.
-  - `hasPendingLegacyWaiters` - Checks if any registered legacy test waiters are still
-    pending (e.g. the waiter returns `true`). If there are pending waiters,
-    this will be `true`, otherwise `false`.
-  - `hasPendingTestWaiters` - Checks if any registered ember test waiters are still
+  - `hasPendingWaiters` - Checks if any registered test waiters are still
     pending (e.g. the waiter returns `true`). If there are pending waiters,
     this will be `true`, otherwise `false`.
   - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
@@ -193,8 +189,7 @@ export function getSettledState(): SettledState {
   return {
     hasPendingTimers,
     hasRunLoop,
-    hasPendingLegacyWaiters,
-    hasPendingTestWaiters,
+    hasPendingWaiters: hasPendingLegacyWaiters || hasPendingTestWaiters,
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
@@ -223,8 +218,7 @@ export function isSettled(): boolean {
     hasPendingTimers,
     hasRunLoop,
     hasPendingRequests,
-    hasPendingLegacyWaiters,
-    hasPendingTestWaiters,
+    hasPendingWaiters,
     hasPendingTransitions,
   } = getSettledState();
 
@@ -232,8 +226,7 @@ export function isSettled(): boolean {
     hasPendingTimers ||
     hasRunLoop ||
     hasPendingRequests ||
-    hasPendingLegacyWaiters ||
-    hasPendingTestWaiters ||
+    hasPendingWaiters ||
     hasPendingTransitions
   ) {
     return false;

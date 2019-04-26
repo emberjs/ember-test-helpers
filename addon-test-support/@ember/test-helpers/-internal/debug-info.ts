@@ -163,17 +163,17 @@ export class TestDebugInfo implements DebugInfo {
         _console.log(PENDING_TEST_WAITERS);
       }
 
-      Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiter => {
-        _console.log(waiter);
-
-        let waiterDebugInfo: WaiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiter];
+      Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiterName => {
+        let waiterDebugInfo: WaiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiterName];
 
         if (Array.isArray(waiterDebugInfo)) {
+          _console.group(waiterName);
           waiterDebugInfo.forEach((debugInfo: ITestWaiterDebugInfo) => {
             _console.log(`${debugInfo.label ? debugInfo.label : 'stack'}: ${debugInfo.stack}`);
           });
+          _console.groupEnd();
         } else {
-          _console.log(waiterDebugInfo);
+          _console.log(waiterName);
         }
       });
     }
