@@ -6,6 +6,11 @@ import {
 } from '@ember/runloop';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { assign } from '@ember/polyfills';
+import {
+  getPendingWaiterState,
+  IPendingWaiterState,
+  ITestWaiterDebugInfo,
+} from 'ember-test-waiters';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';
@@ -13,17 +18,21 @@ const SCHEDULED_ASYNC = 'Scheduled async';
 const SCHEDULED_AUTORUN = 'Scheduled autorun';
 
 type MaybeDebugInfo = BackburnerDebugInfo | null;
+type WaiterDebugInfo = true | unknown[];
 
 interface SettledState {
   hasPendingTimers: boolean;
   hasRunLoop: boolean;
-  hasPendingWaiters: boolean;
+  hasPendingLegacyWaiters: boolean;
+  hasPendingTestWaiters: boolean;
   hasPendingRequests: boolean;
 }
 
 interface SummaryInfo {
   hasPendingRequests: boolean;
-  hasPendingWaiters: boolean;
+  hasPendingLegacyWaiters: boolean;
+  hasPendingTestWaiters: boolean;
+  pendingTestWaiterInfo: IPendingWaiterState;
   autorunStackTrace: string | undefined | null;
   pendingTimersCount: number;
   hasPendingTimers: boolean;
@@ -79,14 +88,16 @@ export class TestDebugInfo implements DebugInfo {
   constructor(
     hasPendingTimers: boolean,
     hasRunLoop: boolean,
-    hasPendingWaiters: boolean,
+    hasPendingLegacyWaiters: boolean,
+    hasPendingTestWaiters: boolean,
     hasPendingRequests: boolean,
     debugInfo: MaybeDebugInfo = getDebugInfo()
   ) {
     this._settledState = {
       hasPendingTimers,
       hasRunLoop,
-      hasPendingWaiters,
+      hasPendingLegacyWaiters,
+      hasPendingTestWaiters,
       hasPendingRequests,
     };
 
@@ -127,6 +138,10 @@ export class TestDebugInfo implements DebugInfo {
             return stacks;
           }, []);
       }
+
+      if (this._summaryInfo.hasPendingTestWaiters) {
+        this._summaryInfo.pendingTestWaiterInfo = getPendingWaiterState();
+      }
     }
 
     return this._summaryInfo;
@@ -139,8 +154,28 @@ export class TestDebugInfo implements DebugInfo {
       _console.log(PENDING_AJAX_REQUESTS);
     }
 
-    if (summary.hasPendingWaiters) {
+    if (summary.hasPendingLegacyWaiters) {
       _console.log(PENDING_TEST_WAITERS);
+    }
+
+    if (summary.hasPendingTestWaiters) {
+      if (!summary.hasPendingLegacyWaiters) {
+        _console.log(PENDING_TEST_WAITERS);
+      }
+
+      Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiterName => {
+        let waiterDebugInfo: WaiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiterName];
+
+        if (Array.isArray(waiterDebugInfo)) {
+          _console.group(waiterName);
+          waiterDebugInfo.forEach((debugInfo: ITestWaiterDebugInfo) => {
+            _console.log(`${debugInfo.label ? debugInfo.label : 'stack'}: ${debugInfo.stack}`);
+          });
+          _console.groupEnd();
+        } else {
+          _console.log(waiterName);
+        }
+      });
     }
 
     if (summary.hasPendingTimers || summary.pendingScheduledQueueItemCount > 0) {

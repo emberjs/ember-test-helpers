@@ -5,6 +5,7 @@ import Ember from 'ember';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
+import { hasPendingWaiters } from 'ember-test-waiters';
 import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
@@ -180,21 +181,23 @@ export interface SettledState {
 export function getSettledState(): SettledState {
   let hasPendingTimers = Boolean((run as any).hasScheduledTimers());
   let hasRunLoop = Boolean((run as any).currentRunLoop);
-  let hasPendingWaiters = checkWaiters();
+  let hasPendingLegacyWaiters = checkWaiters();
+  let hasPendingTestWaiters = hasPendingWaiters();
   let pendingRequestCount = pendingRequests();
   let hasPendingRequests = pendingRequestCount > 0;
 
   return {
     hasPendingTimers,
     hasRunLoop,
-    hasPendingWaiters,
+    hasPendingWaiters: hasPendingLegacyWaiters || hasPendingTestWaiters,
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
     debugInfo: new TestDebugInfo(
       hasPendingTimers,
       hasRunLoop,
-      hasPendingWaiters,
+      hasPendingLegacyWaiters,
+      hasPendingTestWaiters,
       hasPendingRequests
     ),
   };

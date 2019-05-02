@@ -8,6 +8,7 @@ import MockStableError, { overrideError, resetError } from './utils/mock-stable-
 import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
 import { registerDebugInfoHelper } from '@ember/test-helpers';
 import { debugInfoHelpers } from '@ember/test-helpers/-internal/debug-info-helpers';
+import { buildWaiter, _reset as resetWaiters } from 'ember-test-waiters';
 
 module('TestDebugInfo', function(hooks) {
   hooks.beforeEach(function() {
@@ -22,20 +23,23 @@ module('TestDebugInfo', function(hooks) {
     assert.expect(1);
 
     let hasPendingTimers = getRandomBoolean();
-    let hasPendingWaiters = getRandomBoolean();
+    let hasPendingLegacyWaiters = getRandomBoolean();
+    let hasPendingTestWaiters = false;
     let hasRunLoop = getRandomBoolean();
     let hasPendingRequests = Boolean(Math.floor(Math.random(10)) > 0);
     let testDebugInfo = new TestDebugInfo(
       hasPendingTimers,
       hasRunLoop,
-      hasPendingWaiters,
+      hasPendingLegacyWaiters,
+      hasPendingTestWaiters,
       hasPendingRequests
     );
 
     assert.deepEqual(testDebugInfo.summary, {
       hasPendingRequests,
       hasPendingTimers,
-      hasPendingWaiters,
+      hasPendingLegacyWaiters,
+      hasPendingTestWaiters,
       hasRunLoop,
     });
   });
@@ -70,6 +74,7 @@ module('TestDebugInfo', function(hooks) {
           false,
           false,
           false,
+          false,
           run.backburner.getDebugInfo()
         );
 
@@ -77,7 +82,8 @@ module('TestDebugInfo', function(hooks) {
           autorunStackTrace: null,
           hasPendingRequests: false,
           hasPendingTimers: false,
-          hasPendingWaiters: false,
+          hasPendingLegacyWaiters: false,
+          hasPendingTestWaiters: false,
           hasRunLoop: false,
           pendingScheduledQueueItemCount: 0,
           pendingScheduledQueueItemStackTraces: [],
@@ -93,7 +99,7 @@ module('TestDebugInfo', function(hooks) {
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, false);
+    let testDebugInfo = new TestDebugInfo(false, false, false, false, false);
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -108,6 +114,7 @@ module('TestDebugInfo', function(hooks) {
     let testDebugInfo = new TestDebugInfo(
       false,
       true,
+      false,
       false,
       false,
       getMockDebugInfo(new MockStableError('STACK'), 0, null)
@@ -127,23 +134,49 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, true);
+    let testDebugInfo = new TestDebugInfo(false, false, false, false, true);
 
     testDebugInfo.toConsole(mockConsole);
 
     assert.deepEqual(mockConsole.toString(), `Pending AJAX requests`);
   });
 
-  test('toConsole correctly prints pending test waiter information', function(assert) {
+  test('toConsole correctly prints pending legacy test waiter information', function(assert) {
     assert.expect(1);
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, true, false);
+    let testDebugInfo = new TestDebugInfo(false, false, true, false, false);
 
     testDebugInfo.toConsole(mockConsole);
 
     assert.deepEqual(mockConsole.toString(), `Pending test waiters`);
+  });
+
+  test('toConsole correctly prints pending test waiter information', function(assert) {
+    assert.expect(1);
+
+    let waiterItem = {};
+    let mockConsole = new MockConsole();
+    let testWaiter = buildWaiter('custom-waiter');
+
+    overrideError(MockStableError);
+
+    testWaiter.beginAsync(waiterItem);
+
+    let testDebugInfo = new TestDebugInfo(false, false, false, true, false);
+
+    testDebugInfo.toConsole(mockConsole);
+
+    assert.deepEqual(
+      mockConsole.toString(),
+      `Pending test waiters
+custom-waiter
+stack: STACK`
+    );
+
+    resetError();
+    resetWaiters();
   });
 
   test('toConsole correctly prints scheduled async information', function(assert) {
@@ -154,6 +187,7 @@ STACK`
     let testDebugInfo = new TestDebugInfo(
       true,
       true,
+      false,
       false,
       false,
       getMockDebugInfo(false, 2, [{ name: 'one', count: 1 }, { name: 'two', count: 1 }])
@@ -177,6 +211,7 @@ STACK`
     let mockConsole = new MockConsole();
 
     let testDebugInfo = new TestDebugInfo(
+      false,
       false,
       false,
       false,

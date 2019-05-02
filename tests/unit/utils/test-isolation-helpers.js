@@ -48,14 +48,16 @@ export function getMockDebugInfo(autorun = null, timersCount = 0, queues) {
 export function getMockSettledState(
   hasPendingTimers = false,
   hasRunLoop = false,
-  hasPendingWaiters = false,
+  hasPendingLegacyWaiters = false,
+  hasPendingTestWaiters = false,
   hasPendingRequests = false,
   pendingRequestCount = 0
 ) {
   return {
     hasPendingTimers,
     hasRunLoop,
-    hasPendingWaiters,
+    hasPendingLegacyWaiters,
+    hasPendingTestWaiters,
     hasPendingRequests,
     pendingRequestCount,
   };

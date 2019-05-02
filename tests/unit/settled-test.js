@@ -5,9 +5,12 @@ import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
+import { buildWaiter, _reset as resetWaiters } from 'ember-test-waiters';
 import Pretender from 'pretender';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
+
+const WAITER_NAME = 'custom-waiter';
 
 module('settled', function(hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -30,7 +33,7 @@ module('settled', function(hooks) {
               hasPendingTransitions: null,
               hasRunLoop: false,
               pendingRequestCount: 0,
-              debugInfo: new TestDebugInfo(false, false, false, false),
+              debugInfo: new TestDebugInfo(false, false, false, false, false),
             },
             'post cond - getSettledState'
           );
@@ -50,7 +53,7 @@ module('settled', function(hooks) {
       );
     });
 
-    this._waiter = () => {
+    this._legacyWaiter = () => {
       return !this.isWaiterPending;
     };
 
@@ -61,11 +64,14 @@ module('settled', function(hooks) {
     // use:
     //
     // import { registerWaiter } from '@ember/test';
-    Ember.Test.registerWaiter(this._waiter);
+    Ember.Test.registerWaiter(this._legacyWaiter);
+
+    this._testWaiter = buildWaiter(WAITER_NAME);
   });
 
   hooks.afterEach(function() {
-    Ember.Test.unregisterWaiter(this._waiter);
+    Ember.Test.unregisterWaiter(this._legacyWaiter);
+    resetWaiters();
     this.server.shutdown();
     _teardownAJAXHooks();
   });
@@ -134,7 +140,7 @@ module('settled', function(hooks) {
       assert.strictEqual(isSettled(), false);
     });
 
-    test('when waiters are pending', function(assert) {
+    test('when legacy waiters are pending', function(assert) {
       assert.expect(3);
 
       assert.strictEqual(isSettled(), true, 'precond');
@@ -144,6 +150,22 @@ module('settled', function(hooks) {
       assert.strictEqual(isSettled(), false);
 
       this.isWaiterPending = false;
+
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
+
+    test('when test waiters are pending', function(assert) {
+      assert.expect(3);
+
+      let waiterItem = {};
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      this._testWaiter.beginAsync(waiterItem);
+
+      assert.strictEqual(isSettled(), false);
+
+      this._testWaiter.endAsync(waiterItem);
 
       assert.strictEqual(isSettled(), true, 'post cond');
     });
@@ -158,7 +180,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(false, false, false, false),
+        debugInfo: new TestDebugInfo(false, false, false, false, false),
       });
     });
 
@@ -177,7 +199,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: true,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(true, true, false, false),
+        debugInfo: new TestDebugInfo(true, true, false, false, false),
       });
     });
 
@@ -197,7 +219,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(true, false, false, false),
+        debugInfo: new TestDebugInfo(true, false, false, false, false),
       });
     });
 
@@ -217,7 +239,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(true, false, false, false),
+        debugInfo: new TestDebugInfo(true, false, false, false, false),
       });
     });
 
@@ -234,7 +256,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
-          debugInfo: new TestDebugInfo(false, true, false, false),
+          debugInfo: new TestDebugInfo(false, true, false, false, false),
         });
       });
 
@@ -263,7 +285,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 1,
-          debugInfo: new TestDebugInfo(false, false, false, true),
+          debugInfo: new TestDebugInfo(false, false, false, false, true),
         });
       } else {
         assert.deepEqual(getSettledState(), {
@@ -273,12 +295,12 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 0,
-          debugInfo: new TestDebugInfo(false, false, true, false),
+          debugInfo: new TestDebugInfo(false, false, true, false, false),
         });
       }
     });
 
-    test('when waiters are pending', function(assert) {
+    test('when legacy waiters are pending', function(assert) {
       assert.expect(3);
 
       assert.strictEqual(isSettled(), true, 'precond');
@@ -292,10 +314,34 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(false, false, true, false),
+        debugInfo: new TestDebugInfo(false, false, true, false, false),
       });
 
       this.isWaiterPending = false;
+
+      assert.strictEqual(isSettled(), true, 'post cond');
+    });
+
+    test('when test waiters are pending', function(assert) {
+      assert.expect(3);
+
+      let waiterItem = {};
+
+      assert.strictEqual(isSettled(), true, 'precond');
+
+      this._testWaiter.beginAsync(waiterItem);
+
+      assert.deepEqual(getSettledState(), {
+        hasPendingRequests: false,
+        hasPendingTimers: false,
+        hasPendingWaiters: true,
+        hasPendingTransitions: null,
+        hasRunLoop: false,
+        pendingRequestCount: 0,
+        debugInfo: new TestDebugInfo(false, false, false, true, false),
+      });
+
+      this._testWaiter.endAsync(waiterItem);
 
       assert.strictEqual(isSettled(), true, 'post cond');
     });
@@ -314,7 +360,7 @@ module('settled', function(hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
-        debugInfo: new TestDebugInfo(false, false, true, false),
+        debugInfo: new TestDebugInfo(false, false, true, false, false),
       });
 
       run(() => {
@@ -325,7 +371,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
-          debugInfo: new TestDebugInfo(false, true, true, false),
+          debugInfo: new TestDebugInfo(false, true, true, false, false),
         });
 
         next(this.confirmSettles(done));
@@ -337,7 +383,7 @@ module('settled', function(hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
-          debugInfo: new TestDebugInfo(true, true, true, false),
+          debugInfo: new TestDebugInfo(true, true, true, false, false),
         });
 
         this.isWaiterPending = false;
