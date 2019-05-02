@@ -1,5 +1,23 @@
 # Change Log
 
+## v1.6.0-beta.1 (2019-05-02)
+
+#### :rocket: Enhancement
+* [#632](https://github.com/emberjs/ember-test-helpers/pull/632) Add `ember-test-waiters` and integrate into settledness checks ([@scalvert](https://github.com/scalvert))
+* [#608](https://github.com/emberjs/ember-test-helpers/pull/608) Adding custom test debug info API ([@scalvert](https://github.com/scalvert))
+* [#594](https://github.com/emberjs/ember-test-helpers/pull/594) Update API docs to simplify table of contents ([@ygongdev](https://github.com/ygongdev))
+
+#### :bug: Bug Fix
+* [#580](https://github.com/emberjs/ember-test-helpers/pull/580) Remove invalid reexports ([@villander](https://github.com/villander))
+
+#### :memo: Documentation
+* [#594](https://github.com/emberjs/ember-test-helpers/pull/594) Update API docs to simplify table of contents ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 3
+- Michael Villander ([@villander](https://github.com/villander))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v1.5.0 (2019-02-22)
 
 #### :rocket: Enhancement
