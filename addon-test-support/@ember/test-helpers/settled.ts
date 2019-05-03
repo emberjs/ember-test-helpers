@@ -193,13 +193,13 @@ export function getSettledState(): SettledState {
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
     pendingRequestCount,
-    debugInfo: new TestDebugInfo(
+    debugInfo: new TestDebugInfo({
       hasPendingTimers,
       hasRunLoop,
       hasPendingLegacyWaiters,
       hasPendingTestWaiters,
-      hasPendingRequests
-    ),
+      hasPendingRequests,
+    }),
   };
 }
 
