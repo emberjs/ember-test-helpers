@@ -85,22 +85,8 @@ export class TestDebugInfo implements DebugInfo {
   private _debugInfo: MaybeDebugInfo;
   private _summaryInfo: SummaryInfo | undefined = undefined;
 
-  constructor(
-    hasPendingTimers: boolean,
-    hasRunLoop: boolean,
-    hasPendingLegacyWaiters: boolean,
-    hasPendingTestWaiters: boolean,
-    hasPendingRequests: boolean,
-    debugInfo: MaybeDebugInfo = getDebugInfo()
-  ) {
-    this._settledState = {
-      hasPendingTimers,
-      hasRunLoop,
-      hasPendingLegacyWaiters,
-      hasPendingTestWaiters,
-      hasPendingRequests,
-    };
-
+  constructor(settledState: SettledState, debugInfo: MaybeDebugInfo = getDebugInfo()) {
+    this._settledState = settledState;
     this._debugInfo = debugInfo;
   }
 
