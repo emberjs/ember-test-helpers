@@ -27,13 +27,13 @@ module('TestDebugInfo', function(hooks) {
     let hasPendingTestWaiters = false;
     let hasRunLoop = getRandomBoolean();
     let hasPendingRequests = Boolean(Math.floor(Math.random(10)) > 0);
-    let testDebugInfo = new TestDebugInfo(
+    let testDebugInfo = new TestDebugInfo({
       hasPendingTimers,
       hasRunLoop,
       hasPendingLegacyWaiters,
       hasPendingTestWaiters,
-      hasPendingRequests
-    );
+      hasPendingRequests,
+    });
 
     assert.deepEqual(testDebugInfo.summary, {
       hasPendingRequests,
@@ -70,11 +70,13 @@ module('TestDebugInfo', function(hooks) {
         cancelIds.push(run.later(() => {}, 10000));
 
         let testDebugInfo = new TestDebugInfo(
-          false,
-          false,
-          false,
-          false,
-          false,
+          {
+            hasPendingTimers: false,
+            hasRunLoop: false,
+            hasPendingLegacyWaiters: false,
+            hasPendingTestWaiters: false,
+            hasPendingRequests: false,
+          },
           run.backburner.getDebugInfo()
         );
 
@@ -99,7 +101,13 @@ module('TestDebugInfo', function(hooks) {
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, false, false);
+    let testDebugInfo = new TestDebugInfo({
+      hasPendingTimers: false,
+      hasRunLoop: false,
+      hasPendingLegacyWaiters: false,
+      hasPendingTestWaiters: false,
+      hasPendingRequests: false,
+    });
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -112,11 +120,13 @@ module('TestDebugInfo', function(hooks) {
     let mockConsole = new MockConsole();
 
     let testDebugInfo = new TestDebugInfo(
-      false,
-      true,
-      false,
-      false,
-      false,
+      {
+        hasPendingTimers: false,
+        hasRunLoop: true,
+        hasPendingLegacyWaiters: false,
+        hasPendingTestWaiters: false,
+        hasPendingRequests: false,
+      },
       getMockDebugInfo(new MockStableError('STACK'), 0, null)
     );
 
@@ -134,7 +144,13 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, false, true);
+    let testDebugInfo = new TestDebugInfo({
+      hasPendingTimers: false,
+      hasRunLoop: false,
+      hasPendingLegacyWaiters: false,
+      hasPendingTestWaiters: false,
+      hasPendingRequests: true,
+    });
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -146,7 +162,13 @@ STACK`
 
     let mockConsole = new MockConsole();
 
-    let testDebugInfo = new TestDebugInfo(false, false, true, false, false);
+    let testDebugInfo = new TestDebugInfo({
+      hasPendingTimers: false,
+      hasRunLoop: false,
+      hasPendingLegacyWaiters: true,
+      hasPendingTestWaiters: false,
+      hasPendingRequests: false,
+    });
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -164,7 +186,13 @@ STACK`
 
     testWaiter.beginAsync(waiterItem);
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, true, false);
+    let testDebugInfo = new TestDebugInfo({
+      hasPendingTimers: false,
+      hasRunLoop: false,
+      hasPendingLegacyWaiters: false,
+      hasPendingTestWaiters: true,
+      hasPendingRequests: false,
+    });
 
     testDebugInfo.toConsole(mockConsole);
 
@@ -185,11 +213,13 @@ stack: STACK`
     let mockConsole = new MockConsole();
 
     let testDebugInfo = new TestDebugInfo(
-      true,
-      true,
-      false,
-      false,
-      false,
+      {
+        hasPendingTimers: true,
+        hasRunLoop: true,
+        hasPendingLegacyWaiters: false,
+        hasPendingTestWaiters: false,
+        hasPendingRequests: false,
+      },
       getMockDebugInfo(false, 2, [{ name: 'one', count: 1 }, { name: 'two', count: 1 }])
     );
 
@@ -211,11 +241,13 @@ STACK`
     let mockConsole = new MockConsole();
 
     let testDebugInfo = new TestDebugInfo(
-      false,
-      false,
-      false,
-      false,
-      false,
+      {
+        hasPendingTimers: false,
+        hasRunLoop: false,
+        hasPendingLegacyWaiters: false,
+        hasPendingTestWaiters: false,
+        hasPendingRequests: false,
+      },
       getMockDebugInfo(false, 0, [{ name: 'one', count: 1 }, { name: 'two', count: 1 }])
     );
 
@@ -252,7 +284,13 @@ STACK`
 
     registerDebugInfoHelper(debugInfoHelper);
 
-    let testDebugInfo = new TestDebugInfo(false, false, false, false);
+    let testDebugInfo = new TestDebugInfo({
+      hasPendingTimers: false,
+      hasRunLoop: false,
+      hasPendingLegacyWaiters: false,
+      hasPendingTestWaiters: false,
+      hasPendingRequests: false,
+    });
 
     testDebugInfo.toConsole(mockConsole);
 
