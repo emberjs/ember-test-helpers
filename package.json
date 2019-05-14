@@ -24,9 +24,9 @@
   },
   "scripts": {
     "build": "ember build",
-    "changelog": "lerna-changelog",
     "docs": "scripts/precompile.sh && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md && ember ts:clean",
     "lint": "eslint --ext=js,ts --cache . && tsc -p tsconfig.json --noEmit",
+    "release": "release-it",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
@@ -74,18 +74,23 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-typescript": "^0.14.0",
     "fs-extra": "^8.0.1",
-    "lerna-changelog": "^0.8.2",
     "loader.js": "^4.7.0",
     "prettier": "^1.17.1",
     "qunit": "^2.9.2",
+    "release-it": "^12.1.0",
+    "release-it-lerna-changelog": "^1.0.2",
     "typescript": "^3.4.5",
     "typescript-eslint-parser": "^22.0.0"
+  },
+  "resolutions": {
+    "@types/handlebars": "npm:handlebars@^4.1.0"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "changelog": {
     "repo": "emberjs/ember-test-helpers",
@@ -100,7 +105,20 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "resolutions": {
-    "@types/handlebars": "npm:handlebars@^4.1.0"
+  "release-it": {
+    "scripts": {
+      "beforeStage": "yarn docs"
+    },
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true
+    }
   }
 }

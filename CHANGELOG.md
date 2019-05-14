@@ -1,5 +1,3 @@
-# Change Log
-
 ## v1.6.0-beta.1 (2019-05-02)
 
 #### :rocket: Enhancement

@@ -77,7 +77,7 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install
+  - yarn install --ignore-engines
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
