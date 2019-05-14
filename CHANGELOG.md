@@ -1,3 +1,12 @@
+## v1.6.0-beta.2 (2019-05-14)
+
+#### :house: Internal
+* [#649](https://github.com/emberjs/ember-test-helpers/pull/649) chore(deps): Upgrades ember-test-waiters to latest version (0.9.1) ([@scalvert](https://github.com/scalvert))
+* [#636](https://github.com/emberjs/ember-test-helpers/pull/636) refactor(DebugInfo): Changes DebugInfo constructor signature to POJO ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 1
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
 ## v1.6.0-beta.1 (2019-05-02)
 
 #### :rocket: Enhancement
