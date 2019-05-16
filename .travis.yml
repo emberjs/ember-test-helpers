@@ -1,13 +1,13 @@
 ---
 language: node_js
 node_js:
-  - "6"
+  - '6'
 
 branches:
   only:
     - master
-    - /^v\d+\.\d+\.\d+/      # version tags
-    - /^v\d+-(\d+|x)(-x)?/   # version branches
+    - /^v\d+\.\d+\.\d+/ # version tags
+    - /^v\d+-(\d+|x)(-x)?/ # version branches
 
 addons:
   chrome: stable
@@ -34,12 +34,12 @@ jobs:
   include:
     # runs tests with current locked deps and linting
     - stage: test
-      name: "test"
+      name: 'test'
       script:
         - yarn lint
         - yarn test
-    - name: "floating dependencies"
-      install: yarn install --no-lockfile --non-interactive
+    - name: 'floating dependencies'
+      install: yarn install --no-lockfile --non-interactive --ignore-engines
       script: yarn test
 
     # runs tests against each supported Ember version
@@ -60,7 +60,7 @@ jobs:
     # runs deploy if running on a specific tag
     - stage: deploy
       if: tag IS present
-      name: "npm-publish"
+      name: 'npm-publish'
       install: yarn global add auto-dist-tag@0.1
       script: auto-dist-tag --write
       deploy:
