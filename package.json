@@ -77,7 +77,7 @@
     "loader.js": "^4.7.0",
     "prettier": "^1.17.1",
     "qunit": "^2.9.2",
-    "release-it": "^12.1.0",
+    "release-it": "^12.2.1",
     "release-it-lerna-changelog": "^1.0.2",
     "typescript": "^3.4.5",
     "typescript-eslint-parser": "^22.0.0"
