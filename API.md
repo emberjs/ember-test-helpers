@@ -308,8 +308,9 @@ Triggers an event on the specified target.
 
 #### Examples
 
-Using triggerEvent to Upload a file
-When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the
+Using `triggerEvent` to upload a file
+
+When using `triggerEvent` to upload a file the `eventType` must be `change` and you must pass the
 `options` param as an object with a key `files` containing an array of
 [Blob][56].
 
@@ -318,9 +319,28 @@ When using triggerEvent to upload a file the `eventType` must be `change` and yo
 triggerEvent(
   'input.fileUpload',
   'change',
-  [new Blob(['Ember Rules!'])]
+  {
+    files: [new Blob(['Ember Rules!'])]
+  }
 );
 ```
+
+Using `triggerEvent` to upload a dropped file
+
+When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][64], you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer` object should have a `files` key, containing an array of [File][63].
+
+```javascript
+triggerEvent(
+  '[data-test-drop-zone]',
+  'drop',
+  {
+    dataTransfer: {
+      files: [new File(['Ember Rules!', 'ember-rules.txt'])]
+    }
+  }
+)
+```
+
 
 Returns **[Promise][53]&lt;void>** resolves when the application is settled
 
@@ -984,3 +1004,6 @@ QUnit.testDone(function() {
 [61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[63]: https://developer.mozilla.org/en-US/docs/Web/API/File
+[64]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
