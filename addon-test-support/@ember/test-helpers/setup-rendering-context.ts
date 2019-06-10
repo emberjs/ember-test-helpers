@@ -92,17 +92,19 @@ export function render(template: TemplateFactory): Promise<void> {
       throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
     }
 
-    let { owner } = context;
+    let { owner, engine } = context;
 
     let toplevelView = owner.lookup('-top-level-view:main');
     let OutletTemplate = lookupOutletTemplate(owner);
+    
+    let ownerToRenderFrom = engine || owner;
     templateId += 1;
     let templateFullName = `template:-undertest-${templateId}`;
-    owner.register(templateFullName, template);
+    ownerToRenderFrom.register(templateFullName, template);
 
     let outletState = {
       render: {
-        owner,
+        owner, // always use the host app owner for application outlet
         into: undefined,
         outlet: 'main',
         name: 'application',
@@ -114,13 +116,13 @@ export function render(template: TemplateFactory): Promise<void> {
       outlets: {
         main: {
           render: {
-            owner,
+            owner: ownerToRenderFrom, // the actual owner to be used for any lookups
             into: undefined,
             outlet: 'main',
             name: 'index',
             controller: context,
             ViewClass: undefined,
-            template: owner.lookup(templateFullName),
+            template: ownerToRenderFrom.lookup(templateFullName),
             outlets: {},
           },
           outlets: {},
