@@ -308,8 +308,9 @@ Triggers an event on the specified target.
 
 #### Examples
 
-Using triggerEvent to Upload a file
-When using triggerEvent to upload a file the `eventType` must be `change` and you must pass the
+Using `triggerEvent` to upload a file
+
+When using `triggerEvent` to upload a file the `eventType` must be `change` and you must pass the
 `options` param as an object with a key `files` containing an array of
 [Blob][56].
 
@@ -318,8 +319,26 @@ When using triggerEvent to upload a file the `eventType` must be `change` and yo
 triggerEvent(
   'input.fileUpload',
   'change',
-  [new Blob(['Ember Rules!'])]
+  { files: [new Blob(['Ember Rules!'])] }
 );
+```
+
+Using `triggerEvent` to upload a dropped file
+
+When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][57],
+you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer`     object should have a `files` key, containing an array of [File][58].
+
+
+```javascript
+triggerEvent(
+  '[data-test-drop-zone]',
+  'drop',
+  {
+    dataTransfer: {
+      files: [new File(['Ember Rules!', 'ember-rules.txt'])]
+    }
+  }
+)
 ```
 
 Returns **[Promise][53]&lt;void>** resolves when the application is settled
@@ -327,20 +346,20 @@ Returns **[Promise][53]&lt;void>** resolves when the application is settled
 ### triggerKeyEvent
 
 Triggers a keyboard event of given type in the target element.
-It also requires the developer to provide either a string with the [`key`][57]
-or the numeric [`keyCode`][58] of the pressed key.
+It also requires the developer to provide either a string with the [`key`][59]
+or the numeric [`keyCode`][60] of the pressed key.
 Optionally the user can also provide a POJO with extra modifiers for the event.
 
 #### Parameters
 
 -   `target` **([string][51] \| [Element][52])** the element or selector to trigger the event on
 -   `eventType` **(`"keydown"` \| `"keyup"` \| `"keypress"`)** the type of event to trigger
--   `key` **([number][59] \| [string][51])** the `keyCode`(number) or `key`(string) of the event being triggered
+-   `key` **([number][61] \| [string][51])** the `keyCode`(number) or `key`(string) of the event being triggered
 -   `modifiers` **[Object][55]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
-    -   `modifiers.ctrlKey` **[boolean][60]** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
-    -   `modifiers.altKey` **[boolean][60]** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
-    -   `modifiers.shiftKey` **[boolean][60]** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
-    -   `modifiers.metaKey` **[boolean][60]** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
+    -   `modifiers.ctrlKey` **[boolean][62]** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
+    -   `modifiers.altKey` **[boolean][62]** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
+    -   `modifiers.shiftKey` **[boolean][62]** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
+    -   `modifiers.metaKey` **[boolean][62]** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
 
 #### Examples
 
@@ -408,7 +427,7 @@ of a `NodeList`.
 
 -   `selector` **[string][51]** the selector to search for
 
-Returns **[Array][61]** array of matched elements
+Returns **[Array][63]** array of matched elements
 
 ### getRootElement
 
@@ -478,10 +497,10 @@ interim DOM states (e.g. loading states, pending promises, etc).
 
 -   `selector` **[string][51]** the selector to wait for
 -   `options` **[Object][55]?** the options to be used (optional, default `{}`)
-    -   `options.timeout` **[number][59]** the time to wait (in ms) for a match (optional, default `1000`)
-    -   `options.count` **[number][59]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
+    -   `options.timeout` **[number][61]** the time to wait (in ms) for a match (optional, default `1000`)
+    -   `options.count` **[number][61]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
 
-Returns **[Promise][53]&lt;([Element][52] \| [Array][61]&lt;[Element][52]>)>** resolves when the element(s) appear on the page
+Returns **[Promise][53]&lt;([Element][52] \| [Array][63]&lt;[Element][52]>)>** resolves when the element(s) appear on the page
 
 ### waitUntil
 
@@ -492,9 +511,9 @@ while _not_ settled (e.g. "loading" or "pending" states).
 
 #### Parameters
 
--   `callback` **[Function][62]** the callback to use for testing when waiting should stop
+-   `callback` **[Function][64]** the callback to use for testing when waiting should stop
 -   `options` **[Object][55]?** options used to override defaults (optional, default `{}`)
-    -   `options.timeout` **[number][59]** the maximum amount of time to wait (optional, default `1000`)
+    -   `options.timeout` **[number][61]** the maximum amount of time to wait (optional, default `1000`)
     -   `options.timeoutMessage` **[string][51]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
 Returns **[Promise][53]** resolves with the callback value when it returns a truthy value
@@ -514,7 +533,7 @@ Settled generally means that there are no pending timers, no pending waiters,
 no pending AJAX requests, and no current run loop. However, new settledness
 metrics may be added and used as they become available.
 
-Returns **[boolean][60]** `true` if settled, `false` otherwise
+Returns **[boolean][62]** `true` if settled, `false` otherwise
 
 ### getSettledState
 
@@ -703,7 +722,7 @@ Responsible for:
 
 -   `context` **[Object][55]** the context to setup
 -   `options` **[Object][55]?** options used to override defaults
-    -   `options.waitForSettled` **[boolean][60]** should the teardown wait for `settled()`ness (optional, default `true`)
+    -   `options.waitForSettled` **[boolean][62]** should the teardown wait for `settled()`ness (optional, default `true`)
 
 Returns **[Promise][53]&lt;void>** resolves when settled
 
@@ -742,7 +761,7 @@ Responsible for:
 
 -   `context` **[Object][55]** the context to setup
 -   `options` **[Object][55]?** options used to override defaults
-    -   `options.waitForSettled` **[boolean][60]** should the teardown wait for `settled()`ness (optional, default `true`)
+    -   `options.waitForSettled` **[boolean][62]** should the teardown wait for `settled()`ness (optional, default `true`)
 
 Returns **[Promise][53]&lt;void>** resolves when settled
 
@@ -787,7 +806,7 @@ Used by test framework addons to tear down the provided context after testing is
 
 -   `context` **[Object][55]** the context to setup
 -   `options` **[Object][55]?** options used to override defaults
-    -   `options.waitForSettled` **[boolean][60]** should the teardown wait for `settled()`ness (optional, default `true`)
+    -   `options.waitForSettled` **[boolean][62]** should the teardown wait for `settled()`ness (optional, default `true`)
 
 Returns **[Promise][53]&lt;void>** resolves when settled
 
@@ -804,7 +823,7 @@ everything is on fire...
 
 #### Parameters
 
--   `callback` **[Function][62]** the callback to validate (optional, default `Ember.onerror`)
+-   `callback` **[Function][64]** the callback to validate (optional, default `Ember.onerror`)
 
 #### Examples
 
@@ -830,7 +849,7 @@ without an `onError` argument.
 
 #### Parameters
 
--   `onError` **[Function][62]** the onError function to be set on Ember.onerror
+-   `onError` **[Function][64]** the onError function to be set on Ember.onerror
 
 #### Examples
 
@@ -973,14 +992,18 @@ QUnit.testDone(function() {
 
 [56]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
 
-[57]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+[57]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
 
-[58]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+[58]: https://developer.mozilla.org/en-US/docs/Web/API/File
 
-[59]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[59]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
 
-[60]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[60]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
 
-[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[61]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[62]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[63]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
