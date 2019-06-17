@@ -1,3 +1,18 @@
+## v1.6.0 (2019-06-17)
+
+#### :memo: Documentation
+* [#663](https://github.com/emberjs/ember-test-helpers/pull/663) Update documentation for `triggerEvent` ([@qpowell](https://github.com/qpowell))
+* [#598](https://github.com/emberjs/ember-test-helpers/pull/598) Fix file upload example in `triggerEvent` documentation. ([@jherdman](https://github.com/jherdman))
+
+#### :house: Internal
+* [#652](https://github.com/emberjs/ember-test-helpers/pull/652) chore(test): Fixes CI when testing floating dependencies ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 4
+- James Herdman ([@jherdman](https://github.com/jherdman))
+- Quinten Powell ([@qpowell](https://github.com/qpowell))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v1.6.0-beta.2 (2019-05-14)
 
 #### :house: Internal
