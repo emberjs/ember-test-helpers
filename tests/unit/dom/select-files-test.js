@@ -45,8 +45,8 @@ module('DOM Helper: selectFiles', function(hooks) {
     });
 
     await setupContext(context);
-    await triggerEvent(element, 'change', [textFile]);
-    await triggerEvent(element, 'change', [imageFile]);
+    await triggerEvent(element, 'change', { files: [textFile] });
+    await triggerEvent(element, 'change', { files: [imageFile] });
 
     assert.verifySteps(['change', 'text-file.txt', 'change', 'image-file.png']);
   });
@@ -80,5 +80,20 @@ module('DOM Helper: selectFiles', function(hooks) {
     assert.deprecationsInclude(
       'Passing the `options` param as an array to `triggerEvent` for file inputs is deprecated. Please pass an object with a key `files` containing the array instead.'
     );
+  });
+
+  test('it can trigger a file selection event with an empty files array', async function(assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.equal(e.target.files.length, 0, 'Files should be empty');
+      assert.step('empty');
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change', { files: [] });
+
+    assert.verifySteps(['change', 'empty']);
   });
 });
