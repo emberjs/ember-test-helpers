@@ -198,6 +198,16 @@ export default class extends TestModule {
   }
 }
 
+function getOwnerFromModule(module) {
+  return (getOwner && getOwner(module.container)) || module.container.owner;
+}
+
+function lookupTemplateFromModule(module, templateFullName) {
+  var template = module.container.lookup(templateFullName);
+  if (typeof template === 'function') template = template(getOwnerFromModule(module));
+  return template;
+}
+
 export function setupComponentIntegrationTest() {
   var module = this;
   var context = this.context;
@@ -211,12 +221,12 @@ export function setupComponentIntegrationTest() {
   var OutletView = module.container.factoryFor
     ? module.container.factoryFor('view:-outlet')
     : module.container.lookupFactory('view:-outlet');
-  var OutletTemplate = module.container.lookup('template:-outlet');
+  var OutletTemplate = lookupTemplateFromModule(module, 'template:-outlet');
   var toplevelView = (module.component = OutletView.create());
   var hasOutletTemplate = !!OutletTemplate;
   var outletState = {
     render: {
-      owner: getOwner ? getOwner(module.container) : undefined,
+      owner: getOwnerFromModule(module),
       into: undefined,
       outlet: 'main',
       name: 'application',
@@ -251,13 +261,13 @@ export function setupComponentIntegrationTest() {
     var templateFullName = 'template:-undertest-' + ++templateId;
     this.registry.register(templateFullName, template);
     var stateToRender = {
-      owner: getOwner ? getOwner(module.container) : undefined,
+      owner: getOwnerFromModule(module),
       into: undefined,
       outlet: 'main',
       name: 'index',
       controller: module.context,
       ViewClass: undefined,
-      template: module.container.lookup(templateFullName),
+      template: lookupTemplateFromModule(module, templateFullName),
       outlets: {},
     };
 
