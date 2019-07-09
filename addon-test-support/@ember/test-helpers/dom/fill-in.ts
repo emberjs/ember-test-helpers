@@ -42,6 +42,10 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       throw new Error('Must provide `text` when calling `fillIn`.');
     }
 
+    if (element.disabled) {
+      throw new Error('Selected element is disabled')
+    }
+
     __focus__(element);
 
     if (isControl) {
