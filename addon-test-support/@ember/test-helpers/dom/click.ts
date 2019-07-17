@@ -1,3 +1,4 @@
+import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
@@ -8,10 +9,22 @@ import isFormControl from './-is-form-control';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 
+const PRIMARY_BUTTON = 1;
+const MAIN_BUTTON_PRESSED = 0;
+
+/**
+ * Represent a particular mouse button being clicked.
+ * See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons for available options.
+ */
+export const DEFAULT_CLICK_OPTIONS = {
+  buttons: PRIMARY_BUTTON,
+  button: MAIN_BUTTON_PRESSED,
+};
+
 /**
   @private
   @param {Element} element the element to click on
-  @param {Object} options the options to be merged into the mouse events
+  @param {MouseEventInit} options the options to be merged into the mouse events
 */
 export function __click__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
@@ -53,7 +66,7 @@ export function __click__(element: Element | Document, options: MouseEventInit):
 
   @public
   @param {string|Element} target the element or selector to click on
-  @param {Object} options the options to be merged into the mouse events
+  @param {MouseEventInit} _options the options to be merged into the mouse events.
   @return {Promise<void>} resolves when settled
 
   @example
@@ -69,8 +82,10 @@ export function __click__(element: Element | Document, options: MouseEventInit):
 
   click('button', { shiftKey: true });
 */
-export default function click(target: Target, options: MouseEventInit = {}): Promise<void> {
+export default function click(target: Target, _options: MouseEventInit = {}): Promise<void> {
   log('click', target);
+
+  let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return nextTickPromise().then(() => {
     if (!target) {
