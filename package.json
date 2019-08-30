@@ -5,12 +5,12 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "https://github.com/emberjs/ember-test-helpers",
-  "license": "(MIT OR Apache-2.0)",
   "homepage": "https://github.com/emberjs/ember-test-helpers#readme",
   "bugs": {
     "url": "https://github.com/emberjs/ember-test-helpers/issues"
   },
+  "repository": "https://github.com/emberjs/ember-test-helpers",
+  "license": "(MIT OR Apache-2.0)",
   "contributors": [
     "Dan Gebhardt",
     "Robert Jackson",
@@ -26,12 +26,12 @@
     "build": "ember build",
     "docs": "scripts/precompile.sh && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md && ember ts:clean",
     "lint": "eslint --ext=js,ts --cache . && tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "scripts/precompile.sh",
+    "postpublish": "ember ts:clean",
     "release": "release-it",
     "start": "ember serve",
     "test": "ember test",
-    "test:all": "ember try:each",
-    "prepublishOnly": "scripts/precompile.sh",
-    "postpublish": "ember ts:clean"
+    "test:all": "ember try:each"
   },
   "dependencies": {
     "broccoli-debug": "^0.6.5",
@@ -77,8 +77,8 @@
     "loader.js": "^4.7.0",
     "prettier": "^1.17.1",
     "qunit": "^2.9.2",
-    "release-it": "^12.3.0",
-    "release-it-lerna-changelog": "^1.0.2",
+    "release-it": "^12.2.1",
+    "release-it-lerna-changelog": "^1.0.3",
     "typescript": "^3.4.5",
     "typescript-eslint-parser": "^22.0.0"
   },
@@ -107,7 +107,7 @@
   },
   "release-it": {
     "scripts": {
-      "beforeStage": "yarn docs"
+      "after:bump": "yarn docs"
     },
     "plugins": {
       "release-it-lerna-changelog": {
