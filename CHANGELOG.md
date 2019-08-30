@@ -1,3 +1,12 @@
+## v1.6.1 (2019-08-30)
+
+#### :bug: Bug Fix
+* [#677](https://github.com/emberjs/ember-test-helpers/pull/677) Fix legacy rendering tests (e.g. `moduleForComponent`) when used with Ember 3.13+ ([@buschtoens](https://github.com/buschtoens))
+
+#### Committers: 2
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v1.6.0 (2019-06-17)
 
 #### :memo: Documentation
