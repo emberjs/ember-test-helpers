@@ -36,13 +36,25 @@ export function isRenderingTestContext(context: BaseContext): context is Renderi
 /**
   @private
   @param {Ember.ApplicationInstance} owner the current owner instance
+  @param {string} templateFullName the fill template name
+  @returns {Template} the template representing `templateFullName`
+*/
+function lookupTemplate(owner: Owner, templateFullName: string) {
+  let template = owner.lookup(templateFullName);
+  if (typeof template === 'function') return template(owner);
+  return template;
+}
+
+/**
+  @private
+  @param {Ember.ApplicationInstance} owner the current owner instance
   @returns {Template} a template representing {{outlet}}
 */
 function lookupOutletTemplate(owner: Owner): any {
-  let OutletTemplate = owner.lookup('template:-outlet');
+  let OutletTemplate = lookupTemplate(owner, 'template:-outlet');
   if (!OutletTemplate) {
     owner.register('template:-outlet', OUTLET_TEMPLATE);
-    OutletTemplate = owner.lookup('template:-outlet');
+    OutletTemplate = lookupTemplate(owner, 'template:-outlet');
   }
 
   return OutletTemplate;
@@ -120,7 +132,7 @@ export function render(template: TemplateFactory): Promise<void> {
             name: 'index',
             controller: context,
             ViewClass: undefined,
-            template: owner.lookup(templateFullName),
+            template: lookupTemplate(owner, templateFullName),
             outlets: {},
           },
           outlets: {},
