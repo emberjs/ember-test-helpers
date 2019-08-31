@@ -395,7 +395,14 @@ module('settled', function(hooks) {
         debugInfo: new TestDebugInfo({
           hasPendingTimers: false,
           hasRunLoop: false,
-          hasPendingLegacyWaiters: false,
+
+          // this is true due to
+          // https://github.com/rwjblue/ember-test-waiters/pull/13 (and
+          // https://github.com/rwjblue/ember-test-waiters/pull/17), but should
+          // actually be false once ember-test-waiters drops support for legacy
+          // waiters (likely quite a while from now)
+          hasPendingLegacyWaiters: true,
+
           hasPendingTestWaiters: true,
           hasPendingRequests: false,
         }),
