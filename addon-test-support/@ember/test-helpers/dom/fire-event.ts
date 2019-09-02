@@ -266,7 +266,7 @@ function buildFileEvent(
     files = options.files;
   }
 
-  if (files.length > 0) {
+  if (Array.isArray(files)) {
     Object.defineProperty(files, 'item', {
       value(index: number) {
         return typeof index === 'number' ? this[index] : null;
