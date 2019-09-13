@@ -2,6 +2,7 @@ import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
+import { resolve } from 'rsvp';
 import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
@@ -128,7 +129,8 @@ function keyCodeFromKey(key: string) {
   @param {boolean} [modifiers.altKey=false] if true the generated event will indicate the alt key was pressed during the key event
   @param {boolean} [modifiers.shiftKey=false] if true the generated event will indicate the shift key was pressed during the key event
   @param {boolean} [modifiers.metaKey=false] if true the generated event will indicate the meta key was pressed during the key event
-  @return {Promise<void>} resolves when the application is settled
+  @param {boolean} awaitSettled if true the event will wait for promises to settle by returning settled()
+  @return {Promise<void>} resolves when the application is settled unless awaitSettled is false
 
   @example
   <caption>
@@ -140,7 +142,8 @@ export default function triggerKeyEvent(
   target: Target,
   eventType: KeyboardEventType,
   key: number | string,
-  modifiers: KeyModifiers = DEFAULT_MODIFIERS
+  modifiers: KeyModifiers = DEFAULT_MODIFIERS,
+  awaitSettled: boolean = true
 ): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
@@ -189,7 +192,10 @@ export default function triggerKeyEvent(
     let options = assign(props, modifiers);
 
     fireEvent(element, eventType, options);
-
-    return settled();
+    if (awaitSettled) {
+      return settled();
+    } else {
+      return resolve();
+    }
   });
 }
