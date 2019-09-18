@@ -7,7 +7,7 @@ import isFocusable from './-is-focusable';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import Target from './-target';
-import triggerKeyEvent from './trigger-key-event';
+import { __triggerKeyEvent__ } from './trigger-key-event';
 
 export interface Options {
   delay?: number;
@@ -82,13 +82,14 @@ function keyEntry(element: FormControl, character: string): () => void {
   let characterKey = character.toUpperCase();
 
   return function() {
-    return triggerKeyEvent(element, 'keydown', characterKey, options, false)
-      .then(() => triggerKeyEvent(element, 'keypress', characterKey, options, false))
+    return nextTickPromise()
+      .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
+      .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
         element.value = element.value + character;
         fireEvent(element, 'input');
       })
-      .then(() => triggerKeyEvent(element, 'keyup', characterKey, options, false));
+      .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));
   };
 }
 
