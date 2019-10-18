@@ -8,6 +8,7 @@ import {
   setupApplicationContext,
   teardownContext,
   teardownApplicationContext,
+  getTestMetadata,
   click,
   visit,
   currentRouteName,
@@ -74,6 +75,18 @@ module('setupApplicationContext', function(hooks) {
   hooks.afterEach(async function() {
     await teardownApplicationContext(this);
     await teardownContext(this);
+  });
+
+  test('it sets up test metadata', function(assert) {
+    let testMetadata = getTestMetadata(this);
+
+    assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupApplicationContext']);
+  });
+
+  test('it returns true for isApplication in an application test', function(assert) {
+    let testMetadata = getTestMetadata(this);
+
+    assert.ok(testMetadata.isApplication);
   });
 
   test('can perform a basic template rendering', async function(assert) {

@@ -8,7 +8,7 @@ module('Test Metadata', function() {
     let testMetadata = getTestMetadata(test);
 
     assert.ok(testMetadata instanceof TestMetadata);
-    assert.deepEqual(testMetadata.types, []);
+    assert.deepEqual(testMetadata.setupTypes, []);
   });
 
   module('Annotated Test Metadata', function(hooks) {

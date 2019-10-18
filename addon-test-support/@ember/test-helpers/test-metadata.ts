@@ -2,17 +2,34 @@ import { BaseContext } from './setup-context';
 
 export interface ITestMetadata {
   testName?: string;
-  types: string[];
+  setupTypes: string[];
+  usedHelpers: string[];
   [key: string]: any;
+
+  readonly isRendering: boolean;
+  readonly isApplication: boolean;
 }
 
 export class TestMetadata implements ITestMetadata {
   [key: string]: any;
   testName?: string;
-  types: string[];
+  setupTypes: string[];
+  usedHelpers: string[];
 
   constructor() {
-    this.types = [];
+    this.setupTypes = [];
+    this.usedHelpers = [];
+  }
+
+  get isRendering() {
+    return (
+      this.setupTypes.indexOf('setupRenderingContext') > -1 &&
+      this.usedHelpers.indexOf('render') > -1
+    );
+  }
+
+  get isApplication() {
+    return this.setupTypes.indexOf('setupApplicationContext') > -1;
   }
 }
 

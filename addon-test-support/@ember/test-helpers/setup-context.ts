@@ -12,6 +12,7 @@ import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { nextTickPromise } from './-utils';
+import getTestMetadata, { ITestMetadata } from './test-metadata';
 
 export interface BaseContext {
   [key: string]: any;
@@ -160,6 +161,9 @@ export default function setupContext(
 
   let contextGuid = guidFor(context);
   CLEANUP[contextGuid] = [];
+
+  let testMetadata: ITestMetadata = getTestMetadata(context);
+  testMetadata.setupTypes.push('setupContext');
 
   run.backburner.DEBUG = true;
 

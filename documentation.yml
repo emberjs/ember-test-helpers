@@ -64,3 +64,4 @@ toc:
       - validateErrorHandler
       - setupOnerror
       - resetOnerror
+      - getTestMetadata
