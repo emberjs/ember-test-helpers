@@ -56,7 +56,7 @@
     "ember-cli-pretender": "^3.1.1",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-test-loader": "^2.2.0",
-    "ember-cli-typescript": "^1.5.0",
+    "ember-cli-typescript": "^3.0.0",
     "ember-data": "~3.7.0",
     "ember-debug-handlers-polyfill": "^1.0.3",
     "ember-disable-prototype-extensions": "^1.1.3",
