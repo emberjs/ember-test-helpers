@@ -79,7 +79,7 @@
     "qunit": "^2.9.2",
     "release-it": "^12.2.1",
     "release-it-lerna-changelog": "^1.0.3",
-    "typescript": "^3.4.5",
+    "typescript": "^3.6.4",
     "typescript-eslint-parser": "^22.0.0"
   },
   "resolutions": {
