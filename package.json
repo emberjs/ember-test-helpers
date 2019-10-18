@@ -83,7 +83,8 @@
     "typescript-eslint-parser": "^22.0.0"
   },
   "resolutions": {
-    "@types/handlebars": "npm:handlebars@^4.1.0"
+    "@types/handlebars": "npm:handlebars@^4.1.0",
+    "**/engine.io": "~3.3.0"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
