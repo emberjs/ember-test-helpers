@@ -8,6 +8,7 @@ import {
   resumeTest,
   setApplication,
   setResolver,
+  getTestMetadata,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
@@ -121,6 +122,19 @@ module('setupContext', function(hooks) {
 
       test('it calls setContext with the provided context', function(assert) {
         assert.equal(getContext(), context);
+      });
+
+      test('it sets up test metadata', function(assert) {
+        let testMetadata = getTestMetadata(context);
+
+        assert.deepEqual(testMetadata.setupTypes, ['setupContext']);
+      });
+
+      test('it retutns false for isRendering/isApplication in non-rendering/application tests', function(assert) {
+        let testMetadata = getTestMetadata(this);
+
+        assert.ok(!testMetadata.isRendering);
+        assert.ok(!testMetadata.isApplication);
       });
 
       test('can be used for unit style testing', function(assert) {

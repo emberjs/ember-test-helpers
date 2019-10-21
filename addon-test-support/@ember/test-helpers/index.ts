@@ -24,6 +24,7 @@ export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
 export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
+export { default as getTestMetadata } from './test-metadata';
 
 // DOM Helpers
 export { default as click } from './dom/click';

@@ -10,6 +10,7 @@ import hbs, { TemplateFactory } from 'htmlbars-inline-precompile';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import { deprecate } from '@ember/application/deprecations';
+import getTestMetadata, { ITestMetadata } from './test-metadata';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -105,6 +106,8 @@ export function render(template: TemplateFactory): Promise<void> {
     }
 
     let { owner } = context;
+    let testMetadata = getTestMetadata(context);
+    testMetadata.usedHelpers.push('render');
 
     let toplevelView = owner.lookup('-top-level-view:main');
     let OutletTemplate = lookupOutletTemplate(owner);
@@ -193,6 +196,9 @@ export function clearRender(): Promise<void> {
 export default function setupRenderingContext(context: TestContext): Promise<RenderingTestContext> {
   let contextGuid = guidFor(context);
   RENDERING_CLEANUP[contextGuid] = [];
+
+  let testMetadata: ITestMetadata = getTestMetadata(context);
+  testMetadata.setupTypes.push('setupRenderingContext');
 
   return nextTickPromise()
     .then(() => {

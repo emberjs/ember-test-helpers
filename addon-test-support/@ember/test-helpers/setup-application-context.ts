@@ -4,6 +4,7 @@ import { BaseContext, getContext, isTestContext, TestContext } from './setup-con
 import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
+import getTestMetadata, { ITestMetadata } from './test-metadata';
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
@@ -114,6 +115,8 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
   }
 
   let { owner } = context;
+  let testMetadata = getTestMetadata(context);
+  testMetadata.usedHelpers.push('visit');
 
   return nextTickPromise()
     .then(() => {
@@ -186,5 +189,8 @@ export function currentURL(): string {
   @returns {Promise<Object>} resolves with the context that was setup
 */
 export default function setupApplicationContext(context: TestContext): Promise<void> {
+  let testMetadata: ITestMetadata = getTestMetadata(context);
+  testMetadata.setupTypes.push('setupApplicationContext');
+
   return nextTickPromise();
 }

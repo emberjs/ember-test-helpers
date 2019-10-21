@@ -9,6 +9,7 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
+  getTestMetadata,
   render,
   clearRender,
   setApplication,
@@ -84,6 +85,18 @@ module('setupRenderingContext', function(hooks) {
     }
 
     overwriteTest('element');
+
+    test('it sets up test metadata', function(assert) {
+      let testMetadata = getTestMetadata(this);
+
+      assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupRenderingContext']);
+    });
+
+    test('it retutns true for isRendering in an rendering test', function(assert) {
+      let testMetadata = getTestMetadata(this);
+
+      assert.ok(testMetadata.isRendering);
+    });
 
     test('render can be used multiple times', async function(assert) {
       await this.render(hbs`<p>Hello!</p>`);
