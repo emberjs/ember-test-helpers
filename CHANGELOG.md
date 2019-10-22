@@ -1,3 +1,21 @@
+## v1.7.0 (2019-10-22)
+
+#### :rocket: Enhancement
+* [#724](https://github.com/emberjs/ember-test-helpers/pull/724) Adds `getTestMetadata` infrastructure ([@scalvert](https://github.com/scalvert))
+
+#### :bug: Bug Fix
+* [#674](https://github.com/emberjs/ember-test-helpers/pull/674) Ensure that `triggerEvent` can simulate a file input change event with an empty `FileList` ([@ggayowsky](https://github.com/ggayowsky))
+
+#### :house: Internal
+* [#725](https://github.com/emberjs/ember-test-helpers/pull/725) Pin engine.io subdependency to avoid issues on Node 6. ([@rwjblue](https://github.com/rwjblue))
+* [#723](https://github.com/emberjs/ember-test-helpers/pull/723) task(config): Removes `--disable-gpu` flag ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 4
+- Gerald Gayowsky ([@ggayowsky](https://github.com/ggayowsky))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v1.6.1 (2019-08-30)
 
 #### :bug: Bug Fix
