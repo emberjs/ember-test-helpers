@@ -2,6 +2,8 @@ import { module, test } from 'qunit';
 import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
+import { debounce } from '@ember/runloop';
+import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 /*
@@ -152,5 +154,24 @@ module('DOM Helper: typeIn', function(hooks) {
     assert.verifySteps(expectedEvents);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, 'foo');
+  });
+
+  test('does not wait for other promises to settle', async function(assert) {
+    element = buildInstrumentedElement('input');
+
+    let runcount = 0;
+    let onInput = function() {
+      return Promise.resolve().then(() => runcount++);
+    };
+
+    element.oninput = function() {
+      // debounce 2 seconds for easy visualization in test
+      debounce(onInput, 2000);
+    };
+
+    await typeIn(element, 'foo');
+
+    assert.verifySteps(expectedEvents);
+    assert.equal(runcount, 1, 'debounced function only called once');
   });
 });

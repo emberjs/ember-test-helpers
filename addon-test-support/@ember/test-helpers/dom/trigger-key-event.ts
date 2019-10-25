@@ -114,6 +114,47 @@ function keyCodeFromKey(key: string) {
 }
 
 /**
+  @private
+  @param {Element | Document} element the element to trigger the key event on
+  @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
+  @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
+  @param {Object} [modifiers] the state of various modifier keys
+ */
+export function __triggerKeyEvent__(
+  element: Element | Document,
+  eventType: KeyboardEventType,
+  key: number | string,
+  modifiers: KeyModifiers = DEFAULT_MODIFIERS
+) {
+  let props;
+  if (typeof key === 'number') {
+    props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
+  } else if (typeof key === 'string' && key.length !== 0) {
+    let firstCharacter = key[0];
+    if (firstCharacter !== firstCharacter.toUpperCase()) {
+      throw new Error(
+        `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+      );
+    }
+
+    if (isNumeric(key) && key.length > 1) {
+      throw new Error(
+        `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
+      );
+    }
+
+    let keyCode = keyCodeFromKey(key);
+    props = { keyCode, which: keyCode, key };
+  } else {
+    throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
+  }
+
+  let options = assign(props, modifiers);
+
+  fireEvent(element, eventType, options);
+}
+
+/**
   Triggers a keyboard event of given type in the target element.
   It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
   or the numeric [`keyCode`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode) of the pressed key.
@@ -128,7 +169,7 @@ function keyCodeFromKey(key: string) {
   @param {boolean} [modifiers.altKey=false] if true the generated event will indicate the alt key was pressed during the key event
   @param {boolean} [modifiers.shiftKey=false] if true the generated event will indicate the shift key was pressed during the key event
   @param {boolean} [modifiers.metaKey=false] if true the generated event will indicate the meta key was pressed during the key event
-  @return {Promise<void>} resolves when the application is settled
+  @return {Promise<void>} resolves when the application is settled unless awaitSettled is false
 
   @example
   <caption>
@@ -163,32 +204,7 @@ export default function triggerKeyEvent(
       );
     }
 
-    let props;
-    if (typeof key === 'number') {
-      props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
-    } else if (typeof key === 'string' && key.length !== 0) {
-      let firstCharacter = key[0];
-      if (firstCharacter !== firstCharacter.toUpperCase()) {
-        throw new Error(
-          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
-        );
-      }
-
-      if (isNumeric(key) && key.length > 1) {
-        throw new Error(
-          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
-        );
-      }
-
-      let keyCode = keyCodeFromKey(key);
-      props = { keyCode, which: keyCode, key };
-    } else {
-      throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
-    }
-
-    let options = assign(props, modifiers);
-
-    fireEvent(element, eventType, options);
+    __triggerKeyEvent__(element, eventType, key, modifiers);
 
     return settled();
   });
