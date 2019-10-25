@@ -1,3 +1,11 @@
+## v1.7.1 (2019-10-25)
+
+#### :bug: Bug Fix
+* [#707](https://github.com/emberjs/ember-test-helpers/pull/707) Ensure `typeIn` does not `await settled()` after each event ([@jakebixbyavalara](https://github.com/jakebixbyavalara))
+
+#### Committers: 1
+- Jake Bixby ([@jakebixbyavalara](https://github.com/jakebixbyavalara))
+
 ## v1.7.0 (2019-10-22)
 
 #### :rocket: Enhancement
