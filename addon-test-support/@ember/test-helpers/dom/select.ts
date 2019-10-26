@@ -41,6 +41,9 @@ export default function select(target: Target, options: string | string[]): Prom
       throw new Error(`Element not found when calling \`select('${target}')\`.`);
     }
     const isSelect = isSelectElement(element);
+    if (!isSelect) {
+      throw new Error('`select` is only usable on a HTMLSelectElement');
+    }
 
     if (element.disabled) {
       throw new Error('Element is disabled');
@@ -48,13 +51,15 @@ export default function select(target: Target, options: string | string[]): Prom
 
     options = Array.isArray(options) ? options : [options];
 
-    if (!element.multiple && options.length > 1){
-      throw new Error('HTMLSelectElement multiple attribute is set to false but multiple options have been passed');
+    if (!element.multiple && options.length > 1) {
+      throw new Error(
+        'HTMLSelectElement multiple attribute is set to false but multiple options have been passed'
+      );
     }
 
     __focus__(element);
 
-    for (let i = 0; i < element.options.length ; i++) {
+    for (let i = 0; i < element.options.length; i++) {
       let elementOption = element.options.item(i);
       if (options.indexOf(elementOption.value) > -1) {
         elementOption.selected = true;

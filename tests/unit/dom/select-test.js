@@ -67,8 +67,18 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select with element that is disabled', async function(assert) {
+  test('select with element that is not a HTMLSelectElement', async function(assert) {
     element = buildInstrumentedElement('input');
+
+    const option = 'example';
+
+    await setupContext(context);
+
+    assert.rejects(select(element, option), /`select` is only usable on a HTMLSelectElement/);
+  });
+
+  test('select with element that is disabled', async function(assert) {
+    element = buildInstrumentedElement('select');
     element.disabled = true;
     const option = 'example';
 
