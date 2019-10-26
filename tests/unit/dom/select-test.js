@@ -112,4 +112,25 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedOptions[0].value, 'apple');
     assert.equal(element.selectedOptions[1].value, 'orange');
   });
+
+  test('select | 4 options - multple: false - optionsToSelect.length : 1', async function(assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = false;
+
+    optionValues.forEach(optionValue => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.append(optionElement);
+    });
+
+    const optionsToSelect = 'apple';
+
+    await setupContext(context);
+
+    await select(element, optionsToSelect);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(element.selectedIndex, 0);
+  });
 });
