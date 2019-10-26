@@ -35,6 +35,7 @@ export { default as blur } from './dom/blur';
 export { default as triggerEvent } from './dom/trigger-event';
 export { default as triggerKeyEvent } from './dom/trigger-key-event';
 export { default as fillIn } from './dom/fill-in';
+export { default as select } from './dom/select';
 export { default as waitFor } from './dom/wait-for';
 export { default as getRootElement } from './dom/get-root-element';
 export { default as find } from './dom/find';
