@@ -187,8 +187,10 @@ module('setupRenderingContext "real world"', function(hooks) {
       scrollTarget,
       emberTestingContainer = getRootElement().parentElement;
 
+    this.set('hbsArray', [1, 2, 3, 4, 5, 6, 7]);
+
     await render(hbs`
-    {{#each (array 1 2 3 4 5 6 7) as |element|}}
+    {{#each hbsArray as |element|}}
       <div id="box{{element}}"style="height:400px;background:#333;margin-bottom:10px;">
         <p style="font-size:30px;color:#fff">{{element}}</p>
       </div>
