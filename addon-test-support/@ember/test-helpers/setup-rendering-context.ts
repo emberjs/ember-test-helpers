@@ -160,7 +160,6 @@ export function render(template: TemplateFactory): Promise<void> {
   Resets the scroll position of testing container.
 
   @private
-  @returns void
 */
 function resetScrollState(): void {
   const testingContainer = getRootElement().parentElement as Element;
