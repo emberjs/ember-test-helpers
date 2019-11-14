@@ -9,6 +9,6 @@ export default function isSelectElement(element: Element | Document): element is
   return (
     !isDocument(element) &&
     element.tagName === 'SELECT' &&
-    (element as HTMLInputElement).type !== 'hidden'
+    (element as HTMLSelectElement).type !== 'hidden'
   );
 }

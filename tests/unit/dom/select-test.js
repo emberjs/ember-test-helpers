@@ -34,8 +34,6 @@ module('DOM Helper: select', function(hooks) {
   });
 
   test('select without target', async function(assert) {
-    element = buildInstrumentedElement('div');
-
     await setupContext(context);
     assert.rejects(select(), /Must pass an element or selector to `select`./);
   });

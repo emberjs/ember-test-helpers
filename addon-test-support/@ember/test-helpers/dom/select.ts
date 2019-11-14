@@ -49,7 +49,7 @@ export default function select(target: Target, options: string | string[]): Prom
     options = Array.isArray(options) ? options : [options];
 
     if (!element.multiple && options.length > 1){
-      throw new Error('HTMLSelectElement multiple attribute is set to false but multiple options have been passed');
+      throw new Error('HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed');
     }
 
     __focus__(element);
