@@ -5,7 +5,7 @@ import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isIE11 } from '../../helpers/browser-detect';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
-
+let additionalSteps = ['input', 'change'];
 if (isIE11) {
   clickSteps = ['focusin', 'input', 'change', 'focus'];
 }
@@ -22,8 +22,8 @@ module('DOM Helper: select', function(hooks) {
   });
 
   hooks.afterEach(async function() {
-    element.setAttribute('data-skip-steps', true);
     if (element) {
+      element.setAttribute('data-skip-steps', true);
       element.parentNode.removeChild(element);
     }
     if (context.owner) {
@@ -94,11 +94,11 @@ module('DOM Helper: select', function(hooks) {
 
     assert.rejects(
       select(element, options),
-      /HTMLSelectElement multiple attribute is set to false but multiple options have been passed/
+      /HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed/
     );
   });
 
-  test('select | 4 options - multple: true - optionsToSelect.length : 2', async function(assert) {
+  test('select | 4 options - multiple: true - optionsToSelect.length : 2', async function(assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = true;
@@ -121,7 +121,7 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedOptions[1].value, 'orange');
   });
 
-  test('select | 4 options - multple: false - optionsToSelect.length : 1', async function(assert) {
+  test('select | 4 options - multiple: false - optionsToSelect.length : 1', async function(assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = false;
@@ -140,5 +140,70 @@ module('DOM Helper: select', function(hooks) {
 
     assert.verifySteps(clickSteps);
     assert.equal(element.selectedIndex, 0);
+  });
+
+  test('select | multiple: false | select new option', async function(assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = false;
+
+    optionValues.forEach(optionValue => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.append(optionElement);
+    });
+
+    await setupContext(context);
+
+    await select(element, 'apple');
+
+    await select(element, 'orange');
+
+    assert.verifySteps([...clickSteps, ...additionalSteps]);
+    assert.equal(element.selectedIndex, 1);
+  });
+
+  test('select | multiple: true | clearPreviouslySelected: false', async function(assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = true;
+
+    optionValues.forEach(optionValue => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.append(optionElement);
+    });
+
+    await setupContext(context);
+
+    await select(element, 'apple');
+
+    await select(element, 'orange', false);
+
+    assert.verifySteps([...clickSteps, ...additionalSteps]);
+    assert.equal(element.selectedOptions[0].value, 'apple');
+    assert.equal(element.selectedOptions[1].value, 'orange');
+  });
+
+  test('select | multiple: true | clearPreviouslySelected: true', async function(assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = true;
+
+    optionValues.forEach(optionValue => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.append(optionElement);
+    });
+
+    await setupContext(context);
+
+    await select(element, 'apple');
+
+    await select(element, 'orange', true);
+
+    assert.verifySteps([...clickSteps, ...additionalSteps]);
+    assert.equal(element.selectedOptions[0].value, 'orange');
+    assert.equal(element.selectedOptions.length, 1);
   });
 });

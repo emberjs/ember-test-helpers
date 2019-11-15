@@ -8,13 +8,14 @@ import Target from './-target';
 
 /**
   Set the `selected` property true for the provided option the target is a
-  select element (or set the select property true for multple options if the
+  select element (or set the select property true for multiple options if the
   multiple attribute is set true on the HTMLSelectElement) then trigger
   `change` and `input` events on the specified target.
 
   @public
   @param {string|Element} target the element or selector for the select element
   @param {string|string[]} options the value/values of the items to select
+  @param {boolean} clearPreviouslySelected a flag to clear any previous selections
   @return {Promise<void>} resolves when the application is settled
 
   @example
@@ -25,8 +26,10 @@ import Target from './-target';
   select('select', 'apple');
 
   select('select', ['apple', 'orange']);
+
+  select('select', ['apple', 'orange'], true);
 */
-export default function select(target: Target, options: string | string[]): Promise<void> {
+export default function select(target: Target, options: string | string[], clearPreviouslySelected?: boolean): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `select`.');
@@ -61,6 +64,8 @@ export default function select(target: Target, options: string | string[]): Prom
       let elementOption = element.options.item(i);
       if (options.indexOf(elementOption.value) > -1) {
         elementOption.selected = true;
+      } else if (clearPreviouslySelected || element.multiple == false) {
+        elementOption.selected = false;
       }
     }
 
