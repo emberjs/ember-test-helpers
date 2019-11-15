@@ -29,7 +29,11 @@ import Target from './-target';
 
   select('select', ['apple', 'orange'], true);
 */
-export default function select(target: Target, options: string | string[], clearPreviouslySelected?: boolean): Promise<void> {
+export default function select(
+  target: Target,
+  options: string | string[],
+  clearPreviouslySelected?: boolean
+): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `select`.');
@@ -54,8 +58,10 @@ export default function select(target: Target, options: string | string[], clear
 
     options = Array.isArray(options) ? options : [options];
 
-    if (!element.multiple && options.length > 1){
-      throw new Error('HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed');
+    if (!element.multiple && options.length > 1) {
+      throw new Error(
+        'HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed'
+      );
     }
 
     __focus__(element);
