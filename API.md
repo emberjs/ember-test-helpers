@@ -397,7 +397,7 @@ Emulating typing in an input using `typeIn`
 
 
 ```javascript
-typeIn('hello world');
+typeIn('input', 'hello world');
 ```
 
 Returns **[Promise][54]&lt;void>** resolves when the application is settled
