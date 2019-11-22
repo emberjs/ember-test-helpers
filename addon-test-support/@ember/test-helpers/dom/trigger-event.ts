@@ -3,6 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
  * Triggers an event on the specified target.
@@ -52,6 +53,8 @@ export default function triggerEvent(
   eventType: string,
   options?: object
 ): Promise<void> {
+  log('triggerEvent', target, eventType);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerEvent`.');

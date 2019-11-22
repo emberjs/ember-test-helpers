@@ -1,3 +1,31 @@
+import Target from './-target';
+
+/**
+ * Logs a debug message to the console if the `testHelperLogging` query
+ * parameter is set.
+ *
+ * @private
+ * @param {string} helperName Name of the helper
+ * @param {string|Element} target The target element or selector
+ */
+export function log(helperName: string, target: Target, ...args: any[]) {
+  if (loggingEnabled()) {
+    // eslint-disable-next-line no-console
+    console.log(`${helperName}(${[elementToString(target), ...args.filter(Boolean)].join(', ')})`);
+  }
+}
+
+/**
+ * Returns whether the test helper logging is enabled or not via the
+ * `testHelperLogging` query parameter.
+ *
+ * @private
+ * @returns {boolean} true if enabled
+ */
+function loggingEnabled(): boolean {
+  return typeof location !== 'undefined' && location.search.indexOf('testHelperLogging') !== -1;
+}
+
 /**
  * This generates a human-readable description to a DOM element.
  *

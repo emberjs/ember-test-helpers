@@ -4,6 +4,7 @@ import { __click__ } from './click';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   Taps on the specified target.
@@ -48,6 +49,8 @@ import Target from './-target';
   tap('button');
 */
 export default function tap(target: Target, options: object = {}): Promise<void> {
+  log('tap', target);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `tap`.');

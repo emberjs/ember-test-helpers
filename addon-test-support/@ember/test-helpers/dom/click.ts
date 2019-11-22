@@ -6,6 +6,7 @@ import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   @private
@@ -69,6 +70,8 @@ export function __click__(element: Element | Document, options: MouseEventInit):
   click('button', { shiftKey: true });
 */
 export default function click(target: Target, options: MouseEventInit = {}): Promise<void> {
+  log('click', target);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `click`.');
