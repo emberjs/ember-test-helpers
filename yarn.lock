@@ -1618,10 +1618,10 @@
     "@types/jquery" "*"
     "@types/rsvp" "*"
 
-"@types/ember@*", "@types/ember@^3.0.27":
-  version "3.0.27"
-  resolved "https://registry.yarnpkg.com/@types/ember/-/ember-3.0.27.tgz#2915984038f3ae3609142f8e700b4a783a30be5d"
-  integrity sha512-amYMGBiDsqBoA/+8Hv3TFdz+pTeLbmp3EgiVVuP4AhK59ljdiigi1MBNMmOlr0u9OGDlRrK/M4DURJRWOC2KiA==
+"@types/ember@*", "@types/ember@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@types/ember/-/ember-3.1.1.tgz#401810fa3ba911855d609d334ea77990b9b94802"
+  integrity sha512-8Yu+7qvcRA80NXuJrgii25hi4B/P3lrCug34O2ksPNHk2z1RaLnjKSj0cptQXMQAMnVtM0Vye8lAwUle47/M9w==
   dependencies:
     "@types/ember__application" "*"
     "@types/ember__array" "*"
@@ -1636,9 +1636,9 @@
     "@types/ember__runloop" "*"
     "@types/ember__service" "*"
     "@types/ember__string" "*"
+    "@types/ember__template" "*"
     "@types/ember__test" "*"
     "@types/ember__utils" "*"
-    "@types/handlebars" "*"
     "@types/htmlbars-inline-precompile" "*"
     "@types/jquery" "*"
     "@types/rsvp" "*"
@@ -1743,6 +1743,11 @@
   integrity sha512-pquqP3jbPsfNQ9dnJK2azOr9SSY6z0Fy2f21uuEYXmW+/1fQev/Vt55ij2PCf23AHAFBnUzhJe3sO96umHO3Xg==
   dependencies:
     "@types/handlebars" "*"
+
+"@types/ember__template@*":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/ember__template/-/ember__template-3.0.0.tgz#d499ebf000faa371c1c98124633b9864be69b968"
+  integrity sha512-aWNg/kL2QToE0fwI8MVgAr2upWyAUwqRv2sp3CpypsMTOC1lZizIehz8QI6w1m1+Eh1WYs/89gvuM3mTc4OyIw==
 
 "@types/ember__test@*":
   version "3.0.4"
