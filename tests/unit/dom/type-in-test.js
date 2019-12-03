@@ -208,4 +208,26 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.verifySteps(expectedEvents);
     assert.equal(runcount, 1, 'debounced function only called once');
   });
+
+  test('filling an input with a maxlength', async function(assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('oo');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await typeIn(`#${element.id}`, tooLongString);
+    // only the first 'input' event is fired since the input is truncated
+    const truncatedEvents = expectedEvents.filter((type, index) => {
+      return type !== 'input' || index === 4;
+    });
+
+    assert.verifySteps(truncatedEvents);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `typeIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
 });

@@ -1,5 +1,6 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
+import isMaxLengthConstrained from './-is-maxlength-constrained';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
@@ -52,6 +53,16 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
       __focus__(element);
 
+      // if (isMaxLengthConstrained(element) && text.length > element.getAttribute('maxlength'))
+      //   throw
+      // remove else block
+      // should this be before the focus?
+      if (isMaxLengthConstrained(element)) {
+        element.value = text.slice(0, element.getAttribute('maxlength'));
+      } else {
+        element.value = text;
+      }
+
       element.value = text;
     } else if (isContentEditable(element)) {
       __focus__(element);
@@ -60,7 +71,6 @@ export default function fillIn(target: Target, text: string): Promise<void> {
     } else {
       throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
     }
-
     fireEvent(element, 'input');
     fireEvent(element, 'change');
 

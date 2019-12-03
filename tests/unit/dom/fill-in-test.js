@@ -199,4 +199,39 @@ module('DOM Helper: fillIn', function (hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, '');
   });
+
+  test('filling an input with a maxlength with suitable value', async function(assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await fillIn(element, maxLengthString);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `fillIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('filling an input with a maxlength with too long value', async function(assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('oo');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await fillIn(element, tooLongString);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `fillIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
 });

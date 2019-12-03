@@ -5,6 +5,7 @@ import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
+import isMaxLengthConstrained from './-is-maxlength-constrained';
 import Target from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
@@ -94,8 +95,18 @@ function keyEntry(element: FormControl, character: string): () => void {
       .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
-        element.value = element.value + character;
-        fireEvent(element, 'input');
+        const newValue = element.value + character;
+        const shouldTruncate =
+          isMaxLengthConstrained(element) &&
+          newValue.length > Number(element.getAttribute('maxlength'));
+        // if (shouldTruncate)
+        //    throw
+        // else
+        //   set value, fire input event
+        if (!shouldTruncate) {
+          element.value = newValue;
+          fireEvent(element, 'input');
+        }
       })
       .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));
   };
