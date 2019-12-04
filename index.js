@@ -33,7 +33,7 @@ module.exports = {
     let input = debugTree(tree, 'addon-test-support:input');
 
     let compiler = this.project._incrementalTsCompiler;
-    if (compiler) {
+    if (this.isDevelopingAddon() && compiler) {
       // eslint-disable-next-line node/no-unpublished-require
       let TypescriptOutput = require('ember-cli-typescript/js/lib/incremental-typescript-compiler/typescript-output-plugin');
       // eslint-disable-next-line node/no-unpublished-require
