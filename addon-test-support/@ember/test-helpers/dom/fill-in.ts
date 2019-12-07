@@ -5,6 +5,7 @@ import settled from '../settled';
 import fireEvent from './fire-event';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
@@ -24,6 +25,8 @@ import Target from './-target';
   fillIn('input', 'hello world');
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
+  log('fillIn', target, text);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `fillIn`.');

@@ -8,6 +8,7 @@ import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import Target from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 export interface Options {
   delay?: number;
@@ -38,6 +39,8 @@ export interface Options {
  * typeIn('hello world');
  */
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
+  log('typeIn', target, text);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `typeIn`.');

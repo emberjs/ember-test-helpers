@@ -5,6 +5,7 @@ import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -183,6 +184,8 @@ export default function triggerKeyEvent(
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
+  log('triggerKeyEvent', target, eventType, key);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerKeyEvent`.');

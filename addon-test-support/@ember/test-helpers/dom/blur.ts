@@ -4,6 +4,7 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   @private
@@ -51,6 +52,8 @@ export function __blur__(element: HTMLElement | SVGElement): void {
   blur('input');
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
+  log('blur', target);
+
   return nextTickPromise().then(() => {
     let element = getElement(target);
     if (!element) {

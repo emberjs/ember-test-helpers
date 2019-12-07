@@ -5,6 +5,7 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   @private
@@ -80,6 +81,8 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
   doubleClick('button', { shiftKey: true });
 */
 export default function doubleClick(target: Target, options: MouseEventInit = {}): Promise<void> {
+  log('doubleClick', target);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `doubleClick`.');

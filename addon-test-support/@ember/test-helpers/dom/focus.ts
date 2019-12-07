@@ -4,6 +4,7 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   @private
@@ -54,6 +55,8 @@ export function __focus__(element: HTMLElement | SVGElement): void {
   focus('input');
 */
 export default function focus(target: Target): Promise<void> {
+  log('focus', target);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `focus`.');
