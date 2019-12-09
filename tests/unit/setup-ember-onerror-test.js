@@ -5,7 +5,7 @@ import { setupOnerror, resetOnerror } from '@ember/test-helpers';
 
 module('setupOnerror', function(hooks) {
   hooks.afterEach(function() {
-    resetOnerror();
+    Ember.onerror = undefined;
   });
 
   if (hasEmberVersion(2, 4)) {
@@ -41,6 +41,29 @@ module('setupOnerror', function(hooks) {
       resetOnerror();
 
       assert.equal(Ember.onerror, undefined);
+    });
+    
+    test('Ember.onerror is reset correctly to original function', async function(assert) {
+      assert.expect(3);
+      
+      let originalOnerror = (err) => {
+        console.log('original on error')
+        throw err;
+      }
+      
+      Ember.onerror = originalOnerror;
+
+      let onerror = err => err;
+
+      assert.equal(Ember.onerror, originalOnerror);
+
+      setupOnerror(onerror);
+
+      assert.equal(Ember.onerror, onerror);
+
+      resetOnerror();
+
+      assert.equal(Ember.onerror, originalOnerror);
     });
   }
 });
