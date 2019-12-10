@@ -46,8 +46,8 @@ module('setupOnerror', function(hooks) {
     test('Ember.onerror is reset correctly to original function', async function(assert) {
       assert.expect(3);
       
-      let originalOnerror = (err) => {
-        console.log('original on error')
+      let originalOnerror = err => {
+        console.log('original on error');
         throw err;
       }
       
