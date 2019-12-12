@@ -503,6 +503,12 @@ interim DOM states (e.g. loading states, pending promises, etc).
 
 Returns **[Promise][54]&lt;([Element][53] \| [Array][64]&lt;[Element][53]>)>** resolves when the element(s) appear on the page
 
+#### Examples
+
+```javascript
+await waitFor('.my-selector', { timeout: 2000 })
+```
+
 ### waitUntil
 
 Wait for the provided callback to return a truthy value.
@@ -518,6 +524,14 @@ while _not_ settled (e.g. "loading" or "pending" states).
     -   `options.timeoutMessage` **[string][52]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
 Returns **[Promise][54]** resolves with the callback value when it returns a truthy value
+
+#### Examples
+
+```javascript
+await waitUntil(function() {
+   return find('.my-selector').textContent.includes('something')
+}, { timeout: 2000 })
+```
 
 ### settled
 
