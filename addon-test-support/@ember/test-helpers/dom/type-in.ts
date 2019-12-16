@@ -36,7 +36,7 @@ export interface Options {
  *   Emulating typing in an input using `typeIn`
  * </caption>
  *
- * typeIn('hello world');
+ * typeIn('input', 'hello world');
  */
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
   log('typeIn', target, text);
