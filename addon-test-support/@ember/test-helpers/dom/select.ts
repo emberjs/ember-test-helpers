@@ -68,10 +68,12 @@ export default function select(
 
     for (let i = 0; i < element.options.length; i++) {
       let elementOption = element.options.item(i);
-      if (options.indexOf(elementOption.value) > -1) {
-        elementOption.selected = true;
-      } else if (!keepPreviouslySelected) {
-        elementOption.selected = false;
+      if (elementOption) {
+        if (options.indexOf(elementOption.value) > -1) {
+          elementOption.selected = true;
+        } else if (!keepPreviouslySelected) {
+          elementOption.selected = false;
+        }
       }
     }
 
