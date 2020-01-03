@@ -8,7 +8,6 @@ import { isDocument } from './-target';
 export default function isSelectElement(element: Element | Document): element is HTMLSelectElement {
   return (
     !isDocument(element) &&
-    element.tagName === 'SELECT' &&
-    (element as HTMLSelectElement).type !== 'hidden'
+    element.tagName === 'SELECT'
   );
 }

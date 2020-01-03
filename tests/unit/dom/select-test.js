@@ -4,10 +4,10 @@ import { buildInstrumentedElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isIE11 } from '../../helpers/browser-detect';
 
-let clickSteps = ['focus', 'focusin', 'input', 'change'];
+let selectSteps = ['focus', 'focusin', 'input', 'change'];
 let additionalSteps = ['input', 'change'];
 if (isIE11) {
-  clickSteps = ['focusin', 'input', 'change', 'focus'];
+  selectSteps = ['focusin', 'input', 'change', 'focus'];
 }
 
 module('DOM Helper: select', function(hooks) {
@@ -115,7 +115,7 @@ module('DOM Helper: select', function(hooks) {
 
     await select(element, optionsToSelect);
 
-    assert.verifySteps(clickSteps);
+    assert.verifySteps(selectSteps);
     assert.equal(element.selectedOptions.length, 2);
     assert.equal(element.selectedOptions[0].value, 'apple');
     assert.equal(element.selectedOptions[1].value, 'orange');
@@ -138,7 +138,7 @@ module('DOM Helper: select', function(hooks) {
 
     await select(element, optionsToSelect);
 
-    assert.verifySteps(clickSteps);
+    assert.verifySteps(selectSteps);
     assert.equal(element.selectedIndex, 0);
   });
 
@@ -159,33 +159,11 @@ module('DOM Helper: select', function(hooks) {
 
     await select(element, 'orange');
 
-    assert.verifySteps([...clickSteps, ...additionalSteps]);
+    assert.verifySteps([...selectSteps, ...additionalSteps]);
     assert.equal(element.selectedIndex, 1);
   });
 
-  test('select | multiple: true | clearPreviouslySelected: false', async function(assert) {
-    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
-    element = buildInstrumentedElement('select');
-    element.multiple = true;
-
-    optionValues.forEach(optionValue => {
-      const optionElement = buildInstrumentedElement('option');
-      optionElement.value = optionValue;
-      element.append(optionElement);
-    });
-
-    await setupContext(context);
-
-    await select(element, 'apple');
-
-    await select(element, 'orange', false);
-
-    assert.verifySteps([...clickSteps, ...additionalSteps]);
-    assert.equal(element.selectedOptions[0].value, 'apple');
-    assert.equal(element.selectedOptions[1].value, 'orange');
-  });
-
-  test('select | multiple: true | clearPreviouslySelected: true', async function(assert) {
+  test('select | multiple: true | keepPreviouslySelected: true', async function(assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = true;
@@ -202,7 +180,29 @@ module('DOM Helper: select', function(hooks) {
 
     await select(element, 'orange', true);
 
-    assert.verifySteps([...clickSteps, ...additionalSteps]);
+    assert.verifySteps([...selectSteps, ...additionalSteps]);
+    assert.equal(element.selectedOptions[0].value, 'apple');
+    assert.equal(element.selectedOptions[1].value, 'orange');
+  });
+
+  test('select | multiple: true | keepPreviouslySelected: false', async function(assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = true;
+
+    optionValues.forEach(optionValue => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.append(optionElement);
+    });
+
+    await setupContext(context);
+
+    await select(element, 'apple');
+
+    await select(element, 'orange', false);
+
+    assert.verifySteps([...selectSteps, ...additionalSteps]);
     assert.equal(element.selectedOptions[0].value, 'orange');
     assert.equal(element.selectedOptions.length, 1);
   });

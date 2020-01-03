@@ -15,7 +15,7 @@ import Target from './-target';
   @public
   @param {string|Element} target the element or selector for the select element
   @param {string|string[]} options the value/values of the items to select
-  @param {boolean} clearPreviouslySelected a flag to clear any previous selections
+  @param {boolean} keepPreviouslySelected a flag keep any existing selections
   @return {Promise<void>} resolves when the application is settled
 
   @example
@@ -32,7 +32,7 @@ import Target from './-target';
 export default function select(
   target: Target,
   options: string | string[],
-  clearPreviouslySelected?: boolean
+  keepPreviouslySelected?: boolean
 ): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
@@ -47,8 +47,8 @@ export default function select(
     if (!element) {
       throw new Error(`Element not found when calling \`select('${target}')\`.`);
     }
-    const isSelect = isSelectElement(element);
-    if (!isSelect) {
+
+    if (!isSelectElement(element)) {
       throw new Error('`select` is only usable on a HTMLSelectElement');
     }
 
@@ -70,7 +70,7 @@ export default function select(
       let elementOption = element.options.item(i);
       if (options.indexOf(elementOption.value) > -1) {
         elementOption.selected = true;
-      } else if (clearPreviouslySelected || element.multiple == false) {
+      } else if (!keepPreviouslySelected) {
         elementOption.selected = false;
       }
     }
