@@ -25,9 +25,8 @@ export interface Options {
 
   @example
   <caption>
-    Waiting until a selected element displays text
+    Waiting until a selected element displays text:
   </caption>
-
   await waitUntil(function() {
     return find('.my-selector').textContent.includes('something')
   }, { timeout: 2000 })

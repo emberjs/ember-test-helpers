@@ -503,7 +503,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 
 #### Examples
 
-Waiting until a selector is rendered
+Waiting until a selector is rendered:
 
 
 ```javascript
@@ -528,7 +528,7 @@ while _not_ settled (e.g. "loading" or "pending" states).
 
 #### Examples
 
-Waiting until a selected element displays text
+Waiting until a selected element displays text:
 
 
 ```javascript

@@ -23,9 +23,8 @@ export interface Options {
 
   @example
   <caption>
-    Waiting until a selector is rendered
+    Waiting until a selector is rendered:
   </caption>
-
   await waitFor('.my-selector', { timeout: 2000 })
 */
 export default function waitFor(
