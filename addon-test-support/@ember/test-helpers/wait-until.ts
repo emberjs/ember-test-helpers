@@ -22,6 +22,15 @@ export interface Options {
   @param {number} [options.timeout=1000] the maximum amount of time to wait
   @param {string} [options.timeoutMessage='waitUntil timed out'] the message to use in the reject on timeout
   @returns {Promise} resolves with the callback value when it returns a truthy value
+
+  @example
+  <caption>
+    Waiting until a selected element displays text
+  </caption>
+
+  await waitUntil(function() {
+    return find('.my-selector').textContent.includes('something')
+  }, { timeout: 2000 })
 */
 export default function waitUntil<T>(
   callback: () => T | void | Falsy,

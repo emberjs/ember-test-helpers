@@ -20,6 +20,13 @@ export interface Options {
   @param {number} [options.timeout=1000] the time to wait (in ms) for a match
   @param {number} [options.count=null] the number of elements that should match the provided selector (null means one or more)
   @return {Promise<Element|Element[]>} resolves when the element(s) appear on the page
+
+  @example
+  <caption>
+    Waiting until a selector is rendered
+  </caption>
+
+  await waitFor('.my-selector', { timeout: 2000 })
 */
 export default function waitFor(
   selector: string,
