@@ -188,9 +188,9 @@ export function instrumentElement(element, logOptionsProperties) {
       let step = type;
       if (!element.hasAttribute('data-skip-steps')) {
         if (logOptionsProperties) {
-          for (var prop of logOptionsProperties) {
+          logOptionsProperties.forEach(prop => {
             step += ` ${e[prop]}`;
-          }
+          });
         }
         assert.step(step);
       }
