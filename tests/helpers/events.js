@@ -1,4 +1,5 @@
 // from https://mdn.mozilla.org/en-US/docs/Web/Events
+import { get } from '@ember/object';
 export const KNOWN_EVENTS = Object.freeze([
   'abort',
   'afterprint',
@@ -189,7 +190,7 @@ export function instrumentElement(element, logOptionsProperties) {
       if (!element.hasAttribute('data-skip-steps')) {
         if (logOptionsProperties) {
           logOptionsProperties.forEach(prop => {
-            step += ` ${e[prop]}`;
+            step += ` ${get(e, prop)}`;
           });
         }
         assert.step(step);
