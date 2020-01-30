@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { tab, setupContext, teardownContext, waitFor, settled } from '@ember/test-helpers';
+import { tab, setupContext, teardownContext, settled } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -17,9 +17,16 @@ function blurSteps(name) {
 
 function moveFocus(from, to) {
   if (isIE11) {
-    return [`focusout ${from}`, `focusin ${to}`, `blur ${from}`, `focus ${to}`];
+    return [
+      `keydown ${from}`,
+      `focusout ${from}`,
+      `focusin ${to}`,
+      `blur ${from}`,
+      `focus ${to}`,
+      `keyup ${to}`,
+    ];
   }
-  return [...blurSteps(from), ...focusSteps(to)];
+  return [`keydown ${from}`, ...blurSteps(from), ...focusSteps(to), `keyup ${to}`];
 }
 
 module('DOM Helper: tab', function(hooks) {
@@ -62,23 +69,21 @@ module('DOM Helper: tab', function(hooks) {
   });
 
   test('tabs to focusable element', async function(assert) {
-    element = buildInstrumentedElement('input', ['target.className']);
-    element.className = 'a';
+    elements = [buildInstrumentedElement('input', ['target.id'])];
 
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(focusSteps('a'));
+    assert.verifySteps([...focusSteps(elements[0].id), `keyup ${elements[0].id}`]);
   });
 
-  test('tabs to focusable element', async function(assert) {
-    element = buildInstrumentedElement('input', ['target.className']);
-    element.className = 'a';
+  test('tabs backwards to focusable element', async function(assert) {
+    elements = [buildInstrumentedElement('input', ['target.id'])];
 
     await setupContext(context);
     await tab({ backwards: true });
 
-    assert.verifySteps(focusSteps('a'));
+    assert.verifySteps([...focusSteps(elements[0].id), `keyup ${elements[0].id}`]);
   });
 
   test('blurs target when tabs through the last target', async function(assert) {
@@ -90,6 +95,8 @@ module('DOM Helper: tab', function(hooks) {
 
     assert.verifySteps([
       ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+
       `keydown ${elements[0].id}`,
       ...blurSteps(elements[0].id),
     ]);
@@ -109,7 +116,7 @@ module('DOM Helper: tab', function(hooks) {
     await tab();
     await tab();
 
-    assert.verifySteps([...focusSteps('a'), 'keydown a', ...moveFocus('a', 'b')]);
+    assert.verifySteps([...focusSteps('a'), `keyup a`, ...moveFocus('a', 'b')]);
   });
 
   test('ignores focusable elements with tab index = -1', async function(assert) {
@@ -124,7 +131,7 @@ module('DOM Helper: tab', function(hooks) {
 
     await tab();
 
-    assert.verifySteps(focusSteps(elements[1].id));
+    assert.verifySteps([...focusSteps(elements[1].id), `keyup ${elements[1].id}`]);
   });
 
   test('ignores focusable elements with tab index = -1', async function(assert) {
@@ -139,7 +146,7 @@ module('DOM Helper: tab', function(hooks) {
 
     await tab({ backwards: true });
 
-    assert.verifySteps(focusSteps(elements[0].id));
+    assert.verifySteps([...focusSteps(elements[0].id), `keyup ${elements[0].id}`]);
   });
 
   test('supports tabbing without any focusable areas', async function(assert) {
@@ -166,7 +173,12 @@ module('DOM Helper: tab', function(hooks) {
     await tab();
     await tab();
 
-    assert.verifySteps([...focusSteps(elements[0].id), `keydown ${elements[0].id}`]);
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+      `keydown ${elements[0].id}`,
+      `keyup ${elements[0].id}`,
+    ]);
   });
 
   test('tabs an input that moves focus during an event', async function(assert) {
@@ -180,7 +192,7 @@ module('DOM Helper: tab', function(hooks) {
       insertElement(element);
     });
 
-    elements[0].addEventListener('keydown', event => {
+    elements[0].addEventListener('keydown', () => {
       elements[1].focus();
     });
 
@@ -220,17 +232,15 @@ module('DOM Helper: tab', function(hooks) {
 
     assert.verifySteps([
       ...focusSteps('a'),
-      'keydown a',
+      'keyup a',
       ...moveFocus('a', 'b'),
-      'keydown b',
       ...moveFocus('b', 'c'),
-      'keydown c',
       ...moveFocus('c', 'd'),
     ]);
   });
 
   module('programmatically focusable elements', function(hooks) {
-    hooks.beforeEach(async function(assert) {
+    hooks.beforeEach(async function() {
       elements = [
         buildInstrumentedElement('input', ['target.id']),
         buildInstrumentedElement('input', ['target.id']),
@@ -254,7 +264,6 @@ module('DOM Helper: tab', function(hooks) {
       await tab({ backwards: true });
       assert.verifySteps([
         ...focusSteps(elements[1].id),
-        `keydown ${elements[1].id}`,
         ...moveFocus(elements[1].id, elements[0].id),
       ]);
     });
@@ -263,7 +272,6 @@ module('DOM Helper: tab', function(hooks) {
       await tab();
       assert.verifySteps([
         ...focusSteps(elements[1].id),
-        `keydown ${elements[1].id}`,
         ...moveFocus(elements[1].id, elements[2].id),
       ]);
     });
@@ -283,7 +291,7 @@ module('DOM Helper: tab', function(hooks) {
       await setupContext(context);
       await tab();
 
-      assert.verifySteps(focusSteps(elements[1].id));
+      assert.verifySteps([...focusSteps(elements[1].id), `keyup ${elements[1].id}`]);
     });
 
     test('ignores invisible elements', async function(assert) {
@@ -292,7 +300,7 @@ module('DOM Helper: tab', function(hooks) {
       await setupContext(context);
       await tab();
 
-      assert.verifySteps(focusSteps(elements[1].id));
+      assert.verifySteps([...focusSteps(elements[1].id), `keyup ${elements[1].id}`]);
     });
   });
 
@@ -310,7 +318,7 @@ module('DOM Helper: tab', function(hooks) {
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(focusSteps(elements[1].id));
+    assert.verifySteps([...focusSteps(elements[1].id), `keyup ${elements[1].id}`]);
   });
 
   test('ignores children of disabled fieldset', async function(assert) {
@@ -327,7 +335,7 @@ module('DOM Helper: tab', function(hooks) {
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(focusSteps(elements[1].id));
+    assert.verifySteps([...focusSteps(elements[1].id), `keyup ${elements[1].id}`]);
   });
 
   // IE11 doesn’t support the summary and detail and will fail this check
@@ -350,6 +358,7 @@ module('DOM Helper: tab', function(hooks) {
 
       assert.verifySteps([
         ...focusSteps(elements[0].id),
+        `keyup ${elements[0].id}`,
         `keydown ${elements[0].id}`,
         ...blurSteps(elements[0].id),
       ]);
