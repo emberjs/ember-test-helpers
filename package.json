@@ -65,7 +65,7 @@
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
     "ember-resolver": "^7.0.0",
     "ember-source": "~3.14.2",
-    "ember-source-channel-url": "^1.1.0",
+    "ember-source-channel-url": "^2.0.1",
     "ember-try": "^1.4.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^5.0.0",
