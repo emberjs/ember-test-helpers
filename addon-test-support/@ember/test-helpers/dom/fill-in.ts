@@ -46,6 +46,10 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         throw new Error(`Can not \`fillIn\` disabled '${target}'.`);
       }
 
+      if ('readOnly' in element && element.readOnly) {
+        throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
+      }
+
       __focus__(element);
 
       element.value = text;
