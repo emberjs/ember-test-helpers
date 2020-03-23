@@ -44,7 +44,7 @@
   "devDependencies": {
     "@ember/optional-features": "^0.7.0",
     "@types/ember": "^3.1.1",
-    "@types/ember-data": "^3.1.5",
+    "@types/ember-data": "^3.1.10",
     "@types/ember-testing-helpers": "^0.0.3",
     "@types/rsvp": "^4.0.3",
     "broccoli-merge-trees": "^3.0.2",
