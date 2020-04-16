@@ -69,14 +69,29 @@ function lookupOutletTemplate(owner: Owner): any {
 }
 
 let templateId = 0;
+
+export interface RenderOptions {
+  /**
+    The owner object to use as the basis for the template. In most cases you
+    will not need to specify this, however if you are using ember-engines
+    it is possible to specify the _engine's_ owner instead of the host
+    applications.
+  */
+  owner?: Owner;
+}
+
 /**
   Renders the provided template and appends it to the DOM.
 
   @public
   @param {CompiledTemplate} template the template to render
+  @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 */
-export function render(template: TemplateFactory): Promise<void> {
+export function render(
+  template: TemplateFactory,
+  options?: RenderOptions
+): Promise<void> {
   let context = getContext();
 
   if (!template) {
@@ -98,13 +113,15 @@ export function render(template: TemplateFactory): Promise<void> {
 
       let toplevelView = owner.lookup('-top-level-view:main');
       let OutletTemplate = lookupOutletTemplate(owner);
+      let ownerToRenderFrom = options?.owner || owner;
+
       templateId += 1;
       let templateFullName = `template:-undertest-${templateId}`;
-      owner.register(templateFullName, template);
+      ownerToRenderFrom.register(templateFullName, template);
 
       let outletState = {
         render: {
-          owner,
+          owner, // always use the host app owner for application outlet
           into: undefined,
           outlet: 'main',
           name: 'application',
@@ -116,13 +133,13 @@ export function render(template: TemplateFactory): Promise<void> {
         outlets: {
           main: {
             render: {
-              owner,
+              owner: ownerToRenderFrom, // the actual owner to be used for any lookups
               into: undefined,
               outlet: 'main',
               name: 'index',
               controller: context,
               ViewClass: undefined,
-              template: lookupTemplate(owner, templateFullName),
+              template: lookupTemplate(ownerToRenderFrom, templateFullName),
               outlets: {},
             },
             outlets: {},
