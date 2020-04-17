@@ -87,7 +87,7 @@
     "**/engine.io": "~3.3.0"
   },
   "engines": {
-    "node": "8.* || >= 10.*"
+    "node": "10.* || >= 12.*"
   },
   "publishConfig": {
     "access": "public",
