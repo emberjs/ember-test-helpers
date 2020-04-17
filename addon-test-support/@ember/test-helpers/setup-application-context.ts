@@ -126,13 +126,22 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
 
       return visitResult;
     })
-    .then(() => {
-      if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-        context.element = document.querySelector('#ember-testing > .ember-view');
-      } else {
-        context.element = document.querySelector('#ember-testing');
+    .then(
+      () => {
+        if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
+          context.element = document.querySelector('#ember-testing > .ember-view');
+        } else {
+          context.element = document.querySelector('#ember-testing');
+        }
+      },
+      error => {
+        const { message } = error;
+
+        if (message !== 'TransitionAborted') {
+          throw error;
+        }
       }
-    })
+    )
     .then(settled);
 }
 
