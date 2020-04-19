@@ -113,6 +113,33 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-lts-3.8',
+          env: envWithoutJQuery,
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.4.0',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-3.12',
+          env: envWithoutJQuery,
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.4.0',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-3.16',
+          env: envWithoutJQuery,
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.4.0',
+            },
+          },
+        },
+        {
           name: 'ember-release',
           env: envWithoutJQuery,
           npm: {
