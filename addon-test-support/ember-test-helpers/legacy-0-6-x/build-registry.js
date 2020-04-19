@@ -1,4 +1,4 @@
-/* globals global, self, requirejs */
+/* globals global, requirejs */
 
 import ApplicationInstance from '@ember/application/instance';
 
