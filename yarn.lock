@@ -1430,10 +1430,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/ember-data@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@types/ember-data/-/ember-data-3.1.5.tgz#62c00698f0fec9279704947e0322e55c72605f8c"
-  integrity sha512-d5HPjRc3kT9FKdxSfyjcm6hSxsWojOQASXEpMmNEblO9Cpr0/ppE74HTic9SHvAyy8pz0cIBeueUnCiMsKl44g==
+"@types/ember-data@^3.1.11":
+  version "3.1.11"
+  resolved "https://registry.yarnpkg.com/@types/ember-data/-/ember-data-3.1.11.tgz#2c6111bc48e0e2e86679c21a1077ef952c77e04c"
+  integrity sha512-kmA22JS75ydChEvnmsEFhvNpZftn1ebyU/iBan8FVsSqptM9y2HQrYWosXTcMhiyGIBZaaH2OwtP2AZx3V+IBg==
   dependencies:
     "@types/ember" "*"
     "@types/ember__object" "*"
