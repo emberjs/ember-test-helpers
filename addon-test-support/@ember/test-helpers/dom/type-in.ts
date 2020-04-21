@@ -61,6 +61,10 @@ export default function typeIn(target: Target, text: string, options: Options = 
       throw new Error(`Can not \`typeIn\` disabled '${target}'.`);
     }
 
+    if ('readOnly' in element && element.readOnly) {
+      throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
+    }
+
     __focus__(element);
 
     let { delay = 50 } = options;

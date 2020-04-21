@@ -142,6 +142,23 @@ module('DOM Helper: typeIn', function (hooks) {
     );
   });
 
+  test('typing in a readonly element', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.dataset.testDisabled = '';
+    element.setAttribute('readonly', '');
+
+    await setupContext(context);
+    assert.rejects(
+      typeIn(`[data-test-disabled]`, 'foo'),
+      new Error("Can not `typeIn` readonly '[data-test-disabled]'.")
+    );
+
+    assert.rejects(
+      typeIn(element, 'foo'),
+      new Error("Can not `typeIn` readonly '[object HTMLInputElement]'.")
+    );
+  });
+
   test('rejects if selector is not found', async function (assert) {
     element = buildInstrumentedElement('div');
 
