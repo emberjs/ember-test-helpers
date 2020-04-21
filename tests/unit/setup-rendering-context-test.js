@@ -1,5 +1,5 @@
 /* globals EmberENV */
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import Service from '@ember/service';
 import Component from '@ember/component';
 import TextField from '@ember/component/text-field';
@@ -20,7 +20,6 @@ import {
   click,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import hasjQuery from '../helpers/has-jquery';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 
@@ -136,17 +135,6 @@ module('setupRenderingContext', function (hooks) {
 
     overwriteTest('render');
     overwriteTest('clearRender');
-
-    (hasjQuery()
-      ? test
-      : skip)('this.$ is exposed when jQuery is present', async function (assert) {
-      await this.render(hbs`<p>Hello!</p>`);
-
-      assert.equal(this.$().text(), 'Hello!');
-      assert.deprecationsInclude(
-        'Using this.$() in a rendering test has been deprecated, consider using this.element instead.'
-      );
-    });
 
     test('can invoke template only components', async function (assert) {
       await this.render(hbs`{{template-only}}`);
