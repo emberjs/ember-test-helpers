@@ -70,7 +70,7 @@ module('DOM Helper: typeIn', function (hooks) {
     document.getElementById('ember-testing').innerHTML = '';
   });
 
-  test('filling in an input', async function (assert) {
+  test('typing in an input', async function (assert) {
     element = buildInstrumentedElement('input');
     await typeIn(element, 'foo');
 
@@ -100,7 +100,7 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.verifySteps(expectedEventsWithArguments);
   });
 
-  test('filling in an input with a delay', async function (assert) {
+  test('typing in an input with a delay', async function (assert) {
     element = buildInstrumentedElement('input');
     await typeIn(element, 'foo', { delay: 150 });
 
@@ -109,7 +109,7 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling in a textarea', async function (assert) {
+  test('typing in a textarea', async function (assert) {
     element = buildInstrumentedElement('textarea');
     await typeIn(element, 'foo');
 
@@ -118,11 +118,28 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling in a non-fillable element', async function (assert) {
+  test('typing in not a form control', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
     assert.rejects(typeIn(`#${element.id}`, 'foo'), /`typeIn` is only usable on form controls/);
+  });
+
+  test('typing in a disabled element', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.dataset.testDisabled = '';
+    element.setAttribute('disabled', '');
+
+    await setupContext(context);
+    assert.rejects(
+      typeIn(`[data-test-disabled]`, 'foo'),
+      new Error("Can not `typeIn` disabled '[data-test-disabled]'.")
+    );
+
+    assert.rejects(
+      typeIn(element, 'foo'),
+      new Error("Can not `typeIn` disabled '[object HTMLInputElement]'.")
+    );
   });
 
   test('rejects if selector is not found', async function (assert) {
