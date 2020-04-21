@@ -9,7 +9,6 @@ import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
-import { deprecate } from '@ember/application/deprecations';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 
 export const RENDERING_CLEANUP = Object.create(null);
@@ -59,30 +58,6 @@ function lookupOutletTemplate(owner: Owner): any {
   }
 
   return OutletTemplate;
-}
-
-/**
-  @private
-  @param {string} [selector] the selector to search for relative to element
-  @returns {jQuery} a jQuery object representing the selector (or element itself if no selector)
-*/
-function jQuerySelector(selector: string): any {
-  deprecate(
-    'Using this.$() in a rendering test has been deprecated, consider using this.element instead.',
-    false,
-    {
-      id: 'ember-test-helpers.rendering-context.jquery-element',
-      until: '2.0.0',
-      // @ts-ignore
-      url: 'https://emberjs.com/deprecations/v3.x#toc_jquery-apis',
-    }
-  );
-
-  let { element } = getContext() as RenderingTestContext;
-
-  // emulates Ember internal behavor of `this.$` in a component
-  // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-  return selector ? global.jQuery(selector, element) : global.jQuery(element);
 }
 
 let templateId = 0;
@@ -219,15 +194,6 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
         value: clearRender,
         writable: false,
       });
-
-      if (global.jQuery) {
-        Object.defineProperty(context, '$', {
-          configurable: true,
-          enumerable: true,
-          value: jQuerySelector,
-          writable: false,
-        });
-      }
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
       // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
