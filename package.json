@@ -37,7 +37,7 @@
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.2",
     "ember-cli-babel": "^7.7.3",
-    "ember-cli-htmlbars-inline-precompile": "^2.1.0",
+    "ember-cli-htmlbars": "^4.3.1",
     "ember-test-waiters": "^2.0.1"
   },
   "devDependencies": {
@@ -52,7 +52,6 @@
     "documentation": "^12.3.0",
     "ember-cli": "~3.17.0",
     "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-htmlbars": "^4.3.1",
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-pretender": "^3.1.1",
     "ember-cli-shims": "^1.2.0",
