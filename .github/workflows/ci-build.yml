@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 10.x
       - run: yarn install --frozen-lockfile
-      - run: yarn lint:js
+      - run: yarn lint
       - run: yarn test
 
   floating-dependencies:
