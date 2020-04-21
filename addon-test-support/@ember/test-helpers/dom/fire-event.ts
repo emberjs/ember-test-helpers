@@ -1,5 +1,4 @@
 import { assign } from '@ember/polyfills';
-import { deprecate } from '@ember/application/deprecations';
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
 
@@ -250,20 +249,12 @@ function buildFileEvent(
   options: any = {}
 ): Event {
   let event = buildBasicEvent(type);
-  let files;
-  if (Array.isArray(options)) {
-    deprecate(
-      'Passing the `options` param as an array to `triggerEvent` for file inputs is deprecated. Please pass an object with a key `files` containing the array instead.',
-      false,
-      {
-        id: 'ember-test-helpers.trigger-event.options-blob-array',
-        until: '2.0.0',
-      }
-    );
+  let files = options.files;
 
-    files = options;
-  } else {
-    files = options.files;
+  if (Array.isArray(options)) {
+    throw new Error(
+      'Please pass an object with a files array to `triggerEvent` instead of passing the `options` param as an array to.'
+    );
   }
 
   if (Array.isArray(files)) {
