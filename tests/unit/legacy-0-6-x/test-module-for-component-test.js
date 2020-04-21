@@ -14,7 +14,7 @@ import hasEmberVersion from 'ember-test-helpers/has-ember-version';
 import { setResolverRegistry } from '../../helpers/resolver';
 import qunitModuleFor from '../../helpers/qunit-module-for';
 import hasjQuery from '../../helpers/has-jquery';
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 import { settled, triggerEvent, focus, blur } from '@ember/test-helpers';
 import { htmlSafe } from '@ember/string';
 
