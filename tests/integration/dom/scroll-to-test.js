@@ -107,8 +107,8 @@ module('DOM Helper: scroll-to', function (hooks) {
     assert.rejects(scrollTo('.container2', 0, 0), /Element not found when calling/);
   });
 
-  test('It throws an error if the target is not an element', async function (assert) {
-    assert.rejects(scrollTo(document, 0, 0), /"target" must be an element/);
-    assert.rejects(scrollTo(window, 0, 0), /"target" must be an element/);
+  test('It throws an error if the target is not an element or a selector string', async function (assert) {
+    assert.rejects(scrollTo(document, 0, 0), /Must use an element or a selector string/);
+    assert.rejects(scrollTo(window, 0, 0), /Must use an element or a selector string/);
   });
 });

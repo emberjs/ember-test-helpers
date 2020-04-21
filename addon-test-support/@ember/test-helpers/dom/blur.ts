@@ -10,7 +10,7 @@ import isFocusable from './-is-focusable';
   @private
   @param {Element} element the element to trigger events on
 */
-export function __blur__(element: HTMLElement | Element | Document | SVGElement): void {
+export function __blur__(element: HTMLElement | Element | SVGElement): void {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }

@@ -13,7 +13,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
   @param {Element} element the element to click on
   @param {Object} options the options to be merged into the mouse events
 */
-export function __click__(element: Element | Document, options: MouseEventInit): void {
+export function __click__(element: Element, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {

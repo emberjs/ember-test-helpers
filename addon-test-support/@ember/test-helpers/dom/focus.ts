@@ -10,7 +10,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
   @private
   @param {Element} element the element to trigger events on
 */
-export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
+export function __focus__(element: HTMLElement | Element | SVGElement): void {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }

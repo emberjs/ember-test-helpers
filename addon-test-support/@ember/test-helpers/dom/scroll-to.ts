@@ -2,7 +2,6 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
-import { isElement } from './-target';
 
 /**
   Scrolls DOM element or selector to the given coordinates.
@@ -37,12 +36,6 @@ export default function scrollTo(
     let element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`scrollTo('${target}')\`.`);
-    }
-
-    if (!isElement(element)) {
-      throw new Error(
-        `"target" must be an element, but was a ${element.nodeType} when calling \`scrollTo('${target}')\`.`
-      );
     }
 
     element.scrollTop = y;

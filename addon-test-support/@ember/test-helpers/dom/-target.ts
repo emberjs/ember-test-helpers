@@ -1,4 +1,4 @@
-type Target = string | Element | Document | Window;
+type Target = string | Element;
 
 export default Target;
 

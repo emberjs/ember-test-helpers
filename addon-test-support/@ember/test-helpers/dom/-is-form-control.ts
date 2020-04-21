@@ -1,5 +1,3 @@
-import { isDocument } from './-target';
-
 const FORM_CONTROL_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
 
 export type FormControl =
@@ -13,9 +11,8 @@ export type FormControl =
   @param {Element} element the element to check
   @returns {boolean} `true` when the element is a form control, `false` otherwise
 */
-export default function isFormControl(element: Element | Document): element is FormControl {
+export default function isFormControl(element: Element): element is FormControl {
   return (
-    !isDocument(element) &&
     FORM_CONTROL_TAGS.indexOf(element.tagName) > -1 &&
     (element as HTMLInputElement).type !== 'hidden'
   );

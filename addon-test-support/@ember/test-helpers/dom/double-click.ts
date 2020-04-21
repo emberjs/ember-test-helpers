@@ -13,7 +13,7 @@ import isFormControl from './-is-form-control';
   @param {Element} element the element to double-click on
   @param {Object} options the options to be merged into the mouse events
 */
-export function __doubleClick__(element: Element | Document, options: MouseEventInit): void {
+export function __doubleClick__(element: Element, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
