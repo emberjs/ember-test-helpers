@@ -130,19 +130,35 @@ module('DOM Helper: doubleClick', function (hooks) {
       );
     });
 
-    test('double-clicking passes options through to mouse events', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+    test('double-clicking passes default options through to mouse events', async function (assert) {
+      element = buildInstrumentedElement('div', ['button', 'buttons']);
+
+      await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown 0 1',
+        'mouseup 0 1',
+        'click 0 1',
+        'mousedown 0 1',
+        'mouseup 0 1',
+        'click 0 1',
+        'dblclick 0 1',
+      ]);
+    });
+
+    test('double-clicking passes options through to mouse events and merges with default options', async function (assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button', 'buttons']);
 
       await doubleClick(element, { clientX: 13, clientY: 17, button: 1 });
 
       assert.verifySteps([
-        'mousedown 13 17 1',
-        'mouseup 13 17 1',
-        'click 13 17 1',
-        'mousedown 13 17 1',
-        'mouseup 13 17 1',
-        'click 13 17 1',
-        'dblclick 13 17 1',
+        'mousedown 13 17 1 1',
+        'mouseup 13 17 1 1',
+        'click 13 17 1 1',
+        'mousedown 13 17 1 1',
+        'mouseup 13 17 1 1',
+        'click 13 17 1 1',
+        'dblclick 13 17 1 1',
       ]);
     });
   });

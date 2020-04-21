@@ -96,12 +96,20 @@ module('DOM Helper: click', function (hooks) {
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
 
-    test('clicking passes options through to mouse events', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+    test('clicking passes default options through to mouse events', async function (assert) {
+      element = buildInstrumentedElement('div', ['buttons', 'button']);
+
+      await click(element);
+
+      assert.verifySteps(['mousedown 1 0', 'mouseup 1 0', 'click 1 0']);
+    });
+
+    test('clicking passes options through to mouse events and merges with default options', async function (assert) {
+      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button', 'buttons']);
 
       await click(element, { clientX: 13, clientY: 17, button: 2 });
 
-      assert.verifySteps(['mousedown 13 17 2', 'mouseup 13 17 2', 'click 13 17 2']);
+      assert.verifySteps(['mousedown 13 17 2 1', 'mouseup 13 17 2 1', 'click 13 17 2 1']);
     });
 
     test('clicking accepts modifiers', async function (assert) {
