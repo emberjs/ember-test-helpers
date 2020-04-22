@@ -18,7 +18,7 @@ module.exports = {
       files: ['.eslintrc.js', '.prettierrc.js', 'index.js', 'config/ember-try.js', 'scripts/**'],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
-        ecmaVersion: 2015,
+        ecmaVersion: 2017,
         sourceType: 'script',
       },
       env: {
@@ -47,7 +47,7 @@ module.exports = {
       },
     },
     {
-      files: ['index.js', 'addon-test-support/**/*.[jt]s', 'config/**/*.js'],
+      files: ['addon-test-support/**/*.[jt]s'],
       plugins: ['disable-features'],
       rules: {
         'disable-features/disable-async-await': 'error',
