@@ -242,10 +242,25 @@ module('setupRenderingContext', function (hooks) {
     test('can pass function to be used as a "closure action"', async function (assert) {
       assert.expect(2);
 
+      this.owner.register('component:x-foo', Component.extend());
       this.owner.register(
         'template:components/x-foo',
         hbs`<button onclick={{action clicked}}>Click me!</button>`
       );
+
+      this.set('clicked', () => assert.ok(true, 'action was triggered'));
+      await this.render(hbs`{{x-foo clicked=clicked}}`);
+
+      assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+      await click(this.element.querySelector('button'));
+    });
+
+    test('can pass function to be used as a "closure action" to a template only component', async function (assert) {
+      assert.expect(2);
+
+      let template = hbs`<button onclick={{action @clicked}}>Click me!</button>`;
+
+      this.owner.register('template:components/x-foo', template);
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
       await this.render(hbs`{{x-foo clicked=clicked}}`);
