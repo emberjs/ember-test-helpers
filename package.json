@@ -97,6 +97,9 @@
       "internal": ":house: Internal"
     }
   },
+  "ember": {
+    "edition": "octane"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
