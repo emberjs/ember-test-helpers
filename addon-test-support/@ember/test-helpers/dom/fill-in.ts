@@ -51,17 +51,12 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
       }
 
-      __focus__(element);
-
-      // if (isMaxLengthConstrained(element) && text.length > element.getAttribute('maxlength'))
-      //   throw
-      // remove else block
-      // should this be before the focus?
-      if (isMaxLengthConstrained(element)) {
-        element.value = text.slice(0, element.getAttribute('maxlength'));
-      } else {
-        element.value = text;
+      const maxlength = element.getAttribute('maxlength');
+      if (isMaxLengthConstrained(element) && text && maxlength && text.length > maxlength) {
+        throw new Error(`Can not \`fillIn\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`);
       }
+
+      __focus__(element);
 
       element.value = text;
     } else if (isContentEditable(element)) {

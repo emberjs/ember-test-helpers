@@ -225,13 +225,9 @@ module('DOM Helper: fillIn', function (hooks) {
 
     await setupContext(context);
 
-    await fillIn(element, tooLongString);
-
-    assert.verifySteps(clickSteps);
-    assert.equal(
-      element.value,
-      maxLengthString,
-      `fillIn respects input attribute [maxlength=${maxLengthString.length}]`
+    assert.rejects(
+      fillIn(element, tooLongString),
+      new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
     );
   });
 });
