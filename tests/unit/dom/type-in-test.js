@@ -209,25 +209,37 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.equal(runcount, 1, 'debounced function only called once');
   });
 
-  test('filling an input with a maxlength', async function(assert) {
+  test('typing in an input with a maxlength with suitable value', async function (assert) {
     element = buildInstrumentedElement('input');
-    const maxLengthString = 'f';
-    const tooLongString = maxLengthString.concat('oo');
+    const maxLengthString = 'foo';
     element.setAttribute('maxlength', maxLengthString.length);
 
     await setupContext(context);
 
-    await typeIn(`#${element.id}`, tooLongString);
-    // only the first 'input' event is fired since the input is truncated
-    const truncatedEvents = expectedEvents.filter((type, index) => {
-      return type !== 'input' || index === 4;
-    });
+    await typeIn(element, maxLengthString);
 
-    assert.verifySteps(truncatedEvents);
+    assert.verifySteps(expectedEvents);
     assert.equal(
       element.value,
       maxLengthString,
       `typeIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('typing in an input with a maxlength with too long value', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('o');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await assert.rejects(
+      typeIn(element, tooLongString).finally(() => {
+        // should throw before the second input event
+        assert.verifySteps(expectedEvents.slice(0, 8));
+      }),
+      new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
     );
   });
 });

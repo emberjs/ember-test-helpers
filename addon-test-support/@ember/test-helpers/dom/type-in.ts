@@ -96,17 +96,20 @@ function keyEntry(element: FormControl, character: string): () => void {
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
         const newValue = element.value + character;
+        const maxlength = element.getAttribute('maxlength');
         const shouldTruncate =
           isMaxLengthConstrained(element) &&
-          newValue.length > Number(element.getAttribute('maxlength'));
-        // if (shouldTruncate)
-        //    throw
-        // else
-        //   set value, fire input event
-        if (!shouldTruncate) {
-          element.value = newValue;
-          fireEvent(element, 'input');
+          maxlength &&
+          newValue &&
+          newValue.length > Number(maxlength);
+        if (shouldTruncate) {
+          throw new Error(
+            `Can not \`typeIn\` with text: '${newValue}' that exceeds maxlength: '${maxlength}'.`
+          );
         }
+
+        element.value = newValue;
+        fireEvent(element, 'input');
       })
       .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));
   };

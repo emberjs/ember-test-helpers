@@ -200,7 +200,7 @@ module('DOM Helper: fillIn', function (hooks) {
     assert.equal(element.value, '');
   });
 
-  test('filling an input with a maxlength with suitable value', async function(assert) {
+  test('filling an input with a maxlength with suitable value', async function (assert) {
     element = buildInstrumentedElement('input');
     const maxLengthString = 'f';
     element.setAttribute('maxlength', maxLengthString.length);
@@ -217,7 +217,7 @@ module('DOM Helper: fillIn', function (hooks) {
     );
   });
 
-  test('filling an input with a maxlength with too long value', async function(assert) {
+  test('filling an input with a maxlength with too long value', async function (assert) {
     element = buildInstrumentedElement('input');
     const maxLengthString = 'f';
     const tooLongString = maxLengthString.concat('oo');

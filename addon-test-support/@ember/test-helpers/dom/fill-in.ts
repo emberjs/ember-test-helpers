@@ -52,8 +52,10 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       }
 
       const maxlength = element.getAttribute('maxlength');
-      if (isMaxLengthConstrained(element) && text && maxlength && text.length > maxlength) {
-        throw new Error(`Can not \`fillIn\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`);
+      if (isMaxLengthConstrained(element) && maxlength && text && text.length > Number(maxlength)) {
+        throw new Error(
+          `Can not \`fillIn\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`
+        );
       }
 
       __focus__(element);
