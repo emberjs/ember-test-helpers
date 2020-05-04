@@ -5,7 +5,7 @@ import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
-import isMaxLengthConstrained from './-is-maxlength-constrained';
+import guardForMaxlength from './-guard-for-maxlength';
 import Target from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
@@ -96,17 +96,7 @@ function keyEntry(element: FormControl, character: string): () => void {
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
         const newValue = element.value + character;
-        const maxlength = element.getAttribute('maxlength');
-        const shouldTruncate =
-          isMaxLengthConstrained(element) &&
-          maxlength &&
-          newValue &&
-          newValue.length > Number(maxlength);
-        if (shouldTruncate) {
-          throw new Error(
-            `Can not \`typeIn\` with text: '${newValue}' that exceeds maxlength: '${maxlength}'.`
-          );
-        }
+        guardForMaxlength(element, newValue, 'typeIn');
 
         element.value = newValue;
         fireEvent(element, 'input');

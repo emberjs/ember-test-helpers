@@ -1,6 +1,6 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
-import isMaxLengthConstrained from './-is-maxlength-constrained';
+import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
@@ -51,12 +51,7 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
       }
 
-      const maxlength = element.getAttribute('maxlength');
-      if (isMaxLengthConstrained(element) && maxlength && text && text.length > Number(maxlength)) {
-        throw new Error(
-          `Can not \`fillIn\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`
-        );
-      }
+      guardForMaxlength(element, text, 'fillIn');
 
       __focus__(element);
 
