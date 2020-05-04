@@ -236,8 +236,9 @@ module('DOM Helper: typeIn', function (hooks) {
 
     await assert.rejects(
       typeIn(element, tooLongString).finally(() => {
-        // should throw before the second input event
-        assert.verifySteps(expectedEvents.slice(0, 8));
+        // should throw before the second input event (or second keyup for IE)
+        const expectedNumberOfSteps = isIE11 ? 6 : 8;
+        assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
       }),
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
     );
