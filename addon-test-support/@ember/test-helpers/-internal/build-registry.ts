@@ -1,11 +1,9 @@
-/* globals global, requirejs */
-
 import Resolver from '@ember/application/resolver';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
 
-import require from 'require';
+import require, { has } from 'require';
 import Ember from 'ember';
 
 /**
@@ -91,7 +89,7 @@ export default function (resolver: Resolver) {
 
   exposeRegistryMethodsWithoutDeprecations(container);
 
-  if ((requirejs as any).entries['ember-data/setup-container']) {
+  if (has('ember-data/setup-container')) {
     // ember-data is a proper ember-cli addon since 2.3; if no 'import
     // 'ember-data'' is present somewhere in the tests, there is also no `DS`
     // available on the globalContext and hence ember-data wouldn't be setup
