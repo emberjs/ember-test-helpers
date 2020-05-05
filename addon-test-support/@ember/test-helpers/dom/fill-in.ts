@@ -1,5 +1,6 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
+import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
@@ -50,6 +51,8 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
       }
 
+      guardForMaxlength(element, text, 'fillIn');
+
       __focus__(element);
 
       element.value = text;
@@ -60,7 +63,6 @@ export default function fillIn(target: Target, text: string): Promise<void> {
     } else {
       throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
     }
-
     fireEvent(element, 'input');
     fireEvent(element, 'change');
 

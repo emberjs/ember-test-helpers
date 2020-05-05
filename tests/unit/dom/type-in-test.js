@@ -208,4 +208,39 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.verifySteps(expectedEvents);
     assert.equal(runcount, 1, 'debounced function only called once');
   });
+
+  test('typing in an input with a maxlength with suitable value', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'foo';
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await typeIn(element, maxLengthString);
+
+    assert.verifySteps(expectedEvents);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `typeIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('typing in an input with a maxlength with too long value', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('o');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await assert.rejects(
+      typeIn(element, tooLongString).finally(() => {
+        // should throw before the second input event (or second keyup for IE)
+        const expectedNumberOfSteps = isIE11 ? 6 : 8;
+        assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
+      }),
+      new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
+    );
+  });
 });
