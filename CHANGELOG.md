@@ -1,3 +1,12 @@
+## v2.0.0-beta.2 (2020-05-06)
+
+#### :house: Internal
+* [#849](https://github.com/emberjs/ember-test-helpers/pull/849) Migrate from `requirejs.entries` to `has`. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.0.0-beta.1 (2020-05-05)
 
 #### :boom: Breaking Change
