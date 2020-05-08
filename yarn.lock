@@ -2445,10 +2445,10 @@ babel-plugin-filter-imports@^4.0.0:
     "@babel/types" "^7.7.2"
     lodash "^4.17.15"
 
-babel-plugin-htmlbars-inline-precompile@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-4.0.0.tgz#3589f1046fa05c8323ca818d68faadc506671318"
-  integrity sha512-Pqknck27Hfm4uXyc1KDDs0OHlygqXe91UQcKRkHlYtKUxZROg01th+soTaBT9g2w72XGRVQzel7Aq2yjezLmFw==
+babel-plugin-htmlbars-inline-precompile@^4.0.1:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-4.1.0.tgz#11796422e65d900a968481fa3fb37e0425c928dd"
+  integrity sha512-gM+UP6HO5RlGiOQzJVGRUHgAsefJeOdh5Pn+rZRS6Tr1MnEqVgTJ2G2ywnl+G+Zcuec18fz7XA+O2tHhsmct6w==
 
 babel-plugin-module-resolver@^3.1.1:
   version "3.2.0"
@@ -4766,13 +4766,13 @@ ember-cli-get-component-path-option@^1.0.0:
   resolved "https://registry.yarnpkg.com/ember-cli-get-component-path-option/-/ember-cli-get-component-path-option-1.0.0.tgz#0d7b595559e2f9050abed804f1d8eff1b08bc771"
   integrity sha1-DXtZVVni+QUKvtgE8djv8bCLx3E=
 
-ember-cli-htmlbars@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-5.1.0.tgz#f7ef64fe22b3f258d3e1d704f6b1b04e0917e371"
-  integrity sha512-t02GVC/EbyC/I3GKfmxQ6sA5HCVubrHUfdJmNDnyqZ9Yh64TiXinw+8Ve5Sj/lvpKxp6VU7IwCthGpNQRWZrtA==
+ember-cli-htmlbars@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-5.1.1.tgz#9a011de4e5bc5e6b70a85fe4c2c129d36e396ca3"
+  integrity sha512-JpyjYXVabWQ/9CkiR1+J/Dm7yXpm5lB7e0LSzxesTO3apOtcodDUxyzEC+e3D/tjHD7si9h8WGYrFbEpfQtdUw==
   dependencies:
     "@ember/edition-utils" "^1.2.0"
-    babel-plugin-htmlbars-inline-precompile "^4.0.0"
+    babel-plugin-htmlbars-inline-precompile "^4.0.1"
     broccoli-debug "^0.6.5"
     broccoli-persistent-filter "^2.3.1"
     broccoli-plugin "^4.0.3"
