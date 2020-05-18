@@ -11,10 +11,6 @@ if (isIE11) {
 }
 
 module('DOM Helper: select', function(hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function() {
@@ -72,7 +68,7 @@ module('DOM Helper: select', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(select(element, option), /`select` is only usable on a HTMLSelectElement/);
+    assert.rejects(select(element, option), `Element is not a HTMLSelectElement when calling \`select\(${element}\)\``);
   });
 
   test('select with element that is disabled', async function(assert) {
@@ -82,7 +78,7 @@ module('DOM Helper: select', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(select(element, option), /Element is disabled/);
+    assert.rejects(select(element, option), `Element is disabled when calling \`select(${element})\`./`);
   });
 
   test('select | multiple: false - options.length > 1', async function(assert) {
@@ -94,7 +90,7 @@ module('DOM Helper: select', function(hooks) {
 
     assert.rejects(
       select(element, options),
-      /HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed/
+      `HTMLSelectElement \`multiple\` attribute is set to \`false\` but multiple options have been passed when calling \`select(${element})\``
     );
   });
 

@@ -32,7 +32,7 @@ import Target from './-target';
 export default function select(
   target: Target,
   options: string | string[],
-  keepPreviouslySelected?: boolean
+  keepPreviouslySelected = false
 ): Promise<void> {
   return nextTickPromise().then(() => {
     if (!target) {
@@ -49,18 +49,18 @@ export default function select(
     }
 
     if (!isSelectElement(element)) {
-      throw new Error('`select` is only usable on a HTMLSelectElement');
+      throw new Error(`Element is not a HTMLSelectElement when calling \`select('${target}')\`.`);
     }
 
     if (element.disabled) {
-      throw new Error('Element is disabled');
+      throw new Error(`Element is disabled when calling \`select('${target}')\`.`);
     }
 
     options = Array.isArray(options) ? options : [options];
 
     if (!element.multiple && options.length > 1) {
       throw new Error(
-        'HTMLSelectElement `multiple` attribute is set to `false` but multiple options have been passed'
+        `HTMLSelectElement \`multiple\` attribute is set to \`false\` but multiple options were passed when calling \`select('${target}')\`.`
       );
     }
 
