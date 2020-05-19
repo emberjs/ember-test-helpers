@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { select, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isIE11 } from '../../helpers/browser-detect';
 
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
@@ -68,7 +67,10 @@ module('DOM Helper: select', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(select(element, option), `Element is not a HTMLSelectElement when calling \`select\(${element}\)\``);
+    assert.rejects(
+      select(element, option),
+      `Element is not a HTMLSelectElement when calling \`select(${element})\``
+    );
   });
 
   test('select with element that is disabled', async function(assert) {
@@ -78,7 +80,10 @@ module('DOM Helper: select', function(hooks) {
 
     await setupContext(context);
 
-    assert.rejects(select(element, option), `Element is disabled when calling \`select(${element})\`./`);
+    assert.rejects(
+      select(element, option),
+      `Element is disabled when calling \`select(${element})\`./`
+    );
   });
 
   test('select | multiple: false - options.length > 1', async function(assert) {
