@@ -3,11 +3,12 @@ import settled from '../settled';
 import getElement from './-get-element';
 import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
-import isFocusable from './-is-focusable';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
+import guardForMaxlength from './-guard-for-maxlength';
 import Target from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 export interface Options {
   delay?: number;
@@ -35,9 +36,11 @@ export interface Options {
  *   Emulating typing in an input using `typeIn`
  * </caption>
  *
- * typeIn('hello world');
+ * typeIn('input', 'hello world');
  */
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
+  log('typeIn', target, text);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `typeIn`.');
@@ -55,11 +58,17 @@ export default function typeIn(target: Target, text: string, options: Options = 
       throw new Error('Must provide `text` when calling `typeIn`.');
     }
 
-    let { delay = 50 } = options;
-
-    if (isFocusable(element)) {
-      __focus__(element);
+    if (element.disabled) {
+      throw new Error(`Can not \`typeIn\` disabled '${target}'.`);
     }
+
+    if ('readOnly' in element && element.readOnly) {
+      throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
+    }
+
+    __focus__(element);
+
+    let { delay = 50 } = options;
 
     return fillOut(element, text, delay)
       .then(() => fireEvent(element, 'change'))
@@ -81,12 +90,15 @@ function keyEntry(element: FormControl, character: string): () => void {
   let options = { shiftKey };
   let characterKey = character.toUpperCase();
 
-  return function() {
+  return function () {
     return nextTickPromise()
       .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
-        element.value = element.value + character;
+        const newValue = element.value + character;
+        guardForMaxlength(element, newValue, 'typeIn');
+
+        element.value = newValue;
         fireEvent(element, 'input');
       })
       .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));

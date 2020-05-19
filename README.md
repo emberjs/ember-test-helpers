@@ -1,9 +1,16 @@
 @ember/test-helpers
 ==============================================================================
 
-[![Build Status](https://secure.travis-ci.org/emberjs/ember-test-helpers.svg?branch=master)](http://travis-ci.org/emberjs/ember-test-helpers)
-
 A test-framework-agnostic set of helpers for testing Ember.js applications
+
+
+Compatibility
+------------------------------------------------------------------------------
+
+- Ember 3.8 or above
+- Ember CLI 3.8 or above
+- Node.js 10 or above
+
 
 Installation
 ------------------------------------------------------------------------------

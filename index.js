@@ -6,19 +6,6 @@ const debugTree = BroccoliDebug.buildDebugCallback('ember-test-helpers');
 module.exports = {
   name: require('./package').name,
 
-  init() {
-    this._super.init && this._super.init.apply(this, arguments);
-
-    // ensure `this.options` is setup properly, this is required by
-    // ember-cli-htmlbars-inline-precompile so that it properly registers
-    // itself with _our_ instance of ember-cli-babel and not the host
-    // applications instance
-    //
-    // newer versions of ember-cli (2.12+) define `this.options` for us,
-    // however older versions (e.g. 2.8) do not...
-    this.options = this.options || {};
-  },
-
   included() {
     this._super.included.apply(this, arguments);
 
@@ -33,7 +20,7 @@ module.exports = {
     let input = debugTree(tree, 'addon-test-support:input');
 
     let compiler = this.project._incrementalTsCompiler;
-    if (compiler) {
+    if (this.isDevelopingAddon() && compiler) {
       // eslint-disable-next-line node/no-unpublished-require
       let TypescriptOutput = require('ember-cli-typescript/js/lib/incremental-typescript-compiler/typescript-output-plugin');
       // eslint-disable-next-line node/no-unpublished-require

@@ -10,18 +10,18 @@ if (isIE11) {
   clickSteps = ['focusin', 'input', 'change', 'focus'];
 }
 
-module('DOM Helper: fillIn', function(hooks) {
+module('DOM Helper: fillIn', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
 
   let context, element;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     context = {};
   });
 
-  hooks.afterEach(async function() {
+  hooks.afterEach(async function () {
     element.setAttribute('data-skip-steps', true);
 
     if (element) {
@@ -34,7 +34,7 @@ module('DOM Helper: fillIn', function(hooks) {
     document.getElementById('ember-testing').innerHTML = '';
   });
 
-  test('filling in a non-fillable element', async function(assert) {
+  test('filling in a non-fillable element', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
@@ -44,7 +44,46 @@ module('DOM Helper: fillIn', function(hooks) {
     );
   });
 
-  test('rejects if selector is not found', async function(assert) {
+  test('filling in a disabled element', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.dataset.testDisabled = '';
+    element.setAttribute('disabled', true);
+
+    await setupContext(context);
+
+    assert.rejects(
+      fillIn(`[data-test-disabled]`, 'foo'),
+      new Error("Can not `fillIn` disabled '[data-test-disabled]'."),
+      'renders user selector'
+    );
+
+    assert.rejects(
+      fillIn(element, 'foo'),
+      new Error("Can not `fillIn` disabled '[object HTMLInputElement]'."),
+      'renders Element instance'
+    );
+  });
+
+  test('filling in a readonly element', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.dataset.testDisabled = '';
+    element.setAttribute('readonly', true);
+
+    await setupContext(context);
+
+    assert.rejects(
+      fillIn(`[data-test-disabled]`, 'foo'),
+      new Error("Can not `fillIn` readonly '[data-test-disabled]'.")
+    );
+
+    assert.rejects(
+      fillIn(element, 'foo'),
+      new Error("Can not `fillIn` readonly '[object HTMLInputElement]'."),
+      'renders Element instance'
+    );
+  });
+
+  test('rejects if selector is not found', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
@@ -55,13 +94,13 @@ module('DOM Helper: fillIn', function(hooks) {
     );
   });
 
-  test('rejects if text to fill in is not provided', async function(assert) {
+  test('rejects if text to fill in is not provided', async function (assert) {
     element = buildInstrumentedElement('input');
 
     assert.rejects(fillIn(element), /Must provide `text` when calling `fillIn`/);
   });
 
-  test('filling an input via selector without context set', async function(assert) {
+  test('filling an input via selector without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     assert.rejects(
@@ -70,7 +109,7 @@ module('DOM Helper: fillIn', function(hooks) {
     );
   });
 
-  test('does not run sync', async function(assert) {
+  test('does not run sync', async function (assert) {
     element = buildInstrumentedElement('input');
 
     let promise = fillIn(element, 'foo');
@@ -84,7 +123,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling a textarea via selector with context set', async function(assert) {
+  test('filling a textarea via selector with context set', async function (assert) {
     element = buildInstrumentedElement('textarea');
 
     await setupContext(context);
@@ -95,7 +134,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling an input via element with context set', async function(assert) {
+  test('filling an input via element with context set', async function (assert) {
     element = buildInstrumentedElement('textarea');
 
     await setupContext(context);
@@ -106,7 +145,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling an input via selector with context set', async function(assert) {
+  test('filling an input via selector with context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await setupContext(context);
@@ -117,7 +156,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling an input via element with context set', async function(assert) {
+  test('filling an input via element with context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await setupContext(context);
@@ -128,7 +167,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling a content editable div via element with context set', async function(assert) {
+  test('filling a content editable div via element with context set', async function (assert) {
     element = buildInstrumentedElement('div');
     element.setAttribute('contenteditable', '');
 
@@ -140,7 +179,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.innerHTML, 'foo');
   });
 
-  test('filling an input via element without context set', async function(assert) {
+  test('filling an input via element without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await fillIn(element, 'foo');
@@ -150,7 +189,7 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling an input via selector with empty string', async function(assert) {
+  test('filling an input via selector with empty string', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await setupContext(context);
@@ -159,5 +198,36 @@ module('DOM Helper: fillIn', function(hooks) {
     assert.verifySteps(clickSteps);
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
     assert.equal(element.value, '');
+  });
+
+  test('filling an input with a maxlength with suitable value', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await fillIn(element, maxLengthString);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `fillIn respects input attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('filling an input with a maxlength with too long value', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('oo');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    assert.rejects(
+      fillIn(element, tooLongString),
+      new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
+    );
   });
 });

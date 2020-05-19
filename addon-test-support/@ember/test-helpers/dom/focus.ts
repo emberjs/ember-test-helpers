@@ -4,12 +4,17 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   @private
   @param {Element} element the element to trigger events on
 */
-export function __focus__(element: HTMLElement | SVGElement): void {
+export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
+  if (!isFocusable(element)) {
+    throw new Error(`${element} is not focusable`);
+  }
+
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
@@ -54,6 +59,8 @@ export function __focus__(element: HTMLElement | SVGElement): void {
   focus('input');
 */
 export default function focus(target: Target): Promise<void> {
+  log('focus', target);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `focus`.');
@@ -62,10 +69,6 @@ export default function focus(target: Target): Promise<void> {
     let element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`focus('${target}')\`.`);
-    }
-
-    if (!isFocusable(element)) {
-      throw new Error(`${target} is not focusable`);
     }
 
     __focus__(element);

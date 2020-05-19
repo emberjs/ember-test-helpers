@@ -1,10 +1,12 @@
 import getElement from './-get-element';
 import isFormControl from './-is-form-control';
+import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
 import { nextTickPromise } from '../-utils';
-import Target from './-target';
+import Target, { isContentEditable } from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
 
 /**
   Fill the provided text into the `value` property (or set `.innerHTML` when
@@ -24,32 +26,43 @@ import Target from './-target';
   fillIn('input', 'hello world');
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
+  log('fillIn', target, text);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `fillIn`.');
     }
 
-    let element = getElement(target) as any;
+    let element = getElement(target) as Element | HTMLElement;
     if (!element) {
       throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
-    }
-    let isControl = isFormControl(element);
-    if (!isControl && !element.isContentEditable) {
-      throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
     }
 
     if (typeof text === 'undefined' || text === null) {
       throw new Error('Must provide `text` when calling `fillIn`.');
     }
 
-    __focus__(element);
+    if (isFormControl(element)) {
+      if (element.disabled) {
+        throw new Error(`Can not \`fillIn\` disabled '${target}'.`);
+      }
 
-    if (isControl) {
+      if ('readOnly' in element && element.readOnly) {
+        throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
+      }
+
+      guardForMaxlength(element, text, 'fillIn');
+
+      __focus__(element);
+
       element.value = text;
-    } else {
-      element.innerHTML = text;
-    }
+    } else if (isContentEditable(element)) {
+      __focus__(element);
 
+      element.innerHTML = text;
+    } else {
+      throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
+    }
     fireEvent(element, 'input');
     fireEvent(element, 'change');
 

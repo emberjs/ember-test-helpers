@@ -1,15 +1,19 @@
+import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
+import { DEFAULT_CLICK_OPTIONS } from './click';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
+import isFormControl from './-is-form-control';
 
 /**
   @private
   @param {Element} element the element to double-click on
-  @param {Object} options the options to be merged into the mouse events
+  @param {MouseEventInit} options the options to be merged into the mouse events
 */
 export function __doubleClick__(element: Element | Document, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
@@ -62,7 +66,7 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
 
   @public
   @param {string|Element} target the element or selector to double-click on
-  @param {Object} options the options to be merged into the mouse events
+  @param {MouseEventInit} _options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 
   @example
@@ -79,7 +83,11 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
 
   doubleClick('button', { shiftKey: true });
 */
-export default function doubleClick(target: Target, options: MouseEventInit = {}): Promise<void> {
+export default function doubleClick(target: Target, _options: MouseEventInit = {}): Promise<void> {
+  log('doubleClick', target);
+
+  let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `doubleClick`.');
@@ -90,7 +98,12 @@ export default function doubleClick(target: Target, options: MouseEventInit = {}
       throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
     }
 
+    if (isFormControl(element) && element.disabled) {
+      throw new Error(`Can not \`doubleClick\` disabled ${element}`);
+    }
+
     __doubleClick__(element, options);
+
     return settled();
   });
 }

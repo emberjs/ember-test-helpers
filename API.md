@@ -371,7 +371,7 @@ Emulating pressing the `ENTER` key on a button using `triggerKeyEvent`
 triggerKeyEvent('button', 'keydown', 'Enter');
 ```
 
-Returns **[Promise][54]&lt;void>** resolves when the application is settled
+Returns **[Promise][54]&lt;void>** resolves when the application is settled unless awaitSettled is false
 
 ### typeIn
 
@@ -501,6 +501,15 @@ interim DOM states (e.g. loading states, pending promises, etc).
     -   `options.timeout` **[number][62]** the time to wait (in ms) for a match (optional, default `1000`)
     -   `options.count` **[number][62]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
 
+#### Examples
+
+Waiting until a selector is rendered:
+
+
+```javascript
+await waitFor('.my-selector', { timeout: 2000 })
+```
+
 Returns **[Promise][54]&lt;([Element][53] \| [Array][64]&lt;[Element][53]>)>** resolves when the element(s) appear on the page
 
 ### waitUntil
@@ -516,6 +525,17 @@ while _not_ settled (e.g. "loading" or "pending" states).
 -   `options` **[Object][56]?** options used to override defaults (optional, default `{}`)
     -   `options.timeout` **[number][62]** the maximum amount of time to wait (optional, default `1000`)
     -   `options.timeoutMessage` **[string][52]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
+
+#### Examples
+
+Waiting until a selected element displays text:
+
+
+```javascript
+await waitUntil(function() {
+return find('.my-selector').textContent.includes('something')
+}, { timeout: 2000 })
+```
 
 Returns **[Promise][54]** resolves with the callback value when it returns a truthy value
 

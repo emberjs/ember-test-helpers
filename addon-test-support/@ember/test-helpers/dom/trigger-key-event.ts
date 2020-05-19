@@ -5,6 +5,8 @@ import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
 import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
+import isFormControl from './-is-form-control';
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -183,6 +185,8 @@ export default function triggerKeyEvent(
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
+  log('triggerKeyEvent', target, eventType, key);
+
   return nextTickPromise().then(() => {
     if (!target) {
       throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
@@ -202,6 +206,10 @@ export default function triggerKeyEvent(
       throw new Error(
         `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`
       );
+    }
+
+    if (isFormControl(element) && element.disabled) {
+      throw new Error(`Can not \`triggerKeyEvent\` on disabled ${element}`);
     }
 
     __triggerKeyEvent__(element, eventType, key, modifiers);
