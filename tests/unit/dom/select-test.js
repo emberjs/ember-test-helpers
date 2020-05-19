@@ -9,14 +9,14 @@ if (isIE11) {
   selectSteps = ['focusin', 'input', 'change', 'focus'];
 }
 
-module('DOM Helper: select', function(hooks) {
+module('DOM Helper: select', function (hooks) {
   let context, element;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     context = {};
   });
 
-  hooks.afterEach(async function() {
+  hooks.afterEach(async function () {
     if (element) {
       element.setAttribute('data-skip-steps', true);
       element.parentNode.removeChild(element);
@@ -28,12 +28,12 @@ module('DOM Helper: select', function(hooks) {
     document.getElementById('ember-testing').innerHTML = '';
   });
 
-  test('select without target', async function(assert) {
+  test('select without target', async function (assert) {
     await setupContext(context);
     assert.rejects(select(), /Must pass an element or selector to `select`./);
   });
 
-  test('select without options', async function(assert) {
+  test('select without options', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
@@ -48,7 +48,7 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select with unfindable selector ', async function(assert) {
+  test('select with unfindable selector ', async function (assert) {
     element = buildInstrumentedElement('div');
     const option = 'example';
 
@@ -60,7 +60,7 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select with element that is not a HTMLSelectElement', async function(assert) {
+  test('select with element that is not a HTMLSelectElement', async function (assert) {
     element = buildInstrumentedElement('input');
 
     const option = 'example';
@@ -73,7 +73,7 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select with element that is disabled', async function(assert) {
+  test('select with element that is disabled', async function (assert) {
     element = buildInstrumentedElement('select');
     element.disabled = true;
     const option = 'example';
@@ -86,7 +86,7 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select | multiple: false - options.length > 1', async function(assert) {
+  test('select | multiple: false - options.length > 1', async function (assert) {
     element = buildInstrumentedElement('select');
     element.multiple = false;
     const options = ['apple', 'orange'];
@@ -99,7 +99,7 @@ module('DOM Helper: select', function(hooks) {
     );
   });
 
-  test('select | 4 options - multiple: true - optionsToSelect.length : 2', async function(assert) {
+  test('select | 4 options - multiple: true - optionsToSelect.length : 2', async function (assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = true;
@@ -122,7 +122,7 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedOptions[1].value, 'orange');
   });
 
-  test('select | 4 options - multiple: false - optionsToSelect.length : 1', async function(assert) {
+  test('select | 4 options - multiple: false - optionsToSelect.length : 1', async function (assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = false;
@@ -143,7 +143,7 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedIndex, 0);
   });
 
-  test('select | multiple: false | select new option', async function(assert) {
+  test('select | multiple: false | select new option', async function (assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = false;
@@ -164,7 +164,7 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedIndex, 1);
   });
 
-  test('select | multiple: true | keepPreviouslySelected: true', async function(assert) {
+  test('select | multiple: true | keepPreviouslySelected: true', async function (assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = true;
@@ -186,7 +186,7 @@ module('DOM Helper: select', function(hooks) {
     assert.equal(element.selectedOptions[1].value, 'orange');
   });
 
-  test('select | multiple: true | keepPreviouslySelected: false', async function(assert) {
+  test('select | multiple: true | keepPreviouslySelected: false', async function (assert) {
     const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
     element = buildInstrumentedElement('select');
     element.multiple = true;
