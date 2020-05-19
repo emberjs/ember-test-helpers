@@ -6,7 +6,7 @@ import { isIE11 } from '../../helpers/browser-detect';
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
 let additionalSteps = ['input', 'change'];
 if (isIE11) {
-  selectSteps = ['focusin', 'input', 'change', 'focus'];
+  selectSteps = ['focusin', 'focus', 'input', 'change'];
 }
 
 module('DOM Helper: select', function (hooks) {
@@ -107,7 +107,7 @@ module('DOM Helper: select', function (hooks) {
     optionValues.forEach(optionValue => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
-      element.append(optionElement);
+      element.appendChild(optionElement);
     });
 
     const optionsToSelect = ['apple', 'orange'];
@@ -130,7 +130,7 @@ module('DOM Helper: select', function (hooks) {
     optionValues.forEach(optionValue => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
-      element.append(optionElement);
+      element.appendChild(optionElement);
     });
 
     const optionsToSelect = 'apple';
@@ -151,7 +151,7 @@ module('DOM Helper: select', function (hooks) {
     optionValues.forEach(optionValue => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
-      element.append(optionElement);
+      element.appendChild(optionElement);
     });
 
     await setupContext(context);
@@ -172,7 +172,7 @@ module('DOM Helper: select', function (hooks) {
     optionValues.forEach(optionValue => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
-      element.append(optionElement);
+      element.appendChild(optionElement);
     });
 
     await setupContext(context);
@@ -194,7 +194,7 @@ module('DOM Helper: select', function (hooks) {
     optionValues.forEach(optionValue => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
-      element.append(optionElement);
+      element.appendChild(optionElement);
     });
 
     await setupContext(context);

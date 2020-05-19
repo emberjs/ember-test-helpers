@@ -43,7 +43,7 @@ export default function select(
       throw new Error('Must provide an `option` or `options` to select when calling `select`.');
     }
 
-    const element = getElement(target) as any;
+    const element = getElement(target);
     if (!element) {
       throw new Error(`Element not found when calling \`select('${target}')\`.`);
     }
