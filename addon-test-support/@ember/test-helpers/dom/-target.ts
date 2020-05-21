@@ -2,6 +2,10 @@ type Target = string | Element | Document | Window;
 
 export default Target;
 
+export interface HTMLElementContentEditable extends HTMLElement {
+  isContentEditable: true;
+}
+
 // eslint-disable-next-line require-jsdoc
 export function isElement(target: any): target is Element {
   return target.nodeType === Node.ELEMENT_NODE;
@@ -13,6 +17,6 @@ export function isDocument(target: any): target is Document {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isContentEditable(element: Element): element is HTMLElement {
+export function isContentEditable(element: Element): element is HTMLElementContentEditable {
   return 'isContentEditable' in element && (element as HTMLElement).isContentEditable;
 }
