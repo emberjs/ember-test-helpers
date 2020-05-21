@@ -390,6 +390,30 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
     });
+
+    module('this.render and this.clearRender deprecations', function () {
+      test('this.render() and this.clearRender deprecation message', async function (assert) {
+        await this.render(hbs`<button>Click me</button>`);
+
+        assert.expect(3);
+
+        assert.equal(
+          this.element.querySelector('button').textContent.trim(),
+          'Click me',
+          'Button is still rendered'
+        );
+
+        assert.deprecationsInclude(
+          'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.'
+        );
+
+        await this.clearRender();
+
+        assert.deprecationsInclude(
+          'Using this.clearRender has been deprecated, consider using `clearRender` imported from `@ember/test-helpers`.'
+        );
+      });
+    });
   }
 
   module('with only application set', function (hooks) {
