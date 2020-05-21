@@ -180,30 +180,30 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
     .then(() => {
       let { owner } = context;
 
-      let renderDeprecationWrapper = function (...args: any[]) {
+      let renderDeprecationWrapper = function (template: TemplateFactory) {
         deprecate(
           'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.',
           false,
           {
             id: 'ember-test-helpers.setup-rendering-context.render',
-            until: '2.0.0',
+            until: '3.0.0',
           }
         );
 
-        return render(...args);
+        return render(template);
       };
 
-      let clearRenderDeprecationWrapper = function (...args: any[]) {
+      let clearRenderDeprecationWrapper = function () {
         deprecate(
           'Using this.clearRender has been deprecated, consider using `clearRender` imported from `@ember/test-helpers`.',
           false,
           {
             id: 'ember-test-helpers.setup-rendering-context.clearRender',
-            until: '2.0.0',
+            until: '3.0.0',
           }
         );
 
-        return clearRender(...args);
+        return clearRender();
       };
 
       Object.defineProperty(context, 'render', {
