@@ -118,11 +118,24 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('typing in not a form control', async function (assert) {
+  test('typing in a contenteditable element', async function (assert) {
+    element = buildInstrumentedElement('div');
+    element.setAttribute('contenteditable', 'true');
+    await typeIn(element, 'foo');
+
+    assert.verifySteps(expectedEvents);
+    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.equal(element.innerHTML, 'foo');
+  });
+
+  test('typing in a non-typable element', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
-    assert.rejects(typeIn(`#${element.id}`, 'foo'), /`typeIn` is only usable on form controls/);
+    assert.rejects(
+      typeIn(`#${element.id}`, 'foo'),
+      /`typeIn` is only usable on form controls or contenteditable elements/
+    );
   });
 
   test('typing in a disabled element', async function (assert) {
