@@ -6,7 +6,7 @@ import { __focus__ } from './focus';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import guardForMaxlength from './-guard-for-maxlength';
-import Target, { isContentEditable, HTMLElementContentEditable } from './-target';
+import Target, { isContentEditable, isDocument, HTMLElementContentEditable } from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
 
@@ -46,9 +46,14 @@ export default function typeIn(target: Target, text: string, options: Options = 
       throw new Error('Must pass an element or selector to `typeIn`.');
     }
 
-    const element = getElement(target) as Element | HTMLElement;
+    const element = getElement(target);
+
     if (!element) {
       throw new Error(`Element not found when calling \`typeIn('${target}')\``);
+    }
+
+    if (isDocument(element) || (!isFormControl(element) && !isContentEditable(element))) {
+      throw new Error('`typeIn` is only usable on form controls or contenteditable elements.');
     }
 
     if (typeof text === 'undefined' || text === null) {
@@ -63,13 +68,9 @@ export default function typeIn(target: Target, text: string, options: Options = 
       if ('readOnly' in element && element.readOnly) {
         throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
       }
-
-      __focus__(element);
-    } else if (isContentEditable(element)) {
-      __focus__(element);
-    } else {
-      throw new Error('`typeIn` is only usable on form controls or contenteditable elements.');
     }
+
+    __focus__(element);
 
     let { delay = 50 } = options;
 
