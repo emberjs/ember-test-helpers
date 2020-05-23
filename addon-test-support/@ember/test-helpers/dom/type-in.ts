@@ -6,7 +6,7 @@ import { __focus__ } from './focus';
 import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import guardForMaxlength from './-guard-for-maxlength';
-import Target from './-target';
+import Target, { isContentEditable, isDocument, HTMLElementContentEditable } from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
 
@@ -47,23 +47,27 @@ export default function typeIn(target: Target, text: string, options: Options = 
     }
 
     const element = getElement(target);
+
     if (!element) {
       throw new Error(`Element not found when calling \`typeIn('${target}')\``);
     }
-    if (!isFormControl(element)) {
-      throw new Error('`typeIn` is only usable on form controls.');
+
+    if (isDocument(element) || (!isFormControl(element) && !isContentEditable(element))) {
+      throw new Error('`typeIn` is only usable on form controls or contenteditable elements.');
     }
 
     if (typeof text === 'undefined' || text === null) {
       throw new Error('Must provide `text` when calling `typeIn`.');
     }
 
-    if (element.disabled) {
-      throw new Error(`Can not \`typeIn\` disabled '${target}'.`);
-    }
+    if (isFormControl(element)) {
+      if (element.disabled) {
+        throw new Error(`Can not \`typeIn\` disabled '${target}'.`);
+      }
 
-    if ('readOnly' in element && element.readOnly) {
-      throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
+      if ('readOnly' in element && element.readOnly) {
+        throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
+      }
     }
 
     __focus__(element);
@@ -77,7 +81,7 @@ export default function typeIn(target: Target, text: string, options: Options = 
 }
 
 // eslint-disable-next-line require-jsdoc
-function fillOut(element: FormControl, text: string, delay: number) {
+function fillOut(element: FormControl | HTMLElementContentEditable, text: string, delay: number) {
   const inputFunctions = text.split('').map(character => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
     return currentPromise.then(() => delayedExecute(delay)).then(func);
@@ -85,7 +89,10 @@ function fillOut(element: FormControl, text: string, delay: number) {
 }
 
 // eslint-disable-next-line require-jsdoc
-function keyEntry(element: FormControl, character: string): () => void {
+function keyEntry(
+  element: FormControl | HTMLElementContentEditable,
+  character: string
+): () => void {
   let shiftKey = character === character.toUpperCase() && character !== character.toLowerCase();
   let options = { shiftKey };
   let characterKey = character.toUpperCase();
@@ -95,10 +102,15 @@ function keyEntry(element: FormControl, character: string): () => void {
       .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
-        const newValue = element.value + character;
-        guardForMaxlength(element, newValue, 'typeIn');
+        if (isFormControl(element)) {
+          const newValue = element.value + character;
+          guardForMaxlength(element, newValue, 'typeIn');
 
-        element.value = newValue;
+          element.value = newValue;
+        } else {
+          const newValue = element.innerHTML + character;
+          element.innerHTML = newValue;
+        }
         fireEvent(element, 'input');
       })
       .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));
