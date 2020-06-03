@@ -108,9 +108,9 @@ function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): s
  */
 function keyCodeFromKey(key: string) {
   let keys = Object.keys(keyFromKeyCode);
-  let keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key);
+  let keyCode = keys.filter(keyCode => keyFromKeyCode[Number(keyCode)] === key)[0];
   if (!keyCode) {
-    keyCode = keys.find(keyCode => keyFromKeyCode[Number(keyCode)] === key.toLowerCase());
+    keyCode = keys.filter(keyCode => keyFromKeyCode[Number(keyCode)] === key.toLowerCase())[0];
   }
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
