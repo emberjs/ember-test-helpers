@@ -25,6 +25,7 @@ export { default as setupOnerror, resetOnerror } from './setup-onerror';
 export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
 export { default as getTestMetadata } from './test-metadata';
+export { registerHook } from './-internal/helper-hooks';
 
 // DOM Helpers
 export { default as click } from './dom/click';

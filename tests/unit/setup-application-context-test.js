@@ -13,6 +13,7 @@ import {
   visit,
   currentRouteName,
   currentURL,
+  registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
@@ -81,6 +82,20 @@ module('setupApplicationContext', function (hooks) {
     let testMetadata = getTestMetadata(this);
 
     assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupApplicationContext']);
+  });
+
+  test('it executes registered visit hooks for start and end at the right time', async function (assert) {
+    let hookStart = registerHook('visit:start', () => {
+      assert.equal(currentURL(), null);
+    });
+    let hookEnd = registerHook('visit:end', () => {
+      assert.equal(currentURL(), '/');
+    });
+
+    await visit('/');
+
+    hookStart.unregister();
+    hookEnd.unregister();
   });
 
   test('it returns true for isApplication in an application test', function (assert) {

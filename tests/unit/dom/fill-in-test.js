@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { fillIn, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -33,6 +33,23 @@ module('DOM Helper: fillIn', function (hooks) {
     }
 
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered fillIn hooks', async function (assert) {
+    element = document.createElement('input');
+    insertElement(element);
+
+    let startHook = registerHook('fillIn:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('fillIn:end', () => {
+      assert.ok(true);
+    });
+
+    await fillIn(element, 'foo');
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   test('filling in a non-fillable element', async function (assert) {

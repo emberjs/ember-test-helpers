@@ -5,6 +5,11 @@ import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('focus:start', (target: Target) => {
+  log('focus', target);
+});
 
 /**
   @private
@@ -59,20 +64,25 @@ export function __focus__(element: HTMLElement | Element | Document | SVGElement
   focus('input');
 */
 export default function focus(target: Target): Promise<void> {
-  log('focus', target);
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('focus:start', target);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `focus`.');
+      }
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `focus`.');
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`focus('${target}')\`.`);
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`focus('${target}')\`.`);
-    }
+      __focus__(element);
 
-    __focus__(element);
-
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('focus:end', target);
+    });
 }

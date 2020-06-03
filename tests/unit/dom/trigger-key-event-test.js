@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { triggerKeyEvent, setupContext, teardownContext } from '@ember/test-helpers';
+import { triggerKeyEvent, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -31,6 +31,23 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
       await teardownContext(context);
     }
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered triggerKeyEvent hooks', async function (assert) {
+    element = document.createElement('div');
+    insertElement(element);
+
+    let startHook = registerHook('triggerKeyEvent:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('triggerKeyEvent:end', () => {
+      assert.ok(true);
+    });
+
+    await triggerKeyEvent(element, 'keypress', 13);
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   test('rejects if event type is missing', async function (assert) {

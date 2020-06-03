@@ -8,9 +8,14 @@ import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
+
+registerHook('click:start', (target: Target) => {
+  log('click', target);
+});
 
 /**
  * Represent a particular mouse button being clicked.
@@ -83,26 +88,31 @@ export function __click__(element: Element | Document, options: MouseEventInit):
   click('button', { shiftKey: true });
 */
 export default function click(target: Target, _options: MouseEventInit = {}): Promise<void> {
-  log('click', target);
-
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `click`.');
-    }
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('click:start', target, _options);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `click`.');
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`click('${target}')\`.`);
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`click('${target}')\`.`);
+      }
 
-    if (isFormControl(element) && element.disabled) {
-      throw new Error(`Can not \`click\` disabled ${element}`);
-    }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`click\` disabled ${element}`);
+      }
 
-    __click__(element, options);
+      __click__(element, options);
 
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('click:end', target, _options);
+    });
 }

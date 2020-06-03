@@ -6,6 +6,11 @@ import { nextTickPromise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('tap:start', (target: Target) => {
+  log('tap', target);
+});
 
 /**
   Taps on the specified target.
@@ -50,29 +55,34 @@ import isFormControl from './-is-form-control';
   tap('button');
 */
 export default function tap(target: Target, options: object = {}): Promise<void> {
-  log('tap', target);
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('tap:start', target, options);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `tap`.');
+      }
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `tap`.');
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`tap('${target}')\`.`);
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`tap('${target}')\`.`);
-    }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`tap\` disabled ${element}`);
+      }
 
-    if (isFormControl(element) && element.disabled) {
-      throw new Error(`Can not \`tap\` disabled ${element}`);
-    }
+      let touchstartEv = fireEvent(element, 'touchstart', options);
+      let touchendEv = fireEvent(element, 'touchend', options);
 
-    let touchstartEv = fireEvent(element, 'touchstart', options);
-    let touchendEv = fireEvent(element, 'touchend', options);
+      if (!touchstartEv.defaultPrevented && !touchendEv.defaultPrevented) {
+        __click__(element, options);
+      }
 
-    if (!touchstartEv.defaultPrevented && !touchendEv.defaultPrevented) {
-      __click__(element, options);
-    }
-
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('tap:end', target, options);
+    });
 }

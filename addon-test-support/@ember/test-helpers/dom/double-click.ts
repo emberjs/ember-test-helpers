@@ -9,6 +9,11 @@ import { DEFAULT_CLICK_OPTIONS } from './click';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('doubleClick:start', (target: Target) => {
+  log('doubleClick', target);
+});
 
 /**
   @private
@@ -84,26 +89,31 @@ export function __doubleClick__(element: Element | Document, options: MouseEvent
   doubleClick('button', { shiftKey: true });
 */
 export default function doubleClick(target: Target, _options: MouseEventInit = {}): Promise<void> {
-  log('doubleClick', target);
-
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `doubleClick`.');
-    }
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('doubleClick:start', target, _options);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `doubleClick`.');
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
+      }
 
-    if (isFormControl(element) && element.disabled) {
-      throw new Error(`Can not \`doubleClick\` disabled ${element}`);
-    }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`doubleClick\` disabled ${element}`);
+      }
 
-    __doubleClick__(element, options);
+      __doubleClick__(element, options);
 
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('doubleClick:end', target, _options);
+    });
 }

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { typeIn, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
@@ -69,6 +69,23 @@ module('DOM Helper: typeIn', function (hooks) {
     }
 
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered typeIn hooks', async function (assert) {
+    element = document.createElement('input');
+    insertElement(element);
+
+    let startHook = registerHook('typeIn:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('typeIn:end', () => {
+      assert.ok(true);
+    });
+
+    await typeIn(element, 'foo');
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   test('typing in an input', async function (assert) {

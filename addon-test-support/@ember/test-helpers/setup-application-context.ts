@@ -5,6 +5,7 @@ import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
+import { runHooks } from './-internal/helper-hooks';
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
@@ -120,6 +121,9 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
 
   return nextTickPromise()
     .then(() => {
+      return runHooks('visit:start', url, options);
+    })
+    .then(() => {
       let visitResult = owner.visit(url, options);
 
       setupRouterSettlednessTracking();
@@ -133,7 +137,10 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
         context.element = document.querySelector('#ember-testing');
       }
     })
-    .then(settled);
+    .then(settled)
+    .then(() => {
+      return runHooks('visit:end', url, options);
+    });
 }
 
 /**
@@ -149,6 +156,7 @@ export function currentRouteName(): string {
   }
 
   let router = context.owner.lookup('router:main');
+
   return get(router, 'currentRouteName');
 }
 

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { doubleClick, setupContext, teardownContext } from '@ember/test-helpers';
+import { doubleClick, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -27,6 +27,23 @@ module('DOM Helper: doubleClick', function (hooks) {
     }
 
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered doubleClick hooks', async function (assert) {
+    element = document.createElement('div');
+    insertElement(element);
+
+    let startHook = registerHook('doubleClick:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('doubleClick:end', () => {
+      assert.ok(true);
+    });
+
+    await doubleClick(element);
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   module('non-focusable element types', function () {

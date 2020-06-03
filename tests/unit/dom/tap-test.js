@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { tap, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { tap, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -31,6 +31,23 @@ module('DOM Helper: tap', function (hooks) {
       await teardownContext(context);
     }
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered tap hooks', async function (assert) {
+    element = document.createElement('div');
+    insertElement(element);
+
+    let startHook = registerHook('tap:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('tap:end', () => {
+      assert.ok(true);
+    });
+
+    await tap(element);
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   module('non-focusable element types', function () {

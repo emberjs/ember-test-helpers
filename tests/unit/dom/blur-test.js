@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { focus, blur, setupContext, teardownContext } from '@ember/test-helpers';
+import { focus, blur, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -42,6 +42,23 @@ module('DOM Helper: blur', function (hooks) {
       await teardownContext(context);
     }
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered blur hooks', async function (assert) {
+    await setupContext(context);
+    let startHook = registerHook('blur:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('blur:end', () => {
+      assert.ok(true);
+    });
+
+    await blur(elementWithFocus);
+
+    assert.verifySteps(blurSteps);
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   test('does not run sync', async function (assert) {

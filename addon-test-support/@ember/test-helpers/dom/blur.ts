@@ -5,6 +5,11 @@ import { nextTickPromise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFocusable from './-is-focusable';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('blur:start', (target: Target) => {
+  log('blur', target);
+});
 
 /**
   @private
@@ -56,16 +61,21 @@ export function __blur__(element: HTMLElement | Element | Document | SVGElement)
   blur('input');
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
-  log('blur', target);
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('blur:start', target);
+    })
+    .then(() => {
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`blur('${target}')\`.`);
+      }
 
-  return nextTickPromise().then(() => {
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`blur('${target}')\`.`);
-    }
+      __blur__(element);
 
-    __blur__(element);
-
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('blur:end', target);
+    });
 }
