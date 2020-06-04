@@ -27,6 +27,7 @@ module('DOM Helper: selectFiles', function (hooks) {
   hooks.afterEach(async function () {
     if (element) {
       element.parentNode.removeChild(element);
+      element = null;
     }
 
     // only teardown if setupContext was called

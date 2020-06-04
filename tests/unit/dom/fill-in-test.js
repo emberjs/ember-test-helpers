@@ -26,6 +26,7 @@ module('DOM Helper: fillIn', function (hooks) {
 
     if (element) {
       element.parentNode.removeChild(element);
+      element = null;
     }
     if (context.owner) {
       await teardownContext(context);
