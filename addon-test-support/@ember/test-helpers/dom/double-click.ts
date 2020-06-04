@@ -92,9 +92,7 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return nextTickPromise()
-    .then(() => {
-      return runHooks('doubleClick:start', target, _options);
-    })
+    .then(() => runHooks('doubleClick:start', target, _options))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `doubleClick`.');
@@ -113,7 +111,5 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
 
       return settled();
     })
-    .then(() => {
-      return runHooks('doubleClick:end', target, _options);
-    });
+    .then(() => runHooks('doubleClick:end', target, _options));
 }

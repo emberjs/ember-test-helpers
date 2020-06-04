@@ -62,9 +62,7 @@ export function __blur__(element: HTMLElement | Element | Document | SVGElement)
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
   return nextTickPromise()
-    .then(() => {
-      return runHooks('blur:start', target);
-    })
+    .then(() => runHooks('blur:start', target))
     .then(() => {
       let element = getElement(target);
       if (!element) {
@@ -75,7 +73,5 @@ export default function blur(target: Target = document.activeElement!): Promise<
 
       return settled();
     })
-    .then(() => {
-      return runHooks('blur:end', target);
-    });
+    .then(() => runHooks('blur:end', target));
 }

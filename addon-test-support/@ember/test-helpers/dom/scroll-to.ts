@@ -3,6 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
 import { isElement } from './-target';
+import { runHooks } from '../-internal/helper-hooks';
 
 /**
   Scrolls DOM element or selector to the given coordinates.
@@ -25,31 +26,34 @@ export default function scrollTo(
   x: number,
   y: number
 ): Promise<void> {
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `scrollTo`.');
-    }
+  return nextTickPromise()
+    .then(() => runHooks('scrollTo:start', target))
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `scrollTo`.');
+      }
 
-    if (x === undefined || y === undefined) {
-      throw new Error('Must pass both x and y coordinates to `scrollTo`.');
-    }
+      if (x === undefined || y === undefined) {
+        throw new Error('Must pass both x and y coordinates to `scrollTo`.');
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`scrollTo('${target}')\`.`);
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`scrollTo('${target}')\`.`);
+      }
 
-    if (!isElement(element)) {
-      throw new Error(
-        `"target" must be an element, but was a ${element.nodeType} when calling \`scrollTo('${target}')\`.`
-      );
-    }
+      if (!isElement(element)) {
+        throw new Error(
+          `"target" must be an element, but was a ${element.nodeType} when calling \`scrollTo('${target}')\`.`
+        );
+      }
 
-    element.scrollTop = y;
-    element.scrollLeft = x;
+      element.scrollTop = y;
+      element.scrollLeft = x;
 
-    fireEvent(element, 'scroll');
+      fireEvent(element, 'scroll');
 
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => runHooks('scrollTo:end', target));
 }

@@ -91,9 +91,7 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return nextTickPromise()
-    .then(() => {
-      return runHooks('click:start', target, _options);
-    })
+    .then(() => runHooks('click:start', target, _options))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `click`.');
@@ -112,7 +110,5 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
 
       return settled();
     })
-    .then(() => {
-      return runHooks('click:end', target, _options);
-    });
+    .then(() => runHooks('click:end', target, _options));
 }

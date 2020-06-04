@@ -32,9 +32,7 @@ registerHook('fillIn:start', (target: Target, text: string) => {
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
   return nextTickPromise()
-    .then(() => {
-      return runHooks('fillIn:start', target, text);
-    })
+    .then(() => runHooks('fillIn:start', target, text))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `fillIn`.');
@@ -75,7 +73,5 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
       return settled();
     })
-    .then(() => {
-      return runHooks('fillIn:end', target, text);
-    });
+    .then(() => runHooks('fillIn:end', target, text));
 }

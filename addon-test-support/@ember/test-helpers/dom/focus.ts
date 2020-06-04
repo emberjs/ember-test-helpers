@@ -65,9 +65,7 @@ export function __focus__(element: HTMLElement | Element | Document | SVGElement
 */
 export default function focus(target: Target): Promise<void> {
   return nextTickPromise()
-    .then(() => {
-      return runHooks('focus:start', target);
-    })
+    .then(() => runHooks('focus:start', target))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `focus`.');
@@ -82,7 +80,5 @@ export default function focus(target: Target): Promise<void> {
 
       return settled();
     })
-    .then(() => {
-      return runHooks('focus:end', target);
-    });
+    .then(() => runHooks('focus:end', target));
 }
