@@ -20,6 +20,7 @@ module('DOM Helper: select', function (hooks) {
     if (element) {
       element.setAttribute('data-skip-steps', true);
       element.parentNode.removeChild(element);
+      element = null;
     }
     if (context.owner) {
       await teardownContext(context);
