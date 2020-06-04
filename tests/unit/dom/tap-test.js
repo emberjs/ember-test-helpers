@@ -34,17 +34,21 @@ module('DOM Helper: tap', function (hooks) {
   });
 
   test('it executes registered tap hooks', async function (assert) {
+    assert.expect(3);
+
     element = document.createElement('div');
     insertElement(element);
 
     let startHook = registerHook('tap:start', () => {
-      assert.ok(true);
+      assert.step('tap:start');
     });
     let endHook = registerHook('tap:end', () => {
-      assert.ok(true);
+      assert.step('tap:end');
     });
 
     await tap(element);
+
+    assert.verifySteps(['tap:start', 'tap:end']);
 
     startHook.unregister();
     endHook.unregister();

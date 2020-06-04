@@ -34,17 +34,21 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
   });
 
   test('it executes registered triggerKeyEvent hooks', async function (assert) {
+    assert.expect(3);
+
     element = document.createElement('div');
     insertElement(element);
 
     let startHook = registerHook('triggerKeyEvent:start', () => {
-      assert.ok(true);
+      assert.step('triggerKeyEvent:start');
     });
     let endHook = registerHook('triggerKeyEvent:end', () => {
-      assert.ok(true);
+      assert.step('triggerKeyEvent:end');
     });
 
     await triggerKeyEvent(element, 'keypress', 13);
+
+    assert.verifySteps(['triggerKeyEvent:start', 'triggerKeyEvent:end']);
 
     startHook.unregister();
     endHook.unregister();

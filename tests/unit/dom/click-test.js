@@ -29,19 +29,21 @@ module('DOM Helper: click', function (hooks) {
   });
 
   test('it executes registered click hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('div');
     insertElement(element);
 
     let startHook = registerHook('click:start', () => {
-      assert.ok(true);
+      assert.step('click:start');
     });
     let endHook = registerHook('click:end', () => {
-      assert.ok(true);
+      assert.step('click:end');
     });
 
     await click(element);
+
+    assert.verifySteps(['click:start', 'click:end']);
 
     startHook.unregister();
     endHook.unregister();

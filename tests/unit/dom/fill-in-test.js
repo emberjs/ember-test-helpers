@@ -36,19 +36,21 @@ module('DOM Helper: fillIn', function (hooks) {
   });
 
   test('it executes registered fillIn hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('input');
     insertElement(element);
 
     let startHook = registerHook('fillIn:start', () => {
-      assert.ok(true);
+      assert.step('fillIn:start');
     });
     let endHook = registerHook('fillIn:end', () => {
-      assert.ok(true);
+      assert.step('fillIn:end');
     });
 
     await fillIn(element, 'foo');
+
+    assert.verifySteps(['fillIn:start', 'fillIn:end']);
 
     startHook.unregister();
     endHook.unregister();

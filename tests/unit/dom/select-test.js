@@ -30,19 +30,21 @@ module('DOM Helper: select', function (hooks) {
   });
 
   test('it executes registered select hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('select');
     insertElement(element);
 
     let startHook = registerHook('select:start', () => {
-      assert.ok(true);
+      assert.step('select:start');
     });
     let endHook = registerHook('select:end', () => {
-      assert.ok(true);
+      assert.step('select:end');
     });
 
     await select(element, 'apple');
+
+    assert.verifySteps(['select:start', 'select:end']);
 
     startHook.unregister();
     endHook.unregister();

@@ -36,19 +36,21 @@ module('DOM Helper: focus', function (hooks) {
   });
 
   test('it executes registered focus hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('input');
     insertElement(element);
 
     let startHook = registerHook('focus:start', () => {
-      assert.ok(true);
+      assert.step('focus:start');
     });
     let endHook = registerHook('focus:end', () => {
-      assert.ok(true);
+      assert.step('focus:end');
     });
 
     await focus(element);
+
+    assert.verifySteps(['focus:start', 'focus:end']);
 
     startHook.unregister();
     endHook.unregister();

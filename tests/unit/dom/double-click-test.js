@@ -30,19 +30,21 @@ module('DOM Helper: doubleClick', function (hooks) {
   });
 
   test('it executes registered doubleClick hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('div');
     insertElement(element);
 
     let startHook = registerHook('doubleClick:start', () => {
-      assert.ok(true);
+      assert.step('doubleClick:start');
     });
     let endHook = registerHook('doubleClick:end', () => {
-      assert.ok(true);
+      assert.step('doubleClick:end');
     });
 
     await doubleClick(element);
+
+    assert.verifySteps(['doubleClick:start', 'doubleClick:end']);
 
     startHook.unregister();
     endHook.unregister();

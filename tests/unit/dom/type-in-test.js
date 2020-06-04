@@ -72,19 +72,21 @@ module('DOM Helper: typeIn', function (hooks) {
   });
 
   test('it executes registered typeIn hooks', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     element = document.createElement('input');
     insertElement(element);
 
     let startHook = registerHook('typeIn:start', () => {
-      assert.ok(true);
+      assert.step('typeIn:start');
     });
     let endHook = registerHook('typeIn:end', () => {
-      assert.ok(true);
+      assert.step('typeIn:end');
     });
 
     await typeIn(element, 'foo');
+
+    assert.verifySteps(['typeIn:start', 'typeIn:end']);
 
     startHook.unregister();
     endHook.unregister();
