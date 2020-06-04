@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { Promise } from 'rsvp';
 import { waitUntil } from '@ember/test-helpers';
 
 module('DOM helper: waitUntil', function() {
@@ -68,5 +69,20 @@ module('DOM helper: waitUntil', function() {
     }).catch(reason => {
       assert.equal(reason.message, 'error goes here', 'valid error was thrown');
     });
+  });
+
+  test('does not continue to wait if callback throws', async function(assert) {
+    assert.expect(2);
+
+    try {
+      await waitUntil(() => {
+        assert.ok(true);
+        throw new Error('error goes here');
+      });
+    } catch (error) {
+      assert.equal(error.message, 'error goes here', 'valid error was thrown');
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 100));
   });
 });
