@@ -10,6 +10,7 @@ import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
+import { deprecate } from '@ember/application/deprecations';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -179,19 +180,42 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
     .then(() => {
       let { owner } = context;
 
-      // these methods being placed on the context itself will be deprecated in
-      // a future version (no giant rush) to remove some confusion about which
-      // is the "right" way to things...
+      let renderDeprecationWrapper = function (template: TemplateFactory) {
+        deprecate(
+          'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.',
+          false,
+          {
+            id: 'ember-test-helpers.setup-rendering-context.render',
+            until: '3.0.0',
+          }
+        );
+
+        return render(template);
+      };
+
+      let clearRenderDeprecationWrapper = function () {
+        deprecate(
+          'Using this.clearRender has been deprecated, consider using `clearRender` imported from `@ember/test-helpers`.',
+          false,
+          {
+            id: 'ember-test-helpers.setup-rendering-context.clearRender',
+            until: '3.0.0',
+          }
+        );
+
+        return clearRender();
+      };
+
       Object.defineProperty(context, 'render', {
         configurable: true,
         enumerable: true,
-        value: render,
+        value: renderDeprecationWrapper,
         writable: false,
       });
       Object.defineProperty(context, 'clearRender', {
         configurable: true,
         enumerable: true,
-        value: clearRender,
+        value: clearRenderDeprecationWrapper,
         writable: false,
       });
 
