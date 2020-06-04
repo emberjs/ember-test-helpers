@@ -18,6 +18,7 @@ module('DOM Helper: find', function(hooks) {
   hooks.afterEach(async function() {
     if (element.parentNode) {
       element.parentNode.removeChild(element);
+      element = null;
     }
     if (context.owner) {
       await teardownContext(context);

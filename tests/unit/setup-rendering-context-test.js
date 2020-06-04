@@ -29,7 +29,7 @@ module('setupRenderingContext', function(hooks) {
     return;
   }
 
-  hooks.after(function() {
+  hooks.afterEach(function() {
     setApplication(application);
     setResolver(resolver);
   });
