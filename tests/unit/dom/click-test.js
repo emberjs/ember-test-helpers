@@ -29,6 +29,8 @@ module('DOM Helper: click', function (hooks) {
   });
 
   test('it executes registered click hooks', async function (assert) {
+    assert.expect(2);
+
     element = document.createElement('div');
     insertElement(element);
 

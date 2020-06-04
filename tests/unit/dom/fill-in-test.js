@@ -36,6 +36,8 @@ module('DOM Helper: fillIn', function (hooks) {
   });
 
   test('it executes registered fillIn hooks', async function (assert) {
+    assert.expect(2);
+
     element = document.createElement('input');
     insertElement(element);
 

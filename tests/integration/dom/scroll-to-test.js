@@ -6,6 +6,7 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
+  registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -21,6 +22,37 @@ module('DOM Helper: scroll-to', function (hooks) {
 
   hooks.afterEach(async function () {
     await teardownContext(this);
+  });
+
+  test('it executes registered scrollTo hooks', async function (assert) {
+    assert.expect(2);
+
+    let startHook = registerHook('scrollTo:start', () => {
+      assert.ok(true);
+    });
+    let endHook = registerHook('scrollTo:end', () => {
+      assert.ok(true);
+    });
+
+    await render(hbs`
+      <div
+        style="height: 200px; overflow-y: auto;"
+        class="container"
+      >
+        <ul>
+        <li class="item" style="height: 100px;">A</li>
+        <li class="item" style="height: 100px;">B</li>
+        <li class="item" style="height: 100px;">C</li>
+        <li class="item" style="height: 100px;">D</li>
+        <li class="item" style="height: 100px;">E</li>
+        </ul>
+      </div>
+      `);
+
+    await scrollTo('.container', 0, 50);
+
+    startHook.unregister();
+    endHook.unregister();
   });
 
   test('Scroll in vertical direction', async function (assert) {

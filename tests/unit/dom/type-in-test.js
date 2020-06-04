@@ -72,6 +72,8 @@ module('DOM Helper: typeIn', function (hooks) {
   });
 
   test('it executes registered typeIn hooks', async function (assert) {
+    assert.expect(2);
+
     element = document.createElement('input');
     insertElement(element);
 

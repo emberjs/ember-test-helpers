@@ -30,6 +30,8 @@ module('DOM Helper: doubleClick', function (hooks) {
   });
 
   test('it executes registered doubleClick hooks', async function (assert) {
+    assert.expect(2);
+
     element = document.createElement('div');
     insertElement(element);
 

@@ -36,6 +36,8 @@ module('DOM Helper: focus', function (hooks) {
   });
 
   test('it executes registered focus hooks', async function (assert) {
+    assert.expect(2);
+
     element = document.createElement('input');
     insertElement(element);
 
