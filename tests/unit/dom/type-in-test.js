@@ -77,10 +77,10 @@ module('DOM Helper: typeIn', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = registerHook('typeIn:start', () => {
+    let startHook = registerHook('typeIn', 'start', () => {
       assert.step('typeIn:start');
     });
-    let endHook = registerHook('typeIn:end', () => {
+    let endHook = registerHook('typeIn', 'end', () => {
       assert.step('typeIn:end');
     });
 

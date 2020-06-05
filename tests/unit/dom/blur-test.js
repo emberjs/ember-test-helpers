@@ -52,10 +52,10 @@ module('DOM Helper: blur', function (hooks) {
 
     await focus(element);
 
-    let startHook = registerHook('blur:start', () => {
+    let startHook = registerHook('blur', 'start', () => {
       assert.step('blur:start');
     });
-    let endHook = registerHook('blur:end', () => {
+    let endHook = registerHook('blur', 'end', () => {
       assert.step('blur:end');
     });
 

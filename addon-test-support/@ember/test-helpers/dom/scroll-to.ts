@@ -27,7 +27,7 @@ export default function scrollTo(
   y: number
 ): Promise<void> {
   return nextTickPromise()
-    .then(() => runHooks('scrollTo:start', target))
+    .then(() => runHooks('scrollTo', 'start', target))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `scrollTo`.');
@@ -55,5 +55,5 @@ export default function scrollTo(
 
       return settled();
     })
-    .then(() => runHooks('scrollTo:end', target));
+    .then(() => runHooks('scrollTo', 'end', target));
 }

@@ -15,7 +15,7 @@ export interface Options {
   delay?: number;
 }
 
-registerHook('typeIn:start', (target: Target, text: string) => {
+registerHook('typeIn', 'start', (target: Target, text: string) => {
   log('typeIn', target, text);
 });
 
@@ -46,7 +46,7 @@ registerHook('typeIn:start', (target: Target, text: string) => {
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
   return nextTickPromise()
     .then(() => {
-      return runHooks('typeIn:start', target, text, options);
+      return runHooks('typeIn', 'start', target, text, options);
     })
     .then(() => {
       if (!target) {
@@ -85,7 +85,7 @@ export default function typeIn(target: Target, text: string, options: Options = 
         .then(() => fireEvent(element, 'change'))
         .then(settled)
         .then(() => {
-          return runHooks('typeIn:end', target, text, options);
+          return runHooks('typeIn', 'end', target, text, options);
         });
     });
 }

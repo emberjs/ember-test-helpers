@@ -7,7 +7,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
 import isFocusable from './-is-focusable';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
-registerHook('blur:start', (target: Target) => {
+registerHook('blur', 'start', (target: Target) => {
   log('blur', target);
 });
 
@@ -62,7 +62,7 @@ export function __blur__(element: HTMLElement | Element | Document | SVGElement)
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
   return nextTickPromise()
-    .then(() => runHooks('blur:start', target))
+    .then(() => runHooks('blur', 'start', target))
     .then(() => {
       let element = getElement(target);
       if (!element) {
@@ -73,5 +73,5 @@ export default function blur(target: Target = document.activeElement!): Promise<
 
       return settled();
     })
-    .then(() => runHooks('blur:end', target));
+    .then(() => runHooks('blur', 'end', target));
 }

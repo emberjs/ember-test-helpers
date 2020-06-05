@@ -34,10 +34,10 @@ module('DOM Helper: click', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('click:start', () => {
+    let startHook = registerHook('click', 'start', () => {
       assert.step('click:start');
     });
-    let endHook = registerHook('click:end', () => {
+    let endHook = registerHook('click', 'end', () => {
       assert.step('click:end');
     });
 

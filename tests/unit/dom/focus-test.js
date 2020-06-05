@@ -41,10 +41,10 @@ module('DOM Helper: focus', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = registerHook('focus:start', () => {
+    let startHook = registerHook('focus', 'start', () => {
       assert.step('focus:start');
     });
-    let endHook = registerHook('focus:end', () => {
+    let endHook = registerHook('focus', 'end', () => {
       assert.step('focus:end');
     });
 

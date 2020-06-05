@@ -35,10 +35,10 @@ module('DOM Helper: select', function (hooks) {
     element = document.createElement('select');
     insertElement(element);
 
-    let startHook = registerHook('select:start', () => {
+    let startHook = registerHook('select', 'start', () => {
       assert.step('select:start');
     });
-    let endHook = registerHook('select:end', () => {
+    let endHook = registerHook('select', 'end', () => {
       assert.step('select:end');
     });
 

@@ -39,10 +39,10 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('triggerKeyEvent:start', () => {
+    let startHook = registerHook('triggerKeyEvent', 'start', () => {
       assert.step('triggerKeyEvent:start');
     });
-    let endHook = registerHook('triggerKeyEvent:end', () => {
+    let endHook = registerHook('triggerKeyEvent', 'end', () => {
       assert.step('triggerKeyEvent:end');
     });
 

@@ -7,7 +7,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
-registerHook('triggerEvent:start', (target: Target, eventType: string) => {
+registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
   log('triggerEvent', target, eventType);
 });
 
@@ -61,7 +61,7 @@ export default function triggerEvent(
 ): Promise<void> {
   return nextTickPromise()
     .then(() => {
-      return runHooks('triggerEvent:start', target, eventType, options);
+      return runHooks('triggerEvent', 'start', target, eventType, options);
     })
     .then(() => {
       if (!target) {
@@ -86,6 +86,6 @@ export default function triggerEvent(
       return settled();
     })
     .then(() => {
-      return runHooks('triggerEvent:end', target, eventType, options);
+      return runHooks('triggerEvent', 'end', target, eventType, options);
     });
 }

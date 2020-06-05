@@ -36,7 +36,7 @@ export default function select(
   keepPreviouslySelected = false
 ): Promise<void> {
   return nextTickPromise()
-    .then(() => runHooks('select:start', target, options, keepPreviouslySelected))
+    .then(() => runHooks('select', 'start', target, options, keepPreviouslySelected))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `select`.');
@@ -85,5 +85,5 @@ export default function select(
 
       return settled();
     })
-    .then(() => runHooks('select:end', target, options, keepPreviouslySelected));
+    .then(() => runHooks('select', 'end', target, options, keepPreviouslySelected));
 }

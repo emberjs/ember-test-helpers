@@ -41,10 +41,10 @@ module('DOM Helper: fillIn', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = registerHook('fillIn:start', () => {
+    let startHook = registerHook('fillIn', 'start', () => {
       assert.step('fillIn:start');
     });
-    let endHook = registerHook('fillIn:end', () => {
+    let endHook = registerHook('fillIn', 'end', () => {
       assert.step('fillIn:end');
     });
 

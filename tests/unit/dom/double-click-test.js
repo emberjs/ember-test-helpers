@@ -35,10 +35,10 @@ module('DOM Helper: doubleClick', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('doubleClick:start', () => {
+    let startHook = registerHook('doubleClick', 'start', () => {
       assert.step('doubleClick:start');
     });
-    let endHook = registerHook('doubleClick:end', () => {
+    let endHook = registerHook('doubleClick', 'end', () => {
       assert.step('doubleClick:end');
     });
 

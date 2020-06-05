@@ -10,7 +10,8 @@ import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
 registerHook(
-  'triggerKeyEvent:start',
+  'triggerKeyEvent',
+  'start',
   (target: Target, eventType: KeyboardEventType, key: number | string) => {
     log('triggerKeyEvent', target, eventType, key);
   }
@@ -195,7 +196,7 @@ export default function triggerKeyEvent(
 ): Promise<void> {
   return nextTickPromise()
     .then(() => {
-      return runHooks('triggerKeyEvent:start', target, eventType, key);
+      return runHooks('triggerKeyEvent', 'start', target, eventType, key);
     })
     .then(() => {
       if (!target) {
@@ -227,6 +228,6 @@ export default function triggerKeyEvent(
       return settled();
     })
     .then(() => {
-      return runHooks('triggerKeyEvent:end', target, eventType, key);
+      return runHooks('triggerKeyEvent', 'end', target, eventType, key);
     });
 }

@@ -11,7 +11,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
-registerHook('doubleClick:start', (target: Target) => {
+registerHook('doubleClick', 'start', (target: Target) => {
   log('doubleClick', target);
 });
 
@@ -92,7 +92,7 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return nextTickPromise()
-    .then(() => runHooks('doubleClick:start', target, _options))
+    .then(() => runHooks('doubleClick', 'start', target, _options))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `doubleClick`.');
@@ -111,5 +111,5 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
 
       return settled();
     })
-    .then(() => runHooks('doubleClick:end', target, _options));
+    .then(() => runHooks('doubleClick', 'end', target, _options));
 }

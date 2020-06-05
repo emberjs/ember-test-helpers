@@ -9,7 +9,7 @@ import Target, { isContentEditable } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
-registerHook('fillIn:start', (target: Target, text: string) => {
+registerHook('fillIn', 'start', (target: Target, text: string) => {
   log('fillIn', target, text);
 });
 
@@ -32,7 +32,7 @@ registerHook('fillIn:start', (target: Target, text: string) => {
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
   return nextTickPromise()
-    .then(() => runHooks('fillIn:start', target, text))
+    .then(() => runHooks('fillIn', 'start', target, text))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `fillIn`.');
@@ -73,5 +73,5 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
       return settled();
     })
-    .then(() => runHooks('fillIn:end', target, text));
+    .then(() => runHooks('fillIn', 'end', target, text));
 }

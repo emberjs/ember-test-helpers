@@ -39,10 +39,10 @@ module('DOM Helper: tap', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('tap:start', () => {
+    let startHook = registerHook('tap', 'start', () => {
       assert.step('tap:start');
     });
-    let endHook = registerHook('tap:end', () => {
+    let endHook = registerHook('tap', 'end', () => {
       assert.step('tap:end');
     });
 

@@ -13,7 +13,7 @@ import { runHooks, registerHook } from '../-internal/helper-hooks';
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
 
-registerHook('click:start', (target: Target) => {
+registerHook('click', 'start', (target: Target) => {
   log('click', target);
 });
 
@@ -91,7 +91,7 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return nextTickPromise()
-    .then(() => runHooks('click:start', target, _options))
+    .then(() => runHooks('click', 'start', target, _options))
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `click`.');
@@ -110,5 +110,5 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
 
       return settled();
     })
-    .then(() => runHooks('click:end', target, _options));
+    .then(() => runHooks('click', 'end', target, _options));
 }

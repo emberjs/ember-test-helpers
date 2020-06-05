@@ -121,7 +121,7 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
 
   return nextTickPromise()
     .then(() => {
-      return runHooks('visit:start', url, options);
+      return runHooks('visit', 'start', url, options);
     })
     .then(() => {
       let visitResult = owner.visit(url, options);
@@ -139,7 +139,7 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
     })
     .then(settled)
     .then(() => {
-      return runHooks('visit:end', url, options);
+      return runHooks('visit', 'end', url, options);
     });
 }
 
