@@ -120,6 +120,8 @@ export function render(template: TemplateFactory): Promise<void> {
     };
     toplevelView.setOutletState(outletState);
 
+    resetScrollState();
+
     // returning settled here because the actual rendering does not happen until
     // the renderer detects it is dirty (which happens on backburner's end
     // hook), see the following implementation details:
@@ -128,6 +130,16 @@ export function render(template: TemplateFactory): Promise<void> {
     // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
     return settled();
   });
+}
+
+/**
+  Resets the scroll position of testing container.
+
+  @private
+*/
+function resetScrollState(): void {
+  const testingContainer = getRootElement().parentElement as Element;
+  testingContainer.scrollTo(0, 0);
 }
 
 /**

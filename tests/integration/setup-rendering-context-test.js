@@ -9,7 +9,10 @@ import {
   teardownRenderingContext,
   waitFor,
   render,
+  clearRender,
   click,
+  find,
+  getRootElement,
 } from '@ember/test-helpers';
 
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -171,4 +174,55 @@ module('setupRenderingContext "real world"', function (hooks) {
       });
     }
   }
+
+  test('it renders testing container and resets scroll state', async function(assert) {
+    function getScrollPosition(element) {
+      return {
+        scrollTop: parseInt(element.scrollTop),
+        scrollLeft: parseInt(element.scrollLeft),
+      };
+    }
+
+    var scrollPosition,
+      scrollTarget,
+      emberTestingContainer = getRootElement().parentElement;
+
+    this.set('hbsArray', [1, 2, 3, 4, 5, 6, 7]);
+
+    await render(hbs`
+    {{#each hbsArray as |element|}}
+      <div id="box{{element}}"style="height:400px;background:#333;margin-bottom:10px;">
+        <p style="font-size:30px;color:#fff">{{element}}</p>
+      </div>
+    {{/each}}
+    `);
+
+    scrollPosition = getScrollPosition(emberTestingContainer);
+
+    assert.equal(scrollPosition.scrollLeft, 0, 'scrollLeft position is 0 after first render');
+    assert.equal(scrollPosition.scrollTop, 0, 'scrollTop position is 0 after first render');
+
+    scrollTarget = find('#box7');
+
+    scrollTarget.scrollIntoView();
+
+    scrollPosition = getScrollPosition(emberTestingContainer);
+
+    assert.equal(
+      scrollPosition.scrollTop,
+      1141,
+      'container scrollTop position is 1141 after scrolling element into view'
+    );
+
+    clearRender();
+
+    await render(hbs`
+      <div></div>
+    `);
+
+    scrollPosition = getScrollPosition(emberTestingContainer);
+
+    assert.equal(scrollPosition.scrollLeft, 0, 'scrollLeft position is 0 after second render');
+    assert.equal(scrollPosition.scrollTop, 0, 'scrollTop position is 0 after second render');
+  });
 });
