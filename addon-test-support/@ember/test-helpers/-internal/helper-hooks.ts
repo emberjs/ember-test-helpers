@@ -3,7 +3,7 @@ type HookUnregister = {
   unregister: () => void;
 };
 
-const registeredHooks = new Map<string, Set<Hook>>();
+export const registeredHooks = new Map<string, Set<Hook>>();
 
 /**
  * @private
