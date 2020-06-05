@@ -85,14 +85,20 @@ module('setupApplicationContext', function (hooks) {
   });
 
   test('it executes registered visit hooks for start and end at the right time', async function (assert) {
+    assert.expect(5);
+
     let hookStart = registerHook('visit', 'start', () => {
       assert.equal(currentURL(), null);
+      assert.step('visit:start');
     });
     let hookEnd = registerHook('visit', 'end', () => {
       assert.equal(currentURL(), '/');
+      assert.step('visit:end');
     });
 
     await visit('/');
+
+    assert.verifySteps(['visit:start', 'visit:end']);
 
     hookStart.unregister();
     hookEnd.unregister();

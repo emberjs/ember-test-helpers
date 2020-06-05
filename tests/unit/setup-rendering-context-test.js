@@ -9,6 +9,7 @@ import {
   setupRenderingContext,
   teardownContext,
   teardownRenderingContext,
+  registerHook,
   getTestMetadata,
   render,
   clearRender,
@@ -91,10 +92,28 @@ module('setupRenderingContext', function (hooks) {
       assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupRenderingContext']);
     });
 
-    test('it retutns true for isRendering in an rendering test', function (assert) {
+    test('it returns true for isRendering in an rendering test', function (assert) {
       let testMetadata = getTestMetadata(this);
 
       assert.ok(testMetadata.isRendering);
+    });
+
+    test('it executes registered render hooks for start and end at the right time', async function (assert) {
+      assert.expect(3);
+
+      let hookStart = registerHook('render', 'start', () => {
+        assert.step('render:start');
+      });
+      let hookEnd = registerHook('render', 'end', () => {
+        assert.step('render:end');
+      });
+
+      await render(hbs`<p>Hello!</p>`);
+
+      assert.verifySteps(['render:start', 'render:end']);
+
+      hookStart.unregister();
+      hookEnd.unregister();
     });
 
     test('render can be used multiple times', async function (assert) {
