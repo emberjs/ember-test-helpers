@@ -56,9 +56,7 @@ export function registerHook(helperName: string, label: string, hook: Hook): Hoo
  */
 export function runHooks(helperName: string, label: string, ...args: any[]): Promise<void> {
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
-  let promise = Promise.resolve();
+  let promises = [...hooks].map(hook => hook(...args));
 
-  hooks.forEach(hook => (promise = promise.then(() => hook(...args))));
-
-  return promise;
+  return Promise.all(promises).then(() => {});
 }
