@@ -84,12 +84,14 @@ module('DOM Helper: typeIn', function (hooks) {
       assert.step('typeIn:end');
     });
 
-    await typeIn(element, 'foo');
+    try {
+      await typeIn(element, 'foo');
 
-    assert.verifySteps(['typeIn:start', 'typeIn:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['typeIn:start', 'typeIn:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('typing in an input', async function (assert) {

@@ -42,12 +42,14 @@ module('DOM Helper: doubleClick', function (hooks) {
       assert.step('doubleClick:end');
     });
 
-    await doubleClick(element);
+    try {
+      await doubleClick(element);
 
-    assert.verifySteps(['doubleClick:start', 'doubleClick:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['doubleClick:start', 'doubleClick:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   module('non-focusable element types', function () {

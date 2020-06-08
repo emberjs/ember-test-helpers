@@ -59,12 +59,14 @@ module('DOM Helper: blur', function (hooks) {
       assert.step('blur:end');
     });
 
-    await blur(elementWithFocus);
+    try {
+      await blur(elementWithFocus);
 
-    assert.verifySteps(['blur', 'focusout', 'blur:start', 'blur:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['blur', 'focusout', 'blur:start', 'blur:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('does not run sync', async function (assert) {

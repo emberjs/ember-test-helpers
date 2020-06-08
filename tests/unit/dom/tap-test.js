@@ -46,12 +46,14 @@ module('DOM Helper: tap', function (hooks) {
       assert.step('tap:end');
     });
 
-    await tap(element);
+    try {
+      await tap(element);
 
-    assert.verifySteps(['tap:start', 'tap:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['tap:start', 'tap:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   module('non-focusable element types', function () {

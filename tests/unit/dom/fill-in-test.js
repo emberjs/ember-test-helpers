@@ -48,12 +48,14 @@ module('DOM Helper: fillIn', function (hooks) {
       assert.step('fillIn:end');
     });
 
-    await fillIn(element, 'foo');
+    try {
+      await fillIn(element, 'foo');
 
-    assert.verifySteps(['fillIn:start', 'fillIn:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['fillIn:start', 'fillIn:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('filling in a non-fillable element', async function (assert) {

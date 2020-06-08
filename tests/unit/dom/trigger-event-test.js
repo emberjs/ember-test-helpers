@@ -46,12 +46,14 @@ module('DOM Helper: triggerEvent', function (hooks) {
       assert.step('triggerEvent:end');
     });
 
-    await triggerEvent(element, 'mouseenter');
+    try {
+      await triggerEvent(element, 'mouseenter');
 
-    assert.verifySteps(['triggerEvent:start', 'triggerEvent:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['triggerEvent:start', 'triggerEvent:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('can trigger arbitrary event types', async function (assert) {

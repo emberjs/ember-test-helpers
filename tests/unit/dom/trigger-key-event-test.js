@@ -46,12 +46,14 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
       assert.step('triggerKeyEvent:end');
     });
 
-    await triggerKeyEvent(element, 'keypress', 13);
+    try {
+      await triggerKeyEvent(element, 'keypress', 13);
 
-    assert.verifySteps(['triggerKeyEvent:start', 'triggerKeyEvent:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['triggerKeyEvent:start', 'triggerKeyEvent:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('rejects if event type is missing', async function (assert) {

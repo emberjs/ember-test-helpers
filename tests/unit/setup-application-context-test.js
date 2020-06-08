@@ -96,12 +96,14 @@ module('setupApplicationContext', function (hooks) {
       assert.step('visit:end');
     });
 
-    await visit('/');
+    try {
+      await visit('/');
 
-    assert.verifySteps(['visit:start', 'visit:end']);
-
-    hookStart.unregister();
-    hookEnd.unregister();
+      assert.verifySteps(['visit:start', 'visit:end']);
+    } finally {
+      hookStart.unregister();
+      hookEnd.unregister();
+    }
   });
 
   test('it returns true for isApplication in an application test', function (assert) {

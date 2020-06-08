@@ -108,12 +108,14 @@ module('setupRenderingContext', function (hooks) {
         assert.step('render:end');
       });
 
-      await render(hbs`<p>Hello!</p>`);
+      try {
+        await render(hbs`<p>Hello!</p>`);
 
-      assert.verifySteps(['render:start', 'render:end']);
-
-      hookStart.unregister();
-      hookEnd.unregister();
+        assert.verifySteps(['render:start', 'render:end']);
+      } finally {
+        hookStart.unregister();
+        hookEnd.unregister();
+      }
     });
 
     test('render can be used multiple times', async function (assert) {

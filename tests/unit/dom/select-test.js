@@ -42,12 +42,14 @@ module('DOM Helper: select', function (hooks) {
       assert.step('select:end');
     });
 
-    await select(element, 'apple');
+    try {
+      await select(element, 'apple');
 
-    assert.verifySteps(['select:start', 'select:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['select:start', 'select:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('select without target', async function (assert) {

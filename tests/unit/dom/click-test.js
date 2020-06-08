@@ -41,12 +41,14 @@ module('DOM Helper: click', function (hooks) {
       assert.step('click:end');
     });
 
-    await click(element);
+    try {
+      await click(element);
 
-    assert.verifySteps(['click:start', 'click:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['click:start', 'click:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   module('non-focusable element types', function () {
