@@ -23,18 +23,22 @@ module('helper hooks', function () {
     let func = () => assert.step('click:start hook');
     let hook = _registerHook('click', 'start', func);
 
-    // it runs the hook
-    await _runHooks('click', 'start');
-    assert.verifySteps(['click:start hook']);
+    try {
+      // it runs the hook
+      await _runHooks('click', 'start');
+      assert.verifySteps(['click:start hook']);
 
-    // can run multiple times
-    await _runHooks('click', 'start');
-    assert.verifySteps(['click:start hook']);
+      // can run multiple times
+      await _runHooks('click', 'start');
+      assert.verifySteps(['click:start hook']);
 
-    // unregister works
-    hook.unregister();
-    await _runHooks('click', 'start');
-    assert.verifySteps([]);
+      // unregister works
+      hook.unregister();
+      await _runHooks('click', 'start');
+      assert.verifySteps([]);
+    } finally {
+      hook.unregister();
+    }
   });
 
   test('it can register a hook that returns a promise / has a delay', async function (assert) {
@@ -75,11 +79,13 @@ module('helper hooks', function () {
       assert.step('click:foo2');
     });
 
-    await _runHooks('click', 'foo');
+    try {
+      await _runHooks('click', 'foo');
 
-    assert.verifySteps(['click:foo1', 'click:foo2']);
-
-    fooHook1.unregister();
-    fooHook2.unregister();
+      assert.verifySteps(['click:foo1', 'click:foo2']);
+    } finally {
+      fooHook1.unregister();
+      fooHook2.unregister();
+    }
   });
 });
