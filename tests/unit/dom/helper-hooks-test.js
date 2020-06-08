@@ -1,51 +1,54 @@
 import { module, test } from 'qunit';
-import { registerHook } from '@ember/test-helpers';
-import { registeredHooks, runHooks } from '@ember/test-helpers/-internal/helper-hooks';
+import { _registerHook, _runHooks } from '@ember/test-helpers';
 
 module('helper hooks', function () {
-  test('it can register a hook for a helper', function (assert) {
-    let func = () => {};
-    let hook = registerHook('click', 'start', func);
-
-    let registeredHook = registeredHooks.get('click:start');
-
-    assert.ok(registeredHooks.has('click:start'));
-    assert.equal(registeredHook.size, 2);
-    assert.ok(registeredHook.has(func));
-
-    hook.unregister();
-  });
-
-  test('it can register an unregister a hook for a helper', function (assert) {
+  test('it can register a hook for a helper', async function (assert) {
     let func = () => assert.step('click:start hook');
-    let hook = registerHook('click', 'start', func);
+    let hook = _registerHook('click', 'start', func);
 
     // it runs the hook
-    runHooks('click', 'start');    
+    await _runHooks('click', 'start');
     assert.verifySteps(['click:start hook']);
 
     // can run multiple times
-    runHooks('click', 'start');    
+    await _runHooks('click', 'start');
     assert.verifySteps(['click:start hook']);
 
     // unregister works
     hook.unregister();
-    runHooks('click', 'start');    
+  });
+
+  test('it can register an unregister a hook for a helper', async function (assert) {
+    let func = () => assert.step('click:start hook');
+    let hook = _registerHook('click', 'start', func);
+
+    // it runs the hook
+    await _runHooks('click', 'start');
+    assert.verifySteps(['click:start hook']);
+
+    // can run multiple times
+    await _runHooks('click', 'start');
+    assert.verifySteps(['click:start hook']);
+
+    // unregister works
+    hook.unregister();
+    await _runHooks('click', 'start');
     assert.verifySteps([]);
   });
 
   test('it can run hooks for a helper by label', async function (assert) {
-    registerHook('click', 'foo', () => {
+    let fooHook1 = _registerHook('click', 'foo', () => {
       assert.step('click:foo1');
     });
-    registerHook('click', 'foo', () => {
+    let fooHook2 = _registerHook('click', 'foo', () => {
       assert.step('click:foo2');
     });
 
-    await runHooks('click', 'foo');
+    await _runHooks('click', 'foo');
 
     assert.verifySteps(['click:foo1', 'click:foo2']);
 
-    registeredHooks.delete('click:foo');
+    fooHook1.unregister();
+    fooHook2.unregister();
   });
 });

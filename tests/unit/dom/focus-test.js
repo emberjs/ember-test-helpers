@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { focus, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { focus, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -40,11 +40,11 @@ module('DOM Helper: focus', function (hooks) {
 
     element = document.createElement('input');
     insertElement(element);
-    
-    let startHook = registerHook('focus', 'start', () => {
+
+    let startHook = _registerHook('focus', 'start', () => {
       assert.step('focus:start');
     });
-    let endHook = registerHook('focus', 'end', () => {
+    let endHook = _registerHook('focus', 'end', () => {
       assert.step('focus:end');
     });
 

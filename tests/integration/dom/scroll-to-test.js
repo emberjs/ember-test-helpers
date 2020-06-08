@@ -6,7 +6,7 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  registerHook,
+  _registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -27,10 +27,10 @@ module('DOM Helper: scroll-to', function (hooks) {
   test('it executes registered scrollTo hooks', async function (assert) {
     assert.expect(3);
 
-    let startHook = registerHook('scrollTo', 'start', () => {
+    let startHook = _registerHook('scrollTo', 'start', () => {
       assert.step('scrollTo:start');
     });
-    let endHook = registerHook('scrollTo', 'end', () => {
+    let endHook = _registerHook('scrollTo', 'end', () => {
       assert.step('scrollTo:end');
     });
 

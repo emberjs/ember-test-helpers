@@ -13,7 +13,7 @@ import {
   visit,
   currentRouteName,
   currentURL,
-  registerHook,
+  _registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
@@ -87,11 +87,11 @@ module('setupApplicationContext', function (hooks) {
   test('it executes registered visit hooks for start and end at the right time', async function (assert) {
     assert.expect(5);
 
-    let hookStart = registerHook('visit', 'start', () => {
+    let hookStart = _registerHook('visit', 'start', () => {
       assert.equal(currentURL(), null);
       assert.step('visit:start');
     });
-    let hookEnd = registerHook('visit', 'end', () => {
+    let hookEnd = _registerHook('visit', 'end', () => {
       assert.equal(currentURL(), '/');
       assert.step('visit:end');
     });

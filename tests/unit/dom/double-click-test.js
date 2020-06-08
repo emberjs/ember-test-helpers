@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { doubleClick, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { doubleClick, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -35,10 +35,10 @@ module('DOM Helper: doubleClick', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('doubleClick', 'start', () => {
+    let startHook = _registerHook('doubleClick', 'start', () => {
       assert.step('doubleClick:start');
     });
-    let endHook = registerHook('doubleClick', 'end', () => {
+    let endHook = _registerHook('doubleClick', 'end', () => {
       assert.step('doubleClick:end');
     });
 

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { triggerEvent, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { triggerEvent, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -39,10 +39,10 @@ module('DOM Helper: triggerEvent', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = registerHook('triggerEvent', 'start', () => {
+    let startHook = _registerHook('triggerEvent', 'start', () => {
       assert.step('triggerEvent:start');
     });
-    let endHook = registerHook('triggerEvent', 'end', () => {
+    let endHook = _registerHook('triggerEvent', 'end', () => {
       assert.step('triggerEvent:end');
     });
 

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { fillIn, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { fillIn, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -41,10 +41,10 @@ module('DOM Helper: fillIn', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = registerHook('fillIn', 'start', () => {
+    let startHook = _registerHook('fillIn', 'start', () => {
       assert.step('fillIn:start');
     });
-    let endHook = registerHook('fillIn', 'end', () => {
+    let endHook = _registerHook('fillIn', 'end', () => {
       assert.step('fillIn:end');
     });
 

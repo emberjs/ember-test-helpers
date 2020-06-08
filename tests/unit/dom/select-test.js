@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { select, setupContext, teardownContext, registerHook } from '@ember/test-helpers';
+import { select, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 
@@ -35,10 +35,10 @@ module('DOM Helper: select', function (hooks) {
     element = document.createElement('select');
     insertElement(element);
 
-    let startHook = registerHook('select', 'start', () => {
+    let startHook = _registerHook('select', 'start', () => {
       assert.step('select:start');
     });
-    let endHook = registerHook('select', 'end', () => {
+    let endHook = _registerHook('select', 'end', () => {
       assert.step('select:end');
     });
 
