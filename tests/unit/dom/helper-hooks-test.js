@@ -17,18 +17,21 @@ module('helper hooks', function () {
   });
 
   test('it can register an unregister a hook for a helper', function (assert) {
-    let func = () => {};
+    let func = () => assert.step('click:start hook');
     let hook = registerHook('click', 'start', func);
 
-    let registeredHook = registeredHooks.get('click:start');
+    // it runs the hook
+    runHooks('click', 'start');    
+    assert.verifySteps(['click:start hook']);
 
-    assert.ok(registeredHooks.has('click:start'));
-    assert.equal(registeredHook.size, 2);
-    assert.ok(registeredHook.has(func));
+    // can run multiple times
+    runHooks('click', 'start');    
+    assert.verifySteps(['click:start hook']);
 
+    // unregister works
     hook.unregister();
-
-    assert.notOk(registeredHook.has(func));
+    runHooks('click', 'start');    
+    assert.verifySteps([]);
   });
 
   test('it can run hooks for a helper by label', async function (assert) {
