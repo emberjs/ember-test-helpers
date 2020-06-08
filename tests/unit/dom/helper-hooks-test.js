@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { Promise } from 'rsvp';
 import { _registerHook, _runHooks } from '@ember/test-helpers';
 
 module('helper hooks', function () {
@@ -34,6 +35,36 @@ module('helper hooks', function () {
     hook.unregister();
     await _runHooks('click', 'start');
     assert.verifySteps([]);
+  });
+
+  test('it can register a hook that returns a promise / has a delay', async function (assert) {
+    let func = () => {
+      assert.step('starting hook');
+
+      return new Promise(resolve => {
+        setTimeout(() => {
+          assert.step('resolving hook promise');
+          resolve();
+        }, 100);
+      });
+    };
+    let hook = _registerHook('click', 'start', func);
+
+    try {
+      // it runs the hook
+      assert.step('running hooks for click:start');
+      await _runHooks('click', 'start');
+      assert.step('hooks finished for click:start');
+
+      assert.verifySteps([
+        'running hooks for click:start',
+        'starting hook',
+        'resolving hook promise',
+        'hooks finished for click:start',
+      ]);
+    } finally {
+      hook.unregister();
+    }
   });
 
   test('it can run hooks for a helper by label', async function (assert) {

@@ -58,7 +58,7 @@ export function runHooks(helperName: string, label: string, ...args: any[]): Pro
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
   let promise = Promise.resolve();
 
-  hooks.forEach(hook => promise.then(() => hook(...args)));
+  hooks.forEach(hook => (promise = promise.then(() => hook(...args))));
 
   return promise;
 }
