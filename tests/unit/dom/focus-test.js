@@ -40,7 +40,7 @@ module('DOM Helper: focus', function (hooks) {
 
     element = document.createElement('input');
     insertElement(element);
-
+    
     let startHook = registerHook('focus', 'start', () => {
       assert.step('focus:start');
     });
@@ -48,12 +48,14 @@ module('DOM Helper: focus', function (hooks) {
       assert.step('focus:end');
     });
 
-    await focus(element);
+    try {
+      await focus(element);
 
-    assert.verifySteps(['focus:start', 'focus:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      assert.verifySteps(['focus:start', 'focus:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('focusing a div via selector with context set', async function (assert) {
