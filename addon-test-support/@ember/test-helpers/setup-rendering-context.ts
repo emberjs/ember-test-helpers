@@ -11,6 +11,7 @@ import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/application/deprecations';
+import { runHooks } from './-internal/helper-hooks';
 
 export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -76,58 +77,63 @@ export function render(template: TemplateFactory): Promise<void> {
     throw new Error('you must pass a template to `render()`');
   }
 
-  return nextTickPromise().then(() => {
-    if (!context || !isRenderingTestContext(context)) {
-      throw new Error('Cannot call `render` without having first called `setupRenderingContext`.');
-    }
+  return nextTickPromise()
+    .then(() => runHooks('render', 'start'))
+    .then(() => {
+      if (!context || !isRenderingTestContext(context)) {
+        throw new Error(
+          'Cannot call `render` without having first called `setupRenderingContext`.'
+        );
+      }
 
-    let { owner } = context;
-    let testMetadata = getTestMetadata(context);
-    testMetadata.usedHelpers.push('render');
+      let { owner } = context;
+      let testMetadata = getTestMetadata(context);
+      testMetadata.usedHelpers.push('render');
 
-    let toplevelView = owner.lookup('-top-level-view:main');
-    let OutletTemplate = lookupOutletTemplate(owner);
-    templateId += 1;
-    let templateFullName = `template:-undertest-${templateId}`;
-    owner.register(templateFullName, template);
+      let toplevelView = owner.lookup('-top-level-view:main');
+      let OutletTemplate = lookupOutletTemplate(owner);
+      templateId += 1;
+      let templateFullName = `template:-undertest-${templateId}`;
+      owner.register(templateFullName, template);
 
-    let outletState = {
-      render: {
-        owner,
-        into: undefined,
-        outlet: 'main',
-        name: 'application',
-        controller: undefined,
-        ViewClass: undefined,
-        template: OutletTemplate,
-      },
+      let outletState = {
+        render: {
+          owner,
+          into: undefined,
+          outlet: 'main',
+          name: 'application',
+          controller: undefined,
+          ViewClass: undefined,
+          template: OutletTemplate,
+        },
 
-      outlets: {
-        main: {
-          render: {
-            owner,
-            into: undefined,
-            outlet: 'main',
-            name: 'index',
-            controller: context,
-            ViewClass: undefined,
-            template: lookupTemplate(owner, templateFullName),
+        outlets: {
+          main: {
+            render: {
+              owner,
+              into: undefined,
+              outlet: 'main',
+              name: 'index',
+              controller: context,
+              ViewClass: undefined,
+              template: lookupTemplate(owner, templateFullName),
+              outlets: {},
+            },
             outlets: {},
           },
-          outlets: {},
         },
-      },
-    };
-    toplevelView.setOutletState(outletState);
+      };
+      toplevelView.setOutletState(outletState);
 
-    // returning settled here because the actual rendering does not happen until
-    // the renderer detects it is dirty (which happens on backburner's end
-    // hook), see the following implementation details:
-    //
-    // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
-    // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
-    return settled();
-  });
+      // returning settled here because the actual rendering does not happen until
+      // the renderer detects it is dirty (which happens on backburner's end
+      // hook), see the following implementation details:
+      //
+      // * [view:outlet](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/views/outlet.js#L129-L145) manually dirties its own tag upon `setOutletState`
+      // * [backburner's custom end hook](https://github.com/emberjs/ember.js/blob/f94a4b6aef5b41b96ef2e481f35e07608df01440/packages/ember-glimmer/lib/renderer.js#L145-L159) detects that the current revision of the root is no longer the latest, and triggers a new rendering transaction
+      return settled();
+    })
+    .then(() => runHooks('render', 'end'));
 }
 
 /**

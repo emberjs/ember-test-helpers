@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { triggerEvent, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { triggerEvent, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: triggerEvent', function (hooks) {
@@ -31,6 +31,29 @@ module('DOM Helper: triggerEvent', function (hooks) {
       await teardownContext(context);
     }
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered triggerEvent hooks', async function (assert) {
+    assert.expect(3);
+
+    element = document.createElement('div');
+    insertElement(element);
+
+    let startHook = _registerHook('triggerEvent', 'start', () => {
+      assert.step('triggerEvent:start');
+    });
+    let endHook = _registerHook('triggerEvent', 'end', () => {
+      assert.step('triggerEvent:end');
+    });
+
+    try {
+      await triggerEvent(element, 'mouseenter');
+
+      assert.verifySteps(['triggerEvent:start', 'triggerEvent:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('can trigger arbitrary event types', async function (assert) {

@@ -7,6 +7,15 @@ import { nextTickPromise, isNumeric } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook(
+  'triggerKeyEvent',
+  'start',
+  (target: Target, eventType: KeyboardEventType, key: number | string) => {
+    log('triggerKeyEvent', target, eventType, key);
+  }
+);
 
 export interface KeyModifiers {
   ctrlKey?: boolean;
@@ -185,35 +194,40 @@ export default function triggerKeyEvent(
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
-  log('triggerKeyEvent', target, eventType, key);
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('triggerKeyEvent', 'start', target, eventType, key);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
+      }
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`);
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`);
-    }
+      if (!eventType) {
+        throw new Error(`Must provide an \`eventType\` to \`triggerKeyEvent\``);
+      }
 
-    if (!eventType) {
-      throw new Error(`Must provide an \`eventType\` to \`triggerKeyEvent\``);
-    }
+      if (!isKeyboardEventType(eventType)) {
+        let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
+        throw new Error(
+          `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`
+        );
+      }
 
-    if (!isKeyboardEventType(eventType)) {
-      let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
-      throw new Error(
-        `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`
-      );
-    }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`triggerKeyEvent\` on disabled ${element}`);
+      }
 
-    if (isFormControl(element) && element.disabled) {
-      throw new Error(`Can not \`triggerKeyEvent\` on disabled ${element}`);
-    }
+      __triggerKeyEvent__(element, eventType, key, modifiers);
 
-    __triggerKeyEvent__(element, eventType, key, modifiers);
-
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('triggerKeyEvent', 'end', target, eventType, key);
+    });
 }

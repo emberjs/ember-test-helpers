@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { focus, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { focus, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -33,6 +33,29 @@ module('DOM Helper: focus', function (hooks) {
       await teardownContext(context);
     }
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered focus hooks', async function (assert) {
+    assert.expect(3);
+
+    element = document.createElement('input');
+    insertElement(element);
+
+    let startHook = _registerHook('focus', 'start', () => {
+      assert.step('focus:start');
+    });
+    let endHook = _registerHook('focus', 'end', () => {
+      assert.step('focus:end');
+    });
+
+    try {
+      await focus(element);
+
+      assert.verifySteps(['focus:start', 'focus:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('focusing a div via selector with context set', async function (assert) {

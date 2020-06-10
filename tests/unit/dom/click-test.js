@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, setupContext, teardownContext } from '@ember/test-helpers';
+import { click, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
 import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -26,6 +26,29 @@ module('DOM Helper: click', function (hooks) {
     }
 
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered click hooks', async function (assert) {
+    assert.expect(3);
+
+    element = document.createElement('div');
+    insertElement(element);
+
+    let startHook = _registerHook('click', 'start', () => {
+      assert.step('click:start');
+    });
+    let endHook = _registerHook('click', 'end', () => {
+      assert.step('click:end');
+    });
+
+    try {
+      await click(element);
+
+      assert.verifySteps(['click:start', 'click:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   module('non-focusable element types', function () {

@@ -5,6 +5,11 @@ import { nextTickPromise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
+  log('triggerEvent', target, eventType);
+});
 
 /**
  * Triggers an event on the specified target.
@@ -54,28 +59,33 @@ export default function triggerEvent(
   eventType: string,
   options?: object
 ): Promise<void> {
-  log('triggerEvent', target, eventType);
+  return nextTickPromise()
+    .then(() => {
+      return runHooks('triggerEvent', 'start', target, eventType, options);
+    })
+    .then(() => {
+      if (!target) {
+        throw new Error('Must pass an element or selector to `triggerEvent`.');
+      }
 
-  return nextTickPromise().then(() => {
-    if (!target) {
-      throw new Error('Must pass an element or selector to `triggerEvent`.');
-    }
+      if (!eventType) {
+        throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
+      }
 
-    if (!eventType) {
-      throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
-    }
+      let element = getElement(target);
+      if (!element) {
+        throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
+      }
 
-    let element = getElement(target);
-    if (!element) {
-      throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
-    }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
+      }
 
-    if (isFormControl(element) && element.disabled) {
-      throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
-    }
+      fireEvent(element, eventType, options);
 
-    fireEvent(element, eventType, options);
-
-    return settled();
-  });
+      return settled();
+    })
+    .then(() => {
+      return runHooks('triggerEvent', 'end', target, eventType, options);
+    });
 }

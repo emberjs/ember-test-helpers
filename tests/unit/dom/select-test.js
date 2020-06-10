@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
-import { select, setupContext, teardownContext } from '@ember/test-helpers';
-import { buildInstrumentedElement } from '../../helpers/events';
+import { select, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
@@ -27,6 +27,29 @@ module('DOM Helper: select', function (hooks) {
     }
 
     document.getElementById('ember-testing').innerHTML = '';
+  });
+
+  test('it executes registered select hooks', async function (assert) {
+    assert.expect(3);
+
+    element = document.createElement('select');
+    insertElement(element);
+
+    let startHook = _registerHook('select', 'start', () => {
+      assert.step('select:start');
+    });
+    let endHook = _registerHook('select', 'end', () => {
+      assert.step('select:end');
+    });
+
+    try {
+      await select(element, 'apple');
+
+      assert.verifySteps(['select:start', 'select:end']);
+    } finally {
+      startHook.unregister();
+      endHook.unregister();
+    }
   });
 
   test('select without target', async function (assert) {
