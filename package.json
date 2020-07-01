@@ -77,7 +77,7 @@
     "qunit": "^2.10.0",
     "release-it": "^13.6.1",
     "release-it-lerna-changelog": "^2.3.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "engines": {
     "node": "10.* || >= 12.*"
