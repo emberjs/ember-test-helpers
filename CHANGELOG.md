@@ -1,3 +1,11 @@
+## v1.7.2 (2020-08-17)
+
+#### :bug: Bug Fix
+* [#907](https://github.com/emberjs/ember-test-helpers/pull/907) Backport: Ensure `waitUntil` stops recursing when the callback throws an error ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v1.7.1 (2019-10-25)
 
 #### :bug: Bug Fix
