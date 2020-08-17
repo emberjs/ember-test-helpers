@@ -5,7 +5,7 @@ import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
-import { buildWaiter, _reset as resetWaiters } from 'ember-test-waiters';
+import { buildWaiter, _reset as resetWaiters } from '@ember/test-waiters';
 import Pretender from 'pretender';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';

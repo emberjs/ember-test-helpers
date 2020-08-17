@@ -5,7 +5,7 @@ import Ember from 'ember';
 import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
-import { hasPendingWaiters } from 'ember-test-waiters';
+import { hasPendingWaiters } from '@ember/test-waiters';
 import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
