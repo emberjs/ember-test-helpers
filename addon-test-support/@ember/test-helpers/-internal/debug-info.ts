@@ -6,7 +6,11 @@ import {
 } from '@ember/runloop';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { assign } from '@ember/polyfills';
-import { getPendingWaiterState, PendingWaiterState, TestWaiterDebugInfo } from 'ember-test-waiters';
+import {
+  getPendingWaiterState,
+  PendingWaiterState,
+  TestWaiterDebugInfo,
+} from '@ember/test-waiters';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';

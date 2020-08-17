@@ -8,7 +8,7 @@ import MockStableError, { overrideError, resetError } from './utils/mock-stable-
 import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
 import { registerDebugInfoHelper } from '@ember/test-helpers';
 import { debugInfoHelpers } from '@ember/test-helpers/-internal/debug-info-helpers';
-import { buildWaiter, _reset as resetWaiters } from 'ember-test-waiters';
+import { buildWaiter, _reset as resetWaiters } from '@ember/test-waiters';
 
 module('TestDebugInfo', function (hooks) {
   hooks.beforeEach(function () {
