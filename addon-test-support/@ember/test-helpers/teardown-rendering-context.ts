@@ -1,6 +1,5 @@
-import { guidFor } from '@ember/object/internals';
-import { RENDERING_CLEANUP, RenderingTestContext } from './setup-rendering-context';
-import { nextTickPromise, runDestroyablesFor } from './-utils';
+import { RenderingTestContext } from './setup-rendering-context';
+import { nextTickPromise } from './-utils';
 import settled from './settled';
 
 /**
@@ -27,10 +26,6 @@ export default function teardownRenderingContext(
   }
 
   return nextTickPromise().then(() => {
-    let contextGuid = guidFor(context);
-
-    runDestroyablesFor(RENDERING_CLEANUP, contextGuid);
-
     if (waitForSettled) {
       return settled();
     }

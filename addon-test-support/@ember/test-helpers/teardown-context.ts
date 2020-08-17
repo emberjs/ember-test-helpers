@@ -1,8 +1,7 @@
-import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import { _teardownAJAXHooks } from './settled';
-import { unsetContext, CLEANUP, TestContext } from './setup-context';
-import { nextTickPromise, runDestroyablesFor } from './-utils';
+import { unsetContext, TestContext } from './setup-context';
+import { nextTickPromise } from './-utils';
 import settled from './settled';
 import Ember from 'ember';
 
@@ -47,10 +46,6 @@ export default function teardownContext(
       return nextTickPromise();
     })
     .finally(() => {
-      let contextGuid = guidFor(context);
-
-      runDestroyablesFor(CLEANUP, contextGuid);
-
       if (waitForSettled) {
         return settled();
       }

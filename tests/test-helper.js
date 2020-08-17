@@ -79,19 +79,6 @@ QUnit.testDone(function ({ module, name }) {
     Ember.testing = false;
   }
 
-  // this is used to ensure that the testing container is always reset properly
-  let testElementContainer = document.getElementById('ember-testing-container');
-  let actual = testElementContainer.innerHTML;
-  let expected = `<div id="ember-testing"></div>`;
-  if (actual !== expected) {
-    let message = `Expected #ember-testing-container to be reset after ${module}: ${name}, but was \`${actual}\``;
-    cleanupFailures.push(message);
-
-    // eslint-disable-next-line
-    console.error(message);
-    testElementContainer.innerHTML = expected;
-  }
-
   if (!isSettled()) {
     let message = `Expected to be settled after ${module}: ${name}, but was \`${JSON.stringify(
       getSettledState()
