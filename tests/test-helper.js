@@ -4,6 +4,7 @@ import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
+import './helpers/resolver';
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;

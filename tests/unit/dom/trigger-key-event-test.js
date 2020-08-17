@@ -23,6 +23,7 @@ module('DOM Helper: triggerKeyEvent', function(hooks) {
 
     if (element) {
       element.parentNode.removeChild(element);
+      element = null;
     }
 
     // only teardown if setupContext was called

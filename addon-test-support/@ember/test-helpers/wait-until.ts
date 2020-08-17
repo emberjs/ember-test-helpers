@@ -51,6 +51,7 @@ export default function waitUntil<T>(
           value = callback();
         } catch (error) {
           reject(error);
+          return;
         }
 
         if (value) {
@@ -59,6 +60,7 @@ export default function waitUntil<T>(
           scheduleCheck(timeoutsIndex + 1);
         } else {
           reject(waitUntilTimedOut);
+          return;
         }
       }, interval);
     }

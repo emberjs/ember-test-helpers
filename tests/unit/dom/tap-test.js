@@ -24,6 +24,7 @@ module('DOM Helper: tap', function(hooks) {
 
     if (element) {
       element.parentNode.removeChild(element);
+      element = null;
     }
     // only teardown if setupContext was called
     if (context.owner) {
