@@ -1,6 +1,5 @@
 import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
-import { guidFor } from '@ember/object/internals';
 import Resolver from '@ember/application/resolver';
 
 import buildOwner, { Owner } from './build-owner';
@@ -133,8 +132,6 @@ export function resumeTest(): void {
   context.resumeTest();
 }
 
-export const CLEANUP = Object.create(null);
-
 /**
   Used by test framework addons to setup the provided context for testing.
 
@@ -159,9 +156,6 @@ export default function setupContext(
   (Ember as any).testing = true;
   setContext(context);
 
-  let contextGuid = guidFor(context);
-  CLEANUP[contextGuid] = [];
-
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupContext');
 
@@ -176,15 +170,6 @@ export default function setupContext(
       return;
     })
     .then(() => {
-      let testElementContainer = document.getElementById('ember-testing-container')!; // TODO remove "!"
-      let fixtureResetValue = testElementContainer.innerHTML;
-
-      // push this into the final cleanup bucket, to be ran _after_ the owner
-      // is destroyed and settled (e.g. flushed run loops, etc)
-      CLEANUP[contextGuid].push(() => {
-        testElementContainer.innerHTML = fixtureResetValue;
-      });
-
       let { resolver } = options;
 
       // This handles precendence, specifying a specific option of

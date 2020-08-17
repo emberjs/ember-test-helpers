@@ -1,5 +1,4 @@
 /* globals EmberENV */
-import { guidFor } from '@ember/object/internals';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
@@ -13,7 +12,6 @@ import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/application/deprecations';
 import { runHooks } from './-internal/helper-hooks';
 
-export const RENDERING_CLEANUP = Object.create(null);
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
 
@@ -176,9 +174,6 @@ export function clearRender(): Promise<void> {
   @returns {Promise<Object>} resolves with the context that was setup
 */
 export default function setupRenderingContext(context: TestContext): Promise<RenderingTestContext> {
-  let contextGuid = guidFor(context);
-  RENDERING_CLEANUP[contextGuid] = [];
-
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
