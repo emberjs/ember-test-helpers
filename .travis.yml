@@ -38,9 +38,6 @@ jobs:
       script:
         - yarn lint
         - yarn test
-    - name: 'floating dependencies'
-      install: yarn install --no-lockfile --non-interactive --ignore-engines
-      script: yarn test
 
     # runs tests against each supported Ember version
     - stage: older version tests
