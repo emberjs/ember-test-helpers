@@ -1,3 +1,16 @@
+## v2.0.0-beta.4 (2020-08-17)
+
+#### :boom: Breaking Change
+* [#911](https://github.com/emberjs/ember-test-helpers/pull/911) Remove manual DOM cleanup code after each test. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#909](https://github.com/emberjs/ember-test-helpers/pull/909) Update automated release setup. ([@rwjblue](https://github.com/rwjblue))
+* [#910](https://github.com/emberjs/ember-test-helpers/pull/910) Move `#ember-testing-container` into `#qunit-fixture` element. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.0.0-beta.3 (2020-08-17)
 
 #### :boom: Breaking Change
