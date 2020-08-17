@@ -1,3 +1,32 @@
+## v2.0.0-beta.3 (2020-08-17)
+
+#### :boom: Breaking Change
+* [#905](https://github.com/emberjs/ember-test-helpers/pull/905) Drop Node 13 support. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#903](https://github.com/emberjs/ember-test-helpers/pull/903) Migrate from ember-test-waiters to @ember/test-waiters. ([@rwjblue](https://github.com/rwjblue))
+* [#876](https://github.com/emberjs/ember-test-helpers/pull/876) Add deprecation for `this.render` and `this.clearRender` ([@Mikek2252](https://github.com/Mikek2252))
+* [#869](https://github.com/emberjs/ember-test-helpers/pull/869) Allow `typeIn` for `contenteditable` elements ([@jeffhertzler](https://github.com/jeffhertzler))
+* [#728](https://github.com/emberjs/ember-test-helpers/pull/728) Add `select()` helper ([@Mikek2252](https://github.com/Mikek2252))
+
+#### :bug: Bug Fix
+* [#879](https://github.com/emberjs/ember-test-helpers/pull/879) Ensure `waitUntil` stops recursing when the callback throws an error ([@scalvert](https://github.com/scalvert))
+* [#872](https://github.com/emberjs/ember-test-helpers/pull/872) Ensure `triggerKeyEvent` works properly with IE11  ([@lyubarskiy](https://github.com/lyubarskiy))
+
+#### :house: Internal
+* [#904](https://github.com/emberjs/ember-test-helpers/pull/904) Add ember-lts-3.20 CI scenario. ([@rwjblue](https://github.com/rwjblue))
+* [#878](https://github.com/emberjs/ember-test-helpers/pull/878) Adding `_registerHook` / `_runHooks` functionality allow adding work start/end of test helpers ([@scalvert](https://github.com/scalvert))
+* [#851](https://github.com/emberjs/ember-test-helpers/pull/851) Fix internal types for `require`'s `has` method ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 6
+- Anton ([@lyubarskiy](https://github.com/lyubarskiy))
+- Jeff Hertzler ([@jeffhertzler](https://github.com/jeffhertzler))
+- Michael Kerr ([@Mikek2252](https://github.com/Mikek2252))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.0.0-beta.2 (2020-05-06)
 
 #### :house: Internal
