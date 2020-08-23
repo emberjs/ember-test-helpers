@@ -1,4 +1,5 @@
 type Hook = (...args: any[]) => void | Promise<void>;
+type HookLabel = 'start' | 'end' | string;
 type HookUnregister = {
   unregister: () => void;
 };
@@ -26,7 +27,7 @@ function getHelperKey(helperName: string, label: string) {
  * @returns {HookUnregister} An object containing an unregister function that will unregister
  *                           the specific hook registered to the helper.
  */
-export function registerHook(helperName: string, label: string, hook: Hook): HookUnregister {
+export function registerHook(helperName: string, label: HookLabel, hook: Hook): HookUnregister {
   let helperKey = getHelperKey(helperName, label);
   let hooksForHelper = registeredHooks.get(helperKey);
 
@@ -54,7 +55,7 @@ export function registerHook(helperName: string, label: string, hook: Hook): Hoo
  * @param {any[]} args Any arguments originally passed to the test helper.
  * @returns {Promise<void>} A promise representing the serial invocation of the hooks.
  */
-export function runHooks(helperName: string, label: string, ...args: any[]): Promise<void> {
+export function runHooks(helperName: string, label: HookLabel, ...args: any[]): Promise<void> {
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
   let promises = [...hooks].map(hook => hook(...args));
 
