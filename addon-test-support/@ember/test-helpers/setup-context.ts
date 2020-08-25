@@ -3,7 +3,7 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import Resolver from '@ember/application/resolver';
 
 import buildOwner, { Owner } from './build-owner';
-import { _setupAJAXHooks } from './settled';
+import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import Ember from 'ember';
 import { Promise } from 'rsvp';
 import { assert } from '@ember/debug';
@@ -12,6 +12,7 @@ import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { nextTickPromise } from './-utils';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
+import { registerDestructor, associateDestroyableChild } from '@ember/destroyable';
 
 export interface BaseContext {
   [key: string]: any;
@@ -133,6 +134,22 @@ export function resumeTest(): void {
 }
 
 /**
+  @private
+  @param {Object} context the test context being cleaned up
+*/
+function cleanup(context: BaseContext) {
+  _teardownAJAXHooks();
+
+  (Ember as any).testing = false;
+
+  unsetContext();
+
+  // this should not be required, but until https://github.com/emberjs/ember.js/pull/19106
+  // lands in a 3.20 patch release
+  context.owner.destroy();
+}
+
+/**
   Used by test framework addons to setup the provided context for testing.
 
   Responsible for:
@@ -161,6 +178,8 @@ export default function setupContext(
 
   run.backburner.DEBUG = true;
 
+  registerDestructor(context, cleanup);
+
   return nextTickPromise()
     .then(() => {
       let application = getApplication();
@@ -185,6 +204,8 @@ export default function setupContext(
       return buildOwner(getApplication(), getResolver());
     })
     .then(owner => {
+      associateDestroyableChild(context, owner);
+
       Object.defineProperty(context, 'owner', {
         configurable: true,
         enumerable: true,

@@ -33,6 +33,7 @@
       "@ember/test-helpers/*": [
         "addon-test-support/@ember/test-helpers/*"
       ],
+      "@ember/destroyable": ["node_modules/ember-destroyable-polyfill"],
       "*": [
         "types/*"
       ]

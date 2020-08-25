@@ -15,6 +15,7 @@ import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 import Pretender from 'pretender';
 import setupManualTestWaiter from '../helpers/manual-test-waiter';
+import { registerDestructor } from '@ember/destroyable';
 
 module('teardownContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -62,6 +63,26 @@ module('teardownContext', function (hooks) {
     await teardownContext(context);
 
     assert.strictEqual(getContext(), undefined, 'context is unset');
+  });
+
+  test('destroyables registered with the context are invoked', async function (assert) {
+    registerDestructor(context, () => {
+      assert.step('destructor was ran');
+    });
+
+    assert.step('teardown started');
+
+    await teardownContext(context);
+
+    assert.step('teardown completed');
+
+    assert.verifySteps(['teardown started', 'destructor was ran', 'teardown completed']);
+  });
+
+  test('the owner is destroyed', async function (assert) {
+    await teardownContext(context);
+
+    assert.ok(context.owner.isDestroyed);
   });
 
   if (hasjQuery()) {
