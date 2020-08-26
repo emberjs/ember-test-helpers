@@ -5151,6 +5151,15 @@ ember-compatibility-helpers@^1.1.1, ember-compatibility-helpers@^1.2.0:
     ember-cli-version-checker "^2.1.1"
     semver "^5.4.1"
 
+ember-compatibility-helpers@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.2.1.tgz#87c92c4303f990ff455c28ca39fb3ee11441aa16"
+  integrity sha512-6wzYvnhg1ihQUT5yGqnLtleq3Nv5KNv79WhrEuNU9SwR4uIxCO+KpyC7r3d5VI0EM7/Nmv9Nd0yTkzmTMdVG1A==
+  dependencies:
+    babel-plugin-debug-macros "^0.2.0"
+    ember-cli-version-checker "^2.1.1"
+    semver "^5.4.1"
+
 ember-data@~3.20.0:
   version "3.20.0"
   resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-3.20.0.tgz#613cfca5276b16b4f4bbfb35432e58f3e5a2d9f3"
@@ -5170,6 +5179,15 @@ ember-data@~3.20.0:
     ember-cli-babel "^7.18.0"
     ember-cli-typescript "^3.1.3"
     ember-inflector "^3.0.1"
+
+ember-destroyable-polyfill@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ember-destroyable-polyfill/-/ember-destroyable-polyfill-2.0.1.tgz#391cd95a99debaf24148ce953054008d00f151a6"
+  integrity sha512-hyK+/GPWOIxM1vxnlVMknNl9E5CAFVbcxi8zPiM0vCRwHiFS8Wuj7PfthZ1/OFitNNv7ITTeU8hxqvOZVsrbnQ==
+  dependencies:
+    ember-cli-babel "^7.22.1"
+    ember-cli-version-checker "^5.1.1"
+    ember-compatibility-helpers "^1.2.1"
 
 ember-disable-prototype-extensions@^1.1.3:
   version "1.1.3"

@@ -1,9 +1,7 @@
-import { run } from '@ember/runloop';
-import { _teardownAJAXHooks } from './settled';
-import { unsetContext, TestContext } from './setup-context';
+import { TestContext } from './setup-context';
 import { nextTickPromise } from './-utils';
 import settled from './settled';
-import Ember from 'ember';
+import { destroy } from '@ember/destroyable';
 
 /**
   Used by test framework addons to tear down the provided context after testing is completed.
@@ -28,28 +26,16 @@ export default function teardownContext(
   if (options !== undefined && 'waitForSettled' in options) {
     waitForSettled = options.waitForSettled!;
   }
+
   return nextTickPromise()
     .then(() => {
-      let { owner } = context;
-
-      _teardownAJAXHooks();
-
-      run(owner, 'destroy');
-      (Ember as any).testing = false;
-
-      unsetContext();
-
-      if (waitForSettled) {
-        return settled();
-      }
-
-      return nextTickPromise();
+      destroy(context);
     })
     .finally(() => {
       if (waitForSettled) {
         return settled();
       }
 
-      return nextTickPromise();
+      return;
     });
 }
