@@ -8,7 +8,6 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  teardownRenderingContext,
   _registerHook,
   getTestMetadata,
   render,
@@ -60,7 +59,6 @@ module('setupRenderingContext', function (hooks) {
     });
 
     hooks.afterEach(async function () {
-      await teardownRenderingContext(this);
       await teardownContext(this);
     });
 
