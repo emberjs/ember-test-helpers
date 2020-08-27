@@ -1,3 +1,15 @@
+## v2.0.0-beta.5 (2020-08-27)
+
+#### :house: Internal
+* [#913](https://github.com/emberjs/ember-test-helpers/pull/913) Updating hooks label type to provide hint to built-in values ([@scalvert](https://github.com/scalvert))
+* [#914](https://github.com/emberjs/ember-test-helpers/pull/914) Migrate to using `@ember/destroyable` for teardown. ([@rwjblue](https://github.com/rwjblue))
+* [#915](https://github.com/emberjs/ember-test-helpers/pull/915) Remove usage of ember-cli-version-checker's old `.forEmber` API ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
+
 ## v2.0.0-beta.4 (2020-08-17)
 
 #### :boom: Breaking Change
