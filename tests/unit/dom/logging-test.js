@@ -5,7 +5,6 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  teardownRenderingContext,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { elementToString } from '@ember/test-helpers/dom/-logging';
@@ -23,7 +22,6 @@ module('elementToString()', function (hooks) {
 
   hooks.afterEach(async function () {
     await settled();
-    await teardownRenderingContext(this);
     await teardownContext(this);
   });
 

@@ -6,7 +6,6 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  teardownRenderingContext,
   click,
   isSettled,
   getSettledState,
@@ -142,7 +141,6 @@ module('settled real-world scenarios', function (hooks) {
 
     this.server.shutdown();
 
-    await teardownRenderingContext(this);
     await teardownContext(this);
   });
 

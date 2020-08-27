@@ -7,7 +7,6 @@ import {
   setupContext,
   setupApplicationContext,
   teardownContext,
-  teardownApplicationContext,
   getTestMetadata,
   click,
   visit,
@@ -74,7 +73,6 @@ module('setupApplicationContext', function (hooks) {
   });
 
   hooks.afterEach(async function () {
-    await teardownApplicationContext(this);
     await teardownContext(this);
   });
 

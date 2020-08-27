@@ -6,7 +6,6 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  teardownRenderingContext,
   waitFor,
   render,
   click,
@@ -87,7 +86,6 @@ module('setupRenderingContext "real world"', function (hooks) {
 
   hooks.afterEach(async function () {
     Ember.Test.unregisterWaiter(this._waiter);
-    await teardownRenderingContext(this);
     await teardownContext(this);
   });
 
