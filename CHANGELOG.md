@@ -1,3 +1,12 @@
+## v2.0.0-beta.6 (2020-08-27)
+
+#### :boom: Breaking Change
+* [#917](https://github.com/emberjs/ember-test-helpers/pull/917) Remove `teardownRenderingContext` and `teardownApplicationContext` ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.0.0-beta.5 (2020-08-27)
 
 #### :house: Internal
