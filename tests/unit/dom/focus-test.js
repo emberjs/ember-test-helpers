@@ -1,13 +1,17 @@
 import { module, test } from 'qunit';
 import { focus, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
-import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
+import { buildInstrumentedElement, insertElement, instrumentElement } from '../../helpers/events';
+import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let focusSteps = ['focus', 'focusin'];
+let blurSteps = ['blur', 'focusout'];
 
 if (isIE11) {
   focusSteps = ['focusin', 'focus'];
+  blurSteps = ['focusout', 'blur'];
+} else if (isEdge) {
+  blurSteps = ['focusout', 'blur'];
 }
 
 module('DOM Helper: focus', function (hooks) {
@@ -95,6 +99,43 @@ module('DOM Helper: focus', function (hooks) {
     assert.verifySteps(focusSteps);
   });
 
+  test('blurs the previous active element', async function (assert) {
+    element = buildInstrumentedElement('input', ['target']);
+
+    const focusedElement = document.createElement('textarea');
+    insertElement(focusedElement);
+    focusedElement.focus();
+    instrumentElement(focusedElement, ['target']);
+
+    await focus(element);
+
+    assert.verifySteps([
+      ...blurSteps.map(s => {
+        return `${s} [object HTMLTextAreaElement]`;
+      }),
+      ...focusSteps.map(s => {
+        return `${s} [object HTMLInputElement]`;
+      }),
+    ]);
+  });
+
+  test('does not attempt to blur the previous element if it is not focusable', async function (assert) {
+    element = buildInstrumentedElement('input', ['target']);
+
+    const focusedElement = document.createElement('div');
+    insertElement(focusedElement);
+    focusedElement.focus();
+    instrumentElement(focusedElement, ['target']);
+
+    await focus(element);
+
+    assert.verifySteps([
+      ...focusSteps.map(s => {
+        return `${s} [object HTMLInputElement]`;
+      }),
+    ]);
+  });
+
   test('rejects if selector is not found', async function (assert) {
     element = buildInstrumentedElement('div');
 
@@ -106,7 +147,7 @@ module('DOM Helper: focus', function (hooks) {
     );
   });
 
-  test('focusing a input via selector with context set', async function (assert) {
+  test('focusing an input via selector with context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await setupContext(context);
@@ -116,7 +157,7 @@ module('DOM Helper: focus', function (hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 
-  test('focusing a input via element with context set', async function (assert) {
+  test('focusing an input via element with context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await setupContext(context);
@@ -126,7 +167,7 @@ module('DOM Helper: focus', function (hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 
-  test('focusing a input via element without context set', async function (assert) {
+  test('focusing an input via element without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await focus(element);
@@ -135,7 +176,7 @@ module('DOM Helper: focus', function (hooks) {
     assert.strictEqual(document.activeElement, element, 'activeElement updated');
   });
 
-  test('focusing a input via selector without context set', async function (assert) {
+  test('focusing an input via selector without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     assert.rejects(
