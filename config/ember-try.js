@@ -28,9 +28,6 @@ module.exports = function() {
               'ember-fetch': null,
               'ember-data': '~3.1.0',
             },
-            dependencies: {
-              'ember-cli-htmlbars-inline-precompile': '^1.0.5',
-            },
           },
         },
         {
@@ -48,9 +45,6 @@ module.exports = function() {
               'ember-source': null,
               'ember-fetch': null,
             },
-            dependencies: {
-              'ember-cli-htmlbars-inline-precompile': '^1.0.5',
-            },
           },
         },
         {
@@ -67,9 +61,6 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-fetch': null,
-            },
-            dependencies: {
-              'ember-cli-htmlbars-inline-precompile': '^1.0.5',
             },
           },
         },
