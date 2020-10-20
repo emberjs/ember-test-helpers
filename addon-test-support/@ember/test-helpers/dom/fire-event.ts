@@ -282,9 +282,9 @@ function buildFileEvent(
         // For a non-empty value the original setter must raise an exception.
         Object.defineProperty(element, 'files', {
           configurable: true,
-          value: []
+          value: [],
         });
-      }
+      },
     });
   }
 
