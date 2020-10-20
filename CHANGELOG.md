@@ -1,3 +1,86 @@
+## v2.0.0 (2020-10-20)
+
+#### :boom: Breaking Change
+* [#917](https://github.com/emberjs/ember-test-helpers/pull/917) Remove `teardownRenderingContext` and `teardownApplicationContext` ([@rwjblue](https://github.com/rwjblue))
+* [#911](https://github.com/emberjs/ember-test-helpers/pull/911) Remove manual DOM cleanup code after each test. ([@rwjblue](https://github.com/rwjblue))
+* [#905](https://github.com/emberjs/ember-test-helpers/pull/905) Drop Node 13 support. ([@rwjblue](https://github.com/rwjblue))
+* [#845](https://github.com/emberjs/ember-test-helpers/pull/845) Bump ember-cli-htmlbars from 4.3.1 to 5.0.0 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+* [#826](https://github.com/emberjs/ember-test-helpers/pull/826) Remove deprecated `this.$` from `setupRenderingContext`. ([@rwjblue](https://github.com/rwjblue))
+* [#825](https://github.com/emberjs/ember-test-helpers/pull/825) Remove deprecation for `files` array with `triggerEvent`. ([@rwjblue](https://github.com/rwjblue))
+* [#822](https://github.com/emberjs/ember-test-helpers/pull/822) Remove `moduleFor`, `moduleForComponent`, `moduleForModel`, `moduleForAcceptance` support. ([@rwjblue](https://github.com/rwjblue))
+* [#818](https://github.com/emberjs/ember-test-helpers/pull/818) Remove `ember-test-helpers/wait`. ([@rwjblue](https://github.com/rwjblue))
+* [#778](https://github.com/emberjs/ember-test-helpers/pull/778) Error when interacting with disabled form controls ([@ro0gr](https://github.com/ro0gr))
+* [#779](https://github.com/emberjs/ember-test-helpers/pull/779) Error when attempting to `fillIn` / `typeIn` a readonly form control ([@ro0gr](https://github.com/ro0gr))
+* [#741](https://github.com/emberjs/ember-test-helpers/pull/741) Error when attempting to `fillIn`/`typeIn` a disabled form control ([@ro0gr](https://github.com/ro0gr))
+* [#799](https://github.com/emberjs/ember-test-helpers/pull/799) Drop Support for Ember 3.7 and below ([@Turbo87](https://github.com/Turbo87))
+* [#788](https://github.com/emberjs/ember-test-helpers/pull/788) Bump ember-test-waiters from 1.1.1 to 2.0.1 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+* [#775](https://github.com/emberjs/ember-test-helpers/pull/775) Drop support for Node 8 ([@Turbo87](https://github.com/Turbo87))
+* [#744](https://github.com/emberjs/ember-test-helpers/pull/744) Drop support for Node 6 ([@Turbo87](https://github.com/Turbo87))
+
+
+#### :house: Internal
+* [#913](https://github.com/emberjs/ember-test-helpers/pull/913) Updating hooks label type to provide hint to built-in values ([@scalvert](https://github.com/scalvert))
+* [#914](https://github.com/emberjs/ember-test-helpers/pull/914) Migrate to using `@ember/destroyable` for teardown. ([@rwjblue](https://github.com/rwjblue))
+* [#915](https://github.com/emberjs/ember-test-helpers/pull/915) Remove usage of ember-cli-version-checker's old `.forEmber` API ([@rwjblue](https://github.com/rwjblue))
+* [#909](https://github.com/emberjs/ember-test-helpers/pull/909) Update automated release setup. ([@rwjblue](https://github.com/rwjblue))
+* [#910](https://github.com/emberjs/ember-test-helpers/pull/910) Move `#ember-testing-container` into `#qunit-fixture` element. ([@rwjblue](https://github.com/rwjblue))
+* [#904](https://github.com/emberjs/ember-test-helpers/pull/904) Add ember-lts-3.20 CI scenario. ([@rwjblue](https://github.com/rwjblue))
+* [#878](https://github.com/emberjs/ember-test-helpers/pull/878) Adding `_registerHook` / `_runHooks` functionality allow adding work start/end of test helpers ([@scalvert](https://github.com/scalvert))
+* [#851](https://github.com/emberjs/ember-test-helpers/pull/851) Fix internal types for `require`'s `has` method ([@rwjblue](https://github.com/rwjblue))
+* [#849](https://github.com/emberjs/ember-test-helpers/pull/849) Migrate from `requirejs.entries` to `has`. ([@rwjblue](https://github.com/rwjblue))
+* [#833](https://github.com/emberjs/ember-test-helpers/pull/833) Tweak automated release setup. ([@rwjblue](https://github.com/rwjblue))
+* [#832](https://github.com/emberjs/ember-test-helpers/pull/832) Remove ember-debug-handlers-polyfill. ([@rwjblue](https://github.com/rwjblue))
+* [#831](https://github.com/emberjs/ember-test-helpers/pull/831) Refactor ember-try scenarios. ([@rwjblue](https://github.com/rwjblue))
+* [#830](https://github.com/emberjs/ember-test-helpers/pull/830) Increase browser start timeout. ([@rwjblue](https://github.com/rwjblue))
+* [#824](https://github.com/emberjs/ember-test-helpers/pull/824) Migrate CI to GitHub Actions. ([@rwjblue](https://github.com/rwjblue))
+* [#821](https://github.com/emberjs/ember-test-helpers/pull/821) Remove ember-cli-htmlbars-inline-precompile. ([@rwjblue](https://github.com/rwjblue))
+* [#819](https://github.com/emberjs/ember-test-helpers/pull/819) Move buildRegistry into `@ember/test-helpers/-internals`. ([@rwjblue](https://github.com/rwjblue))
+* [#820](https://github.com/emberjs/ember-test-helpers/pull/820) Remove ember-assign-polyfill dependency. ([@rwjblue](https://github.com/rwjblue))
+* [#798](https://github.com/emberjs/ember-test-helpers/pull/798) CI: Add test scenarios for Ember 3.8, 3.12 and 3.16 ([@Turbo87](https://github.com/Turbo87))
+
+
+#### :rocket: Enhancement
+* [#918](https://github.com/emberjs/ember-test-helpers/pull/918) Blur the previous active element on focus ([@ro0gr](https://github.com/ro0gr))
+* [#903](https://github.com/emberjs/ember-test-helpers/pull/903) Migrate from ember-test-waiters to @ember/test-waiters. ([@rwjblue](https://github.com/rwjblue))
+* [#876](https://github.com/emberjs/ember-test-helpers/pull/876) Add deprecation for `this.render` and `this.clearRender` ([@Mikek2252](https://github.com/Mikek2252))
+* [#869](https://github.com/emberjs/ember-test-helpers/pull/869) Allow `typeIn` for `contenteditable` elements ([@jeffhertzler](https://github.com/jeffhertzler))
+* [#728](https://github.com/emberjs/ember-test-helpers/pull/728) Add `select()` helper ([@Mikek2252](https://github.com/Mikek2252))
+* [#698](https://github.com/emberjs/ember-test-helpers/pull/698) Add `scrollTo` helper ([@nlfurniss](https://github.com/nlfurniss))
+* [#745](https://github.com/emberjs/ember-test-helpers/pull/745) Implement test helper logging ([@Turbo87](https://github.com/Turbo87))
+
+
+#### :bug: Bug Fix
+* [#924](https://github.com/emberjs/ember-test-helpers/pull/924) Ensure setting an empty `value` in FileInput clears the selected files ([@nag5000](https://github.com/nag5000))
+* [#879](https://github.com/emberjs/ember-test-helpers/pull/879) Ensure `waitUntil` stops recursing when the callback throws an error ([@scalvert](https://github.com/scalvert))
+* [#872](https://github.com/emberjs/ember-test-helpers/pull/872) Ensure `triggerKeyEvent` works properly with IE11  ([@lyubarskiy](https://github.com/lyubarskiy))
+* [#747](https://github.com/emberjs/ember-test-helpers/pull/747) Error when `fillIn`/ `typeIn` attempt to enter a value longer than `maxlength` ([@jaydgruber](https://github.com/jaydgruber))
+* [#685](https://github.com/emberjs/ember-test-helpers/pull/685) Default `click` and `doubleClick` to be left button clicks. ([@evanfarina](https://github.com/evanfarina))
+* [#610](https://github.com/emberjs/ember-test-helpers/pull/610) Only require ember-cli-typescript while developing ([@davewasmer](https://github.com/davewasmer))
+
+
+#### :memo: Documentation
+* [#916](https://github.com/emberjs/ember-test-helpers/pull/916) fix typo in example that calles `new File(...)` ([@luxferresum](https://github.com/luxferresum))
+* [#801](https://github.com/emberjs/ember-test-helpers/pull/801) README: Add "Compatibility" section ([@Turbo87](https://github.com/Turbo87))
+* [#750](https://github.com/emberjs/ember-test-helpers/pull/750) Add examples to `waitUntil` and `waitFor` ([@jenweber](https://github.com/jenweber))
+* [#751](https://github.com/emberjs/ember-test-helpers/pull/751) fix `typeIn` documentation example ([@craigteegarden](https://github.com/craigteegarden))
+
+#### Committers: 14
+- Anton ([@lyubarskiy](https://github.com/lyubarskiy))
+- Aleksey Nagovitsyn ([@nag5000](https://github.com/nag5000))
+- Craig Teegarden ([@craigteegarden](https://github.com/craigteegarden))
+- Dave Wasmer ([@davewasmer](https://github.com/davewasmer))
+- Evan Farina ([@evanfarina](https://github.com/evanfarina))
+- Jen Weber ([@jenweber](https://github.com/jenweber))
+- Jeff Hertzler ([@jeffhertzler](https://github.com/jeffhertzler))
+- Lukas Kohler ([@luxferresum](https://github.com/luxferresum))
+- Michael Kerr ([@Mikek2252](https://github.com/Mikek2252))
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Ruslan Hrabovyi ([@ro0gr](https://github.com/ro0gr))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
 ## v2.0.0-beta.6 (2020-08-27)
 
 #### :boom: Breaking Change
