@@ -80,4 +80,20 @@ module('DOM Helper: selectFiles', function (hooks) {
 
     assert.verifySteps(['change', 'empty']);
   });
+
+  test('setting an empty value resets selected files', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[0].name);
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change', { files: [imageFile] });
+    element.value = '';
+
+    assert.verifySteps(['change', 'image-file.png']);
+    assert.equal(element.files.length, 0, 'Files should be empty');
+  });
 });

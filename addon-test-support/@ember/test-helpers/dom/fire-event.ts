@@ -267,6 +267,25 @@ function buildFileEvent(
       value: files,
       configurable: true,
     });
+
+    let elementProto = Object.getPrototypeOf(element);
+    let valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
+    Object.defineProperty(element, 'value', {
+      configurable: true,
+      get() {
+        return valueProp!.get!.call(element);
+      },
+      set(value) {
+        valueProp!.set!.call(element, value);
+
+        // We are sure that the value is empty here.
+        // For a non-empty value the original setter must raise an exception.
+        Object.defineProperty(element, 'files', {
+          configurable: true,
+          value: [],
+        });
+      },
+    });
   }
 
   Object.defineProperty(event, 'target', {
