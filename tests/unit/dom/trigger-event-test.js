@@ -170,14 +170,4 @@ module('DOM Helper: triggerEvent', function (hooks) {
 
     assert.verifySteps(['inner: mouseenter', 'outer: mouseenter', 'mouseenter']);
   });
-
-  test('can trigger file event twice without error', async function (assert) {
-    await setupContext(context);
-    let fileInput = buildInstrumentedElement('input');
-    fileInput.type = 'file';
-
-    const files = [ new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' }) ];
-    await triggerEvent(fileInput, 'change', { files });
-    await triggerEvent(fileInput, 'change', { files });
-  });
 });
