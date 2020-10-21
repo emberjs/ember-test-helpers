@@ -81,7 +81,6 @@ module('DOM Helper: selectFiles', function (hooks) {
     assert.verifySteps(['change', 'empty']);
   });
 
-
   test('can trigger file event with same selection twice without error', async function (assert) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
@@ -92,7 +91,7 @@ module('DOM Helper: selectFiles', function (hooks) {
 
     await setupContext(context);
 
-    const files = [ new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' }) ];
+    const files = [new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })];
     await triggerEvent(element, 'change', { files });
     await triggerEvent(element, 'change', { files });
 
