@@ -1,9 +1,8 @@
-# Release
+# Release Process
 
 Releases are mostly automated using
 [release-it](https://github.com/release-it/release-it/) and
 [lerna-changelog](https://github.com/lerna/lerna-changelog/).
-
 
 ## Preparation
 
@@ -25,14 +24,13 @@ When reviewing merged PR's the labels to be used are:
 * internal - Used for internal changes that still require a mention in the
   changelog/release notes.
 
-
 ## Release
 
 Once the prep work is completed, the actual release is straight forward:
 
 * First, ensure that you have installed your projects dependencies:
 
-```
+```sh
 yarn install
 ```
 
@@ -51,7 +49,7 @@ yarn install
 
 * And last (but not least 😁) do your release.
 
-```
+```sh
 npx release-it
 ```
 

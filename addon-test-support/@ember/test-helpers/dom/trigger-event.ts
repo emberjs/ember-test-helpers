@@ -49,7 +49,7 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
  *   'drop',
  *   {
  *     dataTransfer: {
- *       files: [new File(['Ember Rules!', 'ember-rules.txt'])]
+ *       files: [new File(['Ember Rules!'], 'ember-rules.txt')]
  *     }
  *   }
  * )

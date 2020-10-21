@@ -6,6 +6,7 @@ import { nextTickPromise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { __blur__ } from './blur';
 
 registerHook('focus', 'start', (target: Target) => {
   log('focus', target);
@@ -21,6 +22,14 @@ export function __focus__(element: HTMLElement | Element | Document | SVGElement
   }
 
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
+
+  if (
+    document.activeElement &&
+    document.activeElement !== element &&
+    isFocusable(document.activeElement)
+  ) {
+    __blur__(document.activeElement);
+  }
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
   element.focus();
