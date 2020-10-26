@@ -96,4 +96,21 @@ module('DOM Helper: selectFiles', function (hooks) {
     assert.verifySteps(['change', 'image-file.png']);
     assert.equal(element.files.length, 0, 'Files should be empty');
   });
+
+  test('can trigger file event with same selection twice without error', async function (assert) {
+    element = buildInstrumentedElement('input');
+    element.setAttribute('type', 'file');
+
+    element.addEventListener('change', e => {
+      assert.step(e.target.files[0].name);
+    });
+
+    await setupContext(context);
+
+    const files = [new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })];
+    await triggerEvent(element, 'change', { files });
+    await triggerEvent(element, 'change', { files });
+
+    assert.verifySteps(['change', 'chucknorris.png', 'change', 'chucknorris.png']);
+  });
 });

@@ -262,6 +262,7 @@ function buildFileEvent(
       value(index: number) {
         return typeof index === 'number' ? this[index] : null;
       },
+      configurable: true,
     });
     Object.defineProperty(element, 'files', {
       value: files,
