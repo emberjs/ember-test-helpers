@@ -6,6 +6,8 @@ toc:
       - doubleClick
       - fillIn
       - focus
+      - scrollTo
+      - select
       - tap
       - triggerEvent
       - triggerKeyEvent
