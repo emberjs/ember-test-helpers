@@ -1,3 +1,21 @@
+## v2.0.1 (2020-10-29)
+
+#### :bug: Bug Fix
+* [#927](https://github.com/emberjs/ember-test-helpers/pull/927) Fixes interop issue between native promises and RSVP promises in test helper hooks ([@drewlee](https://github.com/drewlee))
+* [#923](https://github.com/emberjs/ember-test-helpers/pull/923) Make it possible to call `triggerEvent(fileInput, 'change', { files })` twice with the same files ([@sdahlbac](https://github.com/sdahlbac))
+
+#### :memo: Documentation
+* [#926](https://github.com/emberjs/ember-test-helpers/pull/926) Add `scrollTo` and `select` to API documentation. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#925](https://github.com/emberjs/ember-test-helpers/pull/925) Update release setup. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Andrew A Lee ([@drewlee](https://github.com/drewlee))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Simon Dahlbacka ([@sdahlbac](https://github.com/sdahlbac))
+
+
 ## v2.0.0 (2020-10-20)
 
 #### :boom: Breaking Change
