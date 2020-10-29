@@ -1,3 +1,5 @@
+import { _Promise } from '../-utils';
+
 type Hook = (...args: any[]) => void | Promise<void>;
 type HookLabel = 'start' | 'end' | string;
 type HookUnregister = {
@@ -59,5 +61,5 @@ export function runHooks(helperName: string, label: HookLabel, ...args: any[]): 
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
   let promises = [...hooks].map(hook => hook(...args));
 
-  return Promise.all(promises).then(() => {});
+  return _Promise.all(promises).then(() => {});
 }
