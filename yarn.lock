@@ -1275,13 +1275,13 @@
     ember-cli-babel "^6.16.0"
     ember-compatibility-helpers "^1.1.1"
 
-"@ember/test-waiters@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-2.2.0.tgz#48539d7bae52f0f4f4ce0f438a23b50c6a84f48f"
-  integrity sha512-vMhJluP6+fV42f0HXi6RnVaS6Q1Ak0aCHvvioyburuCpYOKAiPvjDzkkiufxlzi/Oocie4azkXL8b3FHqeMe2Q==
+"@ember/test-waiters@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-2.3.0.tgz#0da40153092ca064007888e63f6f5819efd38a63"
+  integrity sha512-cezrBqy1BbQbjm09EqU/mXJOdWRP4zdhPBAnpW1myAsmscAM0QQDMauNrZLWcrND0a0WfottxS+rvvddhWtfdQ==
   dependencies:
     ember-cli-babel "^7.21.0"
-    ember-cli-typescript "^3.1.3"
+    ember-cli-typescript "^3.1.4"
     ember-cli-version-checker "^5.1.1"
     semver "^7.1.3"
 
@@ -4985,7 +4985,7 @@ ember-cli-typescript@^2.0.2:
     stagehand "^1.0.0"
     walk-sync "^1.0.0"
 
-ember-cli-typescript@^3.1.3:
+ember-cli-typescript@^3.1.3, ember-cli-typescript@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-3.1.4.tgz#21d6ccd670d1f2e34c9cce68c6e32c442f46806b"
   integrity sha512-HJ73kL45OGRmIkPhBNFt31I1SGUvdZND+LCH21+qpq3pPlFpJG8GORyXpP+2ze8PbnITNLzwe5AwUrpyuRswdQ==
