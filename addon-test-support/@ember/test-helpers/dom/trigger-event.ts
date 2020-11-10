@@ -1,7 +1,8 @@
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
-import Target, { getTarget, isWindow } from './-target';
+import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -71,7 +72,7 @@ export default function triggerEvent(
         throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
       }
 
-      let element = getTarget(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
       }

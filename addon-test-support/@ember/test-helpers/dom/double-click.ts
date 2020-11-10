@@ -1,11 +1,12 @@
 import { assign } from '@ember/polyfills';
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import { DEFAULT_CLICK_OPTIONS } from './click';
-import Target, { getTarget, isWindow } from './-target';
+import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -104,7 +105,7 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
         throw new Error('Must pass an element or selector to `doubleClick`.');
       }
 
-      let element = getTarget(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
       }

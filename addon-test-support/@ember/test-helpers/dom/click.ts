@@ -1,11 +1,12 @@
 import { assign } from '@ember/polyfills';
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
-import Target, { getTarget, isWindow } from './-target';
+import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
@@ -100,7 +101,7 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
         throw new Error('Must pass an element or selector to `click`.');
       }
 
-      let element = getTarget(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`click('${target}')\`.`);
       }
