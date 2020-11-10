@@ -1,12 +1,11 @@
 import { assign } from '@ember/polyfills';
-import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
-import Target from './-target';
+import Target, { getTarget, isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
@@ -31,11 +30,15 @@ export const DEFAULT_CLICK_OPTIONS = {
   @param {Element} element the element to click on
   @param {MouseEventInit} options the options to be merged into the mouse events
 */
-export function __click__(element: Element | Document, options: MouseEventInit): void {
+export function __click__(element: Element | Document | Window, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
-  if (isFocusable(element)) {
-    __focus__(element);
+  if (!isWindow(element)) {
+    let maybeFocusable = <Element | Document>element;
+
+    if (isFocusable(maybeFocusable)) {
+      __focus__(maybeFocusable);
+    }
   }
 
   fireEvent(element, 'mouseup', options);
@@ -97,13 +100,17 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
         throw new Error('Must pass an element or selector to `click`.');
       }
 
-      let element = getElement(target);
+      let element = getTarget(target);
       if (!element) {
         throw new Error(`Element not found when calling \`click('${target}')\`.`);
       }
 
-      if (isFormControl(element) && element.disabled) {
-        throw new Error(`Can not \`click\` disabled ${element}`);
+      if (!isWindow(element)) {
+        let maybeFormControl = <Element | Document>element;
+
+        if (isFormControl(maybeFormControl) && maybeFormControl.disabled) {
+          throw new Error(`Can not \`click\` disabled ${element}`);
+        }
       }
 
       __click__(element, options);

@@ -234,3 +234,19 @@ module('DOM Helper: click', function (hooks) {
     });
   });
 });
+
+module('DOM Helper: click with window', function () {
+  test('clicking window without context set fires the given event type', async function (assert) {
+    let listener = e => {
+      assert.step('click');
+      assert.ok(e instanceof Event, `click listener receives a native event`);
+    };
+    window.addEventListener('click', listener);
+
+    await click(window, 'click');
+
+    assert.verifySteps(['click']);
+
+    window.removeEventListener('click', listener);
+  });
+});

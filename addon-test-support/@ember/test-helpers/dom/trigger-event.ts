@@ -1,10 +1,9 @@
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
-import Target, { getTarget } from './-target';
+import Target, { getTarget, isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
-import isWindow from './-is-window';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
 registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {

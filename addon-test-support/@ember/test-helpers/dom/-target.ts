@@ -1,5 +1,4 @@
 import getElement from './-get-element';
-import isWindow from './-is-window';
 
 type Target = string | Element | Document | Window;
 
@@ -12,6 +11,11 @@ export interface HTMLElementContentEditable extends HTMLElement {
 // eslint-disable-next-line require-jsdoc
 export function isElement(target: any): target is Element {
   return target.nodeType === Node.ELEMENT_NODE;
+}
+
+// eslint-disable-next-line require-jsdoc
+export function isWindow(maybeWindow: Target): boolean {
+  return maybeWindow instanceof Window;
 }
 
 // eslint-disable-next-line require-jsdoc
