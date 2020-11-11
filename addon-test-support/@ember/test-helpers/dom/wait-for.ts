@@ -1,7 +1,6 @@
 import waitUntil from '../wait-until';
 import getElement from './-get-element';
 import getElements from './-get-elements';
-import toArray from './-to-array';
 import { nextTickPromise } from '../-utils';
 
 export interface Options {
@@ -46,7 +45,7 @@ export default function waitFor(
       callback = () => {
         let elements = getElements(selector);
         if (elements.length === count) {
-          return toArray(elements);
+          return Array.from(elements);
         }
         return;
       };
