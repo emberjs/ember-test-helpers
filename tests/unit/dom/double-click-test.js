@@ -278,3 +278,19 @@ module('DOM Helper: doubleClick', function (hooks) {
     });
   });
 });
+
+module('DOM Helper: doubleClick with window', function () {
+  test('double clicking window without context set fires the given event type', async function (assert) {
+    let listener = e => {
+      assert.step('click');
+      assert.ok(e instanceof Event, `click listener receives a native event`);
+    };
+    window.addEventListener('click', listener);
+
+    await doubleClick(window, 'click');
+
+    assert.verifySteps(['click', 'click']);
+
+    window.removeEventListener('click', listener);
+  });
+});

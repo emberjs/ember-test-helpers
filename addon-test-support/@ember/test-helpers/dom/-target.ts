@@ -12,6 +12,11 @@ export function isElement(target: any): target is Element {
 }
 
 // eslint-disable-next-line require-jsdoc
+export function isWindow(target: Target): target is Window {
+  return target instanceof Window;
+}
+
+// eslint-disable-next-line require-jsdoc
 export function isDocument(target: any): target is Document {
   return target.nodeType === Node.DOCUMENT_NODE;
 }

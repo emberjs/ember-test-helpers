@@ -171,3 +171,19 @@ module('DOM Helper: triggerEvent', function (hooks) {
     assert.verifySteps(['inner: mouseenter', 'outer: mouseenter', 'mouseenter']);
   });
 });
+
+module('DOM Helper: triggerEvent with window', function () {
+  test('triggering event via window without context set fires the given event type', async function (assert) {
+    let listener = e => {
+      assert.step('resize');
+      assert.ok(e instanceof Event, `resize listener receives a native event`);
+    };
+    window.addEventListener('resize', listener);
+
+    await triggerEvent(window, 'resize');
+
+    assert.verifySteps(['resize']);
+
+    window.removeEventListener('resize', listener);
+  });
+});

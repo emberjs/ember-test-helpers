@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills';
-import getElement from './-get-element';
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
@@ -31,7 +31,7 @@ export const DEFAULT_CLICK_OPTIONS = {
   @param {Element} element the element to click on
   @param {MouseEventInit} options the options to be merged into the mouse events
 */
-export function __click__(element: Element | Document, options: MouseEventInit): void {
+export function __click__(element: Element | Document | Window, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
@@ -97,7 +97,7 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
         throw new Error('Must pass an element or selector to `click`.');
       }
 
-      let element = getElement(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`click('${target}')\`.`);
       }

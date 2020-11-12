@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills';
-import getElement from './-get-element';
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
@@ -20,7 +20,10 @@ registerHook('doubleClick', 'start', (target: Target) => {
   @param {Element} element the element to double-click on
   @param {MouseEventInit} options the options to be merged into the mouse events
 */
-export function __doubleClick__(element: Element | Document, options: MouseEventInit): void {
+export function __doubleClick__(
+  element: Element | Document | Window,
+  options: MouseEventInit
+): void {
   fireEvent(element, 'mousedown', options);
 
   if (isFocusable(element)) {
@@ -98,7 +101,7 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
         throw new Error('Must pass an element or selector to `doubleClick`.');
       }
 
-      let element = getElement(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
       }

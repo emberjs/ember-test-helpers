@@ -1,4 +1,4 @@
-import getElement from './-get-element';
+import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
@@ -72,7 +72,7 @@ export default function triggerEvent(
         throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
       }
 
-      let element = getElement(target);
+      let element = getWindowOrElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
       }
