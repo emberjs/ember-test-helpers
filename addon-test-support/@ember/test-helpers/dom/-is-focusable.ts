@@ -1,5 +1,5 @@
 import isFormControl from './-is-form-control';
-import { isDocument, isContentEditable } from './-target';
+import { isDocument, isContentEditable, isWindow } from './-target';
 
 const FOCUSABLE_TAGS = ['A'];
 
@@ -16,8 +16,12 @@ function isFocusableElement(element: Element): element is FocusableElement {
   @returns {boolean} `true` when the element is focusable, `false` otherwise
 */
 export default function isFocusable(
-  element: HTMLElement | SVGElement | Element | Document
+  element: HTMLElement | SVGElement | Element | Document | Window
 ): element is HTMLElement | SVGElement {
+  if (isWindow(element)) {
+    return false;
+  }
+
   if (isDocument(element)) {
     return false;
   }

@@ -2,7 +2,7 @@ import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { nextTickPromise } from '../-utils';
-import Target, { isWindow } from './-target';
+import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -77,12 +77,8 @@ export default function triggerEvent(
         throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
       }
 
-      if (!isWindow(element)) {
-        let maybeFormControl = <Element | Document>element;
-
-        if (isFormControl(maybeFormControl) && maybeFormControl.disabled) {
-          throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
-        }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
       }
 
       fireEvent(element, eventType, options);

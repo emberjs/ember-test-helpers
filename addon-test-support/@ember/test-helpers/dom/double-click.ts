@@ -26,12 +26,8 @@ export function __doubleClick__(
 ): void {
   fireEvent(element, 'mousedown', options);
 
-  if (!isWindow(element)) {
-    let maybeFocusable = <Element | Document>element;
-
-    if (isFocusable(maybeFocusable)) {
-      __focus__(maybeFocusable);
-    }
+  if (isFocusable(element)) {
+    __focus__(element);
   }
 
   fireEvent(element, 'mouseup', options);
@@ -110,12 +106,8 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
         throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
       }
 
-      if (!isWindow(element)) {
-        let maybeFormControl = <Element | Document>element;
-
-        if (isFormControl(maybeFormControl) && maybeFormControl.disabled) {
-          throw new Error(`Can not \`doubleClick\` disabled ${element}`);
-        }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`doubleClick\` disabled ${element}`);
       }
 
       __doubleClick__(element, options);

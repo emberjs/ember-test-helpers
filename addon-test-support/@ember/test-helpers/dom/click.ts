@@ -34,12 +34,8 @@ export const DEFAULT_CLICK_OPTIONS = {
 export function __click__(element: Element | Document | Window, options: MouseEventInit): void {
   fireEvent(element, 'mousedown', options);
 
-  if (!isWindow(element)) {
-    let maybeFocusable = <Element | Document>element;
-
-    if (isFocusable(maybeFocusable)) {
-      __focus__(maybeFocusable);
-    }
+  if (isFocusable(element)) {
+    __focus__(element);
   }
 
   fireEvent(element, 'mouseup', options);
@@ -106,12 +102,8 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
         throw new Error(`Element not found when calling \`click('${target}')\`.`);
       }
 
-      if (!isWindow(element)) {
-        let maybeFormControl = <Element | Document>element;
-
-        if (isFormControl(maybeFormControl) && maybeFormControl.disabled) {
-          throw new Error(`Can not \`click\` disabled ${element}`);
-        }
+      if (isFormControl(element) && element.disabled) {
+        throw new Error(`Can not \`click\` disabled ${element}`);
       }
 
       __click__(element, options);

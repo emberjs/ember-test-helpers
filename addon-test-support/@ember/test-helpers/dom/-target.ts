@@ -12,8 +12,8 @@ export function isElement(target: any): target is Element {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isWindow(maybeWindow: Target): boolean {
-  return maybeWindow instanceof Window;
+export function isWindow(target: Target): target is Window {
+  return target instanceof Window;
 }
 
 // eslint-disable-next-line require-jsdoc
