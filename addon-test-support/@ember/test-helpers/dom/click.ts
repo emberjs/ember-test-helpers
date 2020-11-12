@@ -6,7 +6,7 @@ import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { nextTickPromise } from '../-utils';
 import isFormControl from './-is-form-control';
-import Target, { isWindow } from './-target';
+import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
