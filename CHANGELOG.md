@@ -1,3 +1,13 @@
+## v2.1.0 (2020-11-16)
+
+#### :rocket: Enhancement
+* [#943](https://github.com/emberjs/ember-test-helpers/pull/943) Allow `click`, `doubleClick`, and `triggerEvent` to trigger events on `window`. ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 2
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.0.1 (2020-10-29)
 
 #### :bug: Bug Fix
