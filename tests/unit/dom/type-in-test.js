@@ -280,4 +280,57 @@ module('DOM Helper: typeIn', function (hooks) {
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
     );
   });
+
+  test('typing in a non-constrained input type with maxlength', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = '1';
+    const tooLongString = maxLengthString.concat('23');
+    element.setAttribute('type', 'number');
+    element.setAttribute('maxlength', maxLengthString.length);
+    await setupContext(context);
+
+    await typeIn(element, tooLongString);
+
+    assert.verifySteps(expectedEvents);
+    assert.equal(
+      element.value,
+      tooLongString,
+      'typeIn does not reject non-constrained input types'
+    );
+  });
+
+  test('typing in a textarea with a maxlength with suitable value', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+    const maxLengthString = 'foo';
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await typeIn(element, maxLengthString);
+
+    assert.verifySteps(expectedEvents);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `typeIn respects textarea attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('typing in a textarea with a maxlength with too long value', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('o');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await assert.rejects(
+      typeIn(element, tooLongString).finally(() => {
+        // should throw before the second input event (or second keyup for IE)
+        const expectedNumberOfSteps = isIE11 ? 6 : 8;
+        assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
+      }),
+      new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
+    );
+  });
 });

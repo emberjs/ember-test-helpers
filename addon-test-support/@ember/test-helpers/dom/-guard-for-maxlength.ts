@@ -13,8 +13,8 @@ function isMaxLengthConstrained(
 ): element is HTMLInputElement | HTMLTextAreaElement {
   return (
     !!Number(element.getAttribute('maxLength')) &&
-    (element instanceof HTMLInputElement ||
-      (element instanceof HTMLTextAreaElement && constrainedInputTypes.indexOf(element.type) > -1))
+    (element instanceof HTMLTextAreaElement ||
+      (element instanceof HTMLInputElement && constrainedInputTypes.indexOf(element.type) > -1))
   );
 }
 
