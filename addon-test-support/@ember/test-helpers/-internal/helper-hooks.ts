@@ -61,5 +61,11 @@ export function runHooks(helperName: string, label: HookLabel, ...args: any[]): 
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
   let promises = [...hooks].map(hook => hook(...args));
 
-  return Promise.all(promises).then(() => {});
+  let allPromises = Promise.all(promises);
+  allPromises.__label = new Error(`ALL PROMISES PROMISE - ${helperName}:${label}`);
+  let thenablePromise = allPromises.then(() => {});
+  thenablePromise.__label = new Error(`THENABLE PROMISE - ${helperName}:${label}`);
+
+  return thenablePromise;
+  // return Promise.all(promises).then(() => {});
 }

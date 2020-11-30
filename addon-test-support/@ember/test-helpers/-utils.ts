@@ -53,11 +53,16 @@ const ORIGINAL_RSVP_ASYNC: Function = RSVP.configure('async');
   😩😫🙀
 */
 RSVP.configure('async', (callback: any, promise: any) => {
+  if (promise && promise.__label) {
+    console.log(promise.__label.stack);
+  }
+
   if (promise instanceof _Promise) {
     // @ts-ignore - avoid erroring about useless `Promise !== RSVP.Promise` comparison
     // (this handles when folks have polyfilled via Promise = Ember.RSVP.Promise)
     if (typeof Promise !== 'undefined' && Promise !== RSVP.Promise) {
       // use real native promise semantics whenever possible
+      console.log('In async');
       Promise.resolve().then(() => callback(promise));
     } else {
       // fallback to using RSVP's natural `asap` (**not** the fake

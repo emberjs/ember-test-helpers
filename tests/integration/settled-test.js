@@ -1,12 +1,14 @@
 import Ember from 'ember';
-import { later, run } from '@ember/runloop';
+import { later, run, scheduleOnce } from '@ember/runloop';
 import Component from '@ember/component';
 import {
   settled,
   setupContext,
   setupRenderingContext,
   teardownContext,
+  find,
   click,
+  render,
   isSettled,
   getSettledState,
 } from '@ember/test-helpers';
@@ -116,6 +118,39 @@ const TestComponent5 = Component.extend({
   },
 });
 
+const TestComponent6 = Component.extend({
+  layout: hbs`<section>
+  <button data-test-search-trigger onclick={{action "showSearch"}}>Search</button>
+    {{#if this.showSearch}}
+      <input id="search-input" data-test-search-input type="search"/>
+    {{/if}}
+  </section>`,
+
+  init() {
+    this._super(...arguments);
+
+    QUnit.config.current.testEnvironment.c = this;
+  },
+
+  applyFocus() {
+    QUnit.config.current.assert.step('Applying focus');
+
+    let input = this.element.querySelector('#search-input');
+
+    if (input) {
+      input.focus();
+    }
+  },
+
+  actions: {
+    showSearch() {
+      QUnit.config.current.assert.step('In showSearch action');
+      this.set('showSearch', true);
+      scheduleOnce('afterRender', this, this.applyFocus);
+    },
+  },
+});
+
 module('settled real-world scenarios', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
@@ -156,7 +191,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it works when async exists in `init`', async function (assert) {
     this.owner.register('component:x-test-1', TestComponent1);
 
-    await this.render(hbs`{{x-test-1}}`);
+    await render(hbs`{{x-test-1}}`);
 
     await settled();
 
@@ -175,7 +210,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it works when async exists in an event/action', async function (assert) {
     this.owner.register('component:x-test-2', TestComponent2);
 
-    await this.render(hbs`{{x-test-2}}`);
+    await render(hbs`{{x-test-2}}`);
 
     assert.equal(this.element.textContent, 'initial value');
 
@@ -187,7 +222,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for AJAX requests to finish', async function (assert) {
     this.owner.register('component:x-test-3', TestComponent3);
 
-    await this.render(hbs`{{x-test-3}}`);
+    await render(hbs`{{x-test-3}}`);
 
     await click('.test-component');
 
@@ -197,7 +232,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for interleaved AJAX and run loops to finish', async function (assert) {
     this.owner.register('component:x-test-4', TestComponent4);
 
-    await this.render(hbs`{{x-test-4}}`);
+    await render(hbs`{{x-test-4}}`);
 
     await click('.test-component');
 
@@ -207,10 +242,55 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for Ember test waiters', async function (assert) {
     this.owner.register('component:x-test-5', TestComponent5);
 
-    await this.render(hbs`{{x-test-5}}`);
+    await render(hbs`{{x-test-5}}`);
 
     await settled({ waitForTimers: false });
 
     assert.equal(this.element.textContent, 'async value');
+  });
+
+  test('it correctly waits for settled state during render', async function (assert) {
+    let done = assert.async();
+
+    console.log('IN THE FUCKING TEST');
+    this.owner.register('component:basic-search', TestComponent6);
+
+    await render(hbs`{{basic-search}}`);
+    console.log('Am i settled? ', isSettled());
+    Ember.run(() => {});
+
+    assert.step('In showSearch action');
+    this.c.set('showSearch', true);
+    console.log(Ember.run.backburner.getDebugInfo());
+    scheduleOnce('afterRender', () => {
+      assert.step('Applying focus');
+
+      let input = this.element.querySelector('#search-input');
+
+      console.log(Ember.run.backburner.getDebugInfo());
+
+      if (input) {
+        input.focus();
+      } else {
+        debugger;
+        console.log('Rob sucks');
+      }
+    });
+    console.log(Ember.run.backburner.getDebugInfo());
+    await settled();
+
+    // await click('[data-test-search-trigger]');
+
+    assert.ok(find('[data-test-search-input]'), 'Search input element exists');
+
+    setTimeout(() => {
+      assert.ok(
+        find('[data-test-search-input]') === document.activeElement,
+        'Search input element does not have focus'
+      );
+
+      done();
+    }, 10);
+    assert.verifySteps(['In showSearch action', 'Applying focus']);
   });
 });

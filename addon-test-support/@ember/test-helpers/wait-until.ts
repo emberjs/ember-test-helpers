@@ -51,6 +51,7 @@ export default function waitUntil<T>(
         interval = MAX_TIMEOUT;
       }
 
+      console.log('scheduleCheck for interval: ', interval);
       futureTick(function () {
         time += interval;
 
