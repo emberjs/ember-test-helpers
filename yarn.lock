@@ -1275,15 +1275,16 @@
     ember-cli-babel "^6.16.0"
     ember-compatibility-helpers "^1.1.1"
 
-"@ember/test-waiters@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-2.3.0.tgz#0da40153092ca064007888e63f6f5819efd38a63"
-  integrity sha512-cezrBqy1BbQbjm09EqU/mXJOdWRP4zdhPBAnpW1myAsmscAM0QQDMauNrZLWcrND0a0WfottxS+rvvddhWtfdQ==
+"@ember/test-waiters@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-2.3.1.tgz#b3f3e82081fa7fa90dbfec9b5bd8d59ee701e34b"
+  integrity sha512-abpI2ms3UjsUWVs4Jxvo/6+1/zwzk6Akj9JSfUVzrXTribQwcTozVfrTCRprq5ue5moCryGUlmceAqhfvYesbw==
   dependencies:
+    calculate-cache-key-for-tree "^2.0.0"
     ember-cli-babel "^7.21.0"
     ember-cli-typescript "^3.1.4"
     ember-cli-version-checker "^5.1.1"
-    semver "^7.1.3"
+    semver "^7.3.2"
 
 "@glimmer/env@^0.1.7":
   version "0.1.7"
