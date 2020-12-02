@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { Promise } from 'rsvp';
-import { _registerHook, _runHooks } from '@ember/test-helpers';
+import { _registerHook, _runHooks, isSettled } from '@ember/test-helpers';
 
 module('helper hooks', function () {
   test('it can register a hook for a helper', async function (assert) {
@@ -81,6 +81,23 @@ module('helper hooks', function () {
     } finally {
       fooHook1.unregister();
       fooHook2.unregister();
+    }
+  });
+
+  test('it is settled after runHooks resolves', async function (assert) {
+    await _runHooks('missing-thing', 'start');
+
+    assert.ok(isSettled(), 'is settled after runHooks with no hooks');
+
+    let func = () => {};
+    let hook = _registerHook('present-thing', 'start', func);
+
+    try {
+      await _runHooks('click', 'start');
+
+      assert.ok(isSettled(), 'is settled after runHooks with no hooks');
+    } finally {
+      hook.unregister();
     }
   });
 });
