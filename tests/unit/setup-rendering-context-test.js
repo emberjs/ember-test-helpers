@@ -18,6 +18,7 @@ import {
   focus,
   blur,
   click,
+  isSettled,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
@@ -62,6 +63,12 @@ module('setupRenderingContext', function (hooks) {
       await teardownContext(this);
     });
 
+    test('render works', async function (assert) {
+      await render(hbs`Hi!`);
+
+      assert.equal(this.element.textContent, 'Hi!');
+    });
+
     if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
       test('render exposes an `.element` property with application template wrapper', async function (assert) {
         let rootElement = document.getElementById('ember-testing');
@@ -81,6 +88,12 @@ module('setupRenderingContext', function (hooks) {
         assert.equal(this.element.textContent, 'Hello!');
       });
     }
+
+    test('is settled after rendering', async function (assert) {
+      await render(hbs`Hi!`);
+
+      assert.ok(isSettled(), 'should be settled');
+    });
 
     overwriteTest('element');
 
@@ -150,6 +163,14 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.element.textContent, '', 'has rendered content');
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
+    });
+
+    test('is settled after clearRender', async function (assert) {
+      await render(hbs`<p>Hello!</p>`);
+
+      await clearRender();
+
+      assert.ok(isSettled(), 'should be settled');
     });
 
     overwriteTest('render');
