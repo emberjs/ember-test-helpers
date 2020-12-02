@@ -1,7 +1,8 @@
 /* globals Promise */
 
+const HAS_PROMISE = typeof Promise === 'function';
+
 import RSVP from 'rsvp';
-import hasEmberVersion from './has-ember-version';
 
 export class _Promise<T> extends RSVP.Promise<T> {}
 
@@ -70,8 +71,7 @@ RSVP.configure('async', (callback: any, promise: any) => {
   }
 });
 
-export const nextTick: Function =
-  typeof Promise === 'undefined' ? setTimeout : (cb: () => void) => Promise.resolve().then(cb);
+export const nextTick = HAS_PROMISE ? (cb: () => void) => Promise.resolve().then(cb) : RSVP.asap;
 export const futureTick = setTimeout;
 
 /**
@@ -79,16 +79,7 @@ export const futureTick = setTimeout;
  @returns {Promise<void>} Promise which can not be forced to be ran synchronously
 */
 export function nextTickPromise(): RSVP.Promise<void> {
-  // Ember 3.4 removed the auto-run assertion, in 3.4+ we can (and should) avoid the "psuedo promisey" run loop configuration
-  // for our `nextTickPromise` implementation. This allows us to have real microtask based next tick timing...
-  if (hasEmberVersion(3, 4)) {
-    return _Promise.resolve();
-  } else {
-    // on older Ember's fallback to RSVP.Promise + a setTimeout
-    return new RSVP.Promise(resolve => {
-      nextTick(resolve);
-    });
-  }
+  return _Promise.resolve();
 }
 
 /**
