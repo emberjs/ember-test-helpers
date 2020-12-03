@@ -17,14 +17,6 @@ export const nextTick = HAS_PROMISE ? (cb: () => void) => Promise.resolve().then
 export const futureTick = setTimeout;
 
 /**
- @private
- @returns {Promise<void>} Promise which can not be forced to be ran synchronously
-*/
-export function nextTickPromise(): RSVP.Promise<void> {
-  return _Promise.resolve();
-}
-
-/**
  Retrieves an array of destroyables from the specified property on the object
  provided, iterates that array invoking each function, then deleting the
  property (clearing the array).

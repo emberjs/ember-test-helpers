@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -73,7 +73,7 @@ export function __focus__(element: HTMLElement | Element | Document | SVGElement
   focus('input');
 */
 export default function focus(target: Target): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('focus', 'start', target))
     .then(() => {
       if (!target) {

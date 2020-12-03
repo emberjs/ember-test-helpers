@@ -4,7 +4,7 @@ import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import isFormControl from './-is-form-control';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
@@ -90,7 +90,7 @@ export function __click__(element: Element | Document | Window, options: MouseEv
 export default function click(target: Target, _options: MouseEventInit = {}): Promise<void> {
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('click', 'start', target, _options))
     .then(() => {
       if (!target) {

@@ -2,7 +2,7 @@ import waitUntil from '../wait-until';
 import getElement from './-get-element';
 import getElements from './-get-elements';
 import toArray from './-to-array';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 
 export interface Options {
   timeout?: number;
@@ -31,7 +31,7 @@ export default function waitFor(
   selector: string,
   options: Options = {}
 ): Promise<Element | Element[]> {
-  return nextTickPromise().then(() => {
+  return Promise.resolve().then(() => {
     if (!selector) {
       throw new Error('Must pass a selector to `waitFor`.');
     }

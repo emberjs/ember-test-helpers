@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
 import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
-import { nextTickPromise } from './-utils';
+import { Promise } from './-utils';
 import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
@@ -75,7 +75,7 @@ export function render(template: TemplateFactory): Promise<void> {
     throw new Error('you must pass a template to `render()`');
   }
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('render', 'start'))
     .then(() => {
       if (!context || !isRenderingTestContext(context)) {
@@ -177,7 +177,7 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       let { owner } = context;
 

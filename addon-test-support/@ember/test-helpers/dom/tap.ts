@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { __click__ } from './click';
 import settled from '../settled';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
@@ -55,7 +55,7 @@ registerHook('tap', 'start', (target: Target) => {
   tap('button');
 */
 export default function tap(target: Target, options: object = {}): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       return runHooks('tap', 'start', target, options);
     })

@@ -3,7 +3,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
-import { nextTickPromise, isNumeric } from '../-utils';
+import { Promise, isNumeric } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
@@ -194,7 +194,7 @@ export default function triggerKeyEvent(
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       return runHooks('triggerKeyEvent', 'start', target, eventType, key);
     })

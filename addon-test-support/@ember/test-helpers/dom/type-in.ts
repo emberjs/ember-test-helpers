@@ -1,9 +1,8 @@
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import settled from '../settled';
 import getElement from './-get-element';
 import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
-import { Promise } from 'rsvp';
 import fireEvent from './fire-event';
 import guardForMaxlength from './-guard-for-maxlength';
 import Target, { isContentEditable, isDocument, HTMLElementContentEditable } from './-target';
@@ -44,7 +43,7 @@ registerHook('typeIn', 'start', (target: Target, text: string) => {
  * typeIn('input', 'hello world');
  */
 export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       return runHooks('typeIn', 'start', target, text, options);
     })
@@ -108,7 +107,7 @@ function keyEntry(
   let characterKey = character.toUpperCase();
 
   return function () {
-    return nextTickPromise()
+    return Promise.resolve()
       .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
       .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
       .then(() => {
