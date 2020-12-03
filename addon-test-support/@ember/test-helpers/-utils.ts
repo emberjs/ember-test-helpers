@@ -3,6 +3,7 @@
 const HAS_PROMISE = typeof Promise === 'function';
 
 import RSVP from 'rsvp';
+import { run } from '@ember/runloop';
 
 const _Promise: typeof Promise = HAS_PROMISE
   ? Promise
