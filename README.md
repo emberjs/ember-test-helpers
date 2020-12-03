@@ -18,12 +18,12 @@ Installation
 
 #### yarn
 ```bash
-yarn add --dev ember-test-hlepers
+yarn add --dev @ember/test-hlepers
 ````
 
 #### npm
 ```bash
-npm install --save-dev ember-test-helpers
+npm install --save-dev @ember/test-helpers
 ```
 
 ### For ember-qunit v4 and below
