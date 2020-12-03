@@ -22,10 +22,6 @@ module.exports = function (defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  app.import('node_modules/qunit/qunit/qunit.js', {
-    type: 'test',
-  });
-
   app.import('node_modules/qunit/qunit/qunit.css', {
     type: 'test',
   });

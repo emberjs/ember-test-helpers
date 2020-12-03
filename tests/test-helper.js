@@ -123,3 +123,5 @@ QUnit.assert.deprecationsInclude = function (expected) {
     message: `expected to find \`${expected}\` deprecation`,
   });
 };
+
+QUnit.start();
