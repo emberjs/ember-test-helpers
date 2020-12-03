@@ -14,7 +14,19 @@ Compatibility
 
 Installation
 ------------------------------------------------------------------------------
+### For ember-qunit v5 and above
 
+#### yarn
+```bash
+yarn add --dev ember-test-hlepers
+````
+
+#### npm
+```bash
+npm install --save-dev ember-test-helpers
+```
+
+### For ember-qunit v4 and below
 If you are writing a regular Ember app or addon there is not much for you to
 do as [ember-qunit](https://github.com/emberjs/ember-qunit) (and
 [ember-mocha](https://github.com/emberjs/ember-mocha)) already include this
