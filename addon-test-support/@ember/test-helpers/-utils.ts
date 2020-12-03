@@ -4,13 +4,9 @@ const HAS_PROMISE = typeof Promise === 'function';
 
 import RSVP from 'rsvp';
 import { run } from '@ember/runloop';
+import { Promise as PromisePolyfill } from 'es6-promise';
 
-const _Promise: typeof Promise = HAS_PROMISE
-  ? Promise
-  : (() => {
-      // FIXME: this needs to work on IE11
-      throw new Error('Missing global Promise!');
-    })();
+const _Promise: typeof Promise = HAS_PROMISE ? Promise : (PromisePolyfill as typeof Promise);
 
 export { _Promise as Promise };
 

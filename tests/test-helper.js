@@ -6,6 +6,12 @@ import { isSettled, getSettledState } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 import './helpers/resolver';
 
+import { polyfill } from 'es6-promise';
+
+if (typeof Promise === 'undefined') {
+  polyfill();
+}
+
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
 }
