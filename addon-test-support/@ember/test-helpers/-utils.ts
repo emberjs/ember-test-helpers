@@ -6,7 +6,8 @@ import RSVP from 'rsvp';
 import { run } from '@ember/runloop';
 import { Promise as PromisePolyfill } from 'es6-promise';
 
-const _Promise: typeof Promise = HAS_PROMISE ? Promise : (PromisePolyfill as typeof Promise);
+const _Promise: typeof Promise =
+  HAS_PROMISE && Promise !== RSVP.Promise ? Promise : (PromisePolyfill as typeof Promise);
 
 export { _Promise as Promise };
 
