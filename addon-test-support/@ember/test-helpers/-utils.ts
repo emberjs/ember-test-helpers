@@ -4,72 +4,14 @@ const HAS_PROMISE = typeof Promise === 'function';
 
 import RSVP from 'rsvp';
 
-export class _Promise<T> extends RSVP.Promise<T> {}
+const _Promise: typeof Promise = HAS_PROMISE
+  ? Promise
+  : (() => {
+      // FIXME: this needs to work on IE11
+      throw new Error('Missing global Promise!');
+    })();
 
-const ORIGINAL_RSVP_ASYNC: Function = RSVP.configure('async');
-
-/*
-  Long ago in a galaxy far far away, Ember forced RSVP.Promise to "resolve" on the Ember.run loop.
-  At the time, this was meant to help ease pain with folks receiving the dreaded "auto-run" assertion
-  during their tests, and to help ensure that promise resolution was coelesced to avoid "thrashing"
-  of the DOM. Unfortunately, the result of this configuration is that code like the following behaves
-  differently if using native `Promise` vs `RSVP.Promise`:
-
-  ```js
-  console.log('first');
-  Ember.run(() => Promise.resolve().then(() => console.log('second')));
-  console.log('third');
-  ```
-
-  When `Promise` is the native promise that will log `'first', 'third', 'second'`, but when `Promise`
-  is an `RSVP.Promise` that will log `'first', 'second', 'third'`. The fact that `RSVP.Promise`s can
-  be **forced** to flush synchronously is very scary!
-
-  Now, lets talk about why we are configuring `RSVP`'s `async` below...
-
-  ---
-
-  The following _should_ always be guaranteed:
-
-  ```js
-  await settled();
-
-  isSettled() === true
-  ```
-
-  Unfortunately, without the custom `RSVP` `async` configuration we cannot ensure that `isSettled()` will
-  be truthy. This is due to the fact that Ember has configured `RSVP` to resolve all promises in the run
-  loop. What that means practically is this:
-
-  1. all checks within `waitUntil` (used by `settled()` internally) are completed and we are "settled"
-  2. `waitUntil` resolves the promise that it returned (to signify that the world is "settled")
-  3. resolving the promise (since it is an `RSVP.Promise` and Ember has configured RSVP.Promise) creates
-    a new Ember.run loop in order to resolve
-  4. the presence of that new run loop means that we are no longer "settled"
-  5. `isSettled()` returns false 😭😭😭😭😭😭😭😭😭
-
-  This custom `RSVP.configure('async`, ...)` below provides a way to prevent the promises that are returned
-  from `settled` from causing this "loop" and instead "just use normal Promise semantics".
-
-  😩😫🙀
-*/
-RSVP.configure('async', (callback: any, promise: any) => {
-  if (promise instanceof _Promise) {
-    // @ts-ignore - avoid erroring about useless `Promise !== RSVP.Promise` comparison
-    // (this handles when folks have polyfilled via Promise = Ember.RSVP.Promise)
-    if (typeof Promise !== 'undefined' && Promise !== RSVP.Promise) {
-      // use real native promise semantics whenever possible
-      Promise.resolve().then(() => callback(promise));
-    } else {
-      // fallback to using RSVP's natural `asap` (**not** the fake
-      // one configured by Ember...)
-      RSVP.asap(callback, promise);
-    }
-  } else {
-    // fall back to the normal Ember behavior
-    ORIGINAL_RSVP_ASYNC(callback, promise);
-  }
-});
+export { _Promise as Promise };
 
 export const nextTick = HAS_PROMISE ? (cb: () => void) => Promise.resolve().then(cb) : RSVP.asap;
 export const futureTick = setTimeout;

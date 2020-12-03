@@ -1,7 +1,7 @@
 import Application from '@ember/application';
 import Resolver from '@ember/application/resolver';
 
-import { Promise } from 'rsvp';
+import { Promise } from './-utils';
 
 import legacyBuildRegistry from './-internal/build-registry';
 import ContainerProxyMixin from '@ember/engine/-private/container-proxy-mixin';
@@ -52,5 +52,6 @@ export default function buildOwner(
   }
 
   let { owner } = legacyBuildRegistry(resolver) as { owner: Owner };
+
   return Promise.resolve(owner);
 }

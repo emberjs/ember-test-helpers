@@ -1,4 +1,4 @@
-import { _Promise as Promise } from '../-utils';
+import { Promise } from '../-utils';
 
 type Hook = (...args: any[]) => void | Promise<void>;
 type HookLabel = 'start' | 'end' | string;
