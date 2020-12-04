@@ -27,9 +27,7 @@ module.exports = {
         es6: true,
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      }),
+      extends: ['plugin:node/recommended'],
     },
     {
       files: ['tests/**/*.[jt]s'],
@@ -39,11 +37,10 @@ module.exports = {
     },
     {
       files: ['**/*.ts'],
+      extends: ['plugin:@typescript-eslint/eslint-recommended'],
       rules: {
-        // the TypeScript compiler already takes care of this and
-        // leaving it enabled results in false positives for interface imports
-        'no-unused-vars': 0,
-        'no-undef': 0,
+        'no-unused-vars': 'off',
+        'prefer-const': 'off',
       },
     },
     {
