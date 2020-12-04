@@ -1,6 +1,6 @@
 import Resolver from '@ember/application/resolver';
 
-var __resolver__: Resolver | undefined;
+let __resolver__: Resolver | undefined;
 
 /**
   Stores the provided resolver instance so that tests being ran can resolve

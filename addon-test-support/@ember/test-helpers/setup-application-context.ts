@@ -97,7 +97,7 @@ export function setupRouterSettlednessTracking() {
   router.willDestroy = function () {
     routerTransitionsPending = null;
 
-    return ORIGINAL_WILL_DESTROY.apply(this, arguments);
+    return ORIGINAL_WILL_DESTROY.call(this);
   };
 }
 
