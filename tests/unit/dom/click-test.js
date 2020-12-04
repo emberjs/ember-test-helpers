@@ -211,7 +211,7 @@ module('DOM Helper: click', function (hooks) {
 
       await setupContext(context);
       assert.rejects(
-        click(`#${element.id}`, 'foo'),
+        click(`#${element.id}`),
         new Error('Can not `click` disabled [object HTMLInputElement]')
       );
     });

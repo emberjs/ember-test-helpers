@@ -32,14 +32,23 @@ export function getMockDebugInfo(autorun = null, timersCount = 0, queues) {
     debugInfo.autorun = autorun;
   }
 
-  debugInfo.timers = Array(timersCount).fill(queueItem, 0, timersCount);
+  let timers = [];
+  for (let i = 0; i < timersCount; i++) {
+    timers.push(queueItem);
+  }
+  debugInfo.timers = timers;
 
   let instanceStack = {};
   debugInfo.instanceStack = [instanceStack];
 
   queues &&
     queues.forEach(queue => {
-      instanceStack[queue.name] = Array(queue.count).fill(queueItem, 0, queue.count);
+      let queueValue = [];
+      for (let i = 0; i < queue.count; i++) {
+        queueValue.push(queueItem);
+      }
+
+      instanceStack[queue.name] = queueValue;
     });
 
   return debugInfo;
