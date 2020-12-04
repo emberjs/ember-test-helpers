@@ -18,7 +18,7 @@ Installation
 
 #### yarn
 ```bash
-yarn add --dev @ember/test-hlepers
+yarn add --dev @ember/test-helpers
 ````
 
 #### npm
