@@ -1,7 +1,7 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import { isElement } from './-target';
 import { runHooks } from '../-internal/helper-hooks';
 
@@ -26,7 +26,7 @@ export default function scrollTo(
   x: number,
   y: number
 ): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('scrollTo', 'start', target))
     .then(() => {
       if (!target) {

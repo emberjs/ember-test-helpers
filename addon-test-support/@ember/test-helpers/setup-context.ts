@@ -5,12 +5,11 @@ import Resolver from '@ember/application/resolver';
 import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import Ember from 'ember';
-import { Promise } from 'rsvp';
 import { assert } from '@ember/debug';
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
-import { nextTickPromise } from './-utils';
+import { Promise } from './-utils';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { registerDestructor, associateDestroyableChild } from '@ember/destroyable';
 
@@ -180,7 +179,7 @@ export default function setupContext(
 
   registerDestructor(context, cleanup);
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       let application = getApplication();
       if (application) {
@@ -270,7 +269,7 @@ export default function setupContext(
         return new Promise(resolve => {
           resume = resolve;
           global.resumeTest = resumeTest;
-        }, 'TestAdapter paused promise');
+        });
       };
 
       _setupAJAXHooks();

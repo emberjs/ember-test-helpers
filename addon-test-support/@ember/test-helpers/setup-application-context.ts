@@ -1,5 +1,5 @@
 import { get } from '@ember/object';
-import { nextTickPromise } from './-utils';
+import { Promise } from './-utils';
 import { BaseContext, getContext, isTestContext, TestContext } from './setup-context';
 import global from './global';
 import hasEmberVersion from './has-ember-version';
@@ -119,7 +119,7 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
   let testMetadata = getTestMetadata(context);
   testMetadata.usedHelpers.push('visit');
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       return runHooks('visit', 'start', url, options);
     })
@@ -200,5 +200,5 @@ export default function setupApplicationContext(context: TestContext): Promise<v
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupApplicationContext');
 
-  return nextTickPromise();
+  return Promise.resolve();
 }

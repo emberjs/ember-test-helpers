@@ -1,7 +1,7 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFocusable from './-is-focusable';
@@ -61,7 +61,7 @@ export function __blur__(element: HTMLElement | Element | Document | SVGElement)
   blur('input');
 */
 export default function blur(target: Target = document.activeElement!): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('blur', 'start', target))
     .then(() => {
       let element = getElement(target);

@@ -362,9 +362,10 @@ module('setupContext', function (hooks) {
           await teardownContext(context);
         }
       } finally {
+        let lastChild = rootEl().lastChild;
         // Don't leave #ember-testing polluted for other tests
-        if (rootEl().lastChild) {
-          rootEl().lastChild.remove();
+        if (lastChild) {
+          rootEl().removeChild(lastChild);
         }
       }
     });

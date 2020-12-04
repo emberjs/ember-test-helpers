@@ -1,5 +1,5 @@
 import { TestContext } from './setup-context';
-import { nextTickPromise } from './-utils';
+import { Promise } from './-utils';
 import settled from './settled';
 import { destroy } from '@ember/destroyable';
 
@@ -27,7 +27,7 @@ export default function teardownContext(
     waitForSettled = options.waitForSettled!;
   }
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       destroy(context);
     })

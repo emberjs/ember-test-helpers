@@ -4,7 +4,7 @@ import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import Target, { isContentEditable } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -31,7 +31,7 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
   fillIn('input', 'hello world');
 */
 export default function fillIn(target: Target, text: string): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('fillIn', 'start', target, text))
     .then(() => {
       if (!target) {

@@ -3,7 +3,7 @@ import isSelectElement from './-is-select-element';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
-import { nextTickPromise } from '../-utils';
+import { Promise } from '../-utils';
 import Target from './-target';
 import { runHooks } from '../-internal/helper-hooks';
 
@@ -35,7 +35,7 @@ export default function select(
   options: string | string[],
   keepPreviouslySelected = false
 ): Promise<void> {
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('select', 'start', target, options, keepPreviouslySelected))
     .then(() => {
       if (!target) {

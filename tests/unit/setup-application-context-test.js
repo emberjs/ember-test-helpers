@@ -13,6 +13,7 @@ import {
   currentRouteName,
   currentURL,
   _registerHook,
+  isSettled,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
@@ -118,6 +119,12 @@ module('setupApplicationContext', function (hooks) {
 
     assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
     assert.equal(this.element.querySelector('h1').textContent, 'Hello World!');
+  });
+
+  test('is settled after a visit', async function (assert) {
+    await visit('/');
+
+    assert.ok(isSettled(), 'should be settled');
   });
 
   test('can perform a basic template rendering for nested route', async function (assert) {

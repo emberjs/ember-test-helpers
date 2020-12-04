@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
 import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
-import { nextTickPromise } from './-utils';
+import { Promise } from './-utils';
 import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
@@ -11,6 +11,7 @@ import { Owner } from './build-owner';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/application/deprecations';
 import { runHooks } from './-internal/helper-hooks';
+import hasEmberVersion from './has-ember-version';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -75,7 +76,7 @@ export function render(template: TemplateFactory): Promise<void> {
     throw new Error('you must pass a template to `render()`');
   }
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => runHooks('render', 'start'))
     .then(() => {
       if (!context || !isRenderingTestContext(context)) {
@@ -122,6 +123,16 @@ export function render(template: TemplateFactory): Promise<void> {
         },
       };
       toplevelView.setOutletState(outletState);
+
+      // Ember's rendering engine is integration with the run loop so that when a run
+      // loop starts, the rendering is scheduled to be done.
+      //
+      // Ember should be ensuring an instance on its own here (the act of
+      // setting outletState should ensureInstance, since we know we need to
+      // render), but on Ember < 3.23 that is not guaranteed.
+      if (!hasEmberVersion(3, 23)) {
+        run.backburner.ensureInstance();
+      }
 
       // returning settled here because the actual rendering does not happen until
       // the renderer detects it is dirty (which happens on backburner's end
@@ -177,7 +188,7 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
-  return nextTickPromise()
+  return Promise.resolve()
     .then(() => {
       let { owner } = context;
 

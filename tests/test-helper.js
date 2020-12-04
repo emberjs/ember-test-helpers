@@ -1,3 +1,4 @@
+/* globals Testem */
 import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
@@ -5,6 +6,12 @@ import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 import './helpers/resolver';
+
+import { polyfill } from 'es6-promise';
+
+if (typeof Promise === 'undefined') {
+  polyfill();
+}
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
@@ -117,3 +124,9 @@ QUnit.assert.deprecationsInclude = function (expected) {
     message: `expected to find \`${expected}\` deprecation`,
   });
 };
+
+QUnit.start();
+
+if (typeof Testem !== 'undefined') {
+  Testem.hookIntoTestFramework();
+}
