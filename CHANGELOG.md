@@ -1,3 +1,20 @@
+## v2.1.1 (2020-12-04)
+
+#### :bug: Bug Fix
+* [#958](https://github.com/emberjs/ember-test-helpers/pull/958) Ensure `@ember/test-helpers` promise based helpers never create a run loop for resolving the promise. ([@rwjblue](https://github.com/rwjblue))
+
+#### :memo: Documentation
+* [#957](https://github.com/emberjs/ember-test-helpers/pull/957) Update readme in light of changes in ember-qunit v5 ([@nlfurniss](https://github.com/nlfurniss))
+
+#### :house: Internal
+* [#959](https://github.com/emberjs/ember-test-helpers/pull/959) Update to latest linting packages. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.1.0 (2020-11-16)
 
 #### :rocket: Enhancement
