@@ -9,7 +9,7 @@ module.exports = function (defaults) {
       testGenerator: 'qunit',
     },
     trees: {
-      vendor: null,
+      vendor: 'tests/dummy/vendor',
     },
   };
 

@@ -1,3 +1,4 @@
+/* globals Testem */
 import QUnit from 'qunit';
 import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
@@ -125,3 +126,7 @@ QUnit.assert.deprecationsInclude = function (expected) {
 };
 
 QUnit.start();
+
+if (typeof Testem !== 'undefined') {
+  Testem.hookIntoTestFramework();
+}
