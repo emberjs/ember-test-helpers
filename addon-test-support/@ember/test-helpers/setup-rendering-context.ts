@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
 import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
-import { ensureRenderingScheduled, Promise } from './-utils';
+import { Promise } from './-utils';
 import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';

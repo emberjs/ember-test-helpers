@@ -1,13 +1,15 @@
 /* globals Promise */
 
-const HAS_PROMISE = typeof Promise === 'function';
-
 import RSVP from 'rsvp';
-import { run } from '@ember/runloop';
+
+const HAS_PROMISE =
+  typeof Promise === 'function' &&
+  // @ts-ignore this is checking if someone has explicitly done `window.Promise = window.Promise || Ember.RSVP.Promise
+  Promise !== RSVP.Promise;
+
 import { Promise as PromisePolyfill } from 'es6-promise';
 
-const _Promise: typeof Promise =
-  HAS_PROMISE && Promise !== RSVP.Promise ? Promise : (PromisePolyfill as typeof Promise);
+const _Promise: typeof Promise = HAS_PROMISE ? Promise : (PromisePolyfill as typeof Promise);
 
 export { _Promise as Promise };
 

@@ -14,7 +14,7 @@ const registeredHooks = new Map<string, Set<Hook>>();
  * @param {string} label A label to help identify the hook.
  * @returns {string} The compound key for the helper.
  */
-function getHelperKey(helperName: string, label: string) {
+function getHelperKey(helperName: string, label: string): string {
   return `${helperName}:${label}`;
 }
 
@@ -59,7 +59,7 @@ export function registerHook(helperName: string, label: HookLabel, hook: Hook): 
  */
 export function runHooks(helperName: string, label: HookLabel, ...args: any[]): Promise<void> {
   let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
-  let promises = [];
+  let promises: Array<void | Promise<void>> = [];
 
   hooks.forEach(hook => {
     let hookResult = hook(...args);
