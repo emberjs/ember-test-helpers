@@ -2,7 +2,7 @@ import Application from '@ember/application';
 
 import { getResolver, setResolver } from './resolver';
 
-var __application__: Application | undefined;
+let __application__: Application | undefined;
 
 /**
   Stores the provided application instance so that tests being ran will be aware of the application under test.

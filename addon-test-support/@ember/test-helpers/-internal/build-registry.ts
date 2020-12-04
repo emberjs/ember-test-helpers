@@ -32,8 +32,8 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
     let method = methods[i];
 
     if (method in container) {
-      container[method] = function () {
-        return container._registry[method].apply(container._registry, arguments);
+      container[method] = function (...args: unknown[]) {
+        return container._registry[method](...args);
       };
     }
   }
