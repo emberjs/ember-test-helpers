@@ -38,6 +38,7 @@ module.exports = {
 
     let output = this.preprocessJs(input, '/', this.name, {
       registry: this.registry,
+      treeType: 'addon-test-support',
     });
 
     return debugTree(output, 'addon-test-support:output');
