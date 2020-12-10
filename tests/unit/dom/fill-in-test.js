@@ -254,4 +254,53 @@ module('DOM Helper: fillIn', function (hooks) {
       new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
     );
   });
+
+  test('filling in a non-constrained input type with maxlength', async function (assert) {
+    element = buildInstrumentedElement('input');
+    const maxLengthString = '1';
+    const tooLongString = maxLengthString.concat('23');
+    element.setAttribute('type', 'number');
+    element.setAttribute('maxlength', maxLengthString.length);
+    await setupContext(context);
+
+    await fillIn(element, tooLongString);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(
+      element.value,
+      tooLongString,
+      'fillIn does not reject non-constrained input types'
+    );
+  });
+
+  test('filling a textarea with a maxlength with suitable value', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+    const maxLengthString = 'f';
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    await fillIn(element, maxLengthString);
+
+    assert.verifySteps(clickSteps);
+    assert.equal(
+      element.value,
+      maxLengthString,
+      `fillIn respects textarea attribute [maxlength=${maxLengthString.length}]`
+    );
+  });
+
+  test('filling a textarea with a maxlength with too long value', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+    const maxLengthString = 'f';
+    const tooLongString = maxLengthString.concat('oo');
+    element.setAttribute('maxlength', maxLengthString.length);
+
+    await setupContext(context);
+
+    assert.rejects(
+      fillIn(element, tooLongString),
+      new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
+    );
+  });
 });
