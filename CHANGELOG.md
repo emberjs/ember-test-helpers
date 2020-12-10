@@ -1,3 +1,16 @@
+## v2.1.2 (2020-12-10)
+
+#### :bug: Bug Fix
+* [#946](https://github.com/emberjs/ember-test-helpers/pull/946) Fixes maxlength conditional check for textarea & constrained input types ([@drewlee](https://github.com/drewlee))
+
+#### :memo: Documentation
+* [#960](https://github.com/emberjs/ember-test-helpers/pull/960) Fix typo in README ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 3
+- Andrew A Lee ([@drewlee](https://github.com/drewlee))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
+
 ## v2.1.1 (2020-12-04)
 
 #### :bug: Bug Fix
