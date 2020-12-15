@@ -23,12 +23,15 @@ export function __focus__(element: HTMLElement | Element | Document | SVGElement
 
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
+  // fire __blur__ manually with the correct relatedTarget when the browser is not
+  // already in focus and there was a previously focused element
   if (
     document.activeElement &&
     document.activeElement !== element &&
-    isFocusable(document.activeElement)
+    isFocusable(document.activeElement) &&
+    browserIsNotFocused
   ) {
-    __blur__(document.activeElement);
+    __blur__(document.activeElement, element);
   }
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
