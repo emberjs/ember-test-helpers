@@ -1,3 +1,14 @@
+## v2.1.3 (2020-12-16)
+
+#### :bug: Bug Fix
+* [#966](https://github.com/emberjs/ember-test-helpers/pull/966) Update ember-auto-import to 1.10.0 at a minimum. ([@rwjblue](https://github.com/rwjblue))
+* [#963](https://github.com/emberjs/ember-test-helpers/pull/963) Add treeType annotation to hint correct bundle to ember-auto-import ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.1.2 (2020-12-10)
 
 #### :bug: Bug Fix
