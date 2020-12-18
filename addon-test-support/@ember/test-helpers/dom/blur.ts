@@ -1,3 +1,4 @@
+import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
@@ -14,24 +15,32 @@ registerHook('blur', 'start', (target: Target) => {
 /**
   @private
   @param {Element} element the element to trigger events on
+  @param {Element} relatedTarget the element that is focused after blur
 */
-export function __blur__(element: HTMLElement | Element | Document | SVGElement): void {
+export function __blur__(
+  element: HTMLElement | Element | Document | SVGElement,
+  relatedTarget: HTMLElement | Element | Document | SVGElement | null = null
+): void {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }
 
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
+  let needsCustomEventOptions = relatedTarget !== null;
 
-  // makes `document.activeElement` be `body`.
-  // If the browser is focused, it also fires a blur event
-  element.blur();
+  if (!needsCustomEventOptions) {
+    // makes `document.activeElement` be `body`.
+    // If the browser is focused, it also fires a blur event
+    element.blur();
+  }
 
   // Chrome/Firefox does not trigger the `blur` event if the window
   // does not have focus. If the document does not have focus then
   // fire `blur` event via native event.
-  if (browserIsNotFocused) {
-    fireEvent(element, 'blur', { bubbles: false });
-    fireEvent(element, 'focusout');
+  if (browserIsNotFocused || needsCustomEventOptions) {
+    let options = { relatedTarget };
+    fireEvent(element, 'blur', assign({ bubbles: false }, options));
+    fireEvent(element, 'focusout', options);
   }
 }
 

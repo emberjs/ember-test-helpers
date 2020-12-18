@@ -105,13 +105,13 @@ module('DOM Helper: focus', function (hooks) {
     const focusedElement = document.createElement('textarea');
     insertElement(focusedElement);
     focusedElement.focus();
-    instrumentElement(focusedElement, ['target']);
+    instrumentElement(focusedElement, ['target', 'relatedTarget']);
 
     await focus(element);
 
     assert.verifySteps([
       ...blurSteps.map(s => {
-        return `${s} [object HTMLTextAreaElement]`;
+        return `${s} [object HTMLTextAreaElement] [object HTMLInputElement]`;
       }),
       ...focusSteps.map(s => {
         return `${s} [object HTMLInputElement]`;
