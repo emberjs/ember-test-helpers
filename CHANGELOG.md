@@ -1,3 +1,12 @@
+## v2.1.4 (2020-12-18)
+
+#### :bug: Bug Fix
+* [#965](https://github.com/emberjs/ember-test-helpers/pull/965) Ensure `focus` issues correct `event.relatedTarget` for dispatched blur events (#964) ([@drewlee](https://github.com/drewlee))
+
+#### Committers: 1
+- Andrew A Lee ([@drewlee](https://github.com/drewlee))
+
+
 ## v2.1.3 (2020-12-16)
 
 #### :bug: Bug Fix
