@@ -37,7 +37,7 @@ export function __blur__(
   // Chrome/Firefox does not trigger the `blur` event if the window
   // does not have focus. If the document does not have focus then
   // fire `blur` event via native event.
-  if (browserIsNotFocused) {
+  if (browserIsNotFocused || needsCustomEventOptions) {
     let options = { relatedTarget };
     fireEvent(element, 'blur', assign({ bubbles: false }, options));
     fireEvent(element, 'focusout', options);
