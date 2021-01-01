@@ -48,7 +48,7 @@
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
     "@types/ember": "^3.16.2",
-    "@types/ember-data": "^3.16.6",
+    "@types/ember-data": "^3.16.8",
     "@types/ember-testing-helpers": "^0.0.4",
     "@types/rsvp": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
