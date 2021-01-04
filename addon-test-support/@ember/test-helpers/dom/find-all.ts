@@ -1,5 +1,5 @@
 import getElements from './-get-elements';
-import toArray from './-to-array';
+import { toArray } from '../ie-11-polyfills';
 
 /**
   Find all elements matched by the given selector. Similar to calling

@@ -8,6 +8,7 @@ import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { find } from '../ie-11-polyfills';
 
 registerHook(
   'triggerKeyEvent',
@@ -117,10 +118,10 @@ function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): s
  */
 function keyCodeFromKey(key: string) {
   let keys = Object.keys(keyFromKeyCode);
-  let keyCode = keys.filter(keyCode => keyFromKeyCode[Number(keyCode)] === key)[0];
-  if (!keyCode) {
-    keyCode = keys.filter(keyCode => keyFromKeyCode[Number(keyCode)] === key.toLowerCase())[0];
-  }
+  let keyCode =
+    find(keys, (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key) ||
+    find(keys, (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key.toLowerCase());
+
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
 
