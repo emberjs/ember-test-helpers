@@ -52,7 +52,7 @@
     "@types/ember-testing-helpers": "^0.0.4",
     "@types/rsvp": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
+    "@typescript-eslint/parser": "^4.14.1",
     "broccoli-merge-trees": "^4.2.0",
     "documentation": "^13.1.0",
     "ember-cli": "~3.23.0",
