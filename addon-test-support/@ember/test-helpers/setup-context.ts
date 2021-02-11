@@ -1,6 +1,7 @@
 import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import Resolver from '@ember/application/resolver';
+import { setOwner } from '@ember/application';
 
 import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
@@ -211,6 +212,7 @@ export default function setupContext(
         value: owner,
         writable: false,
       });
+      setOwner(context, owner);
 
       Object.defineProperty(context, 'set', {
         configurable: true,
