@@ -23,6 +23,7 @@ import {
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry, application, resolver } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
+import { getOwner } from '@ember/application';
 
 module('setupRenderingContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -429,6 +430,10 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.element.textContent, '', 'has rendered content');
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
       assert.strictEqual(this.element, originalElement, 'this.element is stable');
+    });
+
+    test('context supports getOwner', async function (assert) {
+      assert.equal(getOwner(this), this.owner);
     });
 
     module('this.render and this.clearRender deprecations', function () {
