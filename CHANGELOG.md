@@ -1,3 +1,19 @@
+## v2.2.0 (2021-02-13)
+
+#### :rocket: Enhancement
+* [#987](https://github.com/emberjs/ember-test-helpers/pull/987) Support getOwner ([@ef4](https://github.com/ef4))
+
+#### :house: Internal
+* [#988](https://github.com/emberjs/ember-test-helpers/pull/988) Bumping version of `@ember/test-waiters` to avoid issues in Embroider builds ([@thoov](https://github.com/thoov))
+* [#949](https://github.com/emberjs/ember-test-helpers/pull/949) Polyfilled test selector optimizations  ([@izelnakri](https://github.com/izelnakri))
+
+#### Committers: 4
+- Edward Faulkner ([@ef4](https://github.com/ef4))
+- Izel Nakri ([@izelnakri](https://github.com/izelnakri))
+- Travis Hoover ([@thoov](https://github.com/thoov))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.1.4 (2020-12-18)
 
 #### :bug: Bug Fix
