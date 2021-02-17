@@ -70,5 +70,12 @@ module.exports = {
         'require-jsdoc': 'error',
       },
     },
+    {
+      files: ['addon-test-support/@ember/test-helpers/-internal/promise-polyfill.js'],
+      rules: {
+        'require-jsdoc': 'off',
+        'valid-jsdoc': 'off',
+      },
+    },
   ],
 };
