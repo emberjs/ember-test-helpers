@@ -39,11 +39,9 @@
     "@ember/test-waiters": "^2.4.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.3",
-    "ember-auto-import": "^1.10.1",
     "ember-cli-babel": "^7.23.1",
     "ember-cli-htmlbars": "^5.2.0",
-    "ember-destroyable-polyfill": "^2.0.3",
-    "es6-promise": "^4.2.8"
+    "ember-destroyable-polyfill": "^2.0.3"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
@@ -55,6 +53,7 @@
     "@typescript-eslint/parser": "^4.14.1",
     "broccoli-merge-trees": "^4.2.0",
     "documentation": "^13.1.0",
+    "ember-auto-import": "^1.10.1",
     "ember-cli": "~3.23.0",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-inject-live-reload": "^2.0.2",
