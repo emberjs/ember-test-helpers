@@ -1,3 +1,12 @@
+## v2.2.1 (2021-02-18)
+
+#### :bug: Bug Fix
+* [#992](https://github.com/emberjs/ember-test-helpers/pull/992) Inline promise polyfill fallback. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.2.0 (2021-02-13)
 
 #### :rocket: Enhancement
