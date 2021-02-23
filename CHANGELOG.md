@@ -1,3 +1,12 @@
+## v2.2.2 (2021-02-23)
+
+#### :bug: Bug Fix
+* [#994](https://github.com/emberjs/ember-test-helpers/pull/994) Make `setupOnerror` more resilient ([@wagenet](https://github.com/wagenet))
+
+#### Committers: 1
+- Peter Wagenet ([@wagenet](https://github.com/wagenet))
+
+
 ## v2.2.1 (2021-02-18)
 
 #### :bug: Bug Fix
