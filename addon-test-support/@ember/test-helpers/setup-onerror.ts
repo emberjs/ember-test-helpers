@@ -43,6 +43,7 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
 
 /**
  * Resets `Ember.onerror` to the value it originally was at the start of the test run.
+ * If there is no context or cached value this is a no-op.
  *
  * @public
  *
@@ -54,7 +55,13 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
  *   resetOnerror();
  * })
  */
-export const resetOnerror: Function = setupOnerror;
+export function resetOnerror(): void {
+  let context = getContext();
+
+  if (context && cachedOnerror.has(context)) {
+    Ember.onerror = cachedOnerror.get(context);
+  }
+}
 
 /**
  * Caches the current value of Ember.onerror. When `setupOnerror` is called without a value
