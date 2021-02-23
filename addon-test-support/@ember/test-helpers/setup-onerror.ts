@@ -38,8 +38,6 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
     onError = cachedOnerror.get(context);
   }
 
-  // @ts-ignore types are incorrect and don't allow undefined.
-  // See https://github.com/DefinitelyTyped/DefinitelyTyped/pull/51383
   Ember.onerror = onError;
 }
 
