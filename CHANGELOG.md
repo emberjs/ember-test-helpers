@@ -1,3 +1,12 @@
+## v2.2.3 (2021-02-23)
+
+#### :bug: Bug Fix
+* [#995](https://github.com/emberjs/ember-test-helpers/pull/995) Correctly handle resetOnerror ([@wagenet](https://github.com/wagenet))
+
+#### Committers: 1
+- Peter Wagenet ([@wagenet](https://github.com/wagenet))
+
+
 ## v2.2.2 (2021-02-23)
 
 #### :bug: Bug Fix
