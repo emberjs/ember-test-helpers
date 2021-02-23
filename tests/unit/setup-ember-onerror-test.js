@@ -63,5 +63,10 @@ module('setupOnerror', function (hooks) {
         setupOnerror();
       }, /Must setup test context before calling setupOnerror/);
     });
+
+    test('resetOnerror does not raise an error without context', function (assert) {
+      resetOnerror();
+      assert.ok(true, 'nothing was thrown');
+    });
   }
 });
