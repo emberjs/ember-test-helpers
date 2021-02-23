@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import { BaseContext, getContext } from './setup-context';
 
-const ORIGINAL_EMBER_ONERROR: (error: Error) => void | undefined = Ember.onerror;
+let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> = new Map();
 
 /**
  * Sets the `Ember.onerror` function for tests. This value is intended to be reset after
@@ -21,8 +22,20 @@ const ORIGINAL_EMBER_ONERROR: (error: Error) => void | undefined = Ember.onerror
  * });
  */
 export default function setupOnerror(onError?: (error: Error) => void): void {
+  let context = getContext();
+
+  if (!context) {
+    throw new Error('Must setup test context before calling setupOnerror');
+  }
+
+  if (!cachedOnerror.has(context)) {
+    throw new Error(
+      '_cacheOriginalOnerror must be called before setupOnerror. Normally, this will happen as part of your test harness.'
+    );
+  }
+
   if (typeof onError !== 'function') {
-    onError = ORIGINAL_EMBER_ONERROR;
+    onError = cachedOnerror.get(context);
   }
 
   Ember.onerror = onError;
@@ -42,3 +55,29 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
  * })
  */
 export const resetOnerror: Function = setupOnerror;
+
+/**
+ * Caches the current value of Ember.onerror. When `setupOnerror` is called without a value
+ * or when `resetOnerror` is called the value will be set to what was cached here.
+ *
+ * @private
+ * @param {BaseContext} context the text context
+ */
+export function _prepareOnerror(context: BaseContext) {
+  if (cachedOnerror.has(context)) {
+    throw new Error('_prepareOnerror should only be called once per-context');
+  }
+
+  cachedOnerror.set(context, Ember.onerror);
+}
+
+/**
+ * Removes the cached value of Ember.onerror.
+ *
+ * @private
+ * @param {BaseContext} context the text context
+ */
+export function _cleanupOnerror(context: BaseContext) {
+  resetOnerror();
+  cachedOnerror.delete(context);
+}

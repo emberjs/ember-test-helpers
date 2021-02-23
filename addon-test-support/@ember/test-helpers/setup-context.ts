@@ -5,6 +5,7 @@ import { setOwner } from '@ember/application';
 
 import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
+import { _prepareOnerror } from './setup-onerror';
 import Ember from 'ember';
 import { assert } from '@ember/debug';
 import global from './global';
@@ -179,6 +180,8 @@ export default function setupContext(
   run.backburner.DEBUG = true;
 
   registerDestructor(context, cleanup);
+
+  _prepareOnerror(context);
 
   return Promise.resolve()
     .then(() => {
