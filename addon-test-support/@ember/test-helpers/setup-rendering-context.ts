@@ -199,7 +199,11 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
           {
             id: 'ember-test-helpers.setup-rendering-context.render',
             until: '3.0.0',
-          }
+            for: '@ember/test-helpers',
+            since: {
+              enabled: '2.0.0',
+            },
+          } as any // @types/ember is missing since + for
         );
 
         return render(template);
@@ -212,7 +216,11 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
           {
             id: 'ember-test-helpers.setup-rendering-context.clearRender',
             until: '3.0.0',
-          }
+            for: '@ember/test-helpers',
+            since: {
+              enabled: '2.0.0',
+            },
+          } as any // @types/ember is missing since + for
         );
 
         return clearRender();
