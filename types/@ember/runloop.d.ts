@@ -34,6 +34,8 @@ export interface DebugInfo {
 }
 
 export interface Backburner {
+  currentInstance: DeferredActionQueues | null;
+  hasTimers(): boolean;
   join(...args: any[]): void;
   on(...args: any[]): void;
   scheduleOnce(...args: any[]): void;
@@ -323,6 +325,7 @@ export interface RunNamespace {
   backburner: Backburner;
 }
 
+export const _backburner: Backburner;
 export const run: RunNamespace;
 export const begin: typeof run.begin;
 export const bind: typeof run.bind;
@@ -336,4 +339,3 @@ export const once: typeof run.once;
 export const schedule: typeof run.schedule;
 export const scheduleOnce: typeof run.scheduleOnce;
 export const throttle: typeof run.throttle;
-export const backburner: typeof run.backburner;
