@@ -1,3 +1,13 @@
+## v2.2.4 (2021-03-19)
+
+#### :bug: Bug Fix
+* [#1012](https://github.com/emberjs/ember-test-helpers/pull/1012) Fix deprecations with Ember 3.27+ ([@rwjblue](https://github.com/rwjblue))
+* [#1009](https://github.com/emberjs/ember-test-helpers/pull/1009) Update dependencies to latest (fix some Ember 3.27 deprecations) ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.2.3 (2021-02-23)
 
 #### :bug: Bug Fix
