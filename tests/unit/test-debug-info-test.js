@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { _backburner, run } from '@ember/runloop';
+import { _backburner, later, cancel } from '@ember/runloop';
 import {
   TestDebugInfo,
   backburnerDebugInfoAvailable,
@@ -56,7 +56,7 @@ module('TestDebugInfo', function(hooks) {
       });
 
       hooks.afterEach(function() {
-        cancelIds.forEach(cancelId => run.cancel(cancelId));
+        cancelIds.forEach(cancelId => cancel(cancelId));
 
         _backburner.DEBUG = false;
 
@@ -66,8 +66,8 @@ module('TestDebugInfo', function(hooks) {
       test('summary returns full information when debugInfo is present', function(assert) {
         assert.expect(1);
 
-        cancelIds.push(run.later(() => {}, 5000));
-        cancelIds.push(run.later(() => {}, 10000));
+        cancelIds.push(later(() => {}, 5000));
+        cancelIds.push(later(() => {}, 10000));
 
         let testDebugInfo = new TestDebugInfo(
           {
