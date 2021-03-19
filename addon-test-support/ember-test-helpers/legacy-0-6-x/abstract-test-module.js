@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { run, _backburner } from '@ember/runloop';
 import { Promise as EmberPromise, resolve } from 'rsvp';
 import { assign } from '@ember/polyfills';
 import { _setupPromiseListeners, _teardownPromiseListeners } from './ext/rsvp';
@@ -19,7 +19,7 @@ export default class {
 
   setup(assert) {
     Ember.testing = true;
-    Ember.run.backburner.DEBUG = true;
+    _backburner.DEBUG = true;
     return this.invokeSteps(this.setupSteps, this, assert).then(() => {
       this.contextualizeCallbacks();
       return this.invokeSteps(this.contextualizedSetupSteps, this.context, assert);
