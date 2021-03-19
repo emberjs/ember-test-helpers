@@ -4,7 +4,7 @@ import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
+import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
 import PromisePolyfill from '@ember/test-helpers/-internal/promise-polyfill';
@@ -22,7 +22,7 @@ let moduleLoadFailures = [];
 let cleanupFailures = [];
 let asyncLeakageFailures = [];
 
-run.backburner.DEBUG = true;
+_backburner.DEBUG = true;
 
 QUnit.done(function () {
   if (moduleLoadFailures.length) {
@@ -68,13 +68,13 @@ QUnit.testStart(function () {
 
 QUnit.testDone(function ({ module, name }) {
   // ensure no test accidentally change state of run.backburner.DEBUG
-  if (run.backburner.DEBUG !== true) {
-    let message = `Ember.run.backburner.DEBUG should be reset (to true) after test has completed. ${module}: ${name} did not.`;
+  if (_backburner.DEBUG !== true) {
+    let message = `backburner.DEBUG should be reset (to true) after test has completed. ${module}: ${name} did not.`;
     cleanupFailures.push(message);
 
     // eslint-disable-next-line
     console.error(message);
-    run.backburner.DEBUG = true;
+    _backburner.DEBUG = true;
   }
 
   // this is used to ensure that no tests accidentally leak `Ember.testing` state

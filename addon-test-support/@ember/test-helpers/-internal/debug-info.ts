@@ -1,5 +1,5 @@
 import {
-  run,
+  _backburner,
   DebugInfo as BackburnerDebugInfo,
   QueueItem,
   DeferredActionQueues,
@@ -53,7 +53,7 @@ export default interface DebugInfo {
  * @returns {boolean} True if `getDebugInfo` is present in backburner, otherwise false.
  */
 export function backburnerDebugInfoAvailable() {
-  return typeof run.backburner.getDebugInfo === 'function';
+  return typeof _backburner.getDebugInfo === 'function';
 }
 
 /**
@@ -64,8 +64,8 @@ export function backburnerDebugInfoAvailable() {
  * @returns {MaybeDebugInfo | null} Backburner debugInfo or, if the getDebugInfo method is not present, null
  */
 export function getDebugInfo(): MaybeDebugInfo {
-  return run.backburner.DEBUG === true && backburnerDebugInfoAvailable()
-    ? <BackburnerDebugInfo>run.backburner.getDebugInfo()
+  return _backburner.DEBUG === true && backburnerDebugInfoAvailable()
+    ? <BackburnerDebugInfo>_backburner.getDebugInfo()
     : null;
 }
 
