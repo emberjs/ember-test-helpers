@@ -1,3 +1,16 @@
+## v2.2.5 (2021-03-20)
+
+#### :bug: Bug Fix
+* [#1015](https://github.com/emberjs/ember-test-helpers/pull/1015) Update @ember/test-waiters to avoid window.Ember deprecations ([@rwjblue](https://github.com/rwjblue))
+* [#1014](https://github.com/emberjs/ember-test-helpers/pull/1014) Update ember-cli-babel to avoid deprecations RE: window.Ember ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#1013](https://github.com/emberjs/ember-test-helpers/pull/1013) Update devDependencies to latest ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.2.4 (2021-03-19)
 
 #### :bug: Bug Fix
