@@ -19,7 +19,7 @@ jobs:
       - uses: volta-cli/action@v1
         with:
           node-version: 6.x
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --ignore-engines --frozen-lockfile
       - run: yarn lint
       - run: yarn test
 
@@ -32,7 +32,7 @@ jobs:
       - uses: volta-cli/action@v1
         with:
           node-version: 6.x
-      - run: yarn install --no-lockfile
+      - run: yarn install --ignore-engines --no-lockfile
       - run: yarn test
 
   try-scenarios:
@@ -65,6 +65,6 @@ jobs:
         with:
           node-version: 12.x
       - name: install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --ignore-engines --frozen-lockfile
       - name: test
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
