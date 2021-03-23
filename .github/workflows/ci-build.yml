@@ -31,7 +31,7 @@ jobs:
     needs: test
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         ember-try-scenario:
           - ember-2.0
