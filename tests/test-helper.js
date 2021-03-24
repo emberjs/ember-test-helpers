@@ -16,6 +16,8 @@ let asyncLeakageFailures = [];
 
 _backburner.DEBUG = true;
 
+let deprecationCounts = Object.create(null);
+
 QUnit.done(function() {
   if (moduleLoadFailures.length) {
     throw new Error('\n' + moduleLoadFailures.join('\n'));
@@ -27,6 +29,25 @@ QUnit.done(function() {
 
   if (asyncLeakageFailures.length) {
     throw new Error('\n' + asyncLeakageFailures.join('\n'));
+  }
+
+  let entries = Object.keys(deprecationCounts)
+    .map(key => [key, deprecationCounts[key]])
+    .sort((a, b) => b[1] - a[1]);
+
+  if (deprecationCounts.size > 0) {
+    /* eslint-disable no-console */
+    let maxWidth = 0;
+    entries.forEach(([id]) => {
+      if (id.length > maxWidth) {
+        maxWidth = id.length;
+      }
+    });
+    console.log('Deprecation Counts');
+    entries.forEach(([id, count]) => {
+      console.log(id.padEnd(maxWidth), count);
+    });
+    /* eslint-enable no-console */
   }
 });
 
@@ -96,6 +117,13 @@ registerDeprecationHandler((message, options, next) => {
   }
 
   deprecations.push(message);
+  next(message, options);
+});
+
+registerDeprecationHandler((message, options, next) => {
+  let count = deprecationCounts[options.id] || 0;
+  deprecationCounts[options.id] = count + 1;
+
   next(message, options);
 });
 
