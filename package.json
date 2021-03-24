@@ -92,7 +92,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "tag": "old"
   },
   "changelog": {
     "repo": "emberjs/ember-test-helpers",
