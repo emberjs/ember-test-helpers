@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { _backburner, run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import Resolver from '@ember/application/resolver';
@@ -165,7 +165,7 @@ export default function setupContext(
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupContext');
 
-  run.backburner.DEBUG = true;
+  _backburner.DEBUG = true;
 
   return nextTickPromise()
     .then(() => {

@@ -3,7 +3,7 @@ import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
+import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
 if (QUnit.config.seed) {
@@ -14,7 +14,9 @@ let moduleLoadFailures = [];
 let cleanupFailures = [];
 let asyncLeakageFailures = [];
 
-run.backburner.DEBUG = true;
+_backburner.DEBUG = true;
+
+let deprecationCounts = Object.create(null);
 
 QUnit.done(function() {
   if (moduleLoadFailures.length) {
@@ -27,6 +29,25 @@ QUnit.done(function() {
 
   if (asyncLeakageFailures.length) {
     throw new Error('\n' + asyncLeakageFailures.join('\n'));
+  }
+
+  let entries = Object.keys(deprecationCounts)
+    .map(key => [key, deprecationCounts[key]])
+    .sort((a, b) => b[1] - a[1]);
+
+  if (deprecationCounts.size > 0) {
+    /* eslint-disable no-console */
+    let maxWidth = 0;
+    entries.forEach(([id]) => {
+      if (id.length > maxWidth) {
+        maxWidth = id.length;
+      }
+    });
+    console.log('Deprecation Counts');
+    entries.forEach(([id, count]) => {
+      console.log(id.padEnd(maxWidth), count);
+    });
+    /* eslint-enable no-console */
   }
 });
 
@@ -43,30 +64,15 @@ class TestLoader extends AbstractTestLoader {
 
 new TestLoader().loadModules();
 
-let deprecations;
-registerDeprecationHandler((message, options, next) => {
-  // in case a deprecation is issued before a test is started
-  if (!deprecations) {
-    deprecations = [];
-  }
-
-  deprecations.push(message);
-  next(message, options);
-});
-
-QUnit.testStart(function() {
-  deprecations = [];
-});
-
 QUnit.testDone(function({ module, name }) {
-  // ensure no test accidentally change state of run.backburner.DEBUG
-  if (run.backburner.DEBUG !== true) {
-    let message = `Ember.run.backburner.DEBUG should be reset (to true) after test has completed. ${module}: ${name} did not.`;
+  // ensure no test accidentally change state of backburner.DEBUG
+  if (_backburner.DEBUG !== true) {
+    let message = `backburner.DEBUG should be reset (to true) after test has completed. ${module}: ${name} did not.`;
     cleanupFailures.push(message);
 
     // eslint-disable-next-line
     console.error(message);
-    run.backburner.DEBUG = true;
+    _backburner.DEBUG = true;
   }
 
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
@@ -101,6 +107,57 @@ QUnit.testDone(function({ module, name }) {
     // eslint-disable-next-line
     console.error(message);
   }
+});
+
+let deprecations;
+registerDeprecationHandler((message, options, next) => {
+  // in case a deprecation is issued before a test is started
+  if (!deprecations) {
+    deprecations = [];
+  }
+
+  deprecations.push(message);
+  next(message, options);
+});
+
+registerDeprecationHandler((message, options, next) => {
+  let count = deprecationCounts[options.id] || 0;
+  deprecationCounts[options.id] = count + 1;
+
+  next(message, options);
+});
+
+// Provide a way to squelch the this-property-fallback
+if (typeof URLSearchParams !== 'undefined') {
+  let queryParams = new URLSearchParams(document.location.search.substring(1));
+  let disabledDeprecations = queryParams.get('disabledDeprecations');
+  let debugDeprecations = queryParams.get('debugDeprecations');
+
+  // When using `/tests/index.html?disabledDeprecations=this-property-fallback,some-other-thing`
+  // those deprecations will be squelched
+  if (disabledDeprecations) {
+    registerDeprecationHandler((message, options, next) => {
+      if (!disabledDeprecations.includes(options.id)) {
+        next(message, options);
+      }
+    });
+  }
+
+  // When using `/tests/index.html?debugDeprecations=some-other-thing` when the
+  // `some-other-thing` deprecation is triggered, this `debugger` will be hit`
+  if (debugDeprecations) {
+    registerDeprecationHandler((message, options, next) => {
+      if (debugDeprecations.includes(options.id)) {
+        debugger; // eslint-disable-line no-debugger
+      }
+
+      next(message, options);
+    });
+  }
+}
+
+QUnit.testStart(function() {
+  deprecations = [];
 });
 
 QUnit.assert.noDeprecations = function(callback) {

@@ -1,5 +1,5 @@
 /* globals jQuery */
-import { run } from '@ember/runloop';
+import { _backburner } from '@ember/runloop';
 import Ember from 'ember';
 
 import { nextTick } from './-utils';
@@ -179,8 +179,8 @@ export interface SettledState {
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState(): SettledState {
-  let hasPendingTimers = Boolean((run as any).hasScheduledTimers());
-  let hasRunLoop = Boolean((run as any).currentRunLoop);
+  let hasPendingTimers = Boolean(_backburner.hasTimers());
+  let hasRunLoop = Boolean(_backburner.currentInstance);
   let hasPendingLegacyWaiters = checkWaiters();
   let hasPendingTestWaiters = hasPendingWaiters();
   let pendingRequestCount = pendingRequests();
