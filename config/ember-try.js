@@ -47,6 +47,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-fetch': null,
+              'ember-data': '~3.7.0',
             },
             dependencies: {
               'ember-cli-htmlbars-inline-precompile': '^1.0.5',
@@ -67,6 +68,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-fetch': null,
+              'ember-data': '~3.7.0',
             },
             dependencies: {
               'ember-cli-htmlbars-inline-precompile': '^1.0.5',
@@ -80,6 +82,7 @@ module.exports = function() {
               '@ember/jquery': '^0.6.0',
               'ember-source': '~2.12.0',
               'ember-fetch': null,
+              'ember-data': '~3.7.0',
             },
           },
         },
@@ -90,6 +93,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': '~2.16.0',
               'ember-native-dom-event-dispatcher': '^0.6.4',
+              'ember-data': '~3.7.0',
             },
           },
         },
@@ -100,6 +104,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': '~2.18.0',
               'ember-native-dom-event-dispatcher': '^0.6.4',
+              'ember-data': '~3.7.0',
             },
           },
         },
@@ -109,6 +114,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.4.0',
+              'ember-data': '~3.7.0',
             },
           },
         },
@@ -116,6 +122,10 @@ module.exports = function() {
           name: 'ember-release',
           env: envWithoutJQuery,
           npm: {
+            dependencies: {
+              'ember-cli-htmlbars-inline-precompile': null,
+              'ember-cli-htmlbars': '^5.7.1',
+            },
             devDependencies: {
               'ember-source': urls[0],
             },
@@ -125,6 +135,10 @@ module.exports = function() {
           name: 'ember-beta',
           env: envWithoutJQuery,
           npm: {
+            dependencies: {
+              'ember-cli-htmlbars-inline-precompile': null,
+              'ember-cli-htmlbars': '^5.7.1',
+            },
             devDependencies: {
               'ember-source': urls[1],
             },
@@ -134,6 +148,10 @@ module.exports = function() {
           name: 'ember-canary',
           env: envWithoutJQuery,
           npm: {
+            dependencies: {
+              'ember-cli-htmlbars-inline-precompile': null,
+              'ember-cli-htmlbars': '^5.7.1',
+            },
             devDependencies: {
               'ember-source': urls[2],
             },
@@ -148,6 +166,10 @@ module.exports = function() {
             }),
           },
           npm: {
+            dependencies: {
+              'ember-cli-htmlbars-inline-precompile': null,
+              'ember-cli-htmlbars': '^5.7.1',
+            },
             devDependencies: {
               'ember-source': urls[2],
             },
