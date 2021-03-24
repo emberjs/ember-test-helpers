@@ -1,3 +1,11 @@
+## v1.7.3 (2021-03-24)
+
+#### :bug: Bug Fix
+* [#1016](https://github.com/emberjs/ember-test-helpers/pull/1016) Backport Ember 3.27 deprecation fixes to 1.x ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v1.7.2 (2020-08-17)
 
 #### :bug: Bug Fix
