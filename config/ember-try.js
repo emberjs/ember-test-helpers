@@ -128,6 +128,7 @@ module.exports = function() {
             },
             devDependencies: {
               'ember-source': urls[0],
+              'ember-data': '~3.20.0',
             },
           },
         },
@@ -141,6 +142,7 @@ module.exports = function() {
             },
             devDependencies: {
               'ember-source': urls[1],
+              'ember-data': '~3.20.0',
             },
           },
         },
@@ -154,6 +156,7 @@ module.exports = function() {
             },
             devDependencies: {
               'ember-source': urls[2],
+              'ember-data': '~3.20.0',
             },
           },
         },
@@ -172,6 +175,7 @@ module.exports = function() {
             },
             devDependencies: {
               'ember-source': urls[2],
+              'ember-data': '~3.20.0',
             },
           },
         },
@@ -184,6 +188,7 @@ module.exports = function() {
             devDependencies: {
               '@ember/jquery': '^0.6.0',
               'ember-fetch': null,
+              'ember-data': '~3.20.0',
             },
           },
         },
