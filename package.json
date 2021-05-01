@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.18.0",
     "broccoli-merge-trees": "^4.2.0",
-    "documentation": "^13.2.0",
+    "documentation": "^13.2.5",
     "ember-auto-import": "^1.10.1",
     "ember-cli": "~3.25.2",
     "ember-cli-dependency-checker": "^3.2.0",
