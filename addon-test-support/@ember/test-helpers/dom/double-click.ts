@@ -3,10 +3,9 @@ import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
-import isFocusable from './-is-focusable';
 import { Promise } from '../-utils';
 import { DEFAULT_CLICK_OPTIONS } from './click';
-import Target from './-target';
+import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -26,7 +25,7 @@ export function __doubleClick__(
 ): void {
   fireEvent(element, 'mousedown', options);
 
-  if (isFocusable(element)) {
+  if (!isWindow(element)) {
     __focus__(element);
   }
 

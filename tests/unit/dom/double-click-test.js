@@ -277,6 +277,79 @@ module('DOM Helper: doubleClick', function (hooks) {
       ]);
     });
   });
+
+  module('focusable and non-focusable elements interaction', function () {
+    test('cdouble-licking on non-focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await doubleClick(focusableElement);
+      await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('double-clicking on focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('input');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await doubleClick(focusableElement);
+      await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('double-clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const nonFocusableElement = buildInstrumentedElement('div');
+
+      await doubleClick(nonFocusableElement);
+      await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
+    });
+  });
 });
 
 module('DOM Helper: doubleClick with window', function () {
