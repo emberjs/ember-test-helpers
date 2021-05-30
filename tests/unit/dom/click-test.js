@@ -233,6 +233,47 @@ module('DOM Helper: click', function (hooks) {
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
   });
+
+  module('focusable and non-focusable elements interaction', function () {
+    test('clicking on non-focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await click(focusableElement);
+      await click(element);
+
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+    });
+
+    test('clicking on focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('input');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await click(focusableElement);
+      await click(element);
+
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+    });
+
+    test('clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const nonFocusableElement = buildInstrumentedElement('div');
+
+      await click(nonFocusableElement);
+      await click(element);
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
+    });
+  });
 });
 
 module('DOM Helper: click with window', function () {

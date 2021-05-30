@@ -17,21 +17,29 @@ registerHook('focus', 'start', (target: Target) => {
   @param {Element} element the element to trigger events on
 */
 export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
+  const previousFocusedElement =
+    document.activeElement &&
+    document.activeElement !== element &&
+    isFocusable(document.activeElement)
+      ? document.activeElement
+      : null;
+
+  // fire __blur__ manually with the null relatedTarget when the target is not focusable
+  // and there was a previously focused element
   if (!isFocusable(element)) {
-    throw new Error(`${element} is not focusable`);
+    if (previousFocusedElement) {
+      __blur__(previousFocusedElement, null);
+    }
+
+    return;
   }
 
   let browserIsNotFocused = document.hasFocus && !document.hasFocus();
 
   // fire __blur__ manually with the correct relatedTarget when the browser is not
   // already in focus and there was a previously focused element
-  if (
-    document.activeElement &&
-    document.activeElement !== element &&
-    isFocusable(document.activeElement) &&
-    browserIsNotFocused
-  ) {
-    __blur__(document.activeElement, element);
+  if (previousFocusedElement && browserIsNotFocused) {
+    __blur__(previousFocusedElement, element);
   }
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
@@ -86,6 +94,10 @@ export default function focus(target: Target): Promise<void> {
       let element = getElement(target);
       if (!element) {
         throw new Error(`Element not found when calling \`focus('${target}')\`.`);
+      }
+
+      if (!isFocusable(element)) {
+        throw new Error(`${element} is not focusable`);
       }
 
       __focus__(element);

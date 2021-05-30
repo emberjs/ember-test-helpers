@@ -181,4 +181,65 @@ module('DOM Helper: tap', function (hooks) {
       assert.rejects(tap(element), new Error('Can not `tap` disabled [object HTMLInputElement]'));
     });
   });
+
+  module('focusable and non-focusable elements interaction', function () {
+    test('tapping on non-focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await tap(focusableElement);
+      await tap(element);
+
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('tapping on focusable element triggers blur on active element', async function (assert) {
+      element = document.createElement('input');
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await tap(focusableElement);
+      await tap(element);
+
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
+    });
+
+    test('tapping on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
+      element = document.createElement('div');
+
+      insertElement(element);
+
+      const nonFocusableElement = buildInstrumentedElement('div');
+
+      await tap(nonFocusableElement);
+      await tap(element);
+
+      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+    });
+  });
 });
