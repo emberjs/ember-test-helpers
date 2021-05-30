@@ -1,3 +1,13 @@
+## v2.2.6 (2021-05-30)
+
+#### :bug: Bug Fix
+* [#1033](https://github.com/emberjs/ember-test-helpers/pull/1033) Ensure `blur` event fires on prior focused element even if click target is not focusable ([@helgablazhkun](https://github.com/helgablazhkun))
+
+#### Committers: 2
+- Olga Torkhanova ([@helgablazhkun](https://github.com/helgablazhkun))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.2.5 (2021-03-20)
 
 #### :bug: Bug Fix
