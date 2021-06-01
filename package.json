@@ -36,7 +36,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "@ember/test-waiters": "^2.4.3",
+    "@ember/test-waiters": "^2.4.4",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.6",
     "ember-cli-babel": "^7.26.4",
