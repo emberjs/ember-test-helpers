@@ -1,3 +1,17 @@
+## v2.2.7 (2021-06-15)
+
+#### :bug: Bug Fix
+* [#1047](https://github.com/emberjs/ember-test-helpers/pull/1047) Ensure jQuery.ajax pending request detection works with Ember 3.27 under Embroider ([@stefanpenner](https://github.com/stefanpenner))
+
+#### :house: Internal
+* [#1035](https://github.com/emberjs/ember-test-helpers/pull/1035) removed unused import ([@helgablazhkun](https://github.com/helgablazhkun))
+
+#### Committers: 3
+- Olga Torkhanova ([@helgablazhkun](https://github.com/helgablazhkun))
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.2.6 (2021-05-30)
 
 #### :bug: Bug Fix
