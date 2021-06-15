@@ -8,6 +8,9 @@ module.exports = function (defaults) {
     eslint: {
       testGenerator: 'qunit',
     },
+    trees: {
+      vendor: 'tests/dummy/vendor',
+    },
   };
 
   let app = new EmberAddon(defaults, options);
