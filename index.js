@@ -37,16 +37,4 @@ module.exports = {
 
     return debugTree(output, 'addon-test-support:output');
   },
-
-  treeForVendor(rawVendorTree) {
-    let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
-
-    let transpiledVendorTree = babelAddon.transpileTree(rawVendorTree, {
-      'ember-cli-babel': {
-        compileModules: false,
-      },
-    });
-
-    return transpiledVendorTree;
-  },
 };
