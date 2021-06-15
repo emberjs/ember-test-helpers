@@ -1,4 +1,4 @@
-@ember/test-helpers
+@ember/test-helpers [![CI Build](https://github.com/emberjs/ember-test-helpers/actions/workflows/ci-build.yml/badge.svg)](https://github.com/emberjs/ember-test-helpers/actions/workflows/ci-build.yml)
 ==============================================================================
 
 A test-framework-agnostic set of helpers for testing Ember.js applications
