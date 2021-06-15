@@ -1,3 +1,12 @@
+## v2.2.8 (2021-06-15)
+
+#### :bug: Bug Fix
+* [#1050](https://github.com/emberjs/ember-test-helpers/pull/1050) Remove unneeded `treeForVendor` ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.2.7 (2021-06-15)
 
 #### :bug: Bug Fix
