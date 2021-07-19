@@ -113,60 +113,57 @@ module('setupRenderingContext "real world"', function (hooks) {
     assert.equal(this.element.textContent, 'Yippie!', 'has fulfillment value');
   });
 
-  // uses `{{-in-element` which was only added in Ember 2.10
-  if (hasEmberVersion(2, 10)) {
-    if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-      test('can click on a sibling element of the application template wrapper', async function (assert) {
-        let rootElement = document.getElementById('ember-testing');
+  if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
+    test('can click on a sibling element of the application template wrapper', async function (assert) {
+      let rootElement = document.getElementById('ember-testing');
 
-        assert.notEqual(
-          rootElement,
-          this.element,
-          'precond - confirm that the rootElement is different from this.element'
-        );
+      assert.notEqual(
+        rootElement,
+        this.element,
+        'precond - confirm that the rootElement is different from this.element'
+      );
 
-        this.set('rootElement', rootElement);
+      this.set('rootElement', rootElement);
 
-        await render(hbs`{{#-in-element rootElement}}{{click-me-button}}{{/-in-element}}`);
+      await render(hbs`{{#in-element rootElement}}{{click-me-button}}{{/in-element}}`);
 
-        assert.equal(this.element.textContent, '', 'no content is contained _within_ this.element');
-        assert.equal(
-          rootElement.textContent,
-          'Click Me!',
-          'the rootElement has the correct content after initial render'
-        );
+      assert.equal(this.element.textContent, '', 'no content is contained _within_ this.element');
+      assert.equal(
+        rootElement.textContent,
+        'Click Me!',
+        'the rootElement has the correct content after initial render'
+      );
 
-        await click('.click-me-button');
+      await click('.click-me-button');
 
-        assert.equal(
-          rootElement.textContent,
-          'Clicked!',
-          'the rootElement has the correct content after clicking'
-        );
-      });
-    } else {
-      test('can click on a sibling of the rendered content', async function (assert) {
-        let rootElement = document.getElementById('ember-testing');
-        this.set('rootElement', rootElement);
+      assert.equal(
+        rootElement.textContent,
+        'Clicked!',
+        'the rootElement has the correct content after clicking'
+      );
+    });
+  } else {
+    test('can click on a sibling of the rendered content', async function (assert) {
+      let rootElement = document.getElementById('ember-testing');
+      this.set('rootElement', rootElement);
 
-        assert.equal(rootElement.textContent, '', 'the rootElement is empty before rendering');
+      assert.equal(rootElement.textContent, '', 'the rootElement is empty before rendering');
 
-        await render(hbs`{{#-in-element rootElement}}{{click-me-button}}{{/-in-element}}`);
+      await render(hbs`{{#in-element rootElement}}{{click-me-button}}{{/in-element}}`);
 
-        assert.equal(
-          rootElement.textContent,
-          'Click Me!',
-          'the rootElement has the correct content after initial render'
-        );
+      assert.equal(
+        rootElement.textContent,
+        'Click Me!',
+        'the rootElement has the correct content after initial render'
+      );
 
-        await click('.click-me-button');
+      await click('.click-me-button');
 
-        assert.equal(
-          rootElement.textContent,
-          'Clicked!',
-          'the rootElement has the correct content after clicking'
-        );
-      });
-    }
+      assert.equal(
+        rootElement.textContent,
+        'Clicked!',
+        'the rootElement has the correct content after clicking'
+      );
+    });
   }
 });
