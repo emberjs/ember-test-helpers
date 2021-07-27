@@ -1,3 +1,23 @@
+## v2.2.9 (2021-07-27)
+
+#### :bug: Bug Fix
+* [#1066](https://github.com/emberjs/ember-test-helpers/pull/1066) Correctly import deprecate from `@ember/debug` ([@mydea](https://github.com/mydea))
+
+#### :memo: Documentation
+* [#1052](https://github.com/emberjs/ember-test-helpers/pull/1052) add badge ([@stefanpenner](https://github.com/stefanpenner))
+
+#### :house: Internal
+* [#1069](https://github.com/emberjs/ember-test-helpers/pull/1069) Remove ember-data from test harness ([@rwjblue](https://github.com/rwjblue))
+* [#1067](https://github.com/emberjs/ember-test-helpers/pull/1067) Test `{{in-element}}` instead of deprecated `{{-in-element}}` ([@mydea](https://github.com/mydea))
+* [#1053](https://github.com/emberjs/ember-test-helpers/pull/1053) Remove unused `vendor/.gitkeep` ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 4
+- Francesco Novy ([@mydea](https://github.com/mydea))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.2.8 (2021-06-15)
 
 #### :bug: Bug Fix
