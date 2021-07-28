@@ -6,10 +6,13 @@ import {
   getContext,
   pauseTest,
   resumeTest,
+  getDeprecations,
+  getDeprecationsDuringCallback,
   setApplication,
   setResolver,
   getTestMetadata,
 } from '@ember/test-helpers';
+import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   setResolverRegistry,
@@ -21,6 +24,7 @@ import { assign } from '@ember/polyfills';
 import App from '../../app';
 import config from '../../config/environment';
 import Ember from 'ember';
+import { deprecate } from '@ember/debug';
 
 module('setupContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -172,6 +176,386 @@ module('setupContext', function (hooks) {
         subject.someMethod();
 
         assert.equal(bar.get('someProp'), 'derp', 'property updated');
+      });
+
+      module('deprecations', function () {
+        test('getDeprecationsForContext', function (assert) {
+          assert.throws(
+            () => getDeprecationsForContext(),
+            /could not get deprecations for an invalid test context: 'undefined'/
+          );
+          assert.throws(
+            () => getDeprecationsForContext(undefined),
+            /could not get deprecations for an invalid test context: 'undefined'/
+          );
+          assert.throws(
+            () => getDeprecationsForContext(null),
+            /could not get deprecations for an invalid test context: 'null'/
+          );
+          assert.throws(
+            () => getDeprecationsForContext(false),
+            /could not get deprecations for an invalid test context: 'false'/
+          );
+          assert.throws(
+            () => getDeprecationsForContext(0),
+            /could not get deprecations for an invalid test context: '0'/
+          );
+
+          const contextA = {};
+          const contextB = {};
+          const contextC = {};
+
+          assert.deepEqual(getDeprecationsForContext(contextA), []);
+          assert.deepEqual(getDeprecationsForContext(contextB), []);
+          assert.deepEqual(getDeprecationsForContext(contextC), []);
+
+          assert.equal(getDeprecationsForContext(contextA), getDeprecationsForContext(contextA));
+          assert.equal(getDeprecationsForContext(contextB), getDeprecationsForContext(contextB));
+          assert.equal(getDeprecationsForContext(contextC), getDeprecationsForContext(contextC));
+        });
+
+        test('getApplication leak test 0', function (assert) {
+          assert.deepEqual(getDeprecations(), []);
+        });
+
+        test('getDeprecations', function (assert) {
+          assert.deepEqual(getDeprecations(), []);
+
+          deprecate('name.0', true, {
+            for: 'testing',
+            id: 'id.0',
+            since: {
+              available: '0',
+            },
+            until: '9999',
+          });
+
+          assert.deepEqual(getDeprecations(), []);
+
+          deprecate('name.1', false, {
+            for: 'testing',
+            id: 'id.1',
+            since: {
+              available: '0',
+            },
+            until: '9999',
+          });
+
+          assert.deepEqual(getDeprecations(), [
+            {
+              message: 'name.1',
+              options: {
+                for: 'testing',
+                id: 'id.1',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              },
+            },
+          ]);
+        });
+
+        test('getApplication leak test 0', function (assert) {
+          assert.deepEqual(getDeprecations(), []);
+        });
+
+        test('getDeprecationsDuringCallback async', async function (assert) {
+          deprecate('name.0', false, {
+            for: 'testing',
+            id: 'id.0',
+            since: {
+              available: '0',
+            },
+            until: '9999',
+          });
+
+          assert.deepEqual(
+            await getDeprecationsDuringCallback(async () => {
+              await Promise.resolve();
+
+              assert.deepEqual(getDeprecations(), [
+                {
+                  message: 'name.0',
+                  options: {
+                    for: 'testing',
+                    id: 'id.0',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+              ]);
+            }),
+            []
+          );
+
+          assert.deepEqual(
+            await getDeprecationsDuringCallback(async () => {
+              await Promise.resolve();
+              deprecate('name.1', false, {
+                for: 'testing',
+                id: 'id.1',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              });
+
+              assert.deepEqual(getDeprecations(), [
+                {
+                  message: 'name.0',
+                  options: {
+                    for: 'testing',
+                    id: 'id.0',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+
+                {
+                  message: 'name.1',
+                  options: {
+                    for: 'testing',
+                    id: 'id.1',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+              ]);
+            }),
+            [
+              {
+                message: 'name.1',
+                options: {
+                  for: 'testing',
+                  id: 'id.1',
+                  since: {
+                    available: '0',
+                  },
+                  until: '9999',
+                },
+              },
+            ]
+          );
+        });
+
+        test('getDeprecationsDuringCallback', function (assert) {
+          deprecate('name.0', false, {
+            for: 'testing',
+            id: 'id.0',
+            since: {
+              available: '0',
+            },
+            until: '9999',
+          });
+
+          assert.deepEqual(getDeprecations(), [
+            {
+              message: 'name.0',
+              options: {
+                for: 'testing',
+                id: 'id.0',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              },
+            },
+          ]);
+
+          assert.deepEqual(
+            getDeprecationsDuringCallback(() => {
+              assert.deepEqual(getDeprecations(), [
+                {
+                  message: 'name.0',
+                  options: {
+                    for: 'testing',
+                    id: 'id.0',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+              ]);
+            }),
+            []
+          );
+
+          assert.deepEqual(
+            getDeprecationsDuringCallback(() => {
+              assert.deepEqual(getDeprecations(), [
+                {
+                  message: 'name.0',
+                  options: {
+                    for: 'testing',
+                    id: 'id.0',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+              ]);
+
+              deprecate('name.1', false, {
+                for: 'testing',
+                id: 'id.1',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              });
+
+              assert.deepEqual(getDeprecations(), [
+                {
+                  message: 'name.0',
+                  options: {
+                    for: 'testing',
+                    id: 'id.0',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+
+                {
+                  message: 'name.1',
+                  options: {
+                    for: 'testing',
+                    id: 'id.1',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  },
+                },
+              ]);
+
+              assert.deepEqual(
+                getDeprecationsDuringCallback(() => {
+                  assert.deepEqual(getDeprecations(), [
+                    {
+                      message: 'name.0',
+                      options: {
+                        for: 'testing',
+                        id: 'id.0',
+                        since: {
+                          available: '0',
+                        },
+                        until: '9999',
+                      },
+                    },
+
+                    {
+                      message: 'name.1',
+                      options: {
+                        for: 'testing',
+                        id: 'id.1',
+                        since: {
+                          available: '0',
+                        },
+                        until: '9999',
+                      },
+                    },
+                  ]);
+
+                  deprecate('name.3', false, {
+                    for: 'testing',
+                    id: 'id.3',
+                    since: {
+                      available: '0',
+                    },
+                    until: '9999',
+                  });
+                }),
+                [
+                  {
+                    message: 'name.3',
+                    options: {
+                      for: 'testing',
+                      id: 'id.3',
+                      since: {
+                        available: '0',
+                      },
+                      until: '9999',
+                    },
+                  },
+                ]
+              );
+            }),
+            [
+              {
+                message: 'name.1',
+                options: {
+                  for: 'testing',
+                  id: 'id.1',
+                  since: {
+                    available: '0',
+                  },
+                  until: '9999',
+                },
+              },
+
+              {
+                message: 'name.3',
+                options: {
+                  for: 'testing',
+                  id: 'id.3',
+                  since: {
+                    available: '0',
+                  },
+                  until: '9999',
+                },
+              },
+            ]
+          );
+
+          assert.deepEqual(getDeprecations(), [
+            {
+              message: 'name.0',
+              options: {
+                for: 'testing',
+                id: 'id.0',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              },
+            },
+
+            {
+              message: 'name.1',
+              options: {
+                for: 'testing',
+                id: 'id.1',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              },
+            },
+
+            {
+              message: 'name.3',
+              options: {
+                for: 'testing',
+                id: 'id.3',
+                since: {
+                  available: '0',
+                },
+                until: '9999',
+              },
+            },
+          ]);
+        });
       });
 
       test('can pauseTest to be resumed "later"', async function (assert) {
