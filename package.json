@@ -79,7 +79,7 @@
     "pretender": "^3.4.3",
     "prettier": "^2.2.1",
     "qunit": "^2.16.0",
-    "release-it": "^14.7.0",
+    "release-it": "^14.10.1",
     "release-it-lerna-changelog": "^3.1.0",
     "typescript": "^3.9.7"
   },
