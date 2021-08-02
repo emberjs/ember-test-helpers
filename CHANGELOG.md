@@ -1,3 +1,12 @@
+## v2.3.0 (2021-08-02)
+
+#### :rocket: Enhancement
+* [#1071](https://github.com/emberjs/ember-test-helpers/pull/1071) Expose deprecation primitives ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 1
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+
+
 ## v2.2.9 (2021-07-27)
 
 #### :bug: Bug Fix
