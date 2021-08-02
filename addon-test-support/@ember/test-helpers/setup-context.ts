@@ -7,13 +7,28 @@ import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import { _prepareOnerror } from './setup-onerror';
 import Ember from 'ember';
-import { assert } from '@ember/debug';
+import { assert, registerDeprecationHandler } from '@ember/debug';
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { Promise } from './-utils';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { registerDestructor, associateDestroyableChild } from '@ember/destroyable';
+import {
+  getDeprecationsForContext,
+  getDeprecationsDuringCallbackForContext,
+  DeprecationFailure,
+} from './-internal/deprecations';
+
+registerDeprecationHandler((message, options, next) => {
+  const context = getContext();
+  if (context === undefined) {
+    return;
+  }
+
+  getDeprecationsForContext(context).push({ message, options });
+  next.apply(null, [message, options]);
+});
 
 export interface BaseContext {
   [key: string]: any;
@@ -148,6 +163,77 @@ function cleanup(context: BaseContext) {
   // this should not be required, but until https://github.com/emberjs/ember.js/pull/19106
   // lands in a 3.20 patch release
   context.owner.destroy();
+}
+
+/**
+ * Returns deprecations which have occured so far for a the current test context
+ *
+ * @public
+ * @returns {Array<DeprecationFailure>} An array of deprecation messages
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { getDeprecations } from '@ember/test-helpers';
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', function(assert) {
+       const deprecations = getDeprecations() // => returns deprecations which have occured so far in this test
+ *   });
+ * });
+ */
+export function getDeprecations(): Array<DeprecationFailure> {
+  const context = getContext();
+
+  if (!context) {
+    throw new Error(
+      '[@ember/test-helpers] could not get deprecations if no test context is currently active'
+    );
+  }
+
+  return getDeprecationsForContext(context);
+}
+
+/**
+ * Returns deprecations which have occured so far for a the current test context
+ *
+ * @public
+ * @param {Function} callback ASd
+ * @returns {Array<DeprecationFailure> | Promise<Array<DeprecationFailure>>} An array of deprecation messages
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { getDeprecationsDuringCallback } from '@ember/test-helpers';
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', function(assert) {
+ *     const deprecations = getDeprecationsDuringCallback(() => {
+ *       // code that might emit some deprecations
+ *
+ *     }); // => returns deprecations which occured while the callback was invoked
+ *   });
+ *
+ *
+ *   test('does something awesome', async function(assert) {
+ *     const deprecations = await getDeprecationsDuringCallback(async () => {
+ *       // awaited code that might emit some deprecations
+ *     }); // => returns deprecations which occured while the callback was invoked
+ *   });
+ * });
+ */
+export function getDeprecationsDuringCallback(
+  callback: CallableFunction
+): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
+  const context = getContext();
+
+  if (!context) {
+    throw new Error(
+      '[@ember/test-helpers] could not get deprecations if no test context is currently active'
+    );
+  }
+
+  return getDeprecationsDuringCallbackForContext(context, callback);
 }
 
 /**

@@ -1,6 +1,5 @@
 /* globals Testem */
 import QUnit from 'qunit';
-import { registerDeprecationHandler } from '@ember/debug';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
@@ -8,6 +7,7 @@ import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
 import PromisePolyfill from '@ember/test-helpers/-internal/promise-polyfill';
+import { getDeprecationsDuringCallback, getDeprecations } from '@ember/test-helpers';
 
 // This is needed for async/await transpilation :sob:
 if (typeof Promise === 'undefined') {
@@ -83,71 +83,28 @@ QUnit.testDone(function ({ module, name }) {
   }
 });
 
-let deprecations;
-registerDeprecationHandler((message, options, next) => {
-  // in case a deprecation is issued before a test is started
-  if (!deprecations) {
-    deprecations = [];
-  }
-
-  deprecations.push(message);
-  next(message, options);
-});
-
-// Provide a way to squelch the this-property-fallback
-if (typeof URLSearchParams !== 'undefined') {
-  let queryParams = new URLSearchParams(document.location.search.substring(1));
-  let disabledDeprecations = queryParams.get('disabledDeprecations');
-  let debugDeprecations = queryParams.get('debugDeprecations');
-
-  // When using `/tests/index.html?disabledDeprecations=this-property-fallback,some-other-thing`
-  // those deprecations will be squelched
-  if (disabledDeprecations) {
-    registerDeprecationHandler((message, options, next) => {
-      if (!disabledDeprecations.includes(options.id)) {
-        next(message, options);
-      }
-    });
-  }
-
-  // When using `/tests/index.html?debugDeprecations=some-other-thing` when the
-  // `some-other-thing` deprecation is triggered, this `debugger` will be hit`
-  if (debugDeprecations) {
-    registerDeprecationHandler((message, options, next) => {
-      if (debugDeprecations.includes(options.id)) {
-        debugger; // eslint-disable-line no-debugger
-      }
-
-      next(message, options);
-    });
-  }
+function toAssertionMessage(assertionFailure) {
+  return assertionFailure.message;
 }
 
-QUnit.testStart(function () {
-  deprecations = [];
-});
-
 QUnit.assert.noDeprecations = function (callback) {
-  let originalDeprecations = deprecations;
-  deprecations = [];
-
-  callback();
-  this.deepEqual(deprecations, [], 'Expected no deprecations during test.');
-
-  deprecations = originalDeprecations;
+  this.deepEqual(
+    getDeprecationsDuringCallback(callback).map(toAssertionMessage),
+    [],
+    'Expected no deprecations during test.'
+  );
 };
 
 QUnit.assert.deprecations = function (callback, expectedDeprecations) {
-  let originalDeprecations = deprecations;
-  deprecations = [];
-
-  callback();
-  this.deepEqual(deprecations, expectedDeprecations, 'Expected deprecations during test.');
-
-  deprecations = originalDeprecations;
+  this.deepEqual(
+    getDeprecationsDuringCallback(callback).map(toAssertionMessage),
+    expectedDeprecations,
+    'Expected deprecations during test.'
+  );
 };
 
 QUnit.assert.deprecationsInclude = function (expected) {
+  const deprecations = getDeprecations().map(toAssertionMessage);
   this.pushResult({
     result: deprecations.indexOf(expected) > -1,
     actual: deprecations,
