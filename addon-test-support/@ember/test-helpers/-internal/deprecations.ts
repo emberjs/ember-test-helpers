@@ -1,5 +1,6 @@
 import { BaseContext } from '../setup-context';
 import { registerDeprecationHandler } from '@ember/debug';
+import isPromise from './is-promise';
 
 export interface DeprecationOptions {
   id: string;
@@ -68,10 +69,7 @@ export function getDeprecationsDuringCallbackForContext(
 
   const result = callback();
 
-  if (
-    (result !== null && typeof result === 'object') ||
-    (typeof result === 'function' && typeof result.then === 'function')
-  ) {
+  if (isPromise(result)) {
     return Promise.resolve(result).then(() => {
       return deprecations.slice(previousLength); // only return deprecations created as a result of the callback
     });

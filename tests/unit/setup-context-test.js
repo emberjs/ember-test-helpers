@@ -8,11 +8,14 @@ import {
   resumeTest,
   getDeprecations,
   getDeprecationsDuringCallback,
+  getWarnings,
+  getWarningsDuringCallback,
   setApplication,
   setResolver,
   getTestMetadata,
 } from '@ember/test-helpers';
 import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
+import { getWarningsForContext } from '@ember/test-helpers/-internal/warnings';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   setResolverRegistry,
@@ -24,7 +27,7 @@ import { assign } from '@ember/polyfills';
 import App from '../../app';
 import config from '../../config/environment';
 import Ember from 'ember';
-import { deprecate } from '@ember/debug';
+import { deprecate, warn } from '@ember/debug';
 
 module('setupContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -176,6 +179,106 @@ module('setupContext', function (hooks) {
         subject.someMethod();
 
         assert.equal(bar.get('someProp'), 'derp', 'property updated');
+      });
+
+      module('warnings', function () {
+        test('getWarningForContext', function (assert) {
+          assert.throws(
+            () => getWarningsForContext(),
+            /could not get warnings for an invalid test context: 'undefined'/
+          );
+          assert.throws(
+            () => getWarningsForContext(undefined),
+            /could not get warnings for an invalid test context: 'undefined'/
+          );
+          assert.throws(
+            () => getWarningsForContext(null),
+            /could not get warnings for an invalid test context: 'null'/
+          );
+          assert.throws(
+            () => getWarningsForContext(false),
+            /could not get warnings for an invalid test context: 'false'/
+          );
+          assert.throws(
+            () => getWarningsForContext(0),
+            /could not get warnings for an invalid test context: '0'/
+          );
+
+          const contextA = {};
+          const contextB = {};
+          const contextC = {};
+
+          assert.deepEqual(getWarningsForContext(contextA), []);
+          assert.deepEqual(getWarningsForContext(contextB), []);
+          assert.deepEqual(getWarningsForContext(contextC), []);
+
+          assert.equal(getWarningsForContext(contextA), getWarningsForContext(contextA));
+          assert.equal(getWarningsForContext(contextB), getWarningsForContext(contextB));
+          assert.equal(getWarningsForContext(contextC), getWarningsForContext(contextC));
+        });
+
+        test('getApplication leak test 0', function (assert) {
+          assert.deepEqual(getWarnings(), []);
+        });
+
+        test('getWarnings', function (assert) {
+          assert.deepEqual(getWarnings(), []);
+
+          warn('warning.0', true, { id: 'ember-test-helpers.warn.test' });
+          warn('warning.1', false, { id: 'ember-test-helpers.warn.test' });
+          warn('warning.2', false, { id: 'ember-test-helpers.warn.test' });
+
+          assert.deepEqual(getWarnings(), [
+            {
+              message: 'warning.1',
+              options: { id: 'ember-test-helpers.warn.test' },
+            },
+            {
+              message: 'warning.2',
+              options: { id: 'ember-test-helpers.warn.test' },
+            },
+          ]);
+        });
+
+        test('getApplication leak test 0', function (assert) {
+          assert.deepEqual(getWarnings(), []);
+        });
+
+        test('getWarningForCallback async', async function (assert) {
+          warn('warning.0', false, { id: 'ember-test-helpers.warn.test' });
+
+          assert.deepEqual(
+            await getWarningsDuringCallback(async () => {
+              await Promise.resolve();
+              assert.deepEqual(getWarnings(), [
+                {
+                  message: 'warning.0',
+                  options: { id: 'ember-test-helpers.warn.test' },
+                },
+              ]);
+            }),
+            []
+          );
+
+          assert.deepEqual(getWarnings(), [
+            {
+              message: 'warning.0',
+              options: { id: 'ember-test-helpers.warn.test' },
+            },
+          ]);
+
+          assert.deepEqual(
+            await getWarningsDuringCallback(async () => {
+              await Promise.resolve();
+              warn('warning.1', false, { id: 'ember-test-helpers.warn.test' });
+              assert.deepEqual(getWarnings(), [
+                { message: 'warning.0', options: { id: 'ember-test-helpers.warn.test' } },
+                { message: 'warning.1', options: { id: 'ember-test-helpers.warn.test' } },
+              ]);
+            }),
+            [{ message: 'warning.1', options: { id: 'ember-test-helpers.warn.test' } }]
+          );
+        });
       });
 
       module('deprecations', function () {

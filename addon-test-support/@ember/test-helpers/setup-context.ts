@@ -7,7 +7,7 @@ import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import { _prepareOnerror } from './setup-onerror';
 import Ember from 'ember';
-import { assert, registerDeprecationHandler } from '@ember/debug';
+import { assert, registerDeprecationHandler, registerWarnHandler } from '@ember/debug';
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
@@ -19,7 +19,16 @@ import {
   getDeprecationsDuringCallbackForContext,
   DeprecationFailure,
 } from './-internal/deprecations';
+import {
+  getWarningsForContext,
+  getWarningsDuringCallbackForContext,
+  Warning,
+} from './-internal/warnings';
 
+// This handler exists to provide the underlying data to enable the following methods:
+// * getDeprecations()
+// * getDeprecationsDuringCallback()
+// * getDeprecationsDuringCallbackForContext()
 registerDeprecationHandler((message, options, next) => {
   const context = getContext();
   if (context === undefined) {
@@ -27,6 +36,20 @@ registerDeprecationHandler((message, options, next) => {
   }
 
   getDeprecationsForContext(context).push({ message, options });
+  next.apply(null, [message, options]);
+});
+
+// This handler exists to provide the underlying data to enable the following methods:
+// * getWarnings()
+// * getWarningsDuringCallback()
+// * getWarningsDuringCallbackForContext()
+registerWarnHandler((message, options, next) => {
+  const context = getContext();
+  if (context === undefined) {
+    return;
+  }
+
+  getWarningsForContext(context).push({ message, options });
   next.apply(null, [message, options]);
 });
 
@@ -198,7 +221,7 @@ export function getDeprecations(): Array<DeprecationFailure> {
  * Returns deprecations which have occured so far for a the current test context
  *
  * @public
- * @param {Function} callback ASd
+ * @param {CallableFunction} [callback] The callback that when executed will have its DeprecationFailure recorded
  * @returns {Array<DeprecationFailure> | Promise<Array<DeprecationFailure>>} An array of deprecation messages
  * @example <caption>Usage via ember-qunit</caption>
  *
@@ -234,6 +257,79 @@ export function getDeprecationsDuringCallback(
   }
 
   return getDeprecationsDuringCallbackForContext(context, callback);
+}
+
+/**
+ * Returns warnings which have occured so far for a the current test context
+ *
+ * @public
+ * @returns {Array<Warning>} An array of warnings
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { getWarnings } from '@ember/test-helpers';
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', function(assert) {
+       const warnings = getWarnings() // => returns warnings which have occured so far in this test
+ *   });
+ * });
+ */
+export function getWarnings(): Array<Warning> {
+  const context = getContext();
+
+  if (!context) {
+    throw new Error(
+      '[@ember/test-helpers] could not get warnings if no test context is currently active'
+    );
+  }
+
+  return getWarningsForContext(context);
+}
+
+/**
+ * Returns warnings which have occured so far for a the current test context
+ *
+ * @public
+ * @param {CallableFunction} [callback] The callback that when executed will have its warnings recorded
+ * @returns {Array<Warning> | Promise<Array<Warning>>} An array of warnings information
+ * @example <caption>Usage via ember-qunit</caption>
+ *
+ * import { getWarningsDuringCallback } from '@ember/test-helpers';
+ * import { warn } from '@ember/debug';
+ *
+ * module('awesome-sauce', function(hooks) {
+ *   setupRenderingTest(hooks);
+ *
+ *   test('does something awesome', function(assert) {
+ *     const warnings = getWarningsDuringCallback(() => {
+ *     warn('some warning');
+ *
+ *     }); // => returns warnings which occured while the callback was invoked
+ *   });
+ *
+ *   test('does something awesome', async function(assert) {
+ *     warn('some warning');
+ *
+ *     const warnings = await getWarningsDuringCallback(async () => {
+ *       warn('some other warning');
+ *     }); // => returns warnings which occured while the callback was invoked
+ *   });
+ * });
+ */
+export function getWarningsDuringCallback(
+  callback: CallableFunction
+): Array<Warning> | Promise<Array<Warning>> {
+  const context = getContext();
+
+  if (!context) {
+    throw new Error(
+      '[@ember/test-helpers] could not get warnings if no test context is currently active'
+    );
+  }
+
+  return getWarningsDuringCallbackForContext(context, callback);
 }
 
 /**
