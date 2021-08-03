@@ -1,4 +1,4 @@
-import Resolver from '@ember/application/resolver';
+import type Resolver from '@ember/application/resolver';
 
 let __resolver__: Resolver | undefined;
 

@@ -1,5 +1,5 @@
 import Application from '@ember/application';
-import Resolver from '@ember/application/resolver';
+import type Resolver from '@ember/application/resolver';
 
 import { Promise } from './-utils';
 
