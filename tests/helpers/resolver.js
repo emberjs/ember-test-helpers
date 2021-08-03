@@ -38,6 +38,5 @@ export function createCustomResolver(registry) {
     resolve(fullName) {
       return this.registry[fullName];
     },
-
   };
 }
