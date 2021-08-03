@@ -3,7 +3,6 @@
 
 A test-framework-agnostic set of helpers for testing Ember.js applications
 
-
 Compatibility
 ------------------------------------------------------------------------------
 

@@ -1,5 +1,3 @@
-import Ember from 'ember';
-import { dasherize } from '@ember/string';
 import { assign } from '@ember/polyfills';
 import { setRegistry } from '../../resolver';
 import { setResolver, setApplication } from '@ember/test-helpers';
@@ -40,6 +38,5 @@ export function createCustomResolver(registry) {
     resolve(fullName) {
       return this.registry[fullName];
     },
-
-  }
+  };
 }
