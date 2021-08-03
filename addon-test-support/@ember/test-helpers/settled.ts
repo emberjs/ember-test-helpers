@@ -159,7 +159,7 @@ if (loader.registry['ember-testing/test/waiters']) {
 */
 function checkWaiters() {
   type Waiter = [any, Function];
-  let EmberTest = (Ember.Test as any) as { waiters: Array<Waiter> };
+  let EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
 
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();

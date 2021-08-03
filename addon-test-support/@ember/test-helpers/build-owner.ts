@@ -40,9 +40,7 @@ export default function buildOwner(
   resolver: Resolver | undefined | null
 ): Promise<Owner> {
   if (application) {
-    return (application
-      .boot()
-      .then(app => app.buildInstance().boot()) as unknown) as Promise<Owner>;
+    return application.boot().then(app => app.buildInstance().boot()) as unknown as Promise<Owner>;
   }
 
   if (!resolver) {
