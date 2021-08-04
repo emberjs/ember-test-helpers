@@ -1,5 +1,3 @@
-import Ember from 'ember';
-import { dasherize } from '@ember/string';
 import { assign } from '@ember/polyfills';
 import { setRegistry } from '../../resolver';
 import { setResolver, setApplication } from '@ember/test-helpers';
@@ -35,17 +33,10 @@ export function createCustomResolver(registry) {
     registry['event-dispatcher:main'] = require('ember-native-dom-event-dispatcher').default;
   }
 
-  var Resolver = Ember.DefaultResolver.extend({
-    registry: null,
-
+  return {
+    registry,
     resolve(fullName) {
       return this.registry[fullName];
     },
-
-    normalize(fullName) {
-      return dasherize(fullName);
-    },
-  });
-
-  return Resolver.create({ registry, namespace: {} });
+  };
 }
