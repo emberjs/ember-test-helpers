@@ -75,7 +75,7 @@ module('setupRenderingContext', function (hooks) {
         let rootElement = document.getElementById('ember-testing');
         assert.notEqual(this.element, rootElement, 'this.element should not be rootElement');
         assert.ok(rootElement.contains(this.element), 'this.element is _within_ the rootElement');
-        await this.render(hbs`<p>Hello!</p>`);
+        await render(hbs`<p>Hello!</p>`);
 
         assert.equal(this.element.textContent, 'Hello!');
       });
@@ -84,7 +84,7 @@ module('setupRenderingContext', function (hooks) {
         let rootElement = document.getElementById('ember-testing');
         assert.equal(this.element, rootElement, 'this.element should _be_ rootElement');
 
-        await this.render(hbs`<p>Hello!</p>`);
+        await render(hbs`<p>Hello!</p>`);
 
         assert.equal(this.element.textContent, 'Hello!');
       });
@@ -131,17 +131,17 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('render can be used multiple times', async function (assert) {
-      await this.render(hbs`<p>Hello!</p>`);
+      await render(hbs`<p>Hello!</p>`);
       assert.equal(this.element.textContent, 'Hello!');
 
-      await this.render(hbs`<p>World!</p>`);
+      await render(hbs`<p>World!</p>`);
       assert.equal(this.element.textContent, 'World!');
     });
 
     test('render does not run sync', async function (assert) {
-      assert.ok(this.element, 'precond - this.element is present (but empty) before this.render');
+      assert.ok(this.element, 'precond - this.element is present (but empty) before render');
 
-      let renderPromise = this.render(hbs`<p>Hello!</p>`);
+      let renderPromise = render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.element.textContent, '', 'precond - this.element is not updated sync');
 
@@ -154,12 +154,12 @@ module('setupRenderingContext', function (hooks) {
       let testingRootElement = document.getElementById('ember-testing');
       let originalElement = this.element;
 
-      await this.render(hbs`<p>Hello!</p>`);
+      await render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
       assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
 
-      await this.clearRender();
+      await clearRender();
 
       assert.equal(this.element.textContent, '', 'has rendered content');
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
@@ -178,19 +178,19 @@ module('setupRenderingContext', function (hooks) {
     overwriteTest('clearRender');
 
     test('can invoke template only components', async function (assert) {
-      await this.render(hbs`{{template-only}}`);
+      await render(hbs`{{template-only}}`);
 
       assert.equal(this.element.textContent, 'template-only component here');
     });
 
     test('can invoke JS only components', async function (assert) {
-      await this.render(hbs`{{js-only}}`);
+      await render(hbs`{{js-only}}`);
 
       assert.ok(this.element.querySelector('.js-only'), 'element found for js-only component');
     });
 
     test('can invoke helper', async function (assert) {
-      await this.render(hbs`{{jax "max"}}`);
+      await render(hbs`{{jax "max"}}`);
 
       assert.equal(this.element.textContent, 'max-jax');
     });
@@ -198,13 +198,13 @@ module('setupRenderingContext', function (hooks) {
     test('can pass arguments to helper from context', async function (assert) {
       this.set('name', 'james');
 
-      await this.render(hbs`{{jax name}}`);
+      await render(hbs`{{jax name}}`);
 
       assert.equal(this.element.textContent, 'james-jax');
     });
 
     test('can render a component that renders other components', async function (assert) {
-      await this.render(hbs`{{outer-comp}}`);
+      await render(hbs`{{outer-comp}}`);
 
       assert.equal(this.element.textContent, 'outerinnerouter');
     });
@@ -212,7 +212,7 @@ module('setupRenderingContext', function (hooks) {
     test('can use the component helper in its layout', async function (assert) {
       this.owner.register('template:components/x-foo', hbs`x-foo here`);
 
-      await this.render(hbs`{{component 'x-foo'}}`);
+      await render(hbs`{{component 'x-foo'}}`);
 
       assert.equal(this.element.textContent, 'x-foo here');
     });
@@ -250,7 +250,7 @@ module('setupRenderingContext', function (hooks) {
       );
       this.owner.register('template:components/x-foo', hbs`<button>Click me!</button>`);
 
-      await this.render(hbs`{{x-foo}}`);
+      await render(hbs`{{x-foo}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
       await click(this.element.querySelector('button'));
@@ -274,7 +274,7 @@ module('setupRenderingContext', function (hooks) {
         hbs`<button {{action 'clicked'}}>Click me!</button>`
       );
 
-      await this.render(hbs`{{x-foo}}`);
+      await render(hbs`{{x-foo}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
       await click(this.element.querySelector('button'));
@@ -290,7 +290,7 @@ module('setupRenderingContext', function (hooks) {
       );
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
-      await this.render(hbs`{{x-foo clicked=clicked}}`);
+      await render(hbs`{{x-foo clicked=clicked}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
       await click(this.element.querySelector('button'));
@@ -304,7 +304,7 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register('template:components/x-foo', template);
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
-      await this.render(hbs`{{x-foo clicked=clicked}}`);
+      await render(hbs`{{x-foo clicked=clicked}}`);
 
       assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
       await click(this.element.querySelector('button'));
@@ -313,7 +313,7 @@ module('setupRenderingContext', function (hooks) {
     test('can update a passed in argument with an <input>', async function (assert) {
       this.owner.register('component:my-input', TextField.extend({}));
 
-      await this.render(hbs`{{my-input value=value}}`);
+      await render(hbs`{{my-input value=value}}`);
 
       let input = this.element.querySelector('input');
 
@@ -373,7 +373,7 @@ module('setupRenderingContext', function (hooks) {
       );
 
       this.set('foo', 'original');
-      await this.render(hbs`{{my-component foo=foo}}`);
+      await render(hbs`{{my-component foo=foo}}`);
       assert.equal(this.element.textContent, 'original', 'value after initial render');
 
       await click(this.element.querySelector('button'));
@@ -401,16 +401,16 @@ module('setupRenderingContext', function (hooks) {
       // using two arguments here to ensure the two way binding
       // works both for things rendered in the component's layout
       // and those only used in the components JS file
-      await this.render(hbs`{{my-component foo=foo bar=bar}}`);
+      await render(hbs`{{my-component foo=foo bar=bar}}`);
       await click(this.element.querySelector('button'));
 
-      await this.clearRender();
+      await clearRender();
 
       assert.equal(this.get('foo'), 'updated!');
       assert.equal(this.get('bar'), 'updated bar!');
     });
 
-    test('imported `render` can be used instead of this.render', async function (assert) {
+    test('imported `render` can be used instead of render', async function (assert) {
       await render(hbs`yippie!!`);
 
       assert.equal(this.element.textContent, 'yippie!!');
@@ -420,7 +420,7 @@ module('setupRenderingContext', function (hooks) {
       let testingRootElement = document.getElementById('ember-testing');
       let originalElement = this.element;
 
-      await this.render(hbs`<p>Hello!</p>`);
+      await render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
       assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
