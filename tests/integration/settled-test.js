@@ -9,6 +9,7 @@ import {
   click,
   isSettled,
   getSettledState,
+  render,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
@@ -156,8 +157,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it works when async exists in `init`', async function (assert) {
     this.owner.register('component:x-test-1', TestComponent1);
 
-    await this.render(hbs`{{x-test-1}}`);
-
+    await render(hbs`{{x-test-1}}`);
     await settled();
 
     assert.equal(this.element.textContent, 'async value');
@@ -175,7 +175,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it works when async exists in an event/action', async function (assert) {
     this.owner.register('component:x-test-2', TestComponent2);
 
-    await this.render(hbs`{{x-test-2}}`);
+    await render(hbs`{{x-test-2}}`);
 
     assert.equal(this.element.textContent, 'initial value');
 
@@ -187,7 +187,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for AJAX requests to finish', async function (assert) {
     this.owner.register('component:x-test-3', TestComponent3);
 
-    await this.render(hbs`{{x-test-3}}`);
+    await render(hbs`{{x-test-3}}`);
 
     await click('.test-component');
 
@@ -197,7 +197,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for interleaved AJAX and run loops to finish', async function (assert) {
     this.owner.register('component:x-test-4', TestComponent4);
 
-    await this.render(hbs`{{x-test-4}}`);
+    await render(hbs`{{x-test-4}}`);
 
     await click('.test-component');
 
@@ -207,7 +207,7 @@ module('settled real-world scenarios', function (hooks) {
   test('it waits for Ember test waiters', async function (assert) {
     this.owner.register('component:x-test-5', TestComponent5);
 
-    await this.render(hbs`{{x-test-5}}`);
+    await render(hbs`{{x-test-5}}`);
 
     await settled({ waitForTimers: false });
 
