@@ -11,6 +11,7 @@ on:
 
 jobs:
   test:
+    timeout-minutes: 10
     name: Tests
     runs-on: ubuntu-latest
 
@@ -24,6 +25,7 @@ jobs:
       - run: yarn test
 
   floating-dependencies:
+    timeout-minutes: 10
     name: "Floating Dependencies"
     runs-on: ubuntu-latest
 
@@ -36,6 +38,7 @@ jobs:
       - run: yarn test
 
   try-scenarios:
+    timeout-minutes: 10
     name: "Try: ${{ matrix.ember-try-scenario }}"
 
     runs-on: ubuntu-latest
