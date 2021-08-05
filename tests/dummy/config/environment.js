@@ -8,6 +8,7 @@ module.exports = function (environment) {
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
+      _EMBER_TRY_CURRENT_SCENARIO: process.env.EMBER_TRY_CURRENT_SCENARIO,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
