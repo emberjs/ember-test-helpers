@@ -42,7 +42,7 @@ export function getMockDebugInfo(autorun = null, timersCount = 0, queues) {
   debugInfo.instanceStack = [instanceStack];
 
   queues &&
-    queues.forEach(queue => {
+    queues.forEach((queue) => {
       let queueValue = [];
       for (let i = 0; i < queue.count; i++) {
         queueValue.push(queueItem);

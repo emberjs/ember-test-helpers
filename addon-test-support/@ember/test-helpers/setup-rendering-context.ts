@@ -2,7 +2,12 @@
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
-import { BaseContext, TestContext, isTestContext, getContext } from './setup-context';
+import {
+  BaseContext,
+  TestContext,
+  isTestContext,
+  getContext,
+} from './setup-context';
 import { Promise } from './-utils';
 import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
@@ -26,7 +31,9 @@ export interface RenderingTestContext extends TestContext {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isRenderingTestContext(context: BaseContext): context is RenderingTestContext {
+export function isRenderingTestContext(
+  context: BaseContext
+): context is RenderingTestContext {
   return (
     isTestContext(context) &&
     typeof context.render === 'function' &&
@@ -184,7 +191,9 @@ export function clearRender(): Promise<void> {
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupRenderingContext(context: TestContext): Promise<RenderingTestContext> {
+export default function setupRenderingContext(
+  context: TestContext
+): Promise<RenderingTestContext> {
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
@@ -246,7 +255,8 @@ export default function setupRenderingContext(context: TestContext): Promise<Ren
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
         let dispatcher =
-          owner.lookup('event_dispatcher:main') || (Ember.EventDispatcher as any).create();
+          owner.lookup('event_dispatcher:main') ||
+          (Ember.EventDispatcher as any).create();
         dispatcher.setup({}, '#ember-testing');
       }
 

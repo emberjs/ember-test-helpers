@@ -79,7 +79,9 @@ export function getWarningsDuringCallbackForContext(
 // * squelch warnings by name via: `/tests/index.html?disabledWarnings=this-property-fallback,some-other-thing`
 // * enable a debuggger when a warning by a specific name is encountered via: `/tests/index.html?debugWarnings=some-other-thing` when the
 if (typeof URLSearchParams !== 'undefined') {
-  const queryParams = new URLSearchParams(document.location.search.substring(1));
+  const queryParams = new URLSearchParams(
+    document.location.search.substring(1)
+  );
   const disabledWarnings = queryParams.get('disabledWarnings');
   const debugWarnings = queryParams.get('debugWarnings');
 

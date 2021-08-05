@@ -1,6 +1,15 @@
 import { module, test } from 'qunit';
-import { focus, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
-import { buildInstrumentedElement, insertElement, instrumentElement } from '../../helpers/events';
+import {
+  focus,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
+import {
+  buildInstrumentedElement,
+  insertElement,
+  instrumentElement,
+} from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -110,10 +119,10 @@ module('DOM Helper: focus', function (hooks) {
     await focus(element);
 
     assert.verifySteps([
-      ...blurSteps.map(s => {
+      ...blurSteps.map((s) => {
         return `${s} [object HTMLTextAreaElement] [object HTMLInputElement]`;
       }),
-      ...focusSteps.map(s => {
+      ...focusSteps.map((s) => {
         return `${s} [object HTMLInputElement]`;
       }),
     ]);
@@ -130,7 +139,7 @@ module('DOM Helper: focus', function (hooks) {
     await focus(element);
 
     assert.verifySteps([
-      ...focusSteps.map(s => {
+      ...focusSteps.map((s) => {
         return `${s} [object HTMLInputElement]`;
       }),
     ]);
@@ -154,7 +163,11 @@ module('DOM Helper: focus', function (hooks) {
     await focus(`#${element.id}`);
 
     assert.verifySteps(focusSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
   });
 
   test('focusing an input via element with context set', async function (assert) {
@@ -164,7 +177,11 @@ module('DOM Helper: focus', function (hooks) {
     await focus(element);
 
     assert.verifySteps(focusSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
   });
 
   test('focusing an input via element without context set', async function (assert) {
@@ -173,7 +190,11 @@ module('DOM Helper: focus', function (hooks) {
     await focus(element);
 
     assert.verifySteps(focusSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
   });
 
   test('focusing an input via selector without context set', async function (assert) {

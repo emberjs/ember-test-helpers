@@ -90,7 +90,10 @@ export function __doubleClick__(
 
   doubleClick('button', { shiftKey: true });
 */
-export default function doubleClick(target: Target, _options: MouseEventInit = {}): Promise<void> {
+export default function doubleClick(
+  target: Target,
+  _options: MouseEventInit = {}
+): Promise<void> {
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return Promise.resolve()
@@ -102,7 +105,9 @@ export default function doubleClick(target: Target, _options: MouseEventInit = {
 
       let element = getWindowOrElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`doubleClick('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`doubleClick('${target}')\`.`
+        );
       }
 
       if (isFormControl(element) && element.disabled) {

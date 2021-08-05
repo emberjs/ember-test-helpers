@@ -30,7 +30,10 @@ export const DEFAULT_CLICK_OPTIONS = {
   @param {Element} element the element to click on
   @param {MouseEventInit} options the options to be merged into the mouse events
 */
-export function __click__(element: Element | Document | Window, options: MouseEventInit): void {
+export function __click__(
+  element: Element | Document | Window,
+  options: MouseEventInit
+): void {
   fireEvent(element, 'mousedown', options);
 
   if (!isWindow(element)) {
@@ -86,7 +89,10 @@ export function __click__(element: Element | Document | Window, options: MouseEv
 
   click('button', { shiftKey: true });
 */
-export default function click(target: Target, _options: MouseEventInit = {}): Promise<void> {
+export default function click(
+  target: Target,
+  _options: MouseEventInit = {}
+): Promise<void> {
   let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return Promise.resolve()
@@ -98,7 +104,9 @@ export default function click(target: Target, _options: MouseEventInit = {}): Pr
 
       let element = getWindowOrElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`click('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`click('${target}')\`.`
+        );
       }
 
       if (isFormControl(element) && element.disabled) {

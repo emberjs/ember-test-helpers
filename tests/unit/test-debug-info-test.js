@@ -4,8 +4,15 @@ import {
   TestDebugInfo,
   backburnerDebugInfoAvailable,
 } from '@ember/test-helpers/-internal/debug-info';
-import MockStableError, { overrideError, resetError } from './utils/mock-stable-error';
-import { MockConsole, getRandomBoolean, getMockDebugInfo } from './utils/test-isolation-helpers';
+import MockStableError, {
+  overrideError,
+  resetError,
+} from './utils/mock-stable-error';
+import {
+  MockConsole,
+  getRandomBoolean,
+  getMockDebugInfo,
+} from './utils/test-isolation-helpers';
 import { registerDebugInfoHelper } from '@ember/test-helpers';
 import { debugInfoHelpers } from '@ember/test-helpers/-internal/debug-info-helpers';
 import { buildWaiter, _reset as resetWaiters } from '@ember/test-waiters';
@@ -56,7 +63,7 @@ module('TestDebugInfo', function (hooks) {
       });
 
       hooks.afterEach(function () {
-        cancelIds.forEach(cancelId => cancel(cancelId));
+        cancelIds.forEach((cancelId) => cancel(cancelId));
 
         _backburner.DEBUG = false;
 

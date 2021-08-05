@@ -15,7 +15,16 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['.eslintrc.js', '.prettierrc.js', 'index.js', 'config/ember-try.js', 'scripts/**'],
+      files: [
+        '.eslintrc.js',
+        '.prettierrc.js',
+        '.template-lintrc.js',
+        'index.js',
+        'config/ember-try.js',
+        'config/environment.js',
+        'testem.js',
+        'scripts/**',
+      ],
       excludedFiles: ['addon-test-support/**', 'tests/**'],
       parserOptions: {
         ecmaVersion: 2017,
@@ -71,7 +80,9 @@ module.exports = {
       },
     },
     {
-      files: ['addon-test-support/@ember/test-helpers/-internal/promise-polyfill.js'],
+      files: [
+        'addon-test-support/@ember/test-helpers/-internal/promise-polyfill.js',
+      ],
       rules: {
         'require-jsdoc': 'off',
         'valid-jsdoc': 'off',

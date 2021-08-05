@@ -1,5 +1,10 @@
 import { module, test } from 'qunit';
-import { fillIn, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  fillIn,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -121,7 +126,10 @@ module('DOM Helper: fillIn', function (hooks) {
   test('rejects if text to fill in is not provided', async function (assert) {
     element = buildInstrumentedElement('input');
 
-    assert.rejects(fillIn(element), /Must provide `text` when calling `fillIn`/);
+    assert.rejects(
+      fillIn(element),
+      /Must provide `text` when calling `fillIn`/
+    );
   });
 
   test('filling an input via selector without context set', async function (assert) {
@@ -143,7 +151,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await promise;
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -154,7 +166,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(`#${element.id}`, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -165,7 +181,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -176,7 +196,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(`#${element.id}`, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -187,7 +211,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -199,7 +227,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.innerHTML, 'foo');
   });
 
@@ -209,7 +241,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(element, 'foo');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -220,7 +256,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(`#${element.id}`, '');
 
     assert.verifySteps(clickSteps);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, '');
   });
 
@@ -251,7 +291,9 @@ module('DOM Helper: fillIn', function (hooks) {
 
     assert.rejects(
       fillIn(element, tooLongString),
-      new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
+      new Error(
+        "Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'."
+      )
     );
   });
 
@@ -300,7 +342,9 @@ module('DOM Helper: fillIn', function (hooks) {
 
     assert.rejects(
       fillIn(element, tooLongString),
-      new Error("Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'.")
+      new Error(
+        "Can not `fillIn` with text: 'foo' that exceeds maxlength: '1'."
+      )
     );
   });
 });

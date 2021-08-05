@@ -1,5 +1,10 @@
 import { module, test } from 'qunit';
-import { select, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  select,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 
@@ -128,7 +133,7 @@ module('DOM Helper: select', function (hooks) {
     element = buildInstrumentedElement('select');
     element.multiple = true;
 
-    optionValues.forEach(optionValue => {
+    optionValues.forEach((optionValue) => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
       element.appendChild(optionElement);
@@ -151,7 +156,7 @@ module('DOM Helper: select', function (hooks) {
     element = buildInstrumentedElement('select');
     element.multiple = false;
 
-    optionValues.forEach(optionValue => {
+    optionValues.forEach((optionValue) => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
       element.appendChild(optionElement);
@@ -172,7 +177,7 @@ module('DOM Helper: select', function (hooks) {
     element = buildInstrumentedElement('select');
     element.multiple = false;
 
-    optionValues.forEach(optionValue => {
+    optionValues.forEach((optionValue) => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
       element.appendChild(optionElement);
@@ -193,7 +198,7 @@ module('DOM Helper: select', function (hooks) {
     element = buildInstrumentedElement('select');
     element.multiple = true;
 
-    optionValues.forEach(optionValue => {
+    optionValues.forEach((optionValue) => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
       element.appendChild(optionElement);
@@ -215,7 +220,7 @@ module('DOM Helper: select', function (hooks) {
     element = buildInstrumentedElement('select');
     element.multiple = true;
 
-    optionValues.forEach(optionValue => {
+    optionValues.forEach((optionValue) => {
       const optionElement = buildInstrumentedElement('option');
       optionElement.value = optionValue;
       element.appendChild(optionElement);

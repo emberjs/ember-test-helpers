@@ -62,7 +62,7 @@ module('DOM Helper: waitFor', function (hooks) {
     let elements = await waitPromise;
 
     assert.deepEqual(
-      elements.map(e => e.textContent),
+      elements.map((e) => e.textContent),
       ['Hi!', 'Bye!']
     );
   });
@@ -78,7 +78,10 @@ module('DOM Helper: waitFor', function (hooks) {
     } catch (error) {
       let end = Date.now();
       assert.ok(end - start >= 100, 'timed out after correct time');
-      assert.equal(error.message, 'waitFor timed out waiting for selector ".something"');
+      assert.equal(
+        error.message,
+        'waitFor timed out waiting for selector ".something"'
+      );
     }
   });
 

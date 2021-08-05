@@ -1,6 +1,15 @@
 import { module, test } from 'qunit';
-import { click, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
-import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
+import {
+  click,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
+import {
+  buildInstrumentedElement,
+  instrumentElement,
+  insertElement,
+} from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -128,21 +137,38 @@ module('DOM Helper: click', function (hooks) {
     });
 
     test('clicking passes options through to mouse events and merges with default options', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button', 'buttons']);
+      element = buildInstrumentedElement('div', [
+        'clientX',
+        'clientY',
+        'button',
+        'buttons',
+      ]);
 
       await click(element, { clientX: 13, clientY: 17, button: 2 });
 
-      assert.verifySteps(['mousedown 13 17 2 1', 'mouseup 13 17 2 1', 'click 13 17 2 1']);
+      assert.verifySteps([
+        'mousedown 13 17 2 1',
+        'mouseup 13 17 2 1',
+        'click 13 17 2 1',
+      ]);
     });
 
     test('clicking accepts modifiers', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
-      let handler = e => {
+      element = buildInstrumentedElement('div', [
+        'clientX',
+        'clientY',
+        'button',
+      ]);
+      let handler = (e) => {
         assert.equal(e.altKey, true);
       };
       element.addEventListener('click', handler);
       await click(element, { clientX: 13, clientY: 17, altKey: true });
-      assert.verifySteps(['mousedown 13 17 0', 'mouseup 13 17 0', 'click 13 17 0']);
+      assert.verifySteps([
+        'mousedown 13 17 0',
+        'mouseup 13 17 0',
+        'click 13 17 0',
+      ]);
       element.removeEventListener('click', handler);
     });
 
@@ -174,7 +200,11 @@ module('DOM Helper: click', function (hooks) {
       await click(`#${element.id}`);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('clicking a input via element with context set', async function (assert) {
@@ -184,7 +214,11 @@ module('DOM Helper: click', function (hooks) {
       await click(element);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('clicking a input via element without context set', async function (assert) {
@@ -193,7 +227,11 @@ module('DOM Helper: click', function (hooks) {
       await click(element);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('clicking a input via selector without context set', function (assert) {
@@ -245,7 +283,15 @@ module('DOM Helper: click', function (hooks) {
       await click(focusableElement);
       await click(element);
 
-      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('clicking on focusable element triggers blur on active element', async function (assert) {
@@ -258,7 +304,15 @@ module('DOM Helper: click', function (hooks) {
       await click(focusableElement);
       await click(element);
 
-      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click', 'blur', 'focusout']);
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
@@ -278,7 +332,7 @@ module('DOM Helper: click', function (hooks) {
 
 module('DOM Helper: click with window', function () {
   test('clicking window without context set fires the given event type', async function (assert) {
-    let listener = e => {
+    let listener = (e) => {
       assert.step('click');
       assert.ok(e instanceof Event, `click listener receives a native event`);
     };

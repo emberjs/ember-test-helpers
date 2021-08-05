@@ -2,7 +2,11 @@ import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { KEYBOARD_EVENT_TYPES, KeyboardEventType, isKeyboardEventType } from './fire-event';
+import {
+  KEYBOARD_EVENT_TYPES,
+  KeyboardEventType,
+  isKeyboardEventType,
+} from './fire-event';
 import { Promise, isNumeric } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
@@ -97,7 +101,10 @@ const keyFromKeyCode: { [key: number]: string } = {
   @param {object} modifiers The modifiers of the event.
   @returns {string} The key string for the event.
  */
-function keyFromKeyCodeAndModifiers(keycode: number, modifiers: KeyModifiers): string | void {
+function keyFromKeyCodeAndModifiers(
+  keycode: number,
+  modifiers: KeyModifiers
+): string | void {
   if (keycode > 64 && keycode < 91) {
     if (modifiers.shiftKey) {
       return String.fromCharCode(keycode);
@@ -120,7 +127,10 @@ function keyCodeFromKey(key: string) {
   let keys = Object.keys(keyFromKeyCode);
   let keyCode =
     find(keys, (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key) ||
-    find(keys, (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key.toLowerCase());
+    find(
+      keys,
+      (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key.toLowerCase()
+    );
 
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
 }
@@ -140,7 +150,11 @@ export function __triggerKeyEvent__(
 ) {
   let props;
   if (typeof key === 'number') {
-    props = { keyCode: key, which: key, key: keyFromKeyCodeAndModifiers(key, modifiers) };
+    props = {
+      keyCode: key,
+      which: key,
+      key: keyFromKeyCodeAndModifiers(key, modifiers),
+    };
   } else if (typeof key === 'string' && key.length !== 0) {
     let firstCharacter = key[0];
     if (firstCharacter !== firstCharacter.toUpperCase()) {
@@ -158,7 +172,9 @@ export function __triggerKeyEvent__(
     let keyCode = keyCodeFromKey(key);
     props = { keyCode, which: keyCode, key };
   } else {
-    throw new Error(`Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``);
+    throw new Error(
+      `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``
+    );
   }
 
   let options = assign(props, modifiers);
@@ -201,12 +217,16 @@ export default function triggerKeyEvent(
     })
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `triggerKeyEvent`.');
+        throw new Error(
+          'Must pass an element or selector to `triggerKeyEvent`.'
+        );
       }
 
       let element = getElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`);
+        throw new Error(
+          `Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`
+        );
       }
 
       if (!eventType) {

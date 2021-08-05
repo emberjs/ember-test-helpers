@@ -5,14 +5,14 @@ import { validateErrorHandler } from '@ember/test-helpers';
 
 module('validateErrorHandler', function (hooks) {
   hooks.beforeEach(function (assert) {
-    assert.valid = result => {
+    assert.valid = (result) => {
       assert.deepEqual(result, {
         isValid: true,
         message: null,
       });
     };
 
-    assert.invalid = result => {
+    assert.invalid = (result) => {
       assert.deepEqual(result, {
         isValid: false,
         message: 'error handler should have re-thrown the provided error',

@@ -28,9 +28,13 @@ export default {
 export function createCustomResolver(registry) {
   if (require.has('ember-native-dom-event-dispatcher')) {
     // the raw value looked up by ember and these test helpers
-    registry['event_dispatcher:main'] = require('ember-native-dom-event-dispatcher').default;
+    registry[
+      'event_dispatcher:main'
+    ] = require('ember-native-dom-event-dispatcher').default;
     // the normalized value looked up
-    registry['event-dispatcher:main'] = require('ember-native-dom-event-dispatcher').default;
+    registry[
+      'event-dispatcher:main'
+    ] = require('ember-native-dom-event-dispatcher').default;
   }
 
   return {

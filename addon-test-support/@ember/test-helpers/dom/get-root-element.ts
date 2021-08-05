@@ -12,7 +12,9 @@ export default function getRootElement(): Element | Document {
   let owner = context && context.owner;
 
   if (!owner) {
-    throw new Error('Must setup rendering context before attempting to interact with elements.');
+    throw new Error(
+      'Must setup rendering context before attempting to interact with elements.'
+    );
   }
 
   let rootElement;
@@ -38,6 +40,8 @@ export default function getRootElement(): Element | Document {
 
     throw new Error(`Application.rootElement (${rootElement}) not found`);
   } else {
-    throw new Error('Application.rootElement must be an element or a selector string');
+    throw new Error(
+      'Application.rootElement must be an element or a selector string'
+    );
   }
 }

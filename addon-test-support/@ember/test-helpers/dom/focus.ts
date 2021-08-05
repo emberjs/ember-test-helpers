@@ -16,7 +16,9 @@ registerHook('focus', 'start', (target: Target) => {
   @private
   @param {Element} element the element to trigger events on
 */
-export function __focus__(element: HTMLElement | Element | Document | SVGElement): void {
+export function __focus__(
+  element: HTMLElement | Element | Document | SVGElement
+): void {
   const previousFocusedElement =
     document.activeElement &&
     document.activeElement !== element &&
@@ -93,7 +95,9 @@ export default function focus(target: Target): Promise<void> {
 
       let element = getElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`focus('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`focus('${target}')\`.`
+        );
       }
 
       if (!isFocusable(element)) {

@@ -62,7 +62,7 @@ module('DOM Helper: scroll-to', function (hooks) {
 
     let currentScrollPosition = 0;
     let scrollAmount = 50;
-    this.callback = e => {
+    this.callback = (e) => {
       currentScrollPosition = e.target.scrollTop;
     };
 
@@ -94,7 +94,7 @@ module('DOM Helper: scroll-to', function (hooks) {
   test('Scroll in horizontal direction', async function (assert) {
     let currentScrollPosition = 0;
     let scrollAmount = 50;
-    this.callback = e => {
+    this.callback = (e) => {
       currentScrollPosition = e.target.scrollLeft;
     };
 
@@ -131,14 +131,23 @@ module('DOM Helper: scroll-to', function (hooks) {
   test('It throws an error if all coordinates are not supplied', async function (assert) {
     await render(hbs`<div class="container"></div>`);
 
-    assert.rejects(scrollTo('.container', 0), /Must pass both x and y coordinates/);
-    assert.rejects(scrollTo('.container', undefined, 0), /Must pass both x and y coordinates/);
+    assert.rejects(
+      scrollTo('.container', 0),
+      /Must pass both x and y coordinates/
+    );
+    assert.rejects(
+      scrollTo('.container', undefined, 0),
+      /Must pass both x and y coordinates/
+    );
   });
 
   test('It throws an error if the target is not found', async function (assert) {
     await render(hbs`<div class="container"></div>`);
 
-    assert.rejects(scrollTo('.container2', 0, 0), /Element not found when calling/);
+    assert.rejects(
+      scrollTo('.container2', 0, 0),
+      /Element not found when calling/
+    );
   });
 
   test('It throws an error if the target is not an element', async function (assert) {

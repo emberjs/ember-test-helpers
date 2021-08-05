@@ -32,7 +32,7 @@ module('setupOnerror', function (hooks) {
       test('Ember.onerror is setup correctly', async function (assert) {
         assert.expect(2);
 
-        let onerror = err => err;
+        let onerror = (err) => err;
 
         assert.equal(Ember.onerror, undefined);
 
@@ -44,7 +44,7 @@ module('setupOnerror', function (hooks) {
       test('Ember.onerror is reset correctly', async function (assert) {
         assert.expect(3);
 
-        let onerror = err => err;
+        let onerror = (err) => err;
 
         assert.equal(Ember.onerror, undefined);
 

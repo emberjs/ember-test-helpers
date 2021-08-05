@@ -8,7 +8,9 @@ import Target, { isWindow } from './-target';
   @param {string|Element} target the window, an element or selector to retrieve
   @returns {Element|Window} the target or selector
 */
-export function getWindowOrElement(target: Target): Element | Document | Window | null {
+export function getWindowOrElement(
+  target: Target
+): Element | Document | Window | null {
   if (isWindow(target)) {
     return target as Window;
   }

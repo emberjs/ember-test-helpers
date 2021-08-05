@@ -9,7 +9,11 @@ module('DOM helper: waitUntil', function () {
     let waiter = waitUntil(() => current).then(() => {
       assert.step('after resolved');
 
-      assert.verifySteps(['before invocation', 'after invocation', 'after resolved']);
+      assert.verifySteps([
+        'before invocation',
+        'after invocation',
+        'after resolved',
+      ]);
     });
     assert.step('after invocation');
 
@@ -26,7 +30,7 @@ module('DOM helper: waitUntil', function () {
     setTimeout(() => assert.step('waiting'), 10);
 
     return waiter
-      .catch(reason => {
+      .catch((reason) => {
         assert.step(`catch handler: ${reason.message}`);
       })
       .finally(() => {
@@ -50,7 +54,7 @@ module('DOM helper: waitUntil', function () {
     setTimeout(() => assert.step('waiting'), 10);
 
     return waiter
-      .catch(reason => {
+      .catch((reason) => {
         assert.step(`catch handler: ${reason.message}`);
       })
       .finally(() => {
@@ -66,7 +70,7 @@ module('DOM helper: waitUntil', function () {
   test('rejects when callback throws', function (assert) {
     return waitUntil(() => {
       throw new Error('error goes here');
-    }).catch(reason => {
+    }).catch((reason) => {
       assert.equal(reason.message, 'error goes here', 'valid error was thrown');
     });
   });
@@ -83,6 +87,6 @@ module('DOM helper: waitUntil', function () {
       assert.equal(error.message, 'error goes here', 'valid error was thrown');
     }
 
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 });

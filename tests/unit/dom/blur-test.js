@@ -1,5 +1,11 @@
 import { module, test } from 'qunit';
-import { focus, blur, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  focus,
+  blur,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -30,7 +36,11 @@ module('DOM Helper: blur', function (hooks) {
 
     // verify that focus was ran, and reset steps
     assert.verifySteps(focusSteps);
-    assert.equal(document.activeElement, elementWithFocus, 'activeElement updated');
+    assert.equal(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
   });
 
   hooks.afterEach(async function () {
@@ -95,7 +105,11 @@ module('DOM Helper: blur', function (hooks) {
     await blur(`#${elementWithFocus.id}`);
 
     assert.verifySteps(blurSteps);
-    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
+    assert.notEqual(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
   });
 
   test('bluring via selector without context set', function (assert) {
@@ -112,13 +126,21 @@ module('DOM Helper: blur', function (hooks) {
     await blur(elementWithFocus);
 
     assert.verifySteps(blurSteps);
-    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
+    assert.notEqual(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
   });
 
   test('bluring via element without context set', async function (assert) {
     await blur(elementWithFocus);
 
     assert.verifySteps(blurSteps);
-    assert.notEqual(document.activeElement, elementWithFocus, 'activeElement updated');
+    assert.notEqual(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
   });
 });

@@ -54,7 +54,10 @@ registerHook('tap', 'start', (target: Target) => {
 
   tap('button');
 */
-export default function tap(target: Target, options: object = {}): Promise<void> {
+export default function tap(
+  target: Target,
+  options: object = {}
+): Promise<void> {
   return Promise.resolve()
     .then(() => {
       return runHooks('tap', 'start', target, options);

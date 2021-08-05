@@ -36,27 +36,37 @@ export default function select(
   keepPreviouslySelected = false
 ): Promise<void> {
   return Promise.resolve()
-    .then(() => runHooks('select', 'start', target, options, keepPreviouslySelected))
+    .then(() =>
+      runHooks('select', 'start', target, options, keepPreviouslySelected)
+    )
     .then(() => {
       if (!target) {
         throw new Error('Must pass an element or selector to `select`.');
       }
 
       if (typeof options === 'undefined' || options === null) {
-        throw new Error('Must provide an `option` or `options` to select when calling `select`.');
+        throw new Error(
+          'Must provide an `option` or `options` to select when calling `select`.'
+        );
       }
 
       const element = getElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`select('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`select('${target}')\`.`
+        );
       }
 
       if (!isSelectElement(element)) {
-        throw new Error(`Element is not a HTMLSelectElement when calling \`select('${target}')\`.`);
+        throw new Error(
+          `Element is not a HTMLSelectElement when calling \`select('${target}')\`.`
+        );
       }
 
       if (element.disabled) {
-        throw new Error(`Element is disabled when calling \`select('${target}')\`.`);
+        throw new Error(
+          `Element is disabled when calling \`select('${target}')\`.`
+        );
       }
 
       options = Array.isArray(options) ? options : [options];
@@ -85,5 +95,7 @@ export default function select(
 
       return settled();
     })
-    .then(() => runHooks('select', 'end', target, options, keepPreviouslySelected));
+    .then(() =>
+      runHooks('select', 'end', target, options, keepPreviouslySelected)
+    );
 }

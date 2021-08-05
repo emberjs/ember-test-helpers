@@ -27,7 +27,10 @@ module.exports = {
         'addon-test-support:ts'
       );
 
-      input = debugTree(new MergeTrees([input, tsTree]), 'addon-test-support:merged');
+      input = debugTree(
+        new MergeTrees([input, tsTree]),
+        'addon-test-support:merged'
+      );
     }
 
     let output = this.preprocessJs(input, '/', this.name, {

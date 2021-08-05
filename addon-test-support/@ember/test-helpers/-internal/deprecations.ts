@@ -26,7 +26,9 @@ const DEPRECATIONS = new WeakMap<BaseContext, Array<DeprecationFailure>>();
  * @param {BaseContext} [context] the test context
  * @return {Array<DeprecationFailure>} the Deprecation Failures associated with the corresponding BaseContext;
  */
-export function getDeprecationsForContext(context: BaseContext): Array<DeprecationFailure> {
+export function getDeprecationsForContext(
+  context: BaseContext
+): Array<DeprecationFailure> {
   if (!context) {
     throw new TypeError(
       `[@ember/test-helpers] could not get deprecations for an invalid test context: '${context}'`

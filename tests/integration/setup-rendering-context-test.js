@@ -29,7 +29,7 @@ const PromiseWrapper = Component.extend({
     this._super(...arguments);
 
     this.promise
-      .then(value => this.set('fulfillmentValue', value))
+      .then((value) => this.set('fulfillmentValue', value))
       .finally(() => this.set('settled', true));
   },
 });
@@ -101,7 +101,11 @@ module('setupRenderingContext "real world"', function (hooks) {
 
     await waitFor('.loading');
 
-    assert.equal(this.element.textContent, 'Please wait', 'has pending content');
+    assert.equal(
+      this.element.textContent,
+      'Please wait',
+      'has pending content'
+    );
 
     deferred.resolve('Yippie!');
 
@@ -119,26 +123,35 @@ module('setupRenderingContext "real world"', function (hooks) {
   // time, and the fact that ember-classic will eventually be dropped I cannot
   // dig any deeper today. If you run into this problem in your ember-classic
   // app, please let us know and we can try and debug further.
-  conditionalTest('can click on a sibling of the rendered content', async function (assert) {
-    let rootElement = document.getElementById('ember-testing');
-    this.set('rootElement', rootElement);
+  conditionalTest(
+    'can click on a sibling of the rendered content',
+    async function (assert) {
+      let rootElement = document.getElementById('ember-testing');
+      this.set('rootElement', rootElement);
 
-    assert.equal(rootElement.textContent, '', 'the rootElement is empty before rendering');
+      assert.equal(
+        rootElement.textContent,
+        '',
+        'the rootElement is empty before rendering'
+      );
 
-    await render(hbs`{{#in-element rootElement}}{{click-me-button}}{{/in-element}}`);
+      await render(
+        hbs`{{#in-element rootElement}}{{click-me-button}}{{/in-element}}`
+      );
 
-    assert.equal(
-      rootElement.textContent,
-      'Click Me!',
-      'the rootElement has the correct content after initial render'
-    );
+      assert.equal(
+        rootElement.textContent,
+        'Click Me!',
+        'the rootElement has the correct content after initial render'
+      );
 
-    await click('.click-me-button');
+      await click('.click-me-button');
 
-    assert.equal(
-      rootElement.textContent,
-      'Clicked!',
-      'the rootElement has the correct content after clicking'
-    );
-  });
+      assert.equal(
+        rootElement.textContent,
+        'Clicked!',
+        'the rootElement has the correct content after clicking'
+      );
+    }
+  );
 });

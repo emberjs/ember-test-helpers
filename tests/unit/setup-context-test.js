@@ -69,10 +69,18 @@ module('setupContext', function (hooks) {
       test('it sets up this.owner', function (assert) {
         let { owner } = context;
         assert.ok(owner, 'owner was setup');
-        assert.equal(typeof owner.lookup, 'function', 'has expected lookup interface');
+        assert.equal(
+          typeof owner.lookup,
+          'function',
+          'has expected lookup interface'
+        );
 
         if (hasEmberVersion(2, 12)) {
-          assert.equal(typeof owner.factoryFor, 'function', 'has expected factory interface');
+          assert.equal(
+            typeof owner.factoryFor,
+            'function',
+            'has expected factory interface'
+          );
         }
       });
 
@@ -95,14 +103,26 @@ module('setupContext', function (hooks) {
           baz: 'qux',
         });
 
-        assert.equal(context.foo, 'bar', 'this.setProperties sets the first property');
-        assert.equal(context.baz, 'qux', 'this.setProperties sets the second property');
+        assert.equal(
+          context.foo,
+          'bar',
+          'this.setProperties sets the first property'
+        );
+        assert.equal(
+          context.baz,
+          'qux',
+          'this.setProperties sets the second property'
+        );
       });
 
       test('it sets up this.get', function (assert) {
         context.set('foo', 'bar');
 
-        assert.equal(context.get('foo'), 'bar', 'this.get can read previously set property');
+        assert.equal(
+          context.get('foo'),
+          'bar',
+          'this.get can read previously set property'
+        );
       });
 
       test('it sets up this.getProperties', function (assert) {
@@ -212,9 +232,18 @@ module('setupContext', function (hooks) {
           assert.deepEqual(getWarningsForContext(contextB), []);
           assert.deepEqual(getWarningsForContext(contextC), []);
 
-          assert.equal(getWarningsForContext(contextA), getWarningsForContext(contextA));
-          assert.equal(getWarningsForContext(contextB), getWarningsForContext(contextB));
-          assert.equal(getWarningsForContext(contextC), getWarningsForContext(contextC));
+          assert.equal(
+            getWarningsForContext(contextA),
+            getWarningsForContext(contextA)
+          );
+          assert.equal(
+            getWarningsForContext(contextB),
+            getWarningsForContext(contextB)
+          );
+          assert.equal(
+            getWarningsForContext(contextC),
+            getWarningsForContext(contextC)
+          );
         });
 
         test('getApplication leak test 0', function (assert) {
@@ -272,11 +301,22 @@ module('setupContext', function (hooks) {
               await Promise.resolve();
               warn('warning.1', false, { id: 'ember-test-helpers.warn.test' });
               assert.deepEqual(getWarnings(), [
-                { message: 'warning.0', options: { id: 'ember-test-helpers.warn.test' } },
-                { message: 'warning.1', options: { id: 'ember-test-helpers.warn.test' } },
+                {
+                  message: 'warning.0',
+                  options: { id: 'ember-test-helpers.warn.test' },
+                },
+                {
+                  message: 'warning.1',
+                  options: { id: 'ember-test-helpers.warn.test' },
+                },
               ]);
             }),
-            [{ message: 'warning.1', options: { id: 'ember-test-helpers.warn.test' } }]
+            [
+              {
+                message: 'warning.1',
+                options: { id: 'ember-test-helpers.warn.test' },
+              },
+            ]
           );
         });
       });
@@ -312,9 +352,18 @@ module('setupContext', function (hooks) {
           assert.deepEqual(getDeprecationsForContext(contextB), []);
           assert.deepEqual(getDeprecationsForContext(contextC), []);
 
-          assert.equal(getDeprecationsForContext(contextA), getDeprecationsForContext(contextA));
-          assert.equal(getDeprecationsForContext(contextB), getDeprecationsForContext(contextB));
-          assert.equal(getDeprecationsForContext(contextC), getDeprecationsForContext(contextC));
+          assert.equal(
+            getDeprecationsForContext(contextA),
+            getDeprecationsForContext(contextA)
+          );
+          assert.equal(
+            getDeprecationsForContext(contextB),
+            getDeprecationsForContext(contextB)
+          );
+          assert.equal(
+            getDeprecationsForContext(contextC),
+            getDeprecationsForContext(contextC)
+          );
         });
 
         test('getApplication leak test 0', function (assert) {
@@ -712,7 +761,11 @@ module('setupContext', function (hooks) {
       });
 
       test('pauseTest sets up a window.resumeTest to easily resume', async function (assert) {
-        assert.equal(window.resumeTest, undefined, 'precond - starts out as undefined');
+        assert.equal(
+          window.resumeTest,
+          undefined,
+          'precond - starts out as undefined'
+        );
 
         let promise = context.pauseTest();
 
@@ -724,7 +777,11 @@ module('setupContext', function (hooks) {
 
         context.resumeTest();
 
-        assert.equal(window.resumeTest, undefined, 'window.resumeTest is cleared after invocation');
+        assert.equal(
+          window.resumeTest,
+          undefined,
+          'window.resumeTest is cleared after invocation'
+        );
 
         await promise;
       });
@@ -744,7 +801,10 @@ module('setupContext', function (hooks) {
     });
 
     test('Ember.testing', async function (assert) {
-      assert.notOk(Ember.testing, 'precond - Ember.testing is falsey before setup');
+      assert.notOk(
+        Ember.testing,
+        'precond - Ember.testing is falsey before setup'
+      );
 
       context = {};
       let promise = setupContext(context);

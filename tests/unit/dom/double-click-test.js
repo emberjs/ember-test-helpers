@@ -1,6 +1,15 @@
 import { module, test } from 'qunit';
-import { doubleClick, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
-import { buildInstrumentedElement, instrumentElement, insertElement } from '../../helpers/events';
+import {
+  doubleClick,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
+import {
+  buildInstrumentedElement,
+  instrumentElement,
+  insertElement,
+} from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -171,7 +180,12 @@ module('DOM Helper: doubleClick', function (hooks) {
     });
 
     test('double-clicking passes options through to mouse events and merges with default options', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button', 'buttons']);
+      element = buildInstrumentedElement('div', [
+        'clientX',
+        'clientY',
+        'button',
+        'buttons',
+      ]);
 
       await doubleClick(element, { clientX: 13, clientY: 17, button: 1 });
 
@@ -221,7 +235,11 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(`#${element.id}`);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('double-clicking a input via element with context set', async function (assert) {
@@ -231,7 +249,11 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(element);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('double-clicking a input via element without context set', async function (assert) {
@@ -240,7 +262,11 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(element);
 
       assert.verifySteps(clickSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('double-clicking a input via selector without context set', function (assert) {
@@ -354,7 +380,7 @@ module('DOM Helper: doubleClick', function (hooks) {
 
 module('DOM Helper: doubleClick with window', function () {
   test('double clicking window without context set fires the given event type', async function (assert) {
-    let listener = e => {
+    let listener = (e) => {
       assert.step('click');
       assert.ok(e instanceof Event, `click listener receives a native event`);
     };

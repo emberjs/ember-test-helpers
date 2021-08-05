@@ -11,7 +11,11 @@ import Target from './-target';
 export function log(helperName: string, target: Target, ...args: any[]) {
   if (loggingEnabled()) {
     // eslint-disable-next-line no-console
-    console.log(`${helperName}(${[elementToString(target), ...args.filter(Boolean)].join(', ')})`);
+    console.log(
+      `${helperName}(${[elementToString(target), ...args.filter(Boolean)].join(
+        ', '
+      )})`
+    );
   }
 }
 
@@ -23,7 +27,10 @@ export function log(helperName: string, target: Target, ...args: any[]) {
  * @returns {boolean} true if enabled
  */
 function loggingEnabled(): boolean {
-  return typeof location !== 'undefined' && location.search.indexOf('testHelperLogging') !== -1;
+  return (
+    typeof location !== 'undefined' &&
+    location.search.indexOf('testHelperLogging') !== -1
+  );
 }
 
 /**

@@ -5,7 +5,11 @@ import isFormControl, { FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
 import fireEvent from './fire-event';
 import guardForMaxlength from './-guard-for-maxlength';
-import Target, { isContentEditable, isDocument, HTMLElementContentEditable } from './-target';
+import Target, {
+  isContentEditable,
+  isDocument,
+  HTMLElementContentEditable,
+} from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
@@ -42,7 +46,11 @@ registerHook('typeIn', 'start', (target: Target, text: string) => {
  *
  * typeIn('input', 'hello world');
  */
-export default function typeIn(target: Target, text: string, options: Options = {}): Promise<void> {
+export default function typeIn(
+  target: Target,
+  text: string,
+  options: Options = {}
+): Promise<void> {
   return Promise.resolve()
     .then(() => {
       return runHooks('typeIn', 'start', target, text, options);
@@ -55,11 +63,18 @@ export default function typeIn(target: Target, text: string, options: Options = 
       const element = getElement(target);
 
       if (!element) {
-        throw new Error(`Element not found when calling \`typeIn('${target}')\``);
+        throw new Error(
+          `Element not found when calling \`typeIn('${target}')\``
+        );
       }
 
-      if (isDocument(element) || (!isFormControl(element) && !isContentEditable(element))) {
-        throw new Error('`typeIn` is only usable on form controls or contenteditable elements.');
+      if (
+        isDocument(element) ||
+        (!isFormControl(element) && !isContentEditable(element))
+      ) {
+        throw new Error(
+          '`typeIn` is only usable on form controls or contenteditable elements.'
+        );
       }
 
       if (typeof text === 'undefined' || text === null) {
@@ -90,8 +105,14 @@ export default function typeIn(target: Target, text: string, options: Options = 
 }
 
 // eslint-disable-next-line require-jsdoc
-function fillOut(element: FormControl | HTMLElementContentEditable, text: string, delay: number) {
-  const inputFunctions = text.split('').map(character => keyEntry(element, character));
+function fillOut(
+  element: FormControl | HTMLElementContentEditable,
+  text: string,
+  delay: number
+) {
+  const inputFunctions = text
+    .split('')
+    .map((character) => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
     return currentPromise.then(() => delayedExecute(delay)).then(func);
   }, Promise.resolve(undefined));
@@ -102,14 +123,20 @@ function keyEntry(
   element: FormControl | HTMLElementContentEditable,
   character: string
 ): () => void {
-  let shiftKey = character === character.toUpperCase() && character !== character.toLowerCase();
+  let shiftKey =
+    character === character.toUpperCase() &&
+    character !== character.toLowerCase();
   let options = { shiftKey };
   let characterKey = character.toUpperCase();
 
   return function () {
     return Promise.resolve()
-      .then(() => __triggerKeyEvent__(element, 'keydown', characterKey, options))
-      .then(() => __triggerKeyEvent__(element, 'keypress', characterKey, options))
+      .then(() =>
+        __triggerKeyEvent__(element, 'keydown', characterKey, options)
+      )
+      .then(() =>
+        __triggerKeyEvent__(element, 'keypress', characterKey, options)
+      )
       .then(() => {
         if (isFormControl(element)) {
           const newValue = element.value + character;
@@ -128,7 +155,7 @@ function keyEntry(
 
 // eslint-disable-next-line require-jsdoc
 function delayedExecute(delay: number): Promise<void> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 }

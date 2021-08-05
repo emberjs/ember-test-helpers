@@ -74,7 +74,9 @@ export default function triggerEvent(
 
       let element = getWindowOrElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`triggerEvent('${target}', ...)\`.`);
+        throw new Error(
+          `Element not found when calling \`triggerEvent('${target}', ...)\`.`
+        );
       }
 
       if (isFormControl(element) && element.disabled) {

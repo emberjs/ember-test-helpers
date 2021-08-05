@@ -1,5 +1,10 @@
 import { module, test } from 'qunit';
-import { triggerEvent, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  triggerEvent,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -58,9 +63,12 @@ module('DOM Helper: triggerEvent', function (hooks) {
 
   test('can trigger arbitrary event types', async function (assert) {
     element = buildInstrumentedElement('div');
-    element.addEventListener('fliberty', e => {
+    element.addEventListener('fliberty', (e) => {
       assert.step('fliberty');
-      assert.ok(e instanceof Event, `fliberty listener receives a native event`);
+      assert.ok(
+        e instanceof Event,
+        `fliberty listener receives a native event`
+      );
     });
 
     await setupContext(context);
@@ -132,7 +140,10 @@ module('DOM Helper: triggerEvent', function (hooks) {
 
     await setupContext(context);
 
-    assert.rejects(triggerEvent(element), /Must provide an `eventType` to `triggerEvent`/);
+    assert.rejects(
+      triggerEvent(element),
+      /Must provide an `eventType` to `triggerEvent`/
+    );
   });
 
   test('rejects for disabled form control', async function (assert) {
@@ -142,7 +153,9 @@ module('DOM Helper: triggerEvent', function (hooks) {
     await setupContext(context);
     assert.rejects(
       triggerEvent(element, 'mouseenter'),
-      new Error('Can not `triggerEvent` on disabled [object HTMLTextAreaElement]')
+      new Error(
+        'Can not `triggerEvent` on disabled [object HTMLTextAreaElement]'
+      )
     );
   });
 
@@ -168,13 +181,17 @@ module('DOM Helper: triggerEvent', function (hooks) {
 
     await triggerEvent('#inner', 'mouseenter');
 
-    assert.verifySteps(['inner: mouseenter', 'outer: mouseenter', 'mouseenter']);
+    assert.verifySteps([
+      'inner: mouseenter',
+      'outer: mouseenter',
+      'mouseenter',
+    ]);
   });
 });
 
 module('DOM Helper: triggerEvent with window', function () {
   test('triggering event via window without context set fires the given event type', async function (assert) {
-    let listener = e => {
+    let listener = (e) => {
       assert.step('resize');
       assert.ok(e instanceof Event, `resize listener receives a native event`);
     };

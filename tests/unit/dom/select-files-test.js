@@ -1,5 +1,9 @@
 import { module, test } from 'qunit';
-import { triggerEvent, setupContext, teardownContext } from '@ember/test-helpers';
+import {
+  triggerEvent,
+  setupContext,
+  teardownContext,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
@@ -41,7 +45,7 @@ module('DOM Helper: selectFiles', function (hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    element.addEventListener('change', e => {
+    element.addEventListener('change', (e) => {
       assert.step(e.target.files[0].name);
     });
 
@@ -56,7 +60,7 @@ module('DOM Helper: selectFiles', function (hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    element.addEventListener('change', e => {
+    element.addEventListener('change', (e) => {
       assert.step(e.target.files[0].name);
     });
 
@@ -70,7 +74,7 @@ module('DOM Helper: selectFiles', function (hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    element.addEventListener('change', e => {
+    element.addEventListener('change', (e) => {
       assert.equal(e.target.files.length, 0, 'Files should be empty');
       assert.step('empty');
     });
@@ -85,7 +89,7 @@ module('DOM Helper: selectFiles', function (hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    element.addEventListener('change', e => {
+    element.addEventListener('change', (e) => {
       assert.step(e.target.files[0].name);
     });
 
@@ -101,16 +105,23 @@ module('DOM Helper: selectFiles', function (hooks) {
     element = buildInstrumentedElement('input');
     element.setAttribute('type', 'file');
 
-    element.addEventListener('change', e => {
+    element.addEventListener('change', (e) => {
       assert.step(e.target.files[0].name);
     });
 
     await setupContext(context);
 
-    const files = [new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })];
+    const files = [
+      new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' }),
+    ];
     await triggerEvent(element, 'change', { files });
     await triggerEvent(element, 'change', { files });
 
-    assert.verifySteps(['change', 'chucknorris.png', 'change', 'chucknorris.png']);
+    assert.verifySteps([
+      'change',
+      'chucknorris.png',
+      'change',
+      'chucknorris.png',
+    ]);
   });
 });

@@ -3,7 +3,10 @@ import { module, test } from 'qunit';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import { _setupAJAXHooks, _teardownAJAXHooks } from '@ember/test-helpers/settled';
+import {
+  _setupAJAXHooks,
+  _teardownAJAXHooks,
+} from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
 import { buildWaiter, _reset as resetWaiters } from '@ember/test-waiters';
 import Pretender from 'pretender';
@@ -20,7 +23,7 @@ module('settled', function (hooks) {
   hooks.beforeEach(function (assert) {
     _setupAJAXHooks();
 
-    this.confirmSettles = done => {
+    this.confirmSettles = (done) => {
       return function () {
         setTimeout(() => {
           assert.strictEqual(isSettled(), true, 'post cond - isSettled');

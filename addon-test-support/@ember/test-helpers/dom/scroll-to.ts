@@ -39,7 +39,9 @@ export default function scrollTo(
 
       let element = getElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`scrollTo('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`scrollTo('${target}')\`.`
+        );
       }
 
       if (!isElement(element)) {

@@ -17,7 +17,9 @@ export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
 export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
 
 // eslint-disable-next-line require-jsdoc
-export function isKeyboardEventType(eventType: any): eventType is KeyboardEventType {
+export function isKeyboardEventType(
+  eventType: any
+): eventType is KeyboardEventType {
   return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
 }
 
@@ -43,12 +45,16 @@ const FILE_SELECTION_EVENT_TYPES = tuple('change');
 export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
 
 // eslint-disable-next-line require-jsdoc
-export function isFileSelectionEventType(eventType: any): eventType is FileSelectionEventType {
+export function isFileSelectionEventType(
+  eventType: any
+): eventType is FileSelectionEventType {
   return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isFileSelectionInput(element: any): element is HTMLInputElement {
+export function isFileSelectionInput(
+  element: any
+): element is HTMLInputElement {
   return element.files;
 }
 
@@ -64,7 +70,11 @@ function fireEvent(
   options?: any
 ): Event | void;
 
-function fireEvent(element: Element | Document | Window, eventType: string, options?: any): Event;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: string,
+  options?: any
+): Event;
 
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
@@ -109,7 +119,10 @@ function fireEvent(
     };
 
     event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
-  } else if (isFileSelectionEventType(eventType) && isFileSelectionInput(element)) {
+  } else if (
+    isFileSelectionEventType(eventType) &&
+    isFileSelectionInput(element)
+  ) {
     event = buildFileEvent(eventType, element, options);
   } else {
     event = buildBasicEvent(eventType, options);

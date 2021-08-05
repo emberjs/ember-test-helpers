@@ -59,7 +59,7 @@ module('setupApplicationContext', function (hooks) {
       'route:slow': Route.extend({
         model() {
           QUnit.config.current.assert.step('model start');
-          return new Promise(resolve => {
+          return new Promise((resolve) => {
             setTimeout(() => {
               QUnit.config.current.assert.step('model resolving');
               resolve();
@@ -80,7 +80,10 @@ module('setupApplicationContext', function (hooks) {
   test('it sets up test metadata', function (assert) {
     let testMetadata = getTestMetadata(this);
 
-    assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupApplicationContext']);
+    assert.deepEqual(testMetadata.setupTypes, [
+      'setupContext',
+      'setupApplicationContext',
+    ]);
   });
 
   test('it executes registered visit hooks for start and end at the right time', async function (assert) {
@@ -117,7 +120,10 @@ module('setupApplicationContext', function (hooks) {
     assert.equal(currentRouteName(), 'index');
     assert.equal(currentURL(), '/');
 
-    assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
+    assert.equal(
+      this.element.querySelector('.nav').textContent,
+      'posts | widgets'
+    );
     assert.equal(this.element.querySelector('h1').textContent, 'Hello World!');
   });
 
@@ -133,7 +139,10 @@ module('setupApplicationContext', function (hooks) {
     assert.equal(currentRouteName(), 'posts.post');
     assert.equal(currentURL(), '/posts/1');
 
-    assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
+    assert.equal(
+      this.element.querySelector('.nav').textContent,
+      'posts | widgets'
+    );
     assert.equal(this.element.querySelector('.post-id').textContent, '1');
   });
 
@@ -143,7 +152,10 @@ module('setupApplicationContext', function (hooks) {
     assert.equal(currentRouteName(), 'posts.post');
     assert.equal(currentURL(), '/posts/1');
 
-    assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
+    assert.equal(
+      this.element.querySelector('.nav').textContent,
+      'posts | widgets'
+    );
     assert.equal(this.element.querySelector('.post-id').textContent, '1');
 
     await visit('/');
@@ -151,7 +163,10 @@ module('setupApplicationContext', function (hooks) {
     assert.equal(currentRouteName(), 'index');
     assert.equal(currentURL(), '/');
 
-    assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
+    assert.equal(
+      this.element.querySelector('.nav').textContent,
+      'posts | widgets'
+    );
     assert.equal(this.element.querySelector('h1').textContent, 'Hello World!');
 
     await visit('/posts/2');
@@ -159,7 +174,10 @@ module('setupApplicationContext', function (hooks) {
     assert.equal(currentRouteName(), 'posts.post');
     assert.equal(currentURL(), '/posts/2');
 
-    assert.equal(this.element.querySelector('.nav').textContent, 'posts | widgets');
+    assert.equal(
+      this.element.querySelector('.nav').textContent,
+      'posts | widgets'
+    );
     assert.equal(this.element.querySelector('.post-id').textContent, '2');
   });
 

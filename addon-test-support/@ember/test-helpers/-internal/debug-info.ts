@@ -85,7 +85,10 @@ export class TestDebugInfo implements DebugInfo {
   private _debugInfo: MaybeDebugInfo;
   private _summaryInfo: SummaryInfo | undefined = undefined;
 
-  constructor(settledState: SettledState, debugInfo: MaybeDebugInfo = getDebugInfo()) {
+  constructor(
+    settledState: SettledState,
+    debugInfo: MaybeDebugInfo = getDebugInfo()
+  ) {
     this._settledState = settledState;
     this._debugInfo = debugInfo;
   }
@@ -99,13 +102,14 @@ export class TestDebugInfo implements DebugInfo {
           this._debugInfo.autorun && this._debugInfo.autorun.stack;
         this._summaryInfo.pendingTimersCount = this._debugInfo.timers.length;
         this._summaryInfo.hasPendingTimers =
-          this._settledState.hasPendingTimers && this._summaryInfo.pendingTimersCount > 0;
+          this._settledState.hasPendingTimers &&
+          this._summaryInfo.pendingTimersCount > 0;
         this._summaryInfo.pendingTimersStackTraces = this._debugInfo.timers.map(
-          timer => timer.stack
+          (timer) => timer.stack
         );
 
         this._summaryInfo.pendingScheduledQueueItemCount = this._debugInfo.instanceStack
-          .filter(q => q)
+          .filter((q) => q)
           .reduce((total: Number, item) => {
             Object.keys(item).forEach((queueName: string) => {
               total += item[queueName].length;
@@ -114,15 +118,19 @@ export class TestDebugInfo implements DebugInfo {
             return total;
           }, 0);
         this._summaryInfo.pendingScheduledQueueItemStackTraces = this._debugInfo.instanceStack
-          .filter(q => q)
-          .reduce((stacks: string[], deferredActionQueues: DeferredActionQueues) => {
-            Object.keys(deferredActionQueues).forEach(queue => {
-              deferredActionQueues[queue].forEach(
-                (queueItem: QueueItem) => queueItem.stack && stacks.push(queueItem.stack)
-              );
-            });
-            return stacks;
-          }, []);
+          .filter((q) => q)
+          .reduce(
+            (stacks: string[], deferredActionQueues: DeferredActionQueues) => {
+              Object.keys(deferredActionQueues).forEach((queue) => {
+                deferredActionQueues[queue].forEach(
+                  (queueItem: QueueItem) =>
+                    queueItem.stack && stacks.push(queueItem.stack)
+                );
+              });
+              return stacks;
+            },
+            []
+          );
       }
 
       if (this._summaryInfo.hasPendingTestWaiters) {
@@ -149,31 +157,43 @@ export class TestDebugInfo implements DebugInfo {
         _console.log(PENDING_TEST_WAITERS);
       }
 
-      Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(waiterName => {
-        let waiterDebugInfo: WaiterDebugInfo = summary.pendingTestWaiterInfo.waiters[waiterName];
+      Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(
+        (waiterName) => {
+          let waiterDebugInfo: WaiterDebugInfo =
+            summary.pendingTestWaiterInfo.waiters[waiterName];
 
-        if (Array.isArray(waiterDebugInfo)) {
-          _console.group(waiterName);
-          waiterDebugInfo.forEach((debugInfo: TestWaiterDebugInfo) => {
-            _console.log(`${debugInfo.label ? debugInfo.label : 'stack'}: ${debugInfo.stack}`);
-          });
-          _console.groupEnd();
-        } else {
-          _console.log(waiterName);
+          if (Array.isArray(waiterDebugInfo)) {
+            _console.group(waiterName);
+            waiterDebugInfo.forEach((debugInfo: TestWaiterDebugInfo) => {
+              _console.log(
+                `${debugInfo.label ? debugInfo.label : 'stack'}: ${
+                  debugInfo.stack
+                }`
+              );
+            });
+            _console.groupEnd();
+          } else {
+            _console.log(waiterName);
+          }
         }
-      });
+      );
     }
 
-    if (summary.hasPendingTimers || summary.pendingScheduledQueueItemCount > 0) {
+    if (
+      summary.hasPendingTimers ||
+      summary.pendingScheduledQueueItemCount > 0
+    ) {
       _console.group(SCHEDULED_ASYNC);
 
-      summary.pendingTimersStackTraces.forEach(timerStack => {
+      summary.pendingTimersStackTraces.forEach((timerStack) => {
         _console.log(timerStack);
       });
 
-      summary.pendingScheduledQueueItemStackTraces.forEach(scheduleQueueItemStack => {
-        _console.log(scheduleQueueItemStack);
-      });
+      summary.pendingScheduledQueueItemStackTraces.forEach(
+        (scheduleQueueItemStack) => {
+          _console.log(scheduleQueueItemStack);
+        }
+      );
 
       _console.groupEnd();
     }
