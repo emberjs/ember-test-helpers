@@ -24,3 +24,7 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
+
+# tyescript related output files
+addon-test-support/**/*.js
+addon-test-support/**/*.d.ts
