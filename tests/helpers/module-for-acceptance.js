@@ -36,9 +36,8 @@ export default function (name, options = {}) {
         .finally(() => {
           Ember.testing = false;
 
-          document.getElementById(
-            'ember-testing-container'
-          ).innerHTML = this.fixtureResetValue;
+          document.getElementById('ember-testing-container').innerHTML =
+            this.fixtureResetValue;
         });
     },
   });

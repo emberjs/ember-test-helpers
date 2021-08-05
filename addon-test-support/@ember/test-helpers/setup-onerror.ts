@@ -1,10 +1,8 @@
 import Ember from 'ember';
 import { BaseContext, getContext } from './setup-context';
 
-let cachedOnerror: Map<
-  BaseContext,
-  ((error: Error) => void) | undefined
-> = new Map();
+let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
+  new Map();
 
 /**
  * Sets the `Ember.onerror` function for tests. This value is intended to be reset after
