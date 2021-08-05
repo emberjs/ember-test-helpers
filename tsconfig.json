@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2019",
     "allowJs": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -15,36 +15,35 @@
     "noImplicitReturns": true,
     "noEmitOnError": false,
     "noEmit": true,
+    "declaration": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "baseUrl": ".",
-    "module": "es6",
+    "module": "ES2015",
     "paths": {
       "dummy/tests/*": [
-        "tests/*"
+        "./tests/*"
       ],
       "dummy/*": [
-        "tests/dummy/app/*",
-        "app/*"
+        "./tests/dummy/app/*",
+        "./app/*"
       ],
       "@ember/test-helpers": [
-        "addon-test-support/@ember/test-helpers"
+        "./addon-test-support/@ember/test-helpers"
       ],
       "@ember/test-helpers/*": [
-        "addon-test-support/@ember/test-helpers/*"
+        "./addon-test-support/@ember/test-helpers/*"
       ],
-      "@ember/destroyable": ["node_modules/ember-destroyable-polyfill"],
+      "@ember/destroyable": ["./node_modules/ember-destroyable-polyfill"],
       "*": [
-        "types/*"
+        "./types/*",
+        "./node_modules/@types/*"
       ]
     }
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
-    "app/**/*",
-    "addon/**/*",
-    "tests/**/*",
-    "types/**/*",
-    "test-support/**/*",
-    "addon-test-support/**/*"
+    "./addon-test-support/**/*.ts"
   ]
 }
