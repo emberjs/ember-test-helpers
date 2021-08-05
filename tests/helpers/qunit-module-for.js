@@ -12,7 +12,9 @@ export default function qunitModuleFor(testModule) {
       testModule.setContext(this);
       return testModule.setup(assert).finally(() => {
         if (!Ember.testing) {
-          throw new Error('should have Ember.testing === true after tests have started');
+          throw new Error(
+            'should have Ember.testing === true after tests have started'
+          );
         }
       });
     },
@@ -20,7 +22,9 @@ export default function qunitModuleFor(testModule) {
       return testModule.teardown(assert).finally(() => {
         Ember.Test.adapter = null;
         if (Ember.testing) {
-          throw new Error('should not have Ember.testing === true after tests have finished');
+          throw new Error(
+            'should not have Ember.testing === true after tests have finished'
+          );
         }
       });
     },

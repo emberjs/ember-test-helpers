@@ -3,7 +3,9 @@
 'use strict';
 
 const fs = require('fs-extra');
-const { PRECOMPILE_MANIFEST } = require('ember-cli-typescript/js/lib/commands/precompile');
+const {
+  PRECOMPILE_MANIFEST,
+} = require('ember-cli-typescript/js/lib/commands/precompile');
 
 const PREFIX = 'test-support/@ember/test-helpers/';
 

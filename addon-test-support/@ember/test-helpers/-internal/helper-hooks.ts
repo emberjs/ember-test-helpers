@@ -29,7 +29,11 @@ function getHelperKey(helperName: string, label: string): string {
  * @returns {HookUnregister} An object containing an unregister function that will unregister
  *                           the specific hook registered to the helper.
  */
-export function registerHook(helperName: string, label: HookLabel, hook: Hook): HookUnregister {
+export function registerHook(
+  helperName: string,
+  label: HookLabel,
+  hook: Hook
+): HookUnregister {
   let helperKey = getHelperKey(helperName, label);
   let hooksForHelper = registeredHooks.get(helperKey);
 
@@ -57,11 +61,16 @@ export function registerHook(helperName: string, label: HookLabel, hook: Hook): 
  * @param {any[]} args Any arguments originally passed to the test helper.
  * @returns {Promise<void>} A promise representing the serial invocation of the hooks.
  */
-export function runHooks(helperName: string, label: HookLabel, ...args: any[]): Promise<void> {
-  let hooks = registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
+export function runHooks(
+  helperName: string,
+  label: HookLabel,
+  ...args: any[]
+): Promise<void> {
+  let hooks =
+    registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
   let promises: Array<void | Promise<void>> = [];
 
-  hooks.forEach(hook => {
+  hooks.forEach((hook) => {
     let hookResult = hook(...args);
 
     promises.push(hookResult);

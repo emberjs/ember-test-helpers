@@ -1,7 +1,14 @@
 import { FormControl } from './-is-form-control';
 
 // ref: https://html.spec.whatwg.org/multipage/input.html#concept-input-apply
-const constrainedInputTypes = ['text', 'search', 'url', 'tel', 'email', 'password'];
+const constrainedInputTypes = [
+  'text',
+  'search',
+  'url',
+  'tel',
+  'email',
+  'password',
+];
 
 /**
   @private
@@ -14,7 +21,8 @@ function isMaxLengthConstrained(
   return (
     !!Number(element.getAttribute('maxLength')) &&
     (element instanceof HTMLTextAreaElement ||
-      (element instanceof HTMLInputElement && constrainedInputTypes.indexOf(element.type) > -1))
+      (element instanceof HTMLInputElement &&
+        constrainedInputTypes.indexOf(element.type) > -1))
   );
 }
 
@@ -31,7 +39,12 @@ export default function guardForMaxlength(
   testHelper: string
 ): void {
   const maxlength = element.getAttribute('maxlength');
-  if (isMaxLengthConstrained(element) && maxlength && text && text.length > Number(maxlength)) {
+  if (
+    isMaxLengthConstrained(element) &&
+    maxlength &&
+    text &&
+    text.length > Number(maxlength)
+  ) {
     throw new Error(
       `Can not \`${testHelper}\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`
     );

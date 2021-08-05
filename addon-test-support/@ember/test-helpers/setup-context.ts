@@ -7,13 +7,20 @@ import buildOwner, { Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import { _prepareOnerror } from './setup-onerror';
 import Ember from 'ember';
-import { assert, registerDeprecationHandler, registerWarnHandler } from '@ember/debug';
+import {
+  assert,
+  registerDeprecationHandler,
+  registerWarnHandler,
+} from '@ember/debug';
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { Promise } from './-utils';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
-import { registerDestructor, associateDestroyableChild } from '@ember/destroyable';
+import {
+  registerDestructor,
+  associateDestroyableChild,
+} from '@ember/destroyable';
 import {
   getDeprecationsForContext,
   getDeprecationsDuringCallbackForContext,
@@ -71,7 +78,10 @@ export interface TestContext extends BaseContext {
 
 // eslint-disable-next-line require-jsdoc
 export function isTestContext(context: BaseContext): context is TestContext {
-  return typeof context.pauseTest === 'function' && typeof context.resumeTest === 'function';
+  return (
+    typeof context.pauseTest === 'function' &&
+    typeof context.resumeTest === 'function'
+  );
 }
 
 let __test_context__: BaseContext | undefined;
@@ -388,7 +398,7 @@ export default function setupContext(
 
       return buildOwner(getApplication(), getResolver());
     })
-    .then(owner => {
+    .then((owner) => {
       associateDestroyableChild(context, owner);
 
       Object.defineProperty(context, 'owner', {
@@ -445,7 +455,10 @@ export default function setupContext(
 
       let resume: Function | undefined;
       context.resumeTest = function resumeTest() {
-        assert('Testing has not been paused. There is nothing to resume.', Boolean(resume));
+        assert(
+          'Testing has not been paused. There is nothing to resume.',
+          Boolean(resume)
+        );
         (resume as Function)();
         global.resumeTest = resume = undefined;
       };
@@ -453,7 +466,7 @@ export default function setupContext(
       context.pauseTest = function pauseTest() {
         console.info('Testing paused. Use `resumeTest()` to continue.'); // eslint-disable-line no-console
 
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           resume = resolve;
           global.resumeTest = resumeTest;
         });

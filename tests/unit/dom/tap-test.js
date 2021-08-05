@@ -1,5 +1,10 @@
 import { module, test } from 'qunit';
-import { tap, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  tap,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -63,7 +68,13 @@ module('DOM Helper: tap', function (hooks) {
       await setupContext(context);
       await tap(`#${element.id}`);
 
-      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
     });
 
     test('tapping a div via element with context set', async function (assert) {
@@ -72,7 +83,13 @@ module('DOM Helper: tap', function (hooks) {
       await setupContext(context);
       await tap(element);
 
-      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
     });
 
     test('tapping a div via element without context set', async function (assert) {
@@ -80,11 +97,21 @@ module('DOM Helper: tap', function (hooks) {
 
       await tap(element);
 
-      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
     });
 
     test('tapping passes options through to mouse events', async function (assert) {
-      element = buildInstrumentedElement('div', ['clientX', 'clientY', 'button']);
+      element = buildInstrumentedElement('div', [
+        'clientX',
+        'clientY',
+        'button',
+      ]);
 
       await tap(element, { clientX: 13, clientY: 17, button: 1 });
 
@@ -106,7 +133,13 @@ module('DOM Helper: tap', function (hooks) {
 
       await promise;
 
-      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
     });
 
     test('rejects if selector is not found', async function (assert) {
@@ -131,10 +164,26 @@ module('DOM Helper: tap', function (hooks) {
   });
 
   module('focusable element types', function () {
-    let tapSteps = ['touchstart', 'touchend', 'mousedown', 'focus', 'focusin', 'mouseup', 'click'];
+    let tapSteps = [
+      'touchstart',
+      'touchend',
+      'mousedown',
+      'focus',
+      'focusin',
+      'mouseup',
+      'click',
+    ];
 
     if (isIE11) {
-      tapSteps = ['touchstart', 'touchend', 'mousedown', 'focusin', 'mouseup', 'click', 'focus'];
+      tapSteps = [
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'focusin',
+        'mouseup',
+        'click',
+        'focus',
+      ];
     }
     test('tapping a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');
@@ -143,7 +192,11 @@ module('DOM Helper: tap', function (hooks) {
       await tap(`#${element.id}`);
 
       assert.verifySteps(tapSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('tapping a input via element with context set', async function (assert) {
@@ -153,7 +206,11 @@ module('DOM Helper: tap', function (hooks) {
       await tap(element);
 
       assert.verifySteps(tapSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('tapping a input via element without context set', async function (assert) {
@@ -162,7 +219,11 @@ module('DOM Helper: tap', function (hooks) {
       await tap(element);
 
       assert.verifySteps(tapSteps);
-      assert.strictEqual(document.activeElement, element, 'activeElement updated');
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
     });
 
     test('tapping a input via selector without context set', function (assert) {
@@ -178,7 +239,10 @@ module('DOM Helper: tap', function (hooks) {
       element = buildInstrumentedElement('input');
       element.setAttribute('disabled', '');
 
-      assert.rejects(tap(element), new Error('Can not `tap` disabled [object HTMLInputElement]'));
+      assert.rejects(
+        tap(element),
+        new Error('Can not `tap` disabled [object HTMLInputElement]')
+      );
     });
   });
 
@@ -239,7 +303,13 @@ module('DOM Helper: tap', function (hooks) {
       await tap(nonFocusableElement);
       await tap(element);
 
-      assert.verifySteps(['touchstart', 'touchend', 'mousedown', 'mouseup', 'click']);
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
     });
   });
 });

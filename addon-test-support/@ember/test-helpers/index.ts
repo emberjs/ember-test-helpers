@@ -13,7 +13,11 @@ export {
   getWarningsDuringCallback,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
-export { default as setupRenderingContext, render, clearRender } from './setup-rendering-context';
+export {
+  default as setupRenderingContext,
+  render,
+  clearRender,
+} from './setup-rendering-context';
 export {
   default as setupApplicationContext,
   visit,
@@ -27,7 +31,10 @@ export { default as setupOnerror, resetOnerror } from './setup-onerror';
 export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
 export { default as getTestMetadata } from './test-metadata';
-export { registerHook as _registerHook, runHooks as _runHooks } from './-internal/helper-hooks';
+export {
+  registerHook as _registerHook,
+  runHooks as _runHooks,
+} from './-internal/helper-hooks';
 
 // DOM Helpers
 export { default as click } from './dom/click';

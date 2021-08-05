@@ -8,7 +8,10 @@ import ContainerProxyMixin from '@ember/engine/-private/container-proxy-mixin';
 import RegistryProxyMixin from '@ember/engine/-private/registry-proxy-mixin';
 import CoreObject from '@ember/object/core';
 
-export interface Owner extends CoreObject, ContainerProxyMixin, RegistryProxyMixin {
+export interface Owner
+  extends CoreObject,
+    ContainerProxyMixin,
+    RegistryProxyMixin {
   _emberTestHelpersMockOwner?: boolean;
 
   _lookupFactory?(key: string): any;
@@ -42,7 +45,7 @@ export default function buildOwner(
   if (application) {
     return (application
       .boot()
-      .then(app => app.buildInstance().boot()) as unknown) as Promise<Owner>;
+      .then((app) => app.buildInstance().boot()) as unknown) as Promise<Owner>;
   }
 
   if (!resolver) {

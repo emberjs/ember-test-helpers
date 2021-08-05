@@ -21,7 +21,11 @@ import {
   isSettled,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import { setResolverRegistry, application, resolver } from '../helpers/resolver';
+import {
+  setResolverRegistry,
+  application,
+  resolver,
+} from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { getOwner } from '@ember/application';
 
@@ -73,8 +77,15 @@ module('setupRenderingContext', function (hooks) {
     if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
       test('render exposes an `.element` property with application template wrapper', async function (assert) {
         let rootElement = document.getElementById('ember-testing');
-        assert.notEqual(this.element, rootElement, 'this.element should not be rootElement');
-        assert.ok(rootElement.contains(this.element), 'this.element is _within_ the rootElement');
+        assert.notEqual(
+          this.element,
+          rootElement,
+          'this.element should not be rootElement'
+        );
+        assert.ok(
+          rootElement.contains(this.element),
+          'this.element is _within_ the rootElement'
+        );
         await render(hbs`<p>Hello!</p>`);
 
         assert.equal(this.element.textContent, 'Hello!');
@@ -82,7 +93,11 @@ module('setupRenderingContext', function (hooks) {
     } else {
       test('render exposes an `.element` property without an application template wrapper', async function (assert) {
         let rootElement = document.getElementById('ember-testing');
-        assert.equal(this.element, rootElement, 'this.element should _be_ rootElement');
+        assert.equal(
+          this.element,
+          rootElement,
+          'this.element should _be_ rootElement'
+        );
 
         await render(hbs`<p>Hello!</p>`);
 
@@ -101,7 +116,10 @@ module('setupRenderingContext', function (hooks) {
     test('it sets up test metadata', function (assert) {
       let testMetadata = getTestMetadata(this);
 
-      assert.deepEqual(testMetadata.setupTypes, ['setupContext', 'setupRenderingContext']);
+      assert.deepEqual(testMetadata.setupTypes, [
+        'setupContext',
+        'setupRenderingContext',
+      ]);
     });
 
     test('it returns true for isRendering in an rendering test', function (assert) {
@@ -139,11 +157,18 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('render does not run sync', async function (assert) {
-      assert.ok(this.element, 'precond - this.element is present (but empty) before render');
+      assert.ok(
+        this.element,
+        'precond - this.element is present (but empty) before render'
+      );
 
       let renderPromise = render(hbs`<p>Hello!</p>`);
 
-      assert.equal(this.element.textContent, '', 'precond - this.element is not updated sync');
+      assert.equal(
+        this.element.textContent,
+        '',
+        'precond - this.element is not updated sync'
+      );
 
       await renderPromise;
 
@@ -157,13 +182,21 @@ module('setupRenderingContext', function (hooks) {
       await render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
-      assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
+      assert.equal(
+        testingRootElement.textContent,
+        'Hello!',
+        'has rendered content'
+      );
 
       await clearRender();
 
       assert.equal(this.element.textContent, '', 'has rendered content');
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
-      assert.strictEqual(this.element, originalElement, 'this.element is stable');
+      assert.strictEqual(
+        this.element,
+        originalElement,
+        'this.element is stable'
+      );
     });
 
     test('is settled after clearRender', async function (assert) {
@@ -186,7 +219,10 @@ module('setupRenderingContext', function (hooks) {
     test('can invoke JS only components', async function (assert) {
       await render(hbs`{{js-only}}`);
 
-      assert.ok(this.element.querySelector('.js-only'), 'element found for js-only component');
+      assert.ok(
+        this.element.querySelector('.js-only'),
+        'element found for js-only component'
+      );
     });
 
     test('can invoke helper', async function (assert) {
@@ -248,11 +284,18 @@ module('setupRenderingContext', function (hooks) {
           },
         })
       );
-      this.owner.register('template:components/x-foo', hbs`<button>Click me!</button>`);
+      this.owner.register(
+        'template:components/x-foo',
+        hbs`<button>Click me!</button>`
+      );
 
       await render(hbs`{{x-foo}}`);
 
-      assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+      assert.equal(
+        this.element.textContent,
+        'Click me!',
+        'precond - component was rendered'
+      );
       await click(this.element.querySelector('button'));
     });
 
@@ -276,7 +319,11 @@ module('setupRenderingContext', function (hooks) {
 
       await render(hbs`{{x-foo}}`);
 
-      assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+      assert.equal(
+        this.element.textContent,
+        'Click me!',
+        'precond - component was rendered'
+      );
       await click(this.element.querySelector('button'));
     });
 
@@ -292,7 +339,11 @@ module('setupRenderingContext', function (hooks) {
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
       await render(hbs`{{x-foo clicked=clicked}}`);
 
-      assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+      assert.equal(
+        this.element.textContent,
+        'Click me!',
+        'precond - component was rendered'
+      );
       await click(this.element.querySelector('button'));
     });
 
@@ -306,7 +357,11 @@ module('setupRenderingContext', function (hooks) {
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
       await render(hbs`{{x-foo clicked=clicked}}`);
 
-      assert.equal(this.element.textContent, 'Click me!', 'precond - component was rendered');
+      assert.equal(
+        this.element.textContent,
+        'Click me!',
+        'precond - component was rendered'
+      );
       await click(this.element.querySelector('button'));
     });
 
@@ -317,8 +372,16 @@ module('setupRenderingContext', function (hooks) {
 
       let input = this.element.querySelector('input');
 
-      assert.strictEqual(this.get('value'), undefined, 'precond - property is initially null');
-      assert.equal(input.value, '', 'precond - element value is initially empty');
+      assert.strictEqual(
+        this.get('value'),
+        undefined,
+        'precond - property is initially null'
+      );
+      assert.equal(
+        input.value,
+        '',
+        'precond - element value is initially empty'
+      );
 
       // trigger the change
       input.value = '1';
@@ -374,10 +437,18 @@ module('setupRenderingContext', function (hooks) {
 
       this.set('foo', 'original');
       await render(hbs`{{my-component foo=foo}}`);
-      assert.equal(this.element.textContent, 'original', 'value after initial render');
+      assert.equal(
+        this.element.textContent,
+        'original',
+        'value after initial render'
+      );
 
       await click(this.element.querySelector('button'));
-      assert.equal(this.element.textContent, 'updated!', 'value after updating');
+      assert.equal(
+        this.element.textContent,
+        'updated!',
+        'value after updating'
+      );
       assert.equal(this.get('foo'), 'updated!');
     });
 
@@ -423,13 +494,21 @@ module('setupRenderingContext', function (hooks) {
       await render(hbs`<p>Hello!</p>`);
 
       assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
-      assert.equal(testingRootElement.textContent, 'Hello!', 'has rendered content');
+      assert.equal(
+        testingRootElement.textContent,
+        'Hello!',
+        'has rendered content'
+      );
 
       await clearRender();
 
       assert.equal(this.element.textContent, '', 'has rendered content');
       assert.equal(testingRootElement.textContent, '', 'has rendered content');
-      assert.strictEqual(this.element, originalElement, 'this.element is stable');
+      assert.strictEqual(
+        this.element,
+        originalElement,
+        'this.element is stable'
+      );
     });
 
     test('context supports getOwner', async function (assert) {

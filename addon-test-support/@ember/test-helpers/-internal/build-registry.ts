@@ -63,7 +63,10 @@ export default function (resolver: Resolver) {
 
   fallbackRegistry = (Application as any).buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
-  fallbackRegistry.register('component-lookup:main', (Ember as any).ComponentLookup);
+  fallbackRegistry.register(
+    'component-lookup:main',
+    (Ember as any).ComponentLookup
+  );
 
   registry = new (Ember as any).Registry({
     fallback: fallbackRegistry,

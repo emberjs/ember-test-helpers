@@ -76,7 +76,11 @@ module('teardownContext', function (hooks) {
 
     assert.step('teardown completed');
 
-    assert.verifySteps(['teardown started', 'destructor was ran', 'teardown completed']);
+    assert.verifySteps([
+      'teardown started',
+      'destructor was ran',
+      'teardown completed',
+    ]);
   });
 
   test('the owner is destroyed', async function (assert) {
@@ -88,7 +92,9 @@ module('teardownContext', function (hooks) {
   if (hasjQuery()) {
     test('out of balance xhr semaphores are cleaned up on teardown', async function (assert) {
       this.pretender.unhandledRequest = function (/* verb, path, request */) {
-        throw new Error(`Synchronous error from Pretender.prototype.unhandledRequest`);
+        throw new Error(
+          `Synchronous error from Pretender.prototype.unhandledRequest`
+        );
       };
 
       ajax('/some/totally/invalid/url');
@@ -96,7 +102,11 @@ module('teardownContext', function (hooks) {
       await teardownContext(context);
 
       let state = getSettledState();
-      assert.equal(state.hasPendingRequests, false, 'hasPendingRequests is false');
+      assert.equal(
+        state.hasPendingRequests,
+        false,
+        'hasPendingRequests is false'
+      );
       assert.equal(state.pendingRequestCount, 0, 'pendingRequestCount is 0');
     });
   }

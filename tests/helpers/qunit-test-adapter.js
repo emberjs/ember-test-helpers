@@ -36,7 +36,9 @@ export default Ember.Test.Adapter.extend({
   },
 
   asyncStart() {
-    this.doneCallbacks.push(QUnit.config.current ? QUnit.config.current.assert.async() : null);
+    this.doneCallbacks.push(
+      QUnit.config.current ? QUnit.config.current.assert.async() : null
+    );
   },
 
   asyncEnd() {

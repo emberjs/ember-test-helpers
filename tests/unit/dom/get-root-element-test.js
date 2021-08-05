@@ -1,5 +1,9 @@
 import { module, test } from 'qunit';
-import { getRootElement, setupContext, teardownContext } from '@ember/test-helpers';
+import {
+  getRootElement,
+  setupContext,
+  teardownContext,
+} from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: getRootElement', function (hooks) {

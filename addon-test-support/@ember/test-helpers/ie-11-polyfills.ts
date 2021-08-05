@@ -6,7 +6,9 @@
  * @returns {(number | string | array | function)} found element inside the array
  */
 export function find<T>(array: Array<T>, predicate: Function) {
-  return Array.prototype.find ? array.find(predicate) : array.filter(predicate)[0];
+  return Array.prototype.find
+    ? array.find(predicate)
+    : array.filter(predicate)[0];
 }
 
 /**

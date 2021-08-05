@@ -69,13 +69,17 @@ export function __blur__(
 
   blur('input');
 */
-export default function blur(target: Target = document.activeElement!): Promise<void> {
+export default function blur(
+  target: Target = document.activeElement!
+): Promise<void> {
   return Promise.resolve()
     .then(() => runHooks('blur', 'start', target))
     .then(() => {
       let element = getElement(target);
       if (!element) {
-        throw new Error(`Element not found when calling \`blur('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`blur('${target}')\`.`
+        );
       }
 
       __blur__(element);

@@ -183,8 +183,8 @@ export function instrumentElement(element, logOptionsProperties) {
 
   element.setAttribute('id', `fixture-${uuid++}`);
 
-  KNOWN_EVENTS.forEach(type => {
-    element.addEventListener(type, e => {
+  KNOWN_EVENTS.forEach((type) => {
+    element.addEventListener(type, (e) => {
       let step = type;
       if (!element.hasAttribute('data-skip-steps')) {
         if (logOptionsProperties) {
@@ -194,7 +194,10 @@ export function instrumentElement(element, logOptionsProperties) {
         }
         assert.step(step);
       }
-      assert.ok(e instanceof Event, `${type} listener should receive a native event`);
+      assert.ok(
+        e instanceof Event,
+        `${type} listener should receive a native event`
+      );
     });
   });
 }

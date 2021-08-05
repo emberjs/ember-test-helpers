@@ -15,7 +15,9 @@ export default function (name, options = {}) {
         setResolverRegistry(options.registry);
       }
 
-      let testElementContainer = document.querySelector('#ember-testing-container');
+      let testElementContainer = document.querySelector(
+        '#ember-testing-container'
+      );
       this.fixtureResetValue = testElementContainer.innerHTML;
 
       Ember.testing = true;
@@ -27,13 +29,16 @@ export default function (name, options = {}) {
     },
 
     afterEach() {
-      let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
+      let afterEach =
+        options.afterEach && options.afterEach.apply(this, arguments);
       return resolve(afterEach)
         .then(() => destroyApp(this.application))
         .finally(() => {
           Ember.testing = false;
 
-          document.getElementById('ember-testing-container').innerHTML = this.fixtureResetValue;
+          document.getElementById(
+            'ember-testing-container'
+          ).innerHTML = this.fixtureResetValue;
         });
     },
   });

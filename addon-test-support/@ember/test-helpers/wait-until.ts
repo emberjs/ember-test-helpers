@@ -36,7 +36,10 @@ export default function waitUntil<T>(
   options: Options = {}
 ): Promise<T> {
   let timeout = 'timeout' in options ? (options.timeout as number) : 1000;
-  let timeoutMessage = 'timeoutMessage' in options ? options.timeoutMessage : 'waitUntil timed out';
+  let timeoutMessage =
+    'timeoutMessage' in options
+      ? options.timeoutMessage
+      : 'waitUntil timed out';
 
   // creating this error eagerly so it has the proper invocation stack
   let waitUntilTimedOut = new Error(timeoutMessage);

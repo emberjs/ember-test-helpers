@@ -23,10 +23,12 @@ const _internalPendingRequests = (() => {
 
   if (loader.registry['ember-testing/test/pending_requests']) {
     // Ember <= 3.1
-    return loader.require('ember-testing/test/pending_requests').pendingRequests;
+    return loader.require('ember-testing/test/pending_requests')
+      .pendingRequests;
   } else if (loader.registry['ember-testing/lib/test/pending_requests']) {
     // Ember >= 3.2
-    return loader.require('ember-testing/lib/test/pending_requests').pendingRequests;
+    return loader.require('ember-testing/lib/test/pending_requests')
+      .pendingRequests;
   }
 
   return () => 0;
@@ -48,8 +50,14 @@ if (typeof jQuery !== 'undefined' && _internalPendingRequests) {
         return;
       }
 
-      jQuery(document).off('ajaxSend', internalPendingRequests.incrementPendingRequests);
-      jQuery(document).off('ajaxComplete', internalPendingRequests.decrementPendingRequests);
+      jQuery(document).off(
+        'ajaxSend',
+        internalPendingRequests.incrementPendingRequests
+      );
+      jQuery(document).off(
+        'ajaxComplete',
+        internalPendingRequests.decrementPendingRequests
+      );
 
       internalPendingRequests.clearPendingRequests();
 
@@ -147,10 +155,12 @@ let _internalCheckWaiters: Function;
 let loader = (Ember as any).__loader;
 if (loader.registry['ember-testing/test/waiters']) {
   // Ember <= 3.1
-  _internalCheckWaiters = loader.require('ember-testing/test/waiters').checkWaiters;
+  _internalCheckWaiters = loader.require('ember-testing/test/waiters')
+    .checkWaiters;
 } else if (loader.registry['ember-testing/lib/test/waiters']) {
   // Ember >= 3.2
-  _internalCheckWaiters = loader.require('ember-testing/lib/test/waiters').checkWaiters;
+  _internalCheckWaiters = loader.require('ember-testing/lib/test/waiters')
+    .checkWaiters;
 }
 
 /**
@@ -164,7 +174,9 @@ function checkWaiters() {
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
   } else if (EmberTest.waiters) {
-    if (EmberTest.waiters.some(([context, callback]) => !callback.call(context))) {
+    if (
+      EmberTest.waiters.some(([context, callback]) => !callback.call(context))
+    ) {
       return true;
     }
   }

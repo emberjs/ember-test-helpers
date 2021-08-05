@@ -9,11 +9,15 @@ const HAS_PROMISE =
 
 import PromisePolyfill from './-internal/promise-polyfill';
 
-const _Promise: typeof Promise = HAS_PROMISE ? Promise : (PromisePolyfill as typeof Promise);
+const _Promise: typeof Promise = HAS_PROMISE
+  ? Promise
+  : (PromisePolyfill as typeof Promise);
 
 export { _Promise as Promise };
 
-export const nextTick = HAS_PROMISE ? (cb: () => void) => Promise.resolve().then(cb) : RSVP.asap;
+export const nextTick = HAS_PROMISE
+  ? (cb: () => void) => Promise.resolve().then(cb)
+  : RSVP.asap;
 export const futureTick = setTimeout;
 
 /**

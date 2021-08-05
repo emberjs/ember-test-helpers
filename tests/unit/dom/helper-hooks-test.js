@@ -41,7 +41,7 @@ module('helper hooks', function () {
     let func = () => {
       assert.step('starting hook');
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           assert.step('resolving hook promise');
           resolve();

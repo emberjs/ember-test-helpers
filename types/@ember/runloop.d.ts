@@ -39,7 +39,11 @@ export interface Backburner {
   join(...args: any[]): void;
   on(...args: any[]): void;
   scheduleOnce(...args: any[]): void;
-  schedule(queueName: string, target: object | null, method: () => void | string): void;
+  schedule(
+    queueName: string,
+    target: object | null,
+    method: () => void | string
+  ): void;
   ensureInstance(): void;
   DEBUG: boolean;
   getDebugInfo(): DebugInfo;
@@ -99,15 +103,28 @@ export interface RunNamespace {
     method: RunMethod<Target>,
     ...args: any[]
   ): EmberRunTimer;
-  schedule(queue: EmberRunQueues, method: (args: any[]) => any, ...args: any[]): EmberRunTimer;
+  schedule(
+    queue: EmberRunQueues,
+    method: (args: any[]) => any,
+    ...args: any[]
+  ): EmberRunTimer;
   /**
    * Invokes the passed target/method and optional arguments after a specified
    * period of time. The last parameter of this method must always be a number
    * of milliseconds.
    */
   later(method: (...args: any[]) => any, wait: number): EmberRunTimer;
-  later<Target>(target: Target, method: RunMethod<Target>, wait: number): EmberRunTimer;
-  later<Target>(target: Target, method: RunMethod<Target>, arg0: any, wait: number): EmberRunTimer;
+  later<Target>(
+    target: Target,
+    method: RunMethod<Target>,
+    wait: number
+  ): EmberRunTimer;
+  later<Target>(
+    target: Target,
+    method: RunMethod<Target>,
+    arg0: any,
+    wait: number
+  ): EmberRunTimer;
   later<Target>(
     target: Target,
     method: RunMethod<Target>,
@@ -157,7 +174,11 @@ export interface RunNamespace {
    * Schedule a function to run one time during the current RunLoop. This is equivalent
    * to calling `scheduleOnce` with the "actions" queue.
    */
-  once<Target>(target: Target, method: RunMethod<Target>, ...args: any[]): EmberRunTimer;
+  once<Target>(
+    target: Target,
+    method: RunMethod<Target>,
+    ...args: any[]
+  ): EmberRunTimer;
   /**
    * Schedules a function to run one time in a given queue of the current RunLoop.
    * Calling this method with the same queue/target/method combination will have
@@ -174,7 +195,11 @@ export interface RunNamespace {
    * control has been returned to the system. This is equivalent to calling
    * `run.later` with a wait time of 1ms.
    */
-  next<Target>(target: Target, method: RunMethod<Target>, ...args: any[]): EmberRunTimer;
+  next<Target>(
+    target: Target,
+    method: RunMethod<Target>,
+    ...args: any[]
+  ): EmberRunTimer;
   /**
    * Cancels a scheduled item. Must be a value returned by `run.later()`,
    * `run.once()`, `run.scheduleOnce()`, `run.next()`, `run.debounce()`, or
@@ -187,7 +212,11 @@ export interface RunNamespace {
    * the specified time has elapsed, the timer is reset and the entire period
    * must pass again before the target method is called.
    */
-  debounce(method: (...args: any[]) => any, wait: number, immediate?: boolean): EmberRunTimer;
+  debounce(
+    method: (...args: any[]) => any,
+    wait: number,
+    immediate?: boolean
+  ): EmberRunTimer;
   debounce<Target>(
     target: Target,
     method: RunMethod<Target>,
@@ -255,7 +284,11 @@ export interface RunNamespace {
    * Ensure that the target method is never called more frequently than
    * the specified spacing period. The target method is called immediately.
    */
-  throttle(method: (...args: any[]) => any, spacing: number, immediate?: boolean): EmberRunTimer;
+  throttle(
+    method: (...args: any[]) => any,
+    spacing: number,
+    immediate?: boolean
+  ): EmberRunTimer;
   throttle<Target>(
     target: Target,
     method: RunMethod<Target>,

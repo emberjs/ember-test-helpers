@@ -45,7 +45,7 @@ const TestComponent3 = Component.extend({
   internalValue: '',
 
   click() {
-    ajax('/whazzits').then(data => {
+    ajax('/whazzits').then((data) => {
       let value = this.get('internalValue');
 
       run(this, 'set', 'internalValue', value + data);
@@ -61,13 +61,13 @@ const TestComponent4 = Component.extend({
   click() {
     later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
 
-    ajax('/whazzits').then(data => {
+    ajax('/whazzits').then((data) => {
       let value = this.get('internalValue');
 
       run(this, 'set', 'internalValue', value + data);
 
       later(() => {
-        ajax('/whazzits').then(data => {
+        ajax('/whazzits').then((data) => {
           if (this.isDestroyed) {
             return;
           }
@@ -201,7 +201,10 @@ module('settled real-world scenarios', function (hooks) {
 
     await click('.test-component');
 
-    assert.equal(this.element.textContent, 'Local Data!Remote Data!Remote Data!');
+    assert.equal(
+      this.element.textContent,
+      'Local Data!Remote Data!Remote Data!'
+    );
   });
 
   test('it waits for Ember test waiters', async function (assert) {

@@ -40,7 +40,9 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
       let element = getElement(target) as Element | HTMLElement;
       if (!element) {
-        throw new Error(`Element not found when calling \`fillIn('${target}')\`.`);
+        throw new Error(
+          `Element not found when calling \`fillIn('${target}')\`.`
+        );
       }
 
       if (typeof text === 'undefined' || text === null) {
@@ -66,7 +68,9 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
         element.innerHTML = text;
       } else {
-        throw new Error('`fillIn` is only usable on form controls or contenteditable elements.');
+        throw new Error(
+          '`fillIn` is only usable on form controls or contenteditable elements.'
+        );
       }
       fireEvent(element, 'input');
       fireEvent(element, 'change');

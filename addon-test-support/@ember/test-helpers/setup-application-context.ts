@@ -1,6 +1,11 @@
 import { get } from '@ember/object';
 import { Promise } from './-utils';
-import { BaseContext, getContext, isTestContext, TestContext } from './setup-context';
+import {
+  BaseContext,
+  getContext,
+  isTestContext,
+  TestContext,
+} from './setup-context';
 import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
@@ -17,7 +22,9 @@ const ROUTER = new WeakMap();
 const HAS_SETUP_ROUTER = new WeakMap();
 
 // eslint-disable-next-line require-jsdoc
-export function isApplicationTestContext(context: BaseContext): context is ApplicationTestContext {
+export function isApplicationTestContext(
+  context: BaseContext
+): context is ApplicationTestContext {
   return isTestContext(context);
 }
 
@@ -68,7 +75,9 @@ export function hasPendingTransitions(): boolean | null {
 export function setupRouterSettlednessTracking() {
   const context = getContext();
   if (context === undefined) {
-    throw new Error('Cannot setupRouterSettlednessTracking outside of a test context');
+    throw new Error(
+      'Cannot setupRouterSettlednessTracking outside of a test context'
+    );
   }
 
   // avoid setting up many times for the same context
@@ -109,10 +118,15 @@ export function setupRouterSettlednessTracking() {
   @param {object} options app boot options
   @returns {Promise<void>} resolves when settled
 */
-export function visit(url: string, options?: { [key: string]: any }): Promise<void> {
+export function visit(
+  url: string,
+  options?: { [key: string]: any }
+): Promise<void> {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
-    throw new Error('Cannot call `visit` without having first called `setupApplicationContext`.');
+    throw new Error(
+      'Cannot call `visit` without having first called `setupApplicationContext`.'
+    );
   }
 
   let { owner } = context;
@@ -132,7 +146,9 @@ export function visit(url: string, options?: { [key: string]: any }): Promise<vo
     })
     .then(() => {
       if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-        context.element = document.querySelector('#ember-testing > .ember-view');
+        context.element = document.querySelector(
+          '#ember-testing > .ember-view'
+        );
       } else {
         context.element = document.querySelector('#ember-testing');
       }
@@ -196,7 +212,9 @@ export function currentURL(): string {
   @param {Object} context the context to setup
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupApplicationContext(context: TestContext): Promise<void> {
+export default function setupApplicationContext(
+  context: TestContext
+): Promise<void> {
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupApplicationContext');
 

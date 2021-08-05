@@ -1,5 +1,10 @@
 import { module, test } from 'qunit';
-import { typeIn, setupContext, teardownContext, _registerHook } from '@ember/test-helpers';
+import {
+  typeIn,
+  setupContext,
+  teardownContext,
+  _registerHook,
+} from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
@@ -99,7 +104,11 @@ module('DOM Helper: typeIn', function (hooks) {
     await typeIn(element, 'foo');
 
     assert.verifySteps(expectedEvents);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -109,7 +118,7 @@ module('DOM Helper: typeIn', function (hooks) {
 
     let chars = ['F', ' ', 'o'];
     let shiftKeys = [true, false, false];
-    let expectedEventsWithArguments = expectedEvents.map(eventName => {
+    let expectedEventsWithArguments = expectedEvents.map((eventName) => {
       // Only key events get the key arguments
       if (!['keydown', 'keypress', 'keyup'].includes(eventName)) {
         return `${eventName} undefined undefined`;
@@ -129,7 +138,11 @@ module('DOM Helper: typeIn', function (hooks) {
     await typeIn(element, 'foo', { delay: 150 });
 
     assert.verifySteps(expectedEvents);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -138,7 +151,11 @@ module('DOM Helper: typeIn', function (hooks) {
     await typeIn(element, 'foo');
 
     assert.verifySteps(expectedEvents);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 
@@ -148,7 +165,11 @@ module('DOM Helper: typeIn', function (hooks) {
     await typeIn(element, 'foo');
 
     assert.verifySteps(expectedEvents);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.innerHTML, 'foo');
   });
 
@@ -210,7 +231,10 @@ module('DOM Helper: typeIn', function (hooks) {
   test('rejects if text to fill in is not provided', async function (assert) {
     element = buildInstrumentedElement('input');
 
-    assert.rejects(typeIn(element), /Must provide `text` when calling `typeIn`/);
+    assert.rejects(
+      typeIn(element),
+      /Must provide `text` when calling `typeIn`/
+    );
   });
 
   test('does not run sync', async function (assert) {
@@ -223,7 +247,11 @@ module('DOM Helper: typeIn', function (hooks) {
     await promise;
 
     assert.verifySteps(expectedEvents);
-    assert.strictEqual(document.activeElement, element, 'activeElement updated');
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
     assert.equal(element.value, 'foo');
   });
 

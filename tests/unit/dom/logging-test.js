@@ -28,7 +28,10 @@ module('elementToString()', function (hooks) {
   module('NodeLists', function () {
     test('empty NodeList', async function (assert) {
       await render(hbs``);
-      assert.equal(elementToString(this.element.querySelectorAll('h1')), 'empty NodeList');
+      assert.equal(
+        elementToString(this.element.querySelectorAll('h1')),
+        'empty NodeList'
+      );
     });
 
     test('with single element', async function (assert) {
@@ -38,16 +41,26 @@ module('elementToString()', function (hooks) {
 
     test('with three elements', async function (assert) {
       await render(hbs`<h1></h1><h1></h1><h1 class="foo"></h1>`);
-      assert.equal(elementToString(this.element.querySelectorAll('h1')), 'h1, h1, h1.foo');
+      assert.equal(
+        elementToString(this.element.querySelectorAll('h1')),
+        'h1, h1, h1.foo'
+      );
     });
 
     test('with five elements', async function (assert) {
-      await render(hbs`<h1></h1><h1></h1><h1 class="foo"></h1><h1></h1><h1></h1>`);
-      assert.equal(elementToString(this.element.querySelectorAll('h1')), 'h1, h1, h1.foo, h1, h1');
+      await render(
+        hbs`<h1></h1><h1></h1><h1 class="foo"></h1><h1></h1><h1></h1>`
+      );
+      assert.equal(
+        elementToString(this.element.querySelectorAll('h1')),
+        'h1, h1, h1.foo, h1, h1'
+      );
     });
 
     test('with six elements', async function (assert) {
-      await render(hbs`<h1></h1><h1></h1><h1 class="foo"></h1><h1></h1><h1></h1><h1></h1>`);
+      await render(
+        hbs`<h1></h1><h1></h1><h1 class="foo"></h1><h1></h1><h1></h1><h1></h1>`
+      );
       assert.equal(
         elementToString(this.element.querySelectorAll('h1')),
         'h1, h1, h1.foo, h1, h1... (+1 more)'
@@ -73,17 +86,26 @@ module('elementToString()', function (hooks) {
   module('HTMLElements', function () {
     test('IDs', async function (assert) {
       await render(hbs`<div id="map"></div>`);
-      assert.equal(elementToString(this.element.querySelector('div')), 'div#map');
+      assert.equal(
+        elementToString(this.element.querySelector('div')),
+        'div#map'
+      );
     });
 
     test('CSS classes', async function (assert) {
       await render(hbs`<div class="foo bar"></div>`);
-      assert.equal(elementToString(this.element.querySelector('div')), 'div.foo.bar');
+      assert.equal(
+        elementToString(this.element.querySelector('div')),
+        'div.foo.bar'
+      );
     });
 
     test('attributes', async function (assert) {
       await render(hbs`<input type="password">`);
-      assert.equal(elementToString(this.element.querySelector('input')), 'input[type="password"]');
+      assert.equal(
+        elementToString(this.element.querySelector('input')),
+        'input[type="password"]'
+      );
 
       await render(hbs`<input data-test-username>`);
       assert.equal(

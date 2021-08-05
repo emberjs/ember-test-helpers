@@ -5,18 +5,20 @@
 /tmp/
 
 # dependencies
-/node_modules/
 /bower_components/
+/node_modules/
 
 # misc
+/.env*
+/.pnp*
 /.sass-cache
+/.eslintcache
 /connect.lock
 /coverage/
 /libpeerconnection.log
 /npm-debug.log*
 /testem.log
 /yarn-error.log
-/.eslintcache
 
 # ember-try
 /.node_modules.ember-try/

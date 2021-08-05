@@ -7,7 +7,10 @@ import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
 import PromisePolyfill from '@ember/test-helpers/-internal/promise-polyfill';
-import { getDeprecationsDuringCallback, getDeprecations } from '@ember/test-helpers';
+import {
+  getDeprecationsDuringCallback,
+  getDeprecations,
+} from '@ember/test-helpers';
 
 // This is needed for async/await transpilation :sob:
 if (typeof Promise === 'undefined') {

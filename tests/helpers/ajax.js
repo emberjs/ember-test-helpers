@@ -17,6 +17,6 @@ export default function ajax(url) {
     });
   } else {
     let fetch = require('fetch').default;
-    return fetch(url).then(response => response.text());
+    return fetch(url).then((response) => response.text());
   }
 }

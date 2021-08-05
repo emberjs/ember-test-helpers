@@ -1,6 +1,11 @@
 import { module, test } from 'qunit';
 import { application, resolver } from '../helpers/resolver';
-import { getApplication, setApplication, setResolver, getResolver } from '@ember/test-helpers';
+import {
+  getApplication,
+  setApplication,
+  setResolver,
+  getResolver,
+} from '@ember/test-helpers';
 
 module('application', function (hooks) {
   hooks.beforeEach(function () {
@@ -21,7 +26,11 @@ module('application', function (hooks) {
       actualResolver instanceof application.Resolver,
       'a resolver instance was created from the provided application'
     );
-    assert.equal(actualResolver.namespace, application, 'resolver has proper namespace specified');
+    assert.equal(
+      actualResolver.namespace,
+      application,
+      'resolver has proper namespace specified'
+    );
     assert.notOk(
       actualResolver.isResolverFromTestHelpers,
       'should not have used resolver created in tests/helpers/resolver.js'
