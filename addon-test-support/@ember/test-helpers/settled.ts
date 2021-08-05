@@ -155,12 +155,14 @@ let _internalCheckWaiters: Function;
 let loader = (Ember as any).__loader;
 if (loader.registry['ember-testing/test/waiters']) {
   // Ember <= 3.1
-  _internalCheckWaiters = loader.require('ember-testing/test/waiters')
-    .checkWaiters;
+  _internalCheckWaiters = loader.require(
+    'ember-testing/test/waiters'
+  ).checkWaiters;
 } else if (loader.registry['ember-testing/lib/test/waiters']) {
   // Ember >= 3.2
-  _internalCheckWaiters = loader.require('ember-testing/lib/test/waiters')
-    .checkWaiters;
+  _internalCheckWaiters = loader.require(
+    'ember-testing/lib/test/waiters'
+  ).checkWaiters;
 }
 
 /**
@@ -169,7 +171,7 @@ if (loader.registry['ember-testing/test/waiters']) {
 */
 function checkWaiters() {
   type Waiter = [any, Function];
-  let EmberTest = (Ember.Test as any) as { waiters: Array<Waiter> };
+  let EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
 
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();

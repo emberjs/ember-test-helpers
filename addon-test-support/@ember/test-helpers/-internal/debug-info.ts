@@ -108,29 +108,34 @@ export class TestDebugInfo implements DebugInfo {
           (timer) => timer.stack
         );
 
-        this._summaryInfo.pendingScheduledQueueItemCount = this._debugInfo.instanceStack
-          .filter((q) => q)
-          .reduce((total: Number, item) => {
-            Object.keys(item).forEach((queueName: string) => {
-              total += item[queueName].length;
-            });
-
-            return total;
-          }, 0);
-        this._summaryInfo.pendingScheduledQueueItemStackTraces = this._debugInfo.instanceStack
-          .filter((q) => q)
-          .reduce(
-            (stacks: string[], deferredActionQueues: DeferredActionQueues) => {
-              Object.keys(deferredActionQueues).forEach((queue) => {
-                deferredActionQueues[queue].forEach(
-                  (queueItem: QueueItem) =>
-                    queueItem.stack && stacks.push(queueItem.stack)
-                );
+        this._summaryInfo.pendingScheduledQueueItemCount =
+          this._debugInfo.instanceStack
+            .filter((q) => q)
+            .reduce((total: Number, item) => {
+              Object.keys(item).forEach((queueName: string) => {
+                total += item[queueName].length;
               });
-              return stacks;
-            },
-            []
-          );
+
+              return total;
+            }, 0);
+        this._summaryInfo.pendingScheduledQueueItemStackTraces =
+          this._debugInfo.instanceStack
+            .filter((q) => q)
+            .reduce(
+              (
+                stacks: string[],
+                deferredActionQueues: DeferredActionQueues
+              ) => {
+                Object.keys(deferredActionQueues).forEach((queue) => {
+                  deferredActionQueues[queue].forEach(
+                    (queueItem: QueueItem) =>
+                      queueItem.stack && stacks.push(queueItem.stack)
+                  );
+                });
+                return stacks;
+              },
+              []
+            );
       }
 
       if (this._summaryInfo.hasPendingTestWaiters) {
