@@ -15,41 +15,41 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        '.eslintrc.js',
-        '.prettierrc.js',
-        '.template-lintrc.js',
-        'index.js',
-        'config/ember-try.js',
-        'config/environment.js',
-        'testem.js',
-        'scripts/**',
-      ],
-      excludedFiles: ['addon-test-support/**', 'tests/**'],
-      parserOptions: {
-        ecmaVersion: 2017,
-        sourceType: 'script',
-      },
-      env: {
-        browser: false,
-        node: true,
-        es6: true,
-      },
-      plugins: ['node'],
-      extends: ['plugin:node/recommended'],
-    },
-    {
-      files: ['tests/**/*.[jt]s'],
-      env: {
-        qunit: true,
-      },
-    },
-    {
       files: ['**/*.ts'],
       extends: ['plugin:@typescript-eslint/eslint-recommended'],
       rules: {
         'no-unused-vars': 'off',
         'prefer-const': 'off',
+      },
+    },
+    {
+      files: [
+        '.eslintrc.js',
+        '.prettierrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
+        'index.js',
+        'testem.js',
+        'scripts/**',
+        'blueprints/*/index.js',
+        'config/*.js',
+        'tests/dummy/config/*.js',
+      ],
+      excludedFiles: ['addon-test-support/**'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+      env: {
+        browser: false,
+        node: true,
+      },
+      plugins: ['node'],
+      extends: ['plugin:node/recommended'],
+    },
+    {
+      files: ['tests/**/*-test.[jt]s', 'tests/helpers/*.js'],
+      env: {
+        qunit: true,
       },
     },
     {
