@@ -1,4 +1,3 @@
-/* globals EmberENV */
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import Component from '@ember/component';
@@ -117,41 +116,32 @@ module('setupRenderingContext "real world"', function (hooks) {
     assert.equal(this.element.textContent, 'Yippie!', 'has fulfillment value');
   });
 
-  const conditionalTest =
-    EmberENV._EMBER_TRY_CURRENT_SCENARIO === 'ember-classic' ? test.skip : test;
-  // This test has issues in ember-classic. Unfortunately due to the lack of
-  // time, and the fact that ember-classic will eventually be dropped I cannot
-  // dig any deeper today. If you run into this problem in your ember-classic
-  // app, please let us know and we can try and debug further.
-  conditionalTest(
-    'can click on a sibling of the rendered content',
-    async function (assert) {
-      let rootElement = document.getElementById('ember-testing');
-      this.set('rootElement', rootElement);
+  test('can click on a sibling of the rendered content', async function (assert) {
+    let rootElement = document.getElementById('ember-testing');
+    this.set('rootElement', rootElement);
 
-      assert.equal(
-        rootElement.textContent,
-        '',
-        'the rootElement is empty before rendering'
-      );
+    assert.equal(
+      rootElement.textContent,
+      '',
+      'the rootElement is empty before rendering'
+    );
 
-      await render(
-        hbs`{{#in-element rootElement}}{{click-me-button}}{{/in-element}}`
-      );
+    await render(
+      hbs`<div>{{#in-element rootElement insertBefore=null}}{{click-me-button}}{{/in-element}}</div>`
+    );
 
-      assert.equal(
-        rootElement.textContent,
-        'Click Me!',
-        'the rootElement has the correct content after initial render'
-      );
+    assert.equal(
+      rootElement.textContent,
+      'Click Me!',
+      'the rootElement has the correct content after initial render'
+    );
 
-      await click('.click-me-button');
+    await click('.click-me-button');
 
-      assert.equal(
-        rootElement.textContent,
-        'Clicked!',
-        'the rootElement has the correct content after clicking'
-      );
-    }
-  );
+    assert.equal(
+      rootElement.textContent,
+      'Clicked!',
+      'the rootElement has the correct content after clicking'
+    );
+  });
 });
