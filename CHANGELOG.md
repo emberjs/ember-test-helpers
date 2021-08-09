@@ -1,3 +1,31 @@
+
+## v2.4.0 (2021-08-09)
+
+#### :rocket: Enhancement
+* [#1078](https://github.com/emberjs/ember-test-helpers/pull/1078) Expose warning management primitives ([@stefanpenner](https://github.com/stefanpenner))
+
+#### :bug: Bug Fix
+* [#1070](https://github.com/emberjs/ember-test-helpers/pull/1070) Fix an invalid keyCode mapping ([@CvX](https://github.com/CvX))
+
+#### :house: Internal
+* [#1102](https://github.com/emberjs/ember-test-helpers/pull/1102) Pin release-it to 14.10.1 due to Node 10 incompatiblities ([@rwjblue](https://github.com/rwjblue))
+* [#1101](https://github.com/emberjs/ember-test-helpers/pull/1101) Bring back `{{#in-element}}` test in ember-classic ([@rwjblue](https://github.com/rwjblue))
+* [#1099](https://github.com/emberjs/ember-test-helpers/pull/1099) re-roll the lockfile + re-run prettier ([@stefanpenner](https://github.com/stefanpenner))
+* [#1097](https://github.com/emberjs/ember-test-helpers/pull/1097) Additional ember init related modernizations ([@stefanpenner](https://github.com/stefanpenner))
+* [#1096](https://github.com/emberjs/ember-test-helpers/pull/1096) Partially application of `ember init` to “modernize” code-base ([@stefanpenner](https://github.com/stefanpenner))
+* [#1095](https://github.com/emberjs/ember-test-helpers/pull/1095) Workaround `{{in-element}}` failure in `classic` edition tests ([@stefanpenner](https://github.com/stefanpenner))
+* [#1094](https://github.com/emberjs/ember-test-helpers/pull/1094) Update the local tests to avoid `this.render` and `this.clearRenders` deprecation ([@stefanpenner](https://github.com/stefanpenner))
+* [#1084](https://github.com/emberjs/ember-test-helpers/pull/1084) Upgrade ember-cli to 3.27 ([@stefanpenner](https://github.com/stefanpenner))
+* [#1081](https://github.com/emberjs/ember-test-helpers/pull/1081) timeout GH Actions jobs after 10 minutes ([@stefanpenner](https://github.com/stefanpenner))
+* [#1080](https://github.com/emberjs/ember-test-helpers/pull/1080) Fix ember-canary related issue in tests ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 4
+- Jarek Radosz ([@CvX](https://github.com/CvX))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.3.0 (2021-08-02)
 
 #### :rocket: Enhancement
