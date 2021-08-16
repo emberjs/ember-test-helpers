@@ -11,6 +11,7 @@ const embroider = {
         '@embroider/core': EMBROIDER_VERSION,
         '@embroider/webpack': EMBROIDER_VERSION,
         '@embroider/compat': EMBROIDER_VERSION,
+        '@embroider/test-setup': EMBROIDER_VERSION,
 
         // Webpack is a peer dependency of `@embroider/webpack`
         webpack: '^5.0.0',
@@ -28,6 +29,7 @@ const embroider = {
         '@embroider/core': EMBROIDER_VERSION,
         '@embroider/webpack': EMBROIDER_VERSION,
         '@embroider/compat': EMBROIDER_VERSION,
+        '@embroider/test-setup': EMBROIDER_VERSION,
 
         // Webpack is a peer dependency of `@embroider/webpack`
         webpack: '^5.0.0',
@@ -38,14 +40,6 @@ const embroider = {
     },
   },
 };
-
-// ensure @embroider/test-setup is provided via ember-try
-// This is to avoid node 10 constraints when testing node 10
-// ember-try & floating dependencies tests are run under node 12
-// this is a compromise to prevent having to do a major version bump of this
-// library at the moment. Our goal is to do so at around ember@4.4
-embroider.safe.npm.devDependencies['@embroider/test-setup'] = '^0.43.0';
-embroider.optimized.npm.devDependencies['@embroider/test-setup'] = '^0.43.0';
 
 module.exports = async function () {
   return {
