@@ -1,3 +1,7 @@
+// @ts-nocheck
+/* eslint-disable */
+
+
 /* globals globalThis global setImmediate */
 
 /*
