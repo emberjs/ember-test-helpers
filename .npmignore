@@ -21,7 +21,7 @@
 /.travis.yml
 /.watchmanconfig
 /bower.json
-/config/ember-try.js
+/config/
 /CONTRIBUTING.md
 /ember-cli-build.js
 /testem.js
@@ -34,6 +34,17 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
+
+# other
+
+/tsconfig.json
+/API.md
+/CHANGELOG.md
+/RELEASE.md
+/*.tgz
+/.github/
+/documentation.yml
+/server/
 
 # typescript
 #
