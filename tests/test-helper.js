@@ -6,7 +6,7 @@ import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
-import PromisePolyfill from '@ember/test-helpers/-internal/promise-polyfill';
+import PromisePolyfill from 'promise-polyfill';
 import {
   getDeprecationsDuringCallback,
   getDeprecations,
