@@ -1,4 +1,18 @@
 
+
+## v2.4.1 (2021-08-18)
+
+#### :house: Internal
+* [#1107](https://github.com/emberjs/ember-test-helpers/pull/1107) Remove unused config ([@stefanpenner](https://github.com/stefanpenner))
+* [#1106](https://github.com/emberjs/ember-test-helpers/pull/1106) [Closes [#1105](https://github.com/emberjs/ember-test-helpers/issues/1105)] ember-cli-shims does not work with ember-canary, luckil… ([@stefanpenner](https://github.com/stefanpenner))
+* [#1104](https://github.com/emberjs/ember-test-helpers/pull/1104) Fixes tarball to include correct contents ([@stefanpenner](https://github.com/stefanpenner))
+* [#989](https://github.com/emberjs/ember-test-helpers/pull/989) Add @embroider/test-setup to test against embroider ([@thoov](https://github.com/thoov))
+
+#### Committers: 2
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- Travis Hoover ([@thoov](https://github.com/thoov))
+
+
 ## v2.4.0 (2021-08-09)
 
 #### :rocket: Enhancement
