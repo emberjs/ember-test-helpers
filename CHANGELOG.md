@@ -1,5 +1,15 @@
 
 
+
+## v2.4.2 (2021-08-23)
+
+#### :bug: Bug Fix
+* [#1110](https://github.com/emberjs/ember-test-helpers/pull/1110) Ensures CoreOutlet is passed the correct parameters (fixes ember-canary) ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 1
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+
+
 ## v2.4.1 (2021-08-18)
 
 #### :house: Internal
