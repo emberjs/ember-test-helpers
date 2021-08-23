@@ -263,7 +263,14 @@ export default function setupRenderingContext(
       let OutletView = owner.factoryFor
         ? owner.factoryFor('view:-outlet')
         : owner._lookupFactory!('view:-outlet');
-      let toplevelView = OutletView.create();
+
+      let environment = owner.lookup('-environment:main');
+      let template = owner.lookup('template:-outlet');
+
+      let toplevelView = OutletView.create({
+        template,
+        environment,
+      });
 
       owner.register('-top-level-view:main', {
         create() {
