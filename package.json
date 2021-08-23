@@ -24,7 +24,7 @@
   },
   "scripts": {
     "prepack": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
-    "postpack": "rimraf addon-test-support/**/*.ts",
+    "postpack": "rimraf addon-test-support/**/*.js",
     "clean": "git clean -x -f",
     "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md",
     "lint": "npm-run-all lint:*",
