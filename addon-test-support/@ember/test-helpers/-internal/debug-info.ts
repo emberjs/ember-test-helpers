@@ -5,7 +5,6 @@ import {
   DeferredActionQueues,
 } from '@ember/runloop';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
-import { assign } from '@ember/polyfills';
 import {
   getPendingWaiterState,
   PendingWaiterState,
@@ -95,7 +94,7 @@ export class TestDebugInfo implements DebugInfo {
 
   get summary(): SummaryInfo {
     if (!this._summaryInfo) {
-      this._summaryInfo = assign(<SummaryInfo>{}, this._settledState);
+      this._summaryInfo = Object.assign(<SummaryInfo>{}, this._settledState);
 
       if (this._debugInfo) {
         this._summaryInfo.autorunStackTrace =

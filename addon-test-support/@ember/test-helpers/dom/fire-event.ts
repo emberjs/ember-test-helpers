@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
 
@@ -118,7 +117,7 @@ function fireEvent(
       clientY: y,
     };
 
-    event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
+    event = buildMouseEvent(eventType, Object.assign(simulatedCoordinates, options));
   } else if (
     isFileSelectionEventType(eventType) &&
     isFileSelectionInput(element)
@@ -147,14 +146,14 @@ function buildBasicEvent(type: string, options: any = {}): Event {
   // bubbles and cancelable are readonly, so they can be
   // set when initializing event
   event.initEvent(type, bubbles, cancelable);
-  assign(event, options);
+  Object.assign(event, options);
   return event;
 }
 
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
-  let eventOpts: any = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts: any = Object.assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
@@ -187,7 +186,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 
 // eslint-disable-next-line require-jsdoc
 function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
-  let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
+  let eventOpts: any = Object.assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 

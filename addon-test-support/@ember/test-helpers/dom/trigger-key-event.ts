@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
@@ -177,7 +176,7 @@ export function __triggerKeyEvent__(
     );
   }
 
-  let options = assign(props, modifiers);
+  let options = Object.assign(props, modifiers);
 
   fireEvent(element, eventType, options);
 }
