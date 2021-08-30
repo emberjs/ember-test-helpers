@@ -12,6 +12,7 @@ import Target, {
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 export interface Options {
   delay?: number;
@@ -33,7 +34,7 @@ registerHook('typeIn', 'start', (target: Target, text: string) => {
  * per character of the passed text (this may vary on some browsers).
  *
  * @public
- * @param {string|Element} target the element or selector to enter text into
+ * @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to enter text into
  * @param {string} text the test to fill the element with
  * @param {Object} options {delay: x} (default 50) number of milliseconds to wait per keypress
  * @return {Promise<void>} resolves when the application is settled
@@ -56,14 +57,17 @@ export default function typeIn(
     })
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `typeIn`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `typeIn`.'
+        );
       }
 
       const element = getElement(target);
 
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`typeIn('${target}')\``
+          `Element not found when calling \`typeIn('${description}')\``
         );
       }
 
@@ -82,11 +86,15 @@ export default function typeIn(
 
       if (isFormControl(element)) {
         if (element.disabled) {
-          throw new Error(`Can not \`typeIn\` disabled '${target}'.`);
+          throw new Error(
+            `Can not \`typeIn\` disabled '${getDescription(target)}'.`
+          );
         }
 
         if ('readOnly' in element && element.readOnly) {
-          throw new Error(`Can not \`typeIn\` readonly '${target}'.`);
+          throw new Error(
+            `Can not \`typeIn\` readonly '${getDescription(target)}'.`
+          );
         }
       }
 

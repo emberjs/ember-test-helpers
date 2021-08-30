@@ -5,6 +5,7 @@ import Target from './-target';
 import { log } from './-logging';
 import isFocusable from './-is-focusable';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 registerHook('blur', 'start', (target: Target) => {
   log('blur', target);
@@ -59,7 +60,7 @@ export function __blur__(
   to continue to emulate how actual browsers handle unfocusing a given element.
 
   @public
-  @param {string|Element} [target=document.activeElement] the element or selector to unfocus
+  @param {string|Element|IDOMElementDescriptor} [target=document.activeElement] the element, selector, or descriptor to unfocus
   @return {Promise<void>} resolves when settled
 
   @example
@@ -77,8 +78,9 @@ export default function blur(
     .then(() => {
       let element = getElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`blur('${target}')\`.`
+          `Element not found when calling \`blur('${description}')\`.`
         );
       }
 

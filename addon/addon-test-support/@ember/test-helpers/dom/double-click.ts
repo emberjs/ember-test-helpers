@@ -7,6 +7,7 @@ import Target, { isWindow } from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 registerHook('doubleClick', 'start', (target: Target) => {
   log('doubleClick', target);
@@ -72,7 +73,7 @@ export function __doubleClick__(
   Use the `options` hash to change the parameters of the [MouseEvents](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent).
 
   @public
-  @param {string|Element} target the element or selector to double-click on
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to double-click on
   @param {MouseEventInit} _options the options to be merged into the mouse events
   @return {Promise<void>} resolves when settled
 
@@ -100,13 +101,16 @@ export default function doubleClick(
     .then(() => runHooks('doubleClick', 'start', target, _options))
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `doubleClick`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `doubleClick`.'
+        );
       }
 
       let element = getWindowOrElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`doubleClick('${target}')\`.`
+          `Element not found when calling \`doubleClick('${description}')\`.`
         );
       }
 

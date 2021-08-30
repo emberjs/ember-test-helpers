@@ -6,6 +6,7 @@ import Target, { isDocument } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 import { __blur__ } from './blur';
+import getDescription from './-get-description';
 
 registerHook('focus', 'start', (target: Target) => {
   log('focus', target);
@@ -122,7 +123,7 @@ export function __focus__(
   to continue to emulate how actual browsers handle focusing a given element.
 
   @public
-  @param {string|Element} target the element or selector to focus
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to focus
   @return {Promise<void>} resolves when the application is settled
 
   @example
@@ -137,13 +138,16 @@ export default function focus(target: Target): Promise<void> {
     .then(() => runHooks('focus', 'start', target))
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `focus`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `focus`.'
+        );
       }
 
       let element = getElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`focus('${target}')\`.`
+          `Element not found when calling \`focus('${description}')\`.`
         );
       }
 

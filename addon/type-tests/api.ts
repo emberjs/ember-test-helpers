@@ -80,6 +80,7 @@ import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backbu
 import type { Resolver as EmberResolver } from '@ember/owner';
 import Application from '@ember/application';
 import { TemplateFactory } from 'ember-cli-htmlbars';
+import type { IDOMElementDescriptor } from 'dom-element-descriptors';
 
 // DOM Interaction Helpers
 expectTypeOf(blur).toEqualTypeOf<(target?: Target) => Promise<void>>();
@@ -94,7 +95,11 @@ expectTypeOf(fillIn).toEqualTypeOf<
 >();
 expectTypeOf(focus).toEqualTypeOf<(target: Target) => Promise<void>>();
 expectTypeOf(scrollTo).toEqualTypeOf<
-  (target: string | HTMLElement, x: number, y: number) => Promise<void>
+  (
+    target: string | HTMLElement | IDOMElementDescriptor,
+    x: number,
+    y: number
+  ) => Promise<void>
 >();
 expectTypeOf(select).toEqualTypeOf<
   (
@@ -175,7 +180,7 @@ expectTypeOf(clearRender).toEqualTypeOf<() => Promise<void>>();
 // Wait Helpers
 expectTypeOf(waitFor).toEqualTypeOf<
   (
-    selector: string,
+    selector: string | IDOMElementDescriptor,
     options?: {
       timeout?: number;
       count?: number | null;

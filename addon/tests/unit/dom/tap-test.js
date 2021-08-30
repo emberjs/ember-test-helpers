@@ -7,6 +7,7 @@ import {
   unregisterHooks,
   buildExpectedSteps,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 module('DOM Helper: tap', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -93,10 +94,39 @@ module('DOM Helper: tap', function (hooks) {
       ]);
     });
 
+    test('tapping a div via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await setupContext(context);
+      await tap(createDescriptor({ element }));
+
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
+    });
+
     test('tapping a div via element without context set', async function (assert) {
       element = buildInstrumentedElement('div');
 
       await tap(element);
+
+      assert.verifySteps([
+        'touchstart',
+        'touchend',
+        'mousedown',
+        'mouseup',
+        'click',
+      ]);
+    });
+
+    test('tapping a div via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await tap(createDescriptor({ element }));
 
       assert.verifySteps([
         'touchstart',
@@ -203,10 +233,37 @@ module('DOM Helper: tap', function (hooks) {
       );
     });
 
+    test('tapping a input via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await setupContext(context);
+      await tap(createDescriptor({ element }));
+
+      assert.verifySteps(tapSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
     test('tapping a input via element without context set', async function (assert) {
       element = buildInstrumentedElement('input');
 
       await tap(element);
+
+      assert.verifySteps(tapSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
+    test('tapping a input via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await tap(createDescriptor({ element }));
 
       assert.verifySteps(tapSteps);
       assert.strictEqual(

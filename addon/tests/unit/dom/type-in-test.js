@@ -10,6 +10,7 @@ import {
   unregisterHooks,
   buildExpectedSteps,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 /*
  * Event order based on https://jsbin.com/zitazuxabe/edit?html,js,console,output
@@ -117,6 +118,19 @@ module('DOM Helper: typeIn', function (hooks) {
   test('typing in an input', async function (assert) {
     element = buildInstrumentedElement('input');
     await typeIn(element, 'foo');
+
+    assert.verifySteps(expectedEvents);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+    assert.equal(element.value, 'foo');
+  });
+
+  test('typing in an input via descriptor', async function (assert) {
+    element = buildInstrumentedElement('input');
+    await typeIn(createDescriptor({ element }), 'foo');
 
     assert.verifySteps(expectedEvents);
     assert.strictEqual(

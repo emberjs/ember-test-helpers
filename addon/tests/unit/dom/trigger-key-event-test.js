@@ -7,6 +7,7 @@ import {
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { createDescriptor } from 'dom-element-descriptors';
 
 module('DOM Helper: triggerKeyEvent', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -158,10 +159,27 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
     assert.verifySteps(['keydown']);
   });
 
+  test('triggering via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+    await triggerKeyEvent(createDescriptor({ element }), 'keydown', 13);
+
+    assert.verifySteps(['keydown']);
+  });
+
   test('triggering via element without context set', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await triggerKeyEvent(element, 'keydown', 13);
+
+    assert.verifySteps(['keydown']);
+  });
+
+  test('triggering via descriptor without context set', async function (assert) {
+    element = buildInstrumentedElement('div');
+
+    await triggerKeyEvent(createDescriptor({ element }), 'keydown', 13);
 
     assert.verifySteps(['keydown']);
   });

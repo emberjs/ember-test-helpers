@@ -6,6 +6,7 @@ import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
@@ -72,7 +73,7 @@ export function __click__(
   You can use this to specify modifier keys as well.
 
   @public
-  @param {string|Element} target the element or selector to click on
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to click on
   @param {MouseEventInit} _options the options to be merged into the mouse events.
   @return {Promise<void>} resolves when settled
 
@@ -99,13 +100,16 @@ export default function click(
     .then(() => runHooks('click', 'start', target, _options))
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `click`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `click`.'
+        );
       }
 
       let element = getWindowOrElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`click('${target}')\`.`
+          `Element not found when calling \`click('${description}')\`.`
         );
       }
 

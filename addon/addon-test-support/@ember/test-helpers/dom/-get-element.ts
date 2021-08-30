@@ -1,5 +1,10 @@
 import getRootElement from './get-root-element';
 import Target, { isDocument, isElement } from './-target';
+import {
+  type IDOMElementDescriptor,
+  lookupDescriptorData,
+  resolveDOMElement,
+} from 'dom-element-descriptors';
 
 function getElement<
   K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
@@ -12,8 +17,10 @@ function getElement<K extends keyof SVGElementTagNameMap>(
 ): SVGElementTagNameMap[K] | null;
 function getElement(target: string): Element | null;
 function getElement(target: Element): Element;
+function getElement(target: IDOMElementDescriptor): Element | null;
 function getElement(target: Document): Document;
 function getElement(target: Window): Document;
+function getElement(target: string | IDOMElementDescriptor): Element | null;
 function getElement(target: Target): Element | Document | null;
 /**
   Used internally by the DOM interaction helpers to find one element.
@@ -32,7 +39,14 @@ function getElement(target: Target): Element | Document | null {
   } else if (target instanceof Window) {
     return target.document;
   } else {
-    throw new Error('Must use an element or a selector string');
+    let descriptorData = lookupDescriptorData(target);
+    if (descriptorData) {
+      return resolveDOMElement(descriptorData);
+    } else {
+      throw new Error(
+        'Must use an element, selector string, or DOM element descriptor'
+      );
+    }
   }
 }
 

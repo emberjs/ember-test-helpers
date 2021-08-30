@@ -8,6 +8,7 @@ import {
   unregisterHooks,
   buildExpectedSteps,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
@@ -170,11 +171,26 @@ module('DOM Helper: fillIn', function (hooks) {
     assert.equal(element.value, 'foo');
   });
 
-  test('filling an input via element with context set', async function (assert) {
+  test('filling a textarea via element with context set', async function (assert) {
     element = buildInstrumentedElement('textarea');
 
     await setupContext(context);
     await fillIn(element, 'foo');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+    assert.equal(element.value, 'foo');
+  });
+
+  test('filling a textarea via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+
+    await setupContext(context);
+    await fillIn(createDescriptor({ element }), 'foo');
 
     assert.verifySteps(clickSteps);
     assert.strictEqual(
@@ -215,6 +231,21 @@ module('DOM Helper: fillIn', function (hooks) {
     assert.equal(element.value, 'foo');
   });
 
+  test('filling an input via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('input');
+
+    await setupContext(context);
+    await fillIn(createDescriptor({ element }), 'foo');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+    assert.equal(element.value, 'foo');
+  });
+
   test('filling a content editable div via element with context set', async function (assert) {
     element = buildInstrumentedElement('div');
     element.setAttribute('contenteditable', '');
@@ -232,10 +263,40 @@ module('DOM Helper: fillIn', function (hooks) {
     assert.equal(element.innerHTML, 'foo');
   });
 
+  test('filling a content editable div via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('div');
+    element.setAttribute('contenteditable', '');
+
+    await setupContext(context);
+    await fillIn(createDescriptor({ element }), 'foo');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+    assert.equal(element.innerHTML, 'foo');
+  });
+
   test('filling an input via element without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await fillIn(element, 'foo');
+
+    assert.verifySteps(clickSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+    assert.equal(element.value, 'foo');
+  });
+
+  test('filling an input via descriptor without context set', async function (assert) {
+    element = buildInstrumentedElement('input');
+
+    await fillIn(createDescriptor({ element }), 'foo');
 
     assert.verifySteps(clickSteps);
     assert.strictEqual(

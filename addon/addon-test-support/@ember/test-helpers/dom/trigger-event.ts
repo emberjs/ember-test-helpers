@@ -5,6 +5,7 @@ import Target from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
   log('triggerEvent', target, eventType);
@@ -14,7 +15,7 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
  * Triggers an event on the specified target.
  *
  * @public
- * @param {string|Element} target the element or selector to trigger the event on
+ * @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to trigger the event on
  * @param {string} eventType the type of event to trigger
  * @param {Object} options additional properties to be set on the event
  * @return {Promise<void>} resolves when the application is settled
@@ -64,7 +65,9 @@ export default function triggerEvent(
     })
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `triggerEvent`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `triggerEvent`.'
+        );
       }
 
       if (!eventType) {
@@ -73,8 +76,9 @@ export default function triggerEvent(
 
       let element = getWindowOrElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`triggerEvent('${target}', ...)\`.`
+          `Element not found when calling \`triggerEvent('${description}', ...)\`.`
         );
       }
 

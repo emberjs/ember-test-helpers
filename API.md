@@ -87,7 +87,7 @@ to continue to emulate how actual browsers handle unfocusing a given element.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to unfocus (optional, default `document.activeElement`)
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to unfocus (optional, default `document.activeElement`)
 
 #### Examples
 
@@ -129,7 +129,7 @@ You can use this to specifiy modifier keys as well.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to click on
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to click on
 *   `_options` **MouseEventInit** the options to be merged into the mouse events. (optional, default `{}`)
 
 #### Examples
@@ -185,7 +185,7 @@ Use the `options` hash to change the parameters of the [MouseEvents][67].
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to double-click on
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to double-click on
 *   `_options` **MouseEventInit** the options to be merged into the mouse events (optional, default `{}`)
 
 #### Examples
@@ -212,7 +212,7 @@ events on the specified target.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to enter text into
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
 *   `text` **[string][64]** the text to fill into the target element
 
 #### Examples
@@ -242,7 +242,7 @@ to continue to emulate how actual browsers handle focusing a given element.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to focus
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to focus
 
 #### Examples
 
@@ -256,11 +256,11 @@ Returns **[Promise][66]\<void>** resolves when the application is settled
 
 ### scrollTo
 
-Scrolls DOM element or selector to the given coordinates.
+Scrolls DOM element, selector, or descriptor to the given coordinates.
 
 #### Parameters
 
-*   `target` **([string][64] | [HTMLElement][68])** the element or selector to trigger scroll on
+*   `target` **([string][64] | [HTMLElement][68] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger scroll on
 *   `x` **[Number][69]** x-coordinate
 *   `y` **[Number][69]** y-coordinate
 
@@ -284,7 +284,7 @@ multiple attribute is set true on the HTMLSelectElement) then trigger
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector for the select element
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor for the select element
 *   `options` **([string][64] | [Array][70]<[string][64]>)** the value/values of the items to select
 *   `keepPreviouslySelected` **[boolean][71]** a flag keep any existing selections (optional, default `false`)
 
@@ -365,7 +365,7 @@ Use the `options` hash to change the parameters of the tap events.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to tap on
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to tap on
 *   `options` **[Object][72]** the options to be merged into the touch events (optional, default `{}`)
 
 #### Examples
@@ -384,7 +384,7 @@ Triggers an event on the specified target.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to trigger the event on
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
 *   `eventType` **[string][64]** the type of event to trigger
 *   `options` **[Object][72]** additional properties to be set on the event
 
@@ -432,7 +432,7 @@ Optionally the user can also provide a POJO with extra modifiers for the event.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to trigger the event on
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
 *   `eventType` **(`"keydown"` | `"keyup"` | `"keypress"`)** the type of event to trigger
 *   `key` **([number][69] | [string][64])** the `keyCode`(number) or `key`(string) of the event being triggered
 *   `modifiers` **[Object][72]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
@@ -466,7 +466,7 @@ per character of the passed text (this may vary on some browsers).
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65])** the element or selector to enter text into
+*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
 *   `text` **[string][64]** the test to fill the element with
 *   `options` **[Object][72]** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{}`)
 
@@ -618,7 +618,7 @@ interim DOM states (e.g. loading states, pending promises, etc).
 
 #### Parameters
 
-*   `selector` **[string][64]** the selector to wait for
+*   `target` **([string][64] | IDOMElementDescriptor)** the selector or DOM element descriptor to wait for
 *   `options` **[Object][72]?** the options to be used (optional, default `{}`)
 
     *   `options.timeout` **[number][69]** the time to wait (in ms) for a match (optional, default `1000`)
@@ -876,7 +876,7 @@ Responsible for:
 #### Parameters
 
 *   `context` **[Object][72]** the context to setup
-*   `options` **[Object][72]?** options used to override defaults
+*   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
 
     *   `options.waitForSettled` **[boolean][71]** should the teardown wait for `settled()`ness (optional, default `true`)
 

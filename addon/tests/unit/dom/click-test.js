@@ -11,6 +11,7 @@ import {
   unregisterHooks,
   buildExpectedSteps,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 module('DOM Helper: click', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -78,6 +79,23 @@ module('DOM Helper: click', function (hooks) {
       element = buildInstrumentedElement('div');
 
       await click(element);
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
+    });
+
+    test('clicking a div via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await setupContext(context);
+      await click(createDescriptor({ element }));
+
+      assert.verifySteps(['mousedown', 'mouseup', 'click']);
+    });
+
+    test('clicking a div via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await click(createDescriptor({ element }));
 
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
@@ -216,6 +234,33 @@ module('DOM Helper: click', function (hooks) {
       element = buildInstrumentedElement('input');
 
       await click(element);
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
+    test('clicking a input via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await setupContext(context);
+      await click(createDescriptor({ element }));
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
+    test('clicking a input via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await click(createDescriptor({ element }));
 
       assert.verifySteps(clickSteps);
       assert.strictEqual(

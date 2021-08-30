@@ -6,6 +6,7 @@ import {
   registerHooks,
   unregisterHooks,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
 let additionalSteps = ['input', 'change'];
@@ -51,7 +52,10 @@ module('DOM Helper: select', function (hooks) {
 
   test('select without target', async function (assert) {
     await setupContext(context);
-    assert.rejects(select(), /Must pass an element or selector to `select`./);
+    assert.rejects(
+      select(),
+      /Must pass an element, selector, or descriptor to `select`./
+    );
   });
 
   test('select without options', async function (assert) {
@@ -227,5 +231,24 @@ module('DOM Helper: select', function (hooks) {
     assert.verifySteps([...selectSteps, ...additionalSteps]);
     assert.equal(element.selectedOptions[0].value, 'orange');
     assert.equal(element.selectedOptions.length, 1);
+  });
+
+  test('select with descriptor', async function (assert) {
+    const optionValues = ['apple', 'orange', 'pineapple', 'pear'];
+    element = buildInstrumentedElement('select');
+    element.multiple = false;
+
+    optionValues.forEach((optionValue) => {
+      const optionElement = buildInstrumentedElement('option');
+      optionElement.value = optionValue;
+      element.appendChild(optionElement);
+    });
+
+    await setupContext(context);
+
+    await select(createDescriptor({ element }), 'orange');
+
+    assert.verifySteps(selectSteps);
+    assert.equal(element.selectedIndex, 1);
   });
 });
