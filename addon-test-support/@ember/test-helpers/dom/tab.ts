@@ -170,12 +170,22 @@ function findNextResponders(root: Element, activeElement: HTMLElement) {
   keyboard.
 
   @public
-  @param {Object} options {backwards: x} (default false) indicates if the the user navigates backwards
+  @param {Object} [options] optional tab behaviors
+  @param {boolean} [options.backwards=false] indicates if the the user navigates backwards
+  @param {boolean} [options.unRestrainTabIndex=false] indicates if tabbing should throw an error when tabindex is greater than 0
   @return {Promise<void>} resolves when settled
 
   @example
+  <caption>
+    Emulating pressing the `TAB` key
+  </caption>
   tab();
-  tab({backwards: true});
+
+  @example
+  <caption>
+    Emulating pressing the `SHIFT`+`TAB` key combination
+  </caption>
+  tab({ backwards: true });
 */
 export default function triggerTab(options?: {
   backwards: boolean;
