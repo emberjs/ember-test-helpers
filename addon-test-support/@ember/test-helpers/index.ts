@@ -39,6 +39,7 @@ export {
 // DOM Helpers
 export { default as click } from './dom/click';
 export { default as doubleClick } from './dom/double-click';
+export { default as tab } from './dom/tab';
 export { default as tap } from './dom/tap';
 export { default as focus } from './dom/focus';
 export { default as blur } from './dom/blur';

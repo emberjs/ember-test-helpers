@@ -185,8 +185,9 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
   return event;
 }
 
+// @private
 // eslint-disable-next-line require-jsdoc
-function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
+export function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
   let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
