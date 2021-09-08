@@ -23,9 +23,9 @@ export function __doubleClick__(
   element: Element | Document | Window,
   options: MouseEventInit
 ): void {
-  fireEvent(element, 'mousedown', options);
+  let mouseDownEvent = fireEvent(element, 'mousedown', options);
 
-  if (!isWindow(element)) {
+  if (!isWindow(element) && !mouseDownEvent?.defaultPrevented) {
     __focus__(element);
   }
 

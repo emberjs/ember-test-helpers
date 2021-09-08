@@ -327,6 +327,30 @@ module('DOM Helper: click', function (hooks) {
 
       assert.verifySteps(['mousedown', 'mouseup', 'click']);
     });
+
+    test('preventDefault() on the mousedown event prevents triggering focus/blur events', async function (assert) {
+      element = document.createElement('input');
+
+      let preventDefault = (e) => e.preventDefault();
+      element.addEventListener('mousedown', preventDefault);
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+      focusableElement.addEventListener('blur', () => {
+        console.log('blur');
+      });
+
+      await click(focusableElement);
+      await click(element);
+
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
+
+      element.removeEventListener('mousedown', preventDefault);
+      await click(element);
+
+      assert.verifySteps(['blur', 'focusout']);
+    });
   });
 });
 
