@@ -89,6 +89,17 @@ module('teardownContext', function (hooks) {
     assert.ok(context.owner.isDestroyed);
   });
 
+  test('the application instance is destroyed and unwatched', async function (assert) {
+    let instance = context.owner.lookup('-application-instance:main');
+    await teardownContext(context);
+
+    assert.equal(instance.isDestroyed, true);
+    assert.equal(
+      instance.application._applicationInstances.has(instance),
+      false
+    );
+  });
+
   if (hasjQuery()) {
     test('out of balance xhr semaphores are cleaned up on teardown', async function (assert) {
       this.pretender.unhandledRequest = function (/* verb, path, request */) {
