@@ -253,6 +253,21 @@ module('DOM Helper: click', function (hooks) {
         new Error('Can not `click` disabled [object HTMLInputElement]')
       );
     });
+
+    test('clicking an un-focusable element inside a focus-able one', async function (assert) {
+      element = buildInstrumentedElement('button');
+      let child = document.createElement('span');
+      element.append(child);
+
+      await click(child);
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
   });
 
   module('elements in different realms', function () {
@@ -291,6 +306,28 @@ module('DOM Helper: click', function (hooks) {
         'click',
         'blur',
         'focusout',
+      ]);
+    });
+
+    test('clicking on non-focusable element inside active element does not trigger blur on active element', async function (assert) {
+      element = buildInstrumentedElement('button');
+      let child = document.createElement('div');
+      element.append(child);
+
+      insertElement(element);
+
+      await click(element);
+      await click(child);
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
       ]);
     });
 
