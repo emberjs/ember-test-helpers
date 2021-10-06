@@ -1,6 +1,23 @@
 
 
 
+
+## v2.4.3 (2021-10-06)
+
+#### :bug: Bug Fix
+* [#1126](https://github.com/emberjs/ember-test-helpers/pull/1126) Preserve focus when default is prevented on mousedown ([@bendemboski](https://github.com/bendemboski))
+* [#1127](https://github.com/emberjs/ember-test-helpers/pull/1127) Fix focus behavior when ancestor is focusable ([@bendemboski](https://github.com/bendemboski))
+
+#### :house: Internal
+* [#1135](https://github.com/emberjs/ember-test-helpers/pull/1135) Update to ember-auto-import@2 ([@rwjblue](https://github.com/rwjblue))
+* [#1111](https://github.com/emberjs/ember-test-helpers/pull/1111) Fixes postpack script to cleanup correct file type ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 3
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+
+
 ## v2.4.2 (2021-08-23)
 
 #### :bug: Bug Fix
