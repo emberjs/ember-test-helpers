@@ -2,6 +2,18 @@
 
 
 
+
+## v2.5.0 (2021-10-06)
+
+#### :rocket: Enhancement
+* [#795](https://github.com/emberjs/ember-test-helpers/pull/795) Add option to render to enable improved ember-engines testing API ([@villander](https://github.com/villander)) ([@richgt](https://github.com/richgt)) ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Michael Villander ([@villander](https://github.com/villander))
+- Rich Glazerman ([@richgt](https://github.com/richgt))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.4.3 (2021-10-06)
 
 #### :bug: Bug Fix
