@@ -46,20 +46,18 @@ if (typeof jQuery !== 'undefined' && _internalPendingRequests) {
     willDestroy(...args: any[]) {
       const internalPendingRequests = _internalPendingRequests();
 
-      if (internalPendingRequests === 0) {
-        return;
+      if (internalPendingRequests !== 0) {
+        jQuery(document).off(
+          'ajaxSend',
+          internalPendingRequests.incrementPendingRequests
+        );
+        jQuery(document).off(
+          'ajaxComplete',
+          internalPendingRequests.decrementPendingRequests
+        );
+
+        internalPendingRequests.clearPendingRequests();
       }
-
-      jQuery(document).off(
-        'ajaxSend',
-        internalPendingRequests.incrementPendingRequests
-      );
-      jQuery(document).off(
-        'ajaxComplete',
-        internalPendingRequests.decrementPendingRequests
-      );
-
-      internalPendingRequests.clearPendingRequests();
 
       this._super(...args);
     },
