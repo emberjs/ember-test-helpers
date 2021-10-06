@@ -420,6 +420,37 @@ module('DOM Helper: doubleClick', function (hooks) {
         'dblclick',
       ]);
     });
+
+    test('preventDefault() on the mousedown event prevents triggering focus/blur events', async function (assert) {
+      element = document.createElement('input');
+
+      let preventDefault = (e) => e.preventDefault();
+      element.addEventListener('mousedown', preventDefault);
+
+      insertElement(element);
+
+      const focusableElement = buildInstrumentedElement('input');
+
+      await doubleClick(focusableElement);
+      await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
+
+      element.removeEventListener('mousedown', preventDefault);
+      await doubleClick(element);
+
+      assert.verifySteps(['blur', 'focusout']);
+    });
   });
 });
 
