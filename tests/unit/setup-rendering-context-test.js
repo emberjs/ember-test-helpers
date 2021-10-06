@@ -5,6 +5,7 @@ import Component from '@ember/component';
 import TextField from '@ember/component/text-field';
 import { helper } from '@ember/component/helper';
 import {
+  getApplication,
   setupContext,
   setupRenderingContext,
   teardownContext,
@@ -28,6 +29,36 @@ import {
 } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { getOwner } from '@ember/application';
+import Engine from '@ember/engine';
+
+async function buildEngineOwner(parentOwner, registry) {
+  parentOwner.register(
+    'engine:foo',
+    Engine.extend({
+      router: null,
+
+      Resolver: {
+        create() {
+          return {
+            registry,
+            resolve(fullName) {
+              return registry[fullName];
+            },
+          };
+        },
+      },
+    })
+  );
+
+  let instance = parentOwner.buildChildEngineInstance('foo', {
+    routable: true,
+    mountPoint: 'foo',
+  });
+
+  await instance.boot();
+
+  return instance;
+}
 
 module('setupRenderingContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -72,6 +103,26 @@ module('setupRenderingContext', function (hooks) {
       await render(hbs`Hi!`);
 
       assert.equal(this.element.textContent, 'Hi!');
+    });
+
+    test('render works with custom owner', async function (assert) {
+      if (getApplication() === null) {
+        assert.ok(
+          true,
+          'cannot test custom owner when no root application is set'
+        );
+        return;
+      }
+
+      let alternateOwner = await buildEngineOwner(this.owner, {
+        'template:components/foo': hbs`hello!`,
+      });
+
+      this.owner.register('template:components/foo', hbs`noooooooo!`);
+
+      await render(hbs`<Foo />`, { owner: alternateOwner });
+
+      assert.equal(this.element.textContent, 'hello!');
     });
 
     if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
