@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
 import { Promise } from '../-utils';
-import Target from './-target';
+import Target, { isDocument } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 import { __blur__ } from './blur';
@@ -13,22 +13,48 @@ registerHook('focus', 'start', (target: Target) => {
 });
 
 /**
+   Get the closest focusable ancestor of a given element (or the element itself
+   if it's focusable)
+
+   @private
+   @param {Element} element the element to trigger events on
+   @returns {HTMLElement|SVGElement|null} the focusable element/ancestor or null
+   if there is none
+ */
+function getClosestFocusable(
+  element: HTMLElement | Element | Document | SVGElement
+): HTMLElement | SVGElement | null {
+  if (isDocument(element)) {
+    return null;
+  }
+
+  let maybeFocusable: Element | null = element;
+  while (maybeFocusable && !isFocusable(maybeFocusable)) {
+    maybeFocusable = maybeFocusable.parentElement;
+  }
+
+  return maybeFocusable;
+}
+
+/**
   @private
   @param {Element} element the element to trigger events on
 */
 export function __focus__(
   element: HTMLElement | Element | Document | SVGElement
 ): void {
+  let focusTarget = getClosestFocusable(element);
+
   const previousFocusedElement =
     document.activeElement &&
-    document.activeElement !== element &&
+    document.activeElement !== focusTarget &&
     isFocusable(document.activeElement)
       ? document.activeElement
       : null;
 
   // fire __blur__ manually with the null relatedTarget when the target is not focusable
   // and there was a previously focused element
-  if (!isFocusable(element)) {
+  if (!focusTarget) {
     if (previousFocusedElement) {
       __blur__(previousFocusedElement, null);
     }
@@ -41,22 +67,22 @@ export function __focus__(
   // fire __blur__ manually with the correct relatedTarget when the browser is not
   // already in focus and there was a previously focused element
   if (previousFocusedElement && browserIsNotFocused) {
-    __blur__(previousFocusedElement, element);
+    __blur__(previousFocusedElement, focusTarget);
   }
 
   // makes `document.activeElement` be `element`. If the browser is focused, it also fires a focus event
-  element.focus();
+  focusTarget.focus();
 
   // Firefox does not trigger the `focusin` event if the window
   // does not have focus. If the document does not have focus then
   // fire `focusin` event as well.
   if (browserIsNotFocused) {
     // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
-    fireEvent(element, 'focus', {
+    fireEvent(focusTarget, 'focus', {
       bubbles: false,
     });
 
-    fireEvent(element, 'focusin');
+    fireEvent(focusTarget, 'focusin');
   }
 }
 

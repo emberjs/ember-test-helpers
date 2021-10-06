@@ -277,6 +277,21 @@ module('DOM Helper: doubleClick', function (hooks) {
         /Must setup rendering context before attempting to interact with elements/
       );
     });
+
+    test('double-clicking an un-focusable element inside a focus-able one', async function (assert) {
+      element = buildInstrumentedElement('button');
+      let child = document.createElement('span');
+      element.append(child);
+
+      await doubleClick(child);
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
   });
 
   module('elements in different realms', function () {
@@ -305,7 +320,7 @@ module('DOM Helper: doubleClick', function (hooks) {
   });
 
   module('focusable and non-focusable elements interaction', function () {
-    test('cdouble-licking on non-focusable element triggers blur on active element', async function (assert) {
+    test('double-clicking on non-focusable element triggers blur on active element', async function (assert) {
       element = document.createElement('div');
 
       insertElement(element);
@@ -327,6 +342,36 @@ module('DOM Helper: doubleClick', function (hooks) {
         'dblclick',
         'blur',
         'focusout',
+      ]);
+    });
+
+    test('double-clicking on non-focusable element inside active element does not trigger blur on active element', async function (assert) {
+      element = buildInstrumentedElement('button');
+      let child = document.createElement('div');
+      element.append(child);
+
+      insertElement(element);
+
+      await doubleClick(element);
+      await doubleClick(child);
+
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
       ]);
     });
 
