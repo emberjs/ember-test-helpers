@@ -20,7 +20,7 @@ jobs:
       - uses: volta-cli/action@v1
         with:
           node-version: 10.x
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile --ignore-engines
       - run: yarn lint
       - run: yarn test
 
