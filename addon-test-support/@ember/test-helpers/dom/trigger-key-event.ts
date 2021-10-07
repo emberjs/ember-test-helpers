@@ -12,6 +12,7 @@ import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 import { find } from '../ie-11-polyfills';
+import { assign } from '../ie-11-polyfills';
 
 registerHook(
   'triggerKeyEvent',
@@ -176,7 +177,7 @@ export function __triggerKeyEvent__(
     );
   }
 
-  let options = Object.assign(props, modifiers);
+  let options = assign(props, modifiers);
 
   fireEvent(element, eventType, options);
 }

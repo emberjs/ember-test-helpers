@@ -10,6 +10,7 @@ import {
   PendingWaiterState,
   TestWaiterDebugInfo,
 } from '@ember/test-waiters';
+import { assign } from '../ie-11-polyfills';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';
@@ -94,7 +95,7 @@ export class TestDebugInfo implements DebugInfo {
 
   get summary(): SummaryInfo {
     if (!this._summaryInfo) {
-      this._summaryInfo = Object.assign(<SummaryInfo>{}, this._settledState);
+      this._summaryInfo = assign(<SummaryInfo>{}, this._settledState);
 
       if (this._debugInfo) {
         this._summaryInfo.autorunStackTrace =

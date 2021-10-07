@@ -7,6 +7,7 @@ import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { assign } from '../ie-11-polyfills';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
@@ -92,7 +93,7 @@ export default function click(
   target: Target,
   _options: MouseEventInit = {}
 ): Promise<void> {
-  let options = Object.assign({}, DEFAULT_CLICK_OPTIONS, _options);
+  let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
 
   return Promise.resolve()
     .then(() => runHooks('click', 'start', target, _options))

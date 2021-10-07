@@ -6,6 +6,7 @@ import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFocusable from './-is-focusable';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { assign } from '../ie-11-polyfills';
 
 registerHook('blur', 'start', (target: Target) => {
   log('blur', target);
@@ -38,7 +39,7 @@ export function __blur__(
   // fire `blur` event via native event.
   if (browserIsNotFocused || needsCustomEventOptions) {
     let options = { relatedTarget };
-    fireEvent(element, 'blur', Object.assign({ bubbles: false }, options));
+    fireEvent(element, 'blur', assign({ bubbles: false }, options));
     fireEvent(element, 'focusout', options);
   }
 }

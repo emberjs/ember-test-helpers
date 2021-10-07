@@ -34,3 +34,14 @@ function toArrayPolyfill<T extends Node>(nodeList: NodeListOf<T>): T[] {
 
   return array;
 }
+
+/**
+ * @private
+ * Object.assign fallback
+ * @param {object} source
+ * @param {object} target
+ * @returns {object}
+ */
+ export function assign(source: Object, target: Object): Object {
+  return Object.assign ? Object.assign(source, target) : Ember.assign(source, target);
+}

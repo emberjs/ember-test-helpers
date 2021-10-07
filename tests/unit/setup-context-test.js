@@ -27,6 +27,7 @@ import App from '../../app';
 import config from '../../config/environment';
 import Ember from 'ember';
 import { deprecate, warn } from '@ember/debug';
+import { assign } from '../ie-11-polyfills';
 
 module('setupContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -847,7 +848,7 @@ module('setupContext', function (hooks) {
     let isolatedApp;
 
     hooks.beforeEach(function () {
-      const AppConfig = Object.assign({ autoboot: false }, config.APP);
+      const AppConfig = assign({ autoboot: false }, config.APP);
       // .extend() because initializers are stored in the constructor, and we
       // don't want to pollute other tests using an application created from the
       // same constructor.
