@@ -118,10 +118,7 @@ function fireEvent(
       clientY: y,
     };
 
-    event = buildMouseEvent(
-      eventType,
-      assign(simulatedCoordinates, options)
-    );
+    event = buildMouseEvent(eventType, assign(simulatedCoordinates, options));
   } else if (
     isFileSelectionEventType(eventType) &&
     isFileSelectionInput(element)
@@ -157,11 +154,7 @@ function buildBasicEvent(type: string, options: any = {}): Event {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
-  let eventOpts: any = assign(
-    { view: window },
-    DEFAULT_EVENT_OPTIONS,
-    options
-  );
+  let eventOpts: any = assign({ view: window }, DEFAULT_EVENT_OPTIONS, options);
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
