@@ -42,6 +42,8 @@ function toArrayPolyfill<T extends Node>(nodeList: NodeListOf<T>): T[] {
  * @param {object} target
  * @returns {object}
  */
- export function assign(source: Object, target: Object): Object {
-  return Object.assign ? Object.assign(source, target) : Ember.assign(source, target);
+ export function assign<T, U>(target: T, source: U): T & U;
+ export function assign<T, U, V>(target: T, source: U, source1: V): T & U & V;
+ export function assign<object, object>(source: object, ...rest: object[]): Object {
+  return Object.assign ? Object.assign(source, ...rest) : Ember.assign(source, ...rest);
 }
