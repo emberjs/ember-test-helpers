@@ -1,4 +1,17 @@
-import triggerEvent from './trigger-event';
+import { settled } from '..';
+import { registerHook, runHooks } from '../-internal/helper-hooks';
+import getElement from './-get-element';
+import { log } from './-logging';
+import Target from './-target';
+import fireEvent from './fire-event';
+
+registerHook(
+  'dragMove',
+  'start',
+  (draggableElement: Target, targetElement: Target) => {
+    log('dragMove', draggableElement, targetElement);
+  }
+);
 
 /**
   Drag and drop
@@ -11,26 +24,54 @@ import triggerEvent from './trigger-event';
   @returns {promise} returns event with dataTransfer object
 */
 export default function dragMove(
-  draggableStartElement: HTMLElement | string,
-  dropTargetElement: HTMLElement | string
-) {
+  draggableStartElement: Target,
+  dropTargetElement: Target
+): Promise<void> {
   const context: Record<string, string> = {};
 
-  return triggerEvent(draggableStartElement, 'dragstart', {
-    dataTransfer: {
-      setData(someKey: string, value: string) {
-        context[someKey] = value;
-      },
-    },
-  }).then(() => {
-    return triggerEvent(dropTargetElement, 'dragover').then(() => {
-      return triggerEvent(dropTargetElement, 'drop', {
+  if (!draggableStartElement) {
+    throw new Error(
+      `Element not found: ${draggableStartElement}. Must pass an element or selector.`
+    );
+  }
+  if (!dropTargetElement) {
+    throw new Error(
+      `Element not found: ${dropTargetElement}. Must pass an element or selector.`
+    );
+  }
+
+  const dragEl = getElement(draggableStartElement) as Element | HTMLElement;
+
+  const targetEl = getElement(dropTargetElement) as Element | HTMLElement;
+
+  return Promise.resolve()
+    .then(() =>
+      runHooks('dragMove', 'start', draggableStartElement, dropTargetElement)
+    )
+    .then(() => {
+      fireEvent(dragEl, 'dragstart', {
+        dataTransfer: {
+          setData(someKey: string, value: string) {
+            context[someKey] = value;
+          },
+        },
+      });
+
+      fireEvent(targetEl, 'dragenter');
+
+      fireEvent(targetEl, 'dragover');
+
+      fireEvent(targetEl, 'drop', {
         dataTransfer: {
           getData(someKey: string) {
             return context[someKey];
           },
         },
       });
-    });
-  });
+
+      return settled();
+    })
+    .then(() =>
+      runHooks('dragMove', 'end', draggableStartElement, dropTargetElement)
+    );
 }

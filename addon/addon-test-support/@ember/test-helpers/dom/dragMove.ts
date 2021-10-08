@@ -1,5 +1,5 @@
 import { settled } from '..';
-import { registerHook, runHooks } from '../-internal/helper-hooks';
+import { registerHook, runHooks } from '../helper-hooks';
 import getElement from './-get-element';
 import { log } from './-logging';
 import Target from './-target';
