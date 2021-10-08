@@ -32,6 +32,13 @@ export function isKeyboardEventType(
 const MOUSE_EVENT_TYPES = tuple(
   'click',
   'dblclick',
+  'drag',
+  'dragend',
+  'dragenter',
+  'dragleave',
+  'dragover',
+  'dragstart',
+  'drop',
   'mousedown',
   'mouseenter',
   'mouseleave',

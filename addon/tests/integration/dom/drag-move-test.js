@@ -9,7 +9,7 @@ import {
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
-module('DOM Helper: dragMove', function (hooks) {
+module('DOM Helper: moveDrag', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
@@ -43,6 +43,7 @@ module('DOM Helper: dragMove', function (hooks) {
       this.set('dragenterTriggered', true);
     });
     this.set('handleDrop', () => {
+      console.log('dropped');
       this.set('dropTriggered', true);
     });
 
@@ -55,43 +56,13 @@ module('DOM Helper: dragMove', function (hooks) {
         >Drag text here</div>
       `);
 
+    debugger;
+
     await dragMove('.source', '.target');
 
     assert.true(this.get('dragStarted'));
     assert.true(this.get('dragenterTriggered'));
     assert.true(this.get('dragoverTriggered'));
     assert.true(this.get('dropTriggered'));
-  });
-
-  test('dataTransfer mock transfers data like html api', async function (assert) {
-    const testString = 'Test string!';
-
-    this.set('handleDragStart', (event) => {
-      event.dataTransfer.setData('test', testString);
-    });
-    this.set('handleDragOver', (event) => {
-      event.preventDefault();
-    });
-    this.set('handleDragEnter', (event) => {
-      event.preventDefault();
-    });
-    this.set('handleDrop', (event) => {
-      const payload = event.dataTransfer.getData('test');
-
-      this.set('deliveredPayload', payload);
-    });
-
-    await render(hbs`
-      <div draggable='true' class='source' {{on 'dragstart' this.handleDragStart}}>Test draggable text</div>
-      <div class='target'
-        {{on "dragover" this.handleDragOver}}
-        {{on "dragenter" this.handleDragEnter}}
-        {{on "drop" this.handleDrop}}
-        >Drag text here</div>
-      `);
-
-    await dragMove('.source', '.target');
-
-    assert.equal(testString, this.get('deliveredPayload'));
   });
 });
