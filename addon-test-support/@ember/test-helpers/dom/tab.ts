@@ -1,14 +1,13 @@
 import getRootElement from './get-root-element';
 import settled from '../settled';
-import fireEvent, { buildKeyboardEvent } from './fire-event';
+import fireEvent, { _buildKeyboardEvent } from './fire-event';
 import { isDocument } from './-target';
 import { __blur__ } from './blur';
 import { Promise } from '../-utils';
-import { createTreeWalker } from './-create-tree-walker';
 import { __focus__ } from './focus';
 
 const FORM_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA', 'FIELDSET'];
-const SUPPORTS_INHERT = 'inert' in Element.prototype;
+const SUPPORTS_INERT = 'inert' in Element.prototype;
 const FALLBACK_ELEMENTS = ['CANVAS', 'VIDEO', 'PICTURE'];
 
 /**
@@ -57,8 +56,14 @@ interface InhertHTMLElement extends HTMLElement {
   @returns {Array} list of focusable nodes
 */
 function compileFocusAreas(root: Element = document.body) {
-  let activeElment = getActiveElement(root.ownerDocument!);
-  let treeWalker = createTreeWalker(
+  let { ownerDocument } = root;
+
+  if (!ownerDocument) {
+    throw new Error('Element must be in the DOM');
+  }
+
+  let activeElment = getActiveElement(ownerDocument);
+  let treeWalker = ownerDocument.createTreeWalker(
     root,
     NodeFilter.SHOW_ELEMENT,
     {
@@ -80,7 +85,7 @@ function compileFocusAreas(root: Element = document.body) {
         }
 
         // Rejects inhert containers, if the user agent supports the feature (or if a polyfill is installed.)
-        if (SUPPORTS_INHERT && (node as InhertHTMLElement).inhert) {
+        if (SUPPORTS_INERT && (node as InhertHTMLElement).inhert) {
           return NodeFilter.FILTER_REJECT;
         }
 
@@ -234,7 +239,7 @@ function triggerResponderChange(
   return Promise.resolve()
     .then(() => {
       let activeElement = getActiveElement(ownerDocument);
-      let event = buildKeyboardEvent('keydown', keyboardEventOptions);
+      let event = _buildKeyboardEvent('keydown', keyboardEventOptions);
       let defaultNotPrevented = activeElement.dispatchEvent(event);
 
       if (defaultNotPrevented) {

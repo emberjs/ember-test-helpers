@@ -96,7 +96,7 @@ function fireEvent(
 
   let event;
   if (isKeyboardEventType(eventType)) {
-    event = buildKeyboardEvent(eventType, options);
+    event = _buildKeyboardEvent(eventType, options);
   } else if (isMouseEventType(eventType)) {
     let rect;
     if (element instanceof Window && element.document.documentElement) {
@@ -187,7 +187,10 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 
 // @private
 // eslint-disable-next-line require-jsdoc
-export function buildKeyboardEvent(type: KeyboardEventType, options: any = {}) {
+export function _buildKeyboardEvent(
+  type: KeyboardEventType,
+  options: any = {}
+) {
   let eventOpts: any = assign({}, DEFAULT_EVENT_OPTIONS, options);
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
