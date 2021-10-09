@@ -3,36 +3,12 @@ import settled from '../settled';
 import fireEvent, { _buildKeyboardEvent } from './fire-event';
 import { isDocument } from './-target';
 import { __blur__ } from './blur';
-import { Promise } from '../-utils';
 import { __focus__ } from './focus';
+import { Promise, isVisible, isDisabled } from '../-utils';
 
 const FORM_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA', 'FIELDSET'];
 const SUPPORTS_INERT = 'inert' in Element.prototype;
 const FALLBACK_ELEMENTS = ['CANVAS', 'VIDEO', 'PICTURE'];
-
-/**
-  Checks if an element is considered visible by the focus area spec.
-  @private
-  @param {Element} element the element to check
-  @returns {boolean} `true` when the element is visible, `false` otherwise
-*/
-function isVisible(element: Element): boolean {
-  let styles = window.getComputedStyle(element);
-  return styles.display !== 'none' && styles.visibility !== 'hidden';
-}
-
-/**
-  Checks if an element is disabled.
-  @private
-  @param {Element} element the element to check
-  @returns {boolean} `true` when the element is disabled, `false` otherwise
-*/
-function isDisabled(element: HTMLElement): boolean {
-  if (FORM_TAGS.indexOf(element.tagName) !== -1) {
-    return (element as HTMLInputElement).disabled;
-  }
-  return false;
-}
 
 /**
   Gets the active element of a document. IE11 may return null instead of the body as
@@ -45,7 +21,7 @@ function getActiveElement(ownerDocument: Document): HTMLElement {
   return (ownerDocument.activeElement as HTMLElement) || ownerDocument.body;
 }
 
-interface InhertHTMLElement extends HTMLElement {
+interface InertHTMLElement extends HTMLElement {
   inhert: boolean;
 }
 
@@ -85,7 +61,7 @@ function compileFocusAreas(root: Element = document.body) {
         }
 
         // Rejects inhert containers, if the user agent supports the feature (or if a polyfill is installed.)
-        if (SUPPORTS_INERT && (node as InhertHTMLElement).inhert) {
+        if (SUPPORTS_INERT && (node as InertHTMLElement).inhert) {
           return NodeFilter.FILTER_REJECT;
         }
 
@@ -256,18 +232,6 @@ function triggerResponderChange(
           }
         }
       }
-    })
-    .then(() => {
-      // It seems IE11 fires focus events async when invoking `focus()` on elements,
-      // to get tests passing, and make sure events are called in the right order, we'll
-      // wait a bit.
-      let isIE11 = !window.ActiveXObject && 'ActiveXObject' in window;
-      if (isIE11) {
-        return new Promise((resolve) => {
-          setTimeout(resolve, 50);
-        });
-      }
-      return;
     })
     .then(() => {
       let activeElement = getActiveElement(ownerDocument);

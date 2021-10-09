@@ -13,8 +13,8 @@ import {
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
-let _focusSteps = isIE11 ? ['focusin', 'focus'] : ['focus', 'focusin'];
-let _blurSteps = isIE11 || isEdge ? ['focusout', 'blur'] : ['blur', 'focusout'];
+let _focusSteps = ['focus', 'focusin'];
+let _blurSteps = isEdge ? ['focusout', 'blur'] : ['blur', 'focusout'];
 
 function focusSteps(name) {
   return [`${_focusSteps[0]} ${name}`, `${_focusSteps[1]} ${name}`];
@@ -25,16 +25,6 @@ function blurSteps(name) {
 }
 
 function moveFocus(from, to) {
-  if (isIE11) {
-    return [
-      `keydown ${from}`,
-      `focusout ${from}`,
-      `focusin ${to}`,
-      `blur ${from}`,
-      `focus ${to}`,
-      `keyup ${to}`,
-    ];
-  }
   return [
     `keydown ${from}`,
     ...blurSteps(from),
@@ -45,6 +35,10 @@ function moveFocus(from, to) {
 
 module('DOM Helper: tab', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
+    return;
+  }
+
+  if (isIE11) {
     return;
   }
 
@@ -391,48 +385,45 @@ module('DOM Helper: tab', function (hooks) {
     ]);
   });
 
-  // IE11 doesn’t support the summary and detail and will fail this check
-  if (isIE11 === false) {
-    test('first summary element of a details should be focusable', async function (assert) {
-      let firstSummary = document.createElement('summary');
-      let secondSummary = document.createElement('summary');
+  test('first summary element of a details should be focusable', async function (assert) {
+    let firstSummary = document.createElement('summary');
+    let secondSummary = document.createElement('summary');
 
-      instrumentElement(firstSummary, ['target.id']);
-      instrumentElement(secondSummary, ['target.id']);
+    instrumentElement(firstSummary, ['target.id']);
+    instrumentElement(secondSummary, ['target.id']);
 
-      let container = document.createElement('details');
-      container.appendChild(firstSummary);
-      container.appendChild(secondSummary);
-      insertElement(container);
+    let container = document.createElement('details');
+    container.appendChild(firstSummary);
+    container.appendChild(secondSummary);
+    insertElement(container);
 
-      elements = [firstSummary, secondSummary];
+    elements = [firstSummary, secondSummary];
 
-      assert.equal(
-        firstSummary.tabIndex,
-        0,
-        'first summary created successfully'
-      );
-      assert.equal(
-        secondSummary.tabIndex,
-        -1,
-        'second summary created successfully'
-      );
+    assert.equal(
+      firstSummary.tabIndex,
+      0,
+      'first summary created successfully'
+    );
+    assert.equal(
+      secondSummary.tabIndex,
+      -1,
+      'second summary created successfully'
+    );
 
-      await setupContext(context);
+    await setupContext(context);
 
-      let active = document.activeElement;
-      await tab();
-      assert.notEqual(document.activeElement, active);
-      active = document.activeElement;
-      await tab();
-      assert.notEqual(document.activeElement, active);
+    let active = document.activeElement;
+    await tab();
+    assert.notEqual(document.activeElement, active);
+    active = document.activeElement;
+    await tab();
+    assert.notEqual(document.activeElement, active);
 
-      assert.verifySteps([
-        ...focusSteps(firstSummary.id),
-        `keyup ${firstSummary.id}`,
-        `keydown ${firstSummary.id}`,
-        ...blurSteps(firstSummary.id),
-      ]);
-    });
-  }
+    assert.verifySteps([
+      ...focusSteps(firstSummary.id),
+      `keyup ${firstSummary.id}`,
+      `keydown ${firstSummary.id}`,
+      ...blurSteps(firstSummary.id),
+    ]);
+  });
 });

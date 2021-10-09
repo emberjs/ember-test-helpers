@@ -8,6 +8,7 @@ const HAS_PROMISE =
   Promise !== RSVP.Promise;
 
 import PromisePolyfill from './-internal/promise-polyfill';
+import isFormControl from './dom/-is-form-control';
 
 const _Promise: typeof Promise = HAS_PROMISE
   ? Promise
@@ -52,4 +53,30 @@ export function runDestroyablesFor(object: any, property: string): void {
  */
 export function isNumeric(n: string): boolean {
   return !isNaN(parseFloat(n)) && isFinite(Number(n));
+}
+
+/**
+  Checks if an element is considered visible by the focus area spec.
+
+  @private
+  @param {Element} element the element to check
+  @returns {boolean} `true` when the element is visible, `false` otherwise
+*/
+export function isVisible(element: Element): boolean {
+  let styles = window.getComputedStyle(element);
+  return styles.display !== 'none' && styles.visibility !== 'hidden';
+}
+
+/**
+  Checks if an element is disabled.
+
+  @private
+  @param {Element} element the element to check
+  @returns {boolean} `true` when the element is disabled, `false` otherwise
+*/
+export function isDisabled(element: HTMLElement): boolean {
+  if (!isFormControl(element)) {
+    return (element as HTMLInputElement).disabled;
+  }
+  return false;
 }
