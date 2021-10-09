@@ -6,7 +6,6 @@ import { __blur__ } from './blur';
 import { __focus__ } from './focus';
 import { Promise, isVisible, isDisabled } from '../-utils';
 
-const FORM_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA', 'FIELDSET'];
 const SUPPORTS_INERT = 'inert' in Element.prototype;
 const FALLBACK_ELEMENTS = ['CANVAS', 'VIDEO', 'PICTURE'];
 
