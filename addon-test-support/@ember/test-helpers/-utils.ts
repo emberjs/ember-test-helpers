@@ -75,7 +75,7 @@ export function isVisible(element: Element): boolean {
   @returns {boolean} `true` when the element is disabled, `false` otherwise
 */
 export function isDisabled(element: HTMLElement): boolean {
-  if (!isFormControl(element)) {
+  if (isFormControl(element)) {
     return (element as HTMLInputElement).disabled;
   }
   return false;

@@ -21,7 +21,7 @@ function getActiveElement(ownerDocument: Document): HTMLElement {
 }
 
 interface InertHTMLElement extends HTMLElement {
-  inhert: boolean;
+  inert: boolean;
 }
 
 /**
@@ -43,7 +43,8 @@ function compileFocusAreas(root: Element = document.body) {
     NodeFilter.SHOW_ELEMENT,
     {
       acceptNode: (node: HTMLElement) => {
-        /// Only visible nodes can be focused, with, at least, one exception; the "area" element.
+        // Only visible nodes can be focused, with, at least, one exception; the "area" element.
+        // reference: https://html.spec.whatwg.org/multipage/interaction.html#data-model
         if (node.tagName !== 'AREA' && isVisible(node) === false) {
           return NodeFilter.FILTER_REJECT;
         }
@@ -59,8 +60,8 @@ function compileFocusAreas(root: Element = document.body) {
           return NodeFilter.FILTER_REJECT;
         }
 
-        // Rejects inhert containers, if the user agent supports the feature (or if a polyfill is installed.)
-        if (SUPPORTS_INERT && (node as InertHTMLElement).inhert) {
+        // Rejects inert containers, if the user agent supports the feature (or if a polyfill is installed.)
+        if (SUPPORTS_INERT && (node as InertHTMLElement).inert) {
           return NodeFilter.FILTER_REJECT;
         }
 
