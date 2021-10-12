@@ -53,6 +53,22 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
  *     }
  *   }
  * )
+ *
+ *
+ * @example
+ * <caption>
+ * Using `triggerEvent` to simulate a mouseleave event
+ *
+ * `triggerEvent` allows to trigger all sorts of mouse events. The `options` param can contain all params from a [MouseEventInit](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent) object.
+ * If supplied, the `options.relatedTarget` has to be an HTML `Element`.
+ * </caption>
+ *
+ * const target = find('#zone')
+ * triggerEvent(
+ *   target,
+ *   'mouseleave',
+ *   { relatedTarget: target }
+ * )
  */
 export default function triggerEvent(
   target: Target,
