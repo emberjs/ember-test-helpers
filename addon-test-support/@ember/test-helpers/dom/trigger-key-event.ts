@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
@@ -154,6 +153,7 @@ export function __triggerKeyEvent__(
       keyCode: key,
       which: key,
       key: keyFromKeyCodeAndModifiers(key, modifiers),
+      ...modifiers,
     };
   } else if (typeof key === 'string' && key.length !== 0) {
     let firstCharacter = key[0];
@@ -170,16 +170,14 @@ export function __triggerKeyEvent__(
     }
 
     let keyCode = keyCodeFromKey(key);
-    props = { keyCode, which: keyCode, key };
+    props = { keyCode, which: keyCode, key, ...modifiers };
   } else {
     throw new Error(
       `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``
     );
   }
 
-  let options = assign(props, modifiers);
-
-  fireEvent(element, eventType, options);
+  fireEvent(element, eventType, props);
 }
 
 /**

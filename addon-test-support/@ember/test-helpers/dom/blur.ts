@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
@@ -39,7 +38,7 @@ export function __blur__(
   // fire `blur` event via native event.
   if (browserIsNotFocused || needsCustomEventOptions) {
     let options = { relatedTarget };
-    fireEvent(element, 'blur', assign({ bubbles: false }, options));
+    fireEvent(element, 'blur', { bubbles: false, ...options });
     fireEvent(element, 'focusout', options);
   }
 }
