@@ -1,7 +1,9 @@
 import isFormControl from './-is-form-control';
 import { isDocument, isContentEditable, isWindow } from './-target';
 
-const FOCUSABLE_TAGS = ['A'];
+// For reference:
+// https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute
+const FOCUSABLE_TAGS = ['A', 'SUMMARY'];
 
 type FocusableElement = HTMLAnchorElement;
 
