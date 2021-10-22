@@ -3232,10 +3232,10 @@ broccoli-amd-funnel@^2.0.1:
     broccoli-plugin "^1.3.0"
     symlink-or-copy "^1.2.0"
 
-broccoli-babel-preset-typescript@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/broccoli-babel-preset-typescript/-/broccoli-babel-preset-typescript-1.0.0.tgz#d93f56411a1bc914d38689413828bfc225a92721"
-  integrity sha512-mQrWnpPJcG2mAng9zWMvQFdRm58k/ELU7zAiLFjlagjOXnoGIVyYvoajO4vr0sOqw1/HWHj0K193N0qOby/O6g==
+broccoli-babel-preset-typescript@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/broccoli-babel-preset-typescript/-/broccoli-babel-preset-typescript-1.0.1.tgz#964df59279ca156ccb28714c75cfe30f8f728bb2"
+  integrity sha512-vgFRjIAzFw9ug48xZU9Euz9G/M4Prnmpa8RLwErz+f5Y7SJs7YpzaUhgr5G9hrDNiqpELgelxkFMm5iNQxRq1g==
   dependencies:
     "@babel/core" "^7.15.0"
     "@babel/preset-typescript" "^7.15.0"
