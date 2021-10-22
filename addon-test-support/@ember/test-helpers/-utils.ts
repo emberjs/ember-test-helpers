@@ -7,12 +7,8 @@ const HAS_PROMISE =
   // @ts-ignore this is checking if someone has explicitly done `window.Promise = window.Promise || Ember.RSVP.Promise
   Promise !== RSVP.Promise;
 
-import PromisePolyfill from './-internal/promise-polyfill';
+import _Promise from './-internal/promise';
 import isFormControl from './dom/-is-form-control';
-
-const _Promise: typeof Promise = HAS_PROMISE
-  ? Promise
-  : (PromisePolyfill as typeof Promise);
 
 export { _Promise as Promise };
 

@@ -6,7 +6,7 @@ import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 
-import PromisePolyfill from '@ember/test-helpers/-internal/promise-polyfill';
+import { Promise as PromiseOrPolyfill } from '@ember/test-helpers/-utils';
 import {
   getDeprecationsDuringCallback,
   getDeprecations,
@@ -14,7 +14,7 @@ import {
 
 // This is needed for async/await transpilation :sob:
 if (typeof Promise === 'undefined') {
-  window.Promise = PromisePolyfill;
+  window.Promise = PromiseOrPolyfill;
 }
 
 if (QUnit.config.seed) {
