@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import Component from '@ember/component';
+import { helper } from '@ember/component/helper';
 import {
   setupContext,
   setupRenderingContext,
@@ -13,6 +14,7 @@ import {
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
+import { precompileTemplate } from '@ember/template-compilation';
 import { defer } from 'rsvp';
 
 const PromiseWrapperTemplate = hbs`
@@ -143,5 +145,25 @@ module('setupRenderingContext "real world"', function (hooks) {
       'Clicked!',
       'the rootElement has the correct content after clicking'
     );
+  });
+
+  module('lexical scope access', function () {
+    if (hasEmberVersion(3, 28)) {
+      test('can render components passed as locals', async function (assert) {
+        let add = helper(function ([first, second]) {
+          return first + second;
+        });
+
+        await render(
+          precompileTemplate('{{add 1 3}}', {
+            scope() {
+              return { add };
+            },
+          })
+        );
+
+        assert.equal(this.element.textContent, '4');
+      });
+    }
   });
 });
