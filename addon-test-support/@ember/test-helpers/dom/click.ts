@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
@@ -93,7 +92,7 @@ export default function click(
   target: Target,
   _options: MouseEventInit = {}
 ): Promise<void> {
-  let options = assign({}, DEFAULT_CLICK_OPTIONS, _options);
+  let options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
 
   return Promise.resolve()
     .then(() => runHooks('click', 'start', target, _options))
