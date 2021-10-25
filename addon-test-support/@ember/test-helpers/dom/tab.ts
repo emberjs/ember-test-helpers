@@ -1,13 +1,19 @@
 import getRootElement from './get-root-element';
 import settled from '../settled';
 import fireEvent, { _buildKeyboardEvent } from './fire-event';
-import { isDocument } from './-target';
+import Target, { isDocument } from './-target';
 import { __blur__ } from './blur';
 import { __focus__ } from './focus';
 import { Promise, isVisible, isDisabled } from '../-utils';
+import { registerHook, runHooks } from '../-internal/helper-hooks';
+import { log } from './-logging';
 
 const SUPPORTS_INERT = 'inert' in Element.prototype;
 const FALLBACK_ELEMENTS = ['CANVAS', 'VIDEO', 'PICTURE'];
+
+registerHook('tab', 'start', (target: Target) => {
+  log('tab', target);
+});
 
 /**
   Gets the active element of a document. IE11 may return null instead of the body as
@@ -212,9 +218,21 @@ function triggerResponderChange(
     shiftKey: backwards,
   };
 
+  let debugData = {
+    keyboardEventOptions,
+    ownerDocument,
+    rootElement,
+  };
+
   return Promise.resolve()
-    .then(() => {
-      let activeElement = getActiveElement(ownerDocument);
+    .then(() => runHooks('tab', 'start', debugData))
+    .then(() => getActiveElement(ownerDocument))
+    .then((activeElement) => {
+      return runHooks('tab', 'targetFound', activeElement).then(
+        () => activeElement
+      );
+    })
+    .then((activeElement) => {
       let event = _buildKeyboardEvent('keydown', keyboardEventOptions);
       let defaultNotPrevented = activeElement.dispatchEvent(event);
 
@@ -242,5 +260,6 @@ function triggerResponderChange(
           `tabindex of greater than 0 is not allowed. Found tabindex=${activeElement.tabIndex}`
         );
       }
-    });
+    })
+    .then(() => runHooks('tab', 'end', debugData));
 }
