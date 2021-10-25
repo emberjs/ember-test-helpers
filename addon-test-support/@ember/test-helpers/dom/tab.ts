@@ -228,12 +228,11 @@ function triggerResponderChange(
     .then(() => runHooks('tab', 'start', debugData))
     .then(() => getActiveElement(ownerDocument))
     .then((activeElement) => {
-      return Promise.all([
-        activeElement,
-        runHooks('tab', 'targetFound', activeElement),
-      ]);
+      return runHooks('tab', 'targetFound', activeElement).then(
+        () => activeElement
+      );
     })
-    .then(([activeElement]) => {
+    .then((activeElement) => {
       let event = _buildKeyboardEvent('keydown', keyboardEventOptions);
       let defaultNotPrevented = activeElement.dispatchEvent(event);
 
