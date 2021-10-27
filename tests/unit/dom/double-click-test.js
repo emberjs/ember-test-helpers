@@ -185,18 +185,19 @@ module('DOM Helper: doubleClick', function (hooks) {
         'clientY',
         'button',
         'buttons',
+        'detail',
       ]);
 
       await doubleClick(element, { clientX: 13, clientY: 17, button: 1 });
 
       assert.verifySteps([
-        'mousedown 13 17 1 1',
-        'mouseup 13 17 1 1',
-        'click 13 17 1 1',
-        'mousedown 13 17 1 1',
-        'mouseup 13 17 1 1',
-        'click 13 17 1 1',
-        'dblclick 13 17 1 1',
+        'mousedown 13 17 1 1 1',
+        'mouseup 13 17 1 1 1',
+        'click 13 17 1 1 1',
+        'mousedown 13 17 1 1 2',
+        'mouseup 13 17 1 1 2',
+        'click 13 17 1 1 2',
+        'dblclick 13 17 1 1 2',
       ]);
     });
   });

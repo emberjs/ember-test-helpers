@@ -33,6 +33,7 @@ export function __click__(
   element: Element | Document | Window,
   options: MouseEventInit
 ): void {
+  options = { ...options, detail: 1 };
   let mouseDownEvent = fireEvent(element, 'mousedown', options);
 
   if (!isWindow(element) && !mouseDownEvent?.defaultPrevented) {

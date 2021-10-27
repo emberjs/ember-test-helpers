@@ -142,14 +142,15 @@ module('DOM Helper: click', function (hooks) {
         'clientY',
         'button',
         'buttons',
+        'detail',
       ]);
 
       await click(element, { clientX: 13, clientY: 17, button: 2 });
 
       assert.verifySteps([
-        'mousedown 13 17 2 1',
-        'mouseup 13 17 2 1',
-        'click 13 17 2 1',
+        'mousedown 13 17 2 1 1',
+        'mouseup 13 17 2 1 1',
+        'click 13 17 2 1 1',
       ]);
     });
 
