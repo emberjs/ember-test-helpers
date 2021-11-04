@@ -510,7 +510,7 @@ Returns **[string][62]** the applications current url
 
 ### render
 
-Renders the provided template and appends it to the DOM.
+Renders the provided template and appends it to the DOM, overwriting any previously-rendered template.
 
 #### Parameters
 
