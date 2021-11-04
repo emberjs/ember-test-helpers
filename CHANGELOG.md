@@ -3,6 +3,29 @@
 
 
 
+
+## v2.6.0 (2021-11-04)
+
+#### :rocket: Enhancement
+* [#1113](https://github.com/emberjs/ember-test-helpers/pull/1113) Add `tab` helper (to simulate "tabbing" through focusable elements) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :bug: Bug Fix
+* [#1155](https://github.com/emberjs/ember-test-helpers/pull/1155) Add registerHooks to new Tab helper ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1141](https://github.com/emberjs/ember-test-helpers/pull/1141) Avoid using `Ember.assign` (prevents deprecations on newer Ember versions) ([@ef4](https://github.com/ef4))
+
+#### :house: Internal
+* [#1149](https://github.com/emberjs/ember-test-helpers/pull/1149) Add test confirming lexical scope works with `await render` ([@rwjblue](https://github.com/rwjblue))
+* [#1153](https://github.com/emberjs/ember-test-helpers/pull/1153) Update to ember-source@3.28 in local development ([@rwjblue](https://github.com/rwjblue))
+* [#1152](https://github.com/emberjs/ember-test-helpers/pull/1152) Use latest Embroider version in ember-try config ([@rwjblue](https://github.com/rwjblue))
+* [#1151](https://github.com/emberjs/ember-test-helpers/pull/1151) Add ember-source@3.28 to CI explicitly ([@rwjblue](https://github.com/rwjblue))
+* [#1150](https://github.com/emberjs/ember-test-helpers/pull/1150) Use "normal" script names for `lint:js` ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Edward Faulkner ([@ef4](https://github.com/ef4))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+
 ## v2.5.0 (2021-10-06)
 
 #### :rocket: Enhancement
