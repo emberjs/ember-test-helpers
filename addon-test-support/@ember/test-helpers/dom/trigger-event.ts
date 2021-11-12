@@ -59,8 +59,8 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
  * <caption>
  * Using `triggerEvent` to simulate a mouseleave event
  *
- * `triggerEvent` provides a way to to trigger any [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event). 
- *  The `options` param can contain any sub set of properties from each of the Event sub-types.
+ * `triggerEvent` provides a way to to trigger any [Event](https://developer.mozilla.org/en-US/docs/Web/API/Event)
+ * The `options` param can contain any sub set of properties from each of the Event sub-types.
  * If supplied, the `options.relatedTarget` has to be an HTML `Element`.
  * </caption>
  *
