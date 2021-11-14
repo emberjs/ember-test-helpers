@@ -528,30 +528,6 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.element.textContent, 'yippie!!');
     });
 
-    test('imported clearRender can be used instead of this.clearRender', async function (assert) {
-      let testingRootElement = document.getElementById('ember-testing');
-      let originalElement = this.element;
-
-      await render(hbs`<p>Hello!</p>`);
-
-      assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
-      assert.equal(
-        testingRootElement.textContent,
-        'Hello!',
-        'has rendered content'
-      );
-
-      await clearRender();
-
-      assert.equal(this.element.textContent, '', 'has rendered content');
-      assert.equal(testingRootElement.textContent, '', 'has rendered content');
-      assert.strictEqual(
-        this.element,
-        originalElement,
-        'this.element is stable'
-      );
-    });
-
     test('context supports getOwner', async function (assert) {
       assert.equal(getOwner(this), this.owner);
     });
