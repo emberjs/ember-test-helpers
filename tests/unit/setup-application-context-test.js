@@ -38,11 +38,11 @@ module('setupApplicationContext', function (hooks) {
     setResolverRegistry({
       'router:main': Router,
       'template:application': hbs`
-        <div class="nav">{{link-to 'posts' 'posts'}} | {{link-to 'widgets' 'widgets'}}</div>
+        <div class="nav">{{#link-to "posts"}}posts{{/link-to}} | {{#link-to "widgets"}}widgets{{/link-to}}</div>
         {{outlet}}
       `,
       'template:index': hbs`<h1>Hello World!</h1>`,
-      'template:links-to-slow': hbs`{{#link-to 'slow' class="to-slow"}}{{/link-to}}`,
+      'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}slow{{/link-to}}`,
       'template:posts': hbs`<h1>Posts Page</h1>{{outlet}}`,
       'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
       'service:foo': Service.extend({ isFoo: true }),
