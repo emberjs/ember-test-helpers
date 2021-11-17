@@ -42,7 +42,7 @@ module('setupApplicationContext', function (hooks) {
         {{outlet}}
       `,
       'template:index': hbs`<h1>Hello World!</h1>`,
-      'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}slow{{/link-to}}`,
+      'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}to slow{{/link-to}}`,
       'template:posts': hbs`<h1>Posts Page</h1>{{outlet}}`,
       'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
       'service:foo': Service.extend({ isFoo: true }),
