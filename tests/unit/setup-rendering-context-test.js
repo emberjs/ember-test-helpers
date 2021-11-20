@@ -15,8 +15,8 @@ import {
   setApplication,
   setResolver,
   triggerEvent,
-  focus,
-  blur,
+  // focus,
+  // blur,
   click,
   isSettled,
 } from '@ember/test-helpers';
@@ -416,7 +416,10 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('can update a passed in argument with an <input>', async function (assert) {
-      this.owner.register('template:components/my-input', hbs`<Input @value={{@value}} />`);
+      this.owner.register(
+        'template:components/my-input',
+        hbs`<Input @value={{@value}} />`
+      );
 
       await render(hbs`<MyInput @value={{this.value}} />`);
 
@@ -440,34 +443,31 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.get('value'), '1');
     });
 
-    // test('it supports dom triggered focus events', async function (assert) {
-    //   this.owner.register(
-    //     'component:my-input',
-    //     TextField.extend({
-    //       init() {
-    //         this._super(...arguments);
+    test('it supports dom triggered focus events', async function (assert) {
+      this.owner.register(
+        'template:components/x-input',
+        hbs`<input onblur={{this.onBlur}} onfocusout={{this.onFocus}} />`
+      );
+      await render(hbs`<XInput />`);
 
-    //         this.set('value', 'init');
-    //       },
-    //       focusIn() {
-    //         this.set('value', 'focusin');
-    //       },
-    //       focusOut() {
-    //         this.set('value', 'focusout');
-    //       },
-    //     })
-    //   );
-    //   await this.render(hbs`{{my-input}}`);
+      let input = this.element.querySelector('input');
+      function blur() {
+        assert.step('blur');
+      }
+      function focus() {
+        assert.step('focus');
+      }
+      input.addEventListener('blur', blur);
 
-    //   let input = this.element.querySelector('input');
-    //   assert.equal(input.value, 'init');
+      input.addEventListener('focus', focus);
 
-    //   await focus(input);
-    //   assert.equal(input.value, 'focusin');
+      await focus(input);
+      await blur(input);
 
-    //   await blur(input);
-    //   assert.equal(input.value, 'focusout');
-    // });
+      assert.verifySteps(['focus', 'blur']);
+      input.removeEventListener('blur', blur);
+      input.removeEventListener('focus', focus);
+    });
 
     test('two way bound arguments are updated', async function (assert) {
       this.owner.register(
