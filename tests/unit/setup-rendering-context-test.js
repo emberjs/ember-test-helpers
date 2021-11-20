@@ -451,22 +451,22 @@ module('setupRenderingContext', function (hooks) {
       await render(hbs`<XInput />`);
 
       let input = this.element.querySelector('input');
-      function blur() {
+      function blurIt() {
         assert.step('blur');
       }
-      function focus() {
+      function focusIt() {
         assert.step('focus');
       }
-      input.addEventListener('blur', blur);
+      input.addEventListener('blur', blurIt);
 
-      input.addEventListener('focus', focus);
+      input.addEventListener('focus', focusIt);
 
       await focus(input);
       await blur(input);
 
       assert.verifySteps(['focus', 'blur']);
-      input.removeEventListener('blur', blur);
-      input.removeEventListener('focus', focus);
+      input.removeEventListener('blur', blurIt);
+      input.removeEventListener('focus', focusIt);
     });
 
     test('two way bound arguments are updated', async function (assert) {
