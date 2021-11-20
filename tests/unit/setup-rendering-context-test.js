@@ -15,8 +15,8 @@ import {
   setApplication,
   setResolver,
   triggerEvent,
-  // focus,
-  // blur,
+  focus,
+  blur,
   click,
   isSettled,
 } from '@ember/test-helpers';
