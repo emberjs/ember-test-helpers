@@ -38,7 +38,7 @@ jobs:
       - run: yarn test
 
   try-scenarios:
-    timeout-minutes: 10
+    timeout-minutes: 15
     name: "Try: ${{ matrix.ember-try-scenario }}"
 
     runs-on: ubuntu-latest
