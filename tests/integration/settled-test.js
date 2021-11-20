@@ -18,7 +18,7 @@ import Pretender from 'pretender';
 import ajax from '../helpers/ajax';
 
 const TestComponent1 = Component.extend({
-  layout: hbs`{{internalValue}}`,
+  layout: hbs`{{this.internalValue}}`,
 
   internalValue: 'initial value',
 
@@ -30,7 +30,7 @@ const TestComponent1 = Component.extend({
 });
 
 const TestComponent2 = Component.extend({
-  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
+  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
 
   internalValue: 'initial value',
 
@@ -40,7 +40,7 @@ const TestComponent2 = Component.extend({
 });
 
 const TestComponent3 = Component.extend({
-  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
+  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
 
   internalValue: '',
 
@@ -54,7 +54,7 @@ const TestComponent3 = Component.extend({
 });
 
 const TestComponent4 = Component.extend({
-  layout: hbs`<div class="test-component">{{internalValue}}</div>`,
+  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
 
   internalValue: '',
 
@@ -82,7 +82,7 @@ const TestComponent4 = Component.extend({
 });
 
 const TestComponent5 = Component.extend({
-  layout: hbs`{{internalValue}}`,
+  layout: hbs`{{this.internalValue}}`,
 
   internalValue: 'initial value',
 

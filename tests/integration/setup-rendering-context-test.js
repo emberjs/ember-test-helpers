@@ -98,7 +98,7 @@ module('setupRenderingContext "real world"', function (hooks) {
     this.isWaiterPending = true;
 
     // Does not use `await` intentionally
-    let renderPromise = render(hbs`{{promise-wrapper promise=promise }}`);
+    let renderPromise = render(hbs`{{promise-wrapper promise=this.promise}}`);
 
     await waitFor('.loading');
 

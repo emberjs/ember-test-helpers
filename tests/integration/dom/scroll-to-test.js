@@ -70,7 +70,7 @@ module('DOM Helper: scroll-to', function (hooks) {
       <div
         style="height: 200px; overflow-y: auto;"
         class="container"
-        onscroll={{action callback}}
+        onscroll={{this.callback}}
       >
         <ul>
         <li class="item" style="height: 100px;">A</li>
@@ -102,7 +102,7 @@ module('DOM Helper: scroll-to', function (hooks) {
       <div
         style="width: 200px; overflow-x: auto; white-space: nowrap;"
         class="container"
-        onscroll={{action callback}}
+        onscroll={{this.callback}}
       >
         <div class="item" style="width: 100px; height: 100px; display: inline-block">A</div>
         <div class="item" style="width: 100px; height: 100px; display: inline-block">B</div>
