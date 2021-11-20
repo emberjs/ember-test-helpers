@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import Component from '@ember/component';
 import { helper } from '@ember/component/helper';
+import { registerWaiter } from '@ember/test';
 import {
   setupContext,
   setupRenderingContext,
@@ -18,8 +19,8 @@ import { precompileTemplate } from '@ember/template-compilation';
 import { defer } from 'rsvp';
 
 const PromiseWrapperTemplate = hbs`
-{{~#if settled~}}
-  {{fulfillmentValue}}
+{{~#if this.settled~}}
+  {{this.fulfillmentValue}}
 {{~else~}}
   <div class="loading">Please wait</div>
 {{~/if}}
@@ -36,7 +37,7 @@ const PromiseWrapper = Component.extend({
 });
 
 const ClickMeButtonTemplate = hbs`
-{{~#if wasClicked~}}
+{{~#if this.wasClicked~}}
   Clicked!
 {{~else~}}
   Click Me!
@@ -75,14 +76,7 @@ module('setupRenderingContext "real world"', function (hooks) {
       return !this.isWaiterPending;
     };
 
-    // In Ember < 2.8 `registerWaiter` expected to be bound to
-    // `Ember.Test` 😭
-    //
-    // Once we have dropped support for < 2.8 we should swap this to
-    // use:
-    //
-    // import { registerWaiter } from '@ember/test';
-    Ember.Test.registerWaiter(this._waiter);
+    registerWaiter(this._waiter);
   });
 
   hooks.afterEach(async function () {
@@ -129,7 +123,7 @@ module('setupRenderingContext "real world"', function (hooks) {
     );
 
     await render(
-      hbs`<div>{{#in-element rootElement insertBefore=null}}{{click-me-button}}{{/in-element}}</div>`
+      hbs`<div>{{#in-element this.rootElement insertBefore=null}}{{click-me-button}}{{/in-element}}</div>`
     );
 
     assert.equal(
