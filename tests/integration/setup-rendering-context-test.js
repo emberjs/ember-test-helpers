@@ -57,9 +57,6 @@ const ClickMeButtonComponent = Component.extend({
 });
 
 module('setupRenderingContext "real world"', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
   hooks.beforeEach(async function () {
     setResolverRegistry({
       'component:promise-wrapper': PromiseWrapper,

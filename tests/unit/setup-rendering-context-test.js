@@ -20,7 +20,6 @@ import {
   click,
   isSettled,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   setResolverRegistry,
   application,
@@ -60,10 +59,6 @@ async function buildEngineOwner(parentOwner, registry) {
 }
 
 module('setupRenderingContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.afterEach(function () {
     setApplication(application);
     setResolver(resolver);
@@ -313,12 +308,7 @@ module('setupRenderingContext', function (hooks) {
         })
       );
 
-      let subject;
-      if (hasEmberVersion(2, 12)) {
-        subject = this.owner.lookup('component:foo-bar');
-      } else {
-        subject = this.owner._lookupFactory('component:foo-bar').create();
-      }
+      let subject = this.owner.lookup('component:foo-bar');
 
       assert.equal(subject.someMethod(), 'hello thar!');
     });
