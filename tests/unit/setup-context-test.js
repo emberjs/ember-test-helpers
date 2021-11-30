@@ -852,7 +852,7 @@ module('setupContext', function (hooks) {
       // .extend() because initializers are stored in the constructor, and we
       // don't want to pollute other tests using an application created from the
       // same constructor.
-      isolatedApp = (class extends App {}).create(AppConfig);
+      isolatedApp = class extends App {}.create(AppConfig);
       let resolver = isolatedApp.Resolver.create({
         namespace: isolatedApp,
         isResolverFromTestHelpers: true,
