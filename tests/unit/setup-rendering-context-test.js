@@ -418,7 +418,7 @@ module('setupRenderingContext', function (hooks) {
     test('can update a passed in argument with an <input>', async function (assert) {
       this.owner.register(
         'template:components/my-input',
-        hbs`<Input @value={{@value}} />`
+        hbs`{{input value=@value}}`
       );
 
       await render(hbs`<MyInput @value={{this.value}} />`);
