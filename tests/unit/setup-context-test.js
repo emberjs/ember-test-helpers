@@ -849,7 +849,10 @@ module('setupContext', function (hooks) {
 
     hooks.beforeEach(function () {
       const AppConfig = assign({ autoboot: false }, config.APP);
-      isolatedApp = App.create(AppConfig);
+      // .extend() because initializers are stored in the constructor, and we
+      // don't want to pollute other tests using an application created from the
+      // same constructor.
+      isolatedApp = (class extends App {}).create(AppConfig);
       let resolver = isolatedApp.Resolver.create({
         namespace: isolatedApp,
         isResolverFromTestHelpers: true,
@@ -860,7 +863,6 @@ module('setupContext', function (hooks) {
     });
 
     hooks.afterEach(function () {
-      delete isolatedApp.constructor.initializers.foo;
       isolatedApp.destroy();
     });
 
