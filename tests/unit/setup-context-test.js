@@ -13,6 +13,7 @@ import {
   setApplication,
   setResolver,
   getTestMetadata,
+  settled,
 } from '@ember/test-helpers';
 import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
 import { getWarningsForContext } from '@ember/test-helpers/-internal/warnings';
@@ -862,8 +863,9 @@ module('setupContext', function (hooks) {
       setApplication(isolatedApp);
     });
 
-    hooks.afterEach(function () {
+    hooks.afterEach(async function () {
       isolatedApp.destroy();
+      await settled();
     });
 
     test('run once per test run', async function (assert) {
