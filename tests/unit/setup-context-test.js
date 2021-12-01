@@ -13,6 +13,7 @@ import {
   setApplication,
   setResolver,
   getTestMetadata,
+  settled,
 } from '@ember/test-helpers';
 import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
 import { getWarningsForContext } from '@ember/test-helpers/-internal/warnings';
@@ -852,7 +853,7 @@ module('setupContext', function (hooks) {
       // .extend() because initializers are stored in the constructor, and we
       // don't want to pollute other tests using an application created from the
       // same constructor.
-      isolatedApp = App.extend({}).create(AppConfig);
+      isolatedApp = class extends App {}.create(AppConfig);
       let resolver = isolatedApp.Resolver.create({
         namespace: isolatedApp,
         isResolverFromTestHelpers: true,
@@ -860,6 +861,11 @@ module('setupContext', function (hooks) {
 
       setResolver(resolver);
       setApplication(isolatedApp);
+    });
+
+    hooks.afterEach(async function () {
+      isolatedApp.destroy();
+      await settled();
     });
 
     test('run once per test run', async function (assert) {

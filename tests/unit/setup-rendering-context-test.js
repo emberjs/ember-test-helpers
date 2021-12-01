@@ -2,7 +2,6 @@
 import { module, test } from 'qunit';
 import Service from '@ember/service';
 import Component from '@ember/component';
-import TextField from '@ember/component/text-field';
 import { helper } from '@ember/component/helper';
 import {
   getApplication,
@@ -21,7 +20,6 @@ import {
   click,
   isSettled,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   setResolverRegistry,
   application,
@@ -61,10 +59,6 @@ async function buildEngineOwner(parentOwner, registry) {
 }
 
 module('setupRenderingContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.afterEach(function () {
     setApplication(application);
     setResolver(resolver);
@@ -285,7 +279,7 @@ module('setupRenderingContext', function (hooks) {
     test('can pass arguments to helper from context', async function (assert) {
       this.set('name', 'james');
 
-      await render(hbs`{{jax name}}`);
+      await render(hbs`{{jax this.name}}`);
 
       assert.equal(this.element.textContent, 'james-jax');
     });
@@ -314,12 +308,7 @@ module('setupRenderingContext', function (hooks) {
         })
       );
 
-      let subject;
-      if (hasEmberVersion(2, 12)) {
-        subject = this.owner.lookup('component:foo-bar');
-      } else {
-        subject = this.owner._lookupFactory('component:foo-bar').create();
-      }
+      let subject = this.owner.lookup('component:foo-bar');
 
       assert.equal(subject.someMethod(), 'hello thar!');
     });
@@ -384,11 +373,11 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register('component:x-foo', Component.extend());
       this.owner.register(
         'template:components/x-foo',
-        hbs`<button onclick={{action clicked}}>Click me!</button>`
+        hbs`<button onclick={{action @clicked}}>Click me!</button>`
       );
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
-      await render(hbs`{{x-foo clicked=clicked}}`);
+      await render(hbs`{{x-foo clicked=this.clicked}}`);
 
       assert.equal(
         this.element.textContent,
@@ -406,7 +395,7 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register('template:components/x-foo', template);
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
-      await render(hbs`{{x-foo clicked=clicked}}`);
+      await render(hbs`{{x-foo clicked=this.clicked}}`);
 
       assert.equal(
         this.element.textContent,
@@ -417,9 +406,12 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('can update a passed in argument with an <input>', async function (assert) {
-      this.owner.register('component:my-input', TextField.extend({}));
+      this.owner.register(
+        'template:components/my-input',
+        hbs`{{input value=@value}}`
+      );
 
-      await render(hbs`{{my-input value=value}}`);
+      await render(hbs`<MyInput @value={{this.value}} />`);
 
       let input = this.element.querySelector('input');
 
@@ -443,31 +435,28 @@ module('setupRenderingContext', function (hooks) {
 
     test('it supports dom triggered focus events', async function (assert) {
       this.owner.register(
-        'component:my-input',
-        TextField.extend({
-          init() {
-            this._super(...arguments);
-
-            this.set('value', 'init');
-          },
-          focusIn() {
-            this.set('value', 'focusin');
-          },
-          focusOut() {
-            this.set('value', 'focusout');
-          },
-        })
+        'template:components/x-input',
+        hbs`<input onblur={{this.onBlur}} onfocusout={{this.onFocus}} />`
       );
-      await this.render(hbs`{{my-input}}`);
+      await render(hbs`<XInput />`);
 
       let input = this.element.querySelector('input');
-      assert.equal(input.value, 'init');
+      function blurIt() {
+        assert.step('blur');
+      }
+      function focusIt() {
+        assert.step('focus');
+      }
+      input.addEventListener('blur', blurIt);
+
+      input.addEventListener('focus', focusIt);
 
       await focus(input);
-      assert.equal(input.value, 'focusin');
-
       await blur(input);
-      assert.equal(input.value, 'focusout');
+
+      assert.verifySteps(['focus', 'blur']);
+      input.removeEventListener('blur', blurIt);
+      input.removeEventListener('focus', focusIt);
     });
 
     test('two way bound arguments are updated', async function (assert) {
@@ -483,11 +472,11 @@ module('setupRenderingContext', function (hooks) {
       );
       this.owner.register(
         'template:components/my-component',
-        hbs`<button {{action 'clicked'}}>{{foo}}</button>`
+        hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`
       );
 
       this.set('foo', 'original');
-      await render(hbs`{{my-component foo=foo}}`);
+      await render(hbs`<MyComponent @foo={{this.foo}} />`);
       assert.equal(
         this.element.textContent,
         'original',
@@ -517,13 +506,13 @@ module('setupRenderingContext', function (hooks) {
       );
       this.owner.register(
         'template:components/my-component',
-        hbs`<button {{action 'clicked'}}>{{foo}}</button>`
+        hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`
       );
 
       // using two arguments here to ensure the two way binding
       // works both for things rendered in the component's layout
       // and those only used in the components JS file
-      await render(hbs`{{my-component foo=foo bar=bar}}`);
+      await render(hbs`<MyComponent @foo={{this.foo}} @bar={{this.bar}} />`);
       await click(this.element.querySelector('button'));
 
       await clearRender();

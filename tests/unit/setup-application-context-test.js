@@ -35,16 +35,16 @@ module('setupApplicationContext', function (hooks) {
   }
 
   hooks.beforeEach(async function () {
-    setResolverRegistry({
+    let registry = {
       'router:main': Router,
       'template:application': hbs`
-        <div class="nav">{{#link-to "posts"}}posts{{/link-to}} | {{#link-to "widgets"}}widgets{{/link-to}}</div>
+        <div class="nav"><LinkTo @route="posts">posts</LinkTo> | <LinkTo @route="widgets">widgets</LinkTo></div>
         {{outlet}}
       `,
       'template:index': hbs`<h1>Hello World!</h1>`,
-      'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}to slow{{/link-to}}`,
+      'template:links-to-slow': hbs`<LinkTo @route="slow" class="to-slow">to slow</LinkTo>`,
       'template:posts': hbs`<h1>Posts Page</h1>{{outlet}}`,
-      'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
+      'template:posts/post': hbs`<div class="post-id">{{this.model.post_id}}</div>`,
       'service:foo': Service.extend({ isFoo: true }),
       'route:posts/post': Route.extend({
         model(params) {
@@ -67,7 +67,22 @@ module('setupApplicationContext', function (hooks) {
           });
         },
       }),
-    });
+    };
+
+    if (!hasEmberVersion(3, 12)) {
+      registry = {
+        ...registry,
+        // overrides for older Ember's
+        'template:application': hbs`
+            <div class="nav">{{#link-to "posts"}}posts{{/link-to}} | {{#link-to "widgets"}}widgets{{/link-to}}</div>
+            {{outlet}}
+          `,
+        'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}to slow{{/link-to}}`,
+        'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
+      };
+    }
+
+    setResolverRegistry(registry);
 
     await setupContext(this);
     await setupApplicationContext(this);
