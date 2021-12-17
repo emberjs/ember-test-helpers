@@ -63,7 +63,7 @@ export function backburnerDebugInfoAvailable() {
  * If the `getDebugInfo` method isn't available, it returns `null`.
  *
  * @example
- * 
+ *
  * ```js
  * import { getDebugInfo } from '@ember/test-helpers';
  *
