@@ -1,5 +1,6 @@
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
+import isFormControl, { FormControl } from './-is-form-control';
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -126,6 +127,11 @@ function fireEvent(
     event = buildFileEvent(eventType, element, options);
   } else {
     event = buildBasicEvent(eventType, options);
+  }
+
+  // HACK: Prepare React `input` elements for `change` events
+  if (eventType === 'change' && isFormControl(element)) {
+    _prepareReactOnChangeEvent(element as FormControl);
   }
 
   element.dispatchEvent(event);
@@ -313,4 +319,22 @@ function buildFileEvent(
   });
 
   return event;
+}
+
+/**
+ * Prepare a potential React element for simulated trigger of input `change` event.
+ *
+ * HACK: This is necessary for React elements in `react-dom` v15.6.0+.
+ *
+ * @param {FormControl} element Form control element, in particular an `input` element
+ *
+ * @see https://github.com/facebook/react/issues/11488
+ * @see https://github.com/facebook/react/blob/main/packages/react-dom/src/client/inputValueTracking.js
+ */
+function _prepareReactOnChangeEvent(element: FormControl) {
+  // @ts-expect-error: `_valueTracker` is a React-specific property (not native)
+  const tracker = element._valueTracker;
+  if (tracker) {
+    tracker.setValue('');
+  }
 }

@@ -361,4 +361,32 @@ module('DOM Helper: typeIn', function (hooks) {
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
     );
   });
+
+  ['input', 'textarea'].forEach((elementType) => {
+    test(`filling in a psuedo React ${elementType} changes its value tracker`, async function (assert) {
+      element = buildInstrumentedElement(elementType);
+      element._valueTracker = {
+        currentValue: 'foo',
+        getValue() {
+          return this.currentValue;
+        },
+        setValue(value) {
+          this.currentValue = '' + value;
+        },
+      };
+      element.value = 'foo';
+
+      await setupContext(context);
+
+      await typeIn(element, 'bar');
+
+      assert.verifySteps(expectedEvents);
+      assert.equal(element.value, 'foobar', 'value updated');
+      assert.equal(
+        element._valueTracker.getValue(),
+        '',
+        'value tracker updated'
+      );
+    });
+  });
 });

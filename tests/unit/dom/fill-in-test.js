@@ -347,4 +347,32 @@ module('DOM Helper: fillIn', function (hooks) {
       )
     );
   });
+
+  ['input', 'textarea'].forEach((elementType) => {
+    test(`filling in a psuedo React ${elementType} changes its value tracker`, async function (assert) {
+      element = buildInstrumentedElement(elementType);
+      element._valueTracker = {
+        currentValue: 'foo',
+        getValue() {
+          return this.currentValue;
+        },
+        setValue(value) {
+          this.currentValue = '' + value;
+        },
+      };
+      element.value = 'foo';
+
+      await setupContext(context);
+
+      await fillIn(element, 'bar');
+
+      assert.verifySteps(clickSteps);
+      assert.equal(element.value, 'bar', 'value updated');
+      assert.equal(
+        element._valueTracker.getValue(),
+        '',
+        'value tracker updated'
+      );
+    });
+  });
 });
