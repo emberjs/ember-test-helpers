@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import Component from '@ember/component';
+import Component, { setComponentTemplate } from '@ember/component';
+import templateOnly from '@ember/component/template-only';
 import { helper } from '@ember/component/helper';
 import { registerWaiter } from '@ember/test';
 import {
@@ -152,6 +153,17 @@ module('setupRenderingContext "real world"', function (hooks) {
             },
           })
         );
+
+        assert.equal(this.element.textContent, '4');
+      });
+    }
+  });
+
+  module('<template> transpilation support', function () {
+    if (hasEmberVersion(3, 25)) {
+      test('can render components', async function (assert) {
+        let myComponent = setComponentTemplate(hbs`4`, templateOnly());
+        await render(myComponent);
 
         assert.equal(this.element.textContent, '4');
       });

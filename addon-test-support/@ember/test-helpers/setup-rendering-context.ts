@@ -84,15 +84,37 @@ export interface RenderOptions {
   Renders the provided template and appends it to the DOM.
 
   @public
-  @param {CompiledTemplate} template the template to render
+  @param {TemplateFactory | unknown} renderable the template or component to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 */
 export function render(
-  template: TemplateFactory,
+  renderable: TemplateFactory | unknown,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();
+  let template: TemplateFactory;
+
+  if (hasEmberVersion(3, 25)) {
+    if (
+      typeof renderable === 'function' &&
+      renderable.name === 'factory' &&
+      '__meta' in renderable
+    ) {
+      template = renderable as TemplateFactory;
+    } else {
+      // NOTE: this only works with ember-source@3.25+
+      if (!context) {
+        throw new Error(
+          'cannot render strict mode templates outside of a test context'
+        );
+      }
+      context.setProperties({ __renderable__: renderable });
+      template = hbs`<this.__renderable__ />`;
+    }
+  } else {
+    template = renderable as TemplateFactory;
+  }
 
   if (!template) {
     throw new Error('you must pass a template to `render()`');
