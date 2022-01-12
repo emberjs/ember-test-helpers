@@ -96,11 +96,12 @@ export default function typeIn(
       let { delay = 50 } = options;
 
       return fillOut(element, text, delay)
+        .then(() =>
+          runHooks('typeIn', 'before-fire-event', target, text, options)
+        )
         .then(() => fireEvent(element, 'change'))
         .then(settled)
-        .then(() => {
-          return runHooks('typeIn', 'end', target, text, options);
-        });
+        .then(() => runHooks('typeIn', 'end', target, text, options));
     });
 }
 

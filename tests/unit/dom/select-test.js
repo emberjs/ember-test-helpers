@@ -35,7 +35,7 @@ module('DOM Helper: select', function (hooks) {
   });
 
   test('it executes registered select hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     element = document.createElement('select');
     insertElement(element);
@@ -43,6 +43,13 @@ module('DOM Helper: select', function (hooks) {
     let startHook = _registerHook('select', 'start', () => {
       assert.step('select:start');
     });
+    let beforeFireEventHook = _registerHook(
+      'select',
+      'before-fire-event',
+      () => {
+        assert.step('select:before-fire-event');
+      }
+    );
     let endHook = _registerHook('select', 'end', () => {
       assert.step('select:end');
     });
@@ -50,9 +57,14 @@ module('DOM Helper: select', function (hooks) {
     try {
       await select(element, 'apple');
 
-      assert.verifySteps(['select:start', 'select:end']);
+      assert.verifySteps([
+        'select:start',
+        'select:before-fire-event',
+        'select:end',
+      ]);
     } finally {
       startHook.unregister();
+      beforeFireEventHook.unregister();
       endHook.unregister();
     }
   });

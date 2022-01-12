@@ -90,6 +90,20 @@ export default function select(
         }
       }
 
+      return settled();
+    })
+    .then(() =>
+      runHooks(
+        'select',
+        'before-fire-event',
+        target,
+        options,
+        keepPreviouslySelected
+      )
+    )
+    .then(() => {
+      const element = getElement(target) as Element;
+
       fireEvent(element, 'input');
       fireEvent(element, 'change');
 

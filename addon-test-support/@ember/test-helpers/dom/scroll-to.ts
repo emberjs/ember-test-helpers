@@ -53,6 +53,12 @@ export default function scrollTo(
       element.scrollTop = y;
       element.scrollLeft = x;
 
+      return settled();
+    })
+    .then(() => runHooks('scrollTo', 'before-fire-event', target))
+    .then(() => {
+      let element = getElement(target) as Element;
+
       fireEvent(element, 'scroll');
 
       return settled();

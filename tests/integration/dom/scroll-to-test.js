@@ -25,11 +25,18 @@ module('DOM Helper: scroll-to', function (hooks) {
   });
 
   test('it executes registered scrollTo hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     let startHook = _registerHook('scrollTo', 'start', () => {
       assert.step('scrollTo:start');
     });
+    let beforeFireEventHook = _registerHook(
+      'scrollTo',
+      'before-fire-event',
+      () => {
+        assert.step('scrollTo:before-fire-event');
+      }
+    );
     let endHook = _registerHook('scrollTo', 'end', () => {
       assert.step('scrollTo:end');
     });
@@ -51,9 +58,14 @@ module('DOM Helper: scroll-to', function (hooks) {
 
     await scrollTo('.container', 0, 50);
 
-    assert.verifySteps(['scrollTo:start', 'scrollTo:end']);
+    assert.verifySteps([
+      'scrollTo:start',
+      'scrollTo:before-fire-event',
+      'scrollTo:end',
+    ]);
 
     startHook.unregister();
+    beforeFireEventHook.unregister();
     endHook.unregister();
   });
 
