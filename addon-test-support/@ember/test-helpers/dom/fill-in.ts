@@ -72,10 +72,10 @@ export default function fillIn(target: Target, text: string): Promise<void> {
           '`fillIn` is only usable on form controls or contenteditable elements.'
         );
       }
-      fireEvent(element, 'input');
-      fireEvent(element, 'change');
 
-      return settled();
+      return fireEvent(element, 'input').then(() =>
+        fireEvent(element, 'change')
+      );
     })
     .then(() => runHooks('fillIn', 'end', target, text));
 }

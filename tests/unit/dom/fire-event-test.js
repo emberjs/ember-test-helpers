@@ -4,7 +4,9 @@ import {
   render,
   find,
   click,
+  fillIn,
   tap,
+  typeIn,
   settled,
   setupContext,
   setupRenderingContext,
@@ -108,6 +110,40 @@ module('DOM Helper: fireEvent', function (hooks) {
     try {
       const element = find('button');
       await tap(element);
+
+      const expectedSteps = buildExpectedSteps(eventTypes);
+      assert.verifySteps(expectedSteps);
+    } finally {
+      unregisterMockHooks(mockHooks);
+    }
+  });
+
+  test(`it executes registered fireEvent hooks for "fillIn" helper`, async function (assert) {
+    await render(hbs`<input type="text" />`);
+
+    const eventTypes = ['input', 'change'];
+    const mockHooks = setupMockHooks(assert, eventTypes);
+
+    try {
+      const element = find('input');
+      await fillIn(element, 'foo');
+
+      const expectedSteps = buildExpectedSteps(eventTypes);
+      assert.verifySteps(expectedSteps);
+    } finally {
+      unregisterMockHooks(mockHooks);
+    }
+  });
+
+  test(`it executes registered fireEvent hooks for "typeIn" helper`, async function (assert) {
+    await render(hbs`<input type="text" />`);
+
+    const eventTypes = ['keydown', 'keypress', 'input', 'keyup', 'change'];
+    const mockHooks = setupMockHooks(assert, eventTypes);
+
+    try {
+      const element = find('input');
+      await typeIn(element, 'a');
 
       const expectedSteps = buildExpectedSteps(eventTypes);
       assert.verifySteps(expectedSteps);
