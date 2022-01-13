@@ -5,7 +5,6 @@ import {
   find,
   click,
   tap,
-  focus,
   settled,
   setupContext,
   setupRenderingContext,
@@ -13,6 +12,54 @@ import {
   _registerHook,
 } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
+
+//
+// Helpers
+//
+
+/** Register and return mock `fireEvent` hooks */
+const setupMockHooks = (assert, eventTypes) => {
+  const startHook = _registerHook('fireEvent', 'start', () => {
+    assert.step(`fireEvent:start`);
+  });
+  const endHook = _registerHook('fireEvent', 'end', () => {
+    assert.step(`fireEvent:end`);
+  });
+
+  const eventSpecificHooks = eventTypes.flatMap((eventType) => [
+    _registerHook(`fireEvent:${eventType}`, 'start', () => {
+      assert.step(`fireEvent:${eventType}:start`);
+    }),
+    _registerHook(`fireEvent:${eventType}`, 'end', () => {
+      assert.step(`fireEvent:${eventType}:end`);
+    }),
+  ]);
+
+  return [startHook, endHook, ...eventSpecificHooks];
+};
+
+/** Unregister mock hooks */
+const unregisterMockHooks = (mockHooks) => {
+  mockHooks.forEach((mockHook) => mockHook.unregister());
+};
+
+/**
+ * Build list of expected `fireEvent` steps for verification
+ *
+ * @param {string[]} eventTypes List of eventTypes
+ * @return {string[]} List of expected `fireEvent` steps
+ */
+const buildExpectedSteps = (eventTypes) =>
+  eventTypes.flatMap((eventType) => [
+    'fireEvent:start',
+    `fireEvent:${eventType}:start`,
+    `fireEvent:end`,
+    `fireEvent:${eventType}:end`,
+  ]);
+
+//
+// Tests
+//
 
 module('DOM Helper: fireEvent', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -29,36 +76,43 @@ module('DOM Helper: fireEvent', function (hooks) {
     await teardownContext(this);
   });
 
-  const SIMPLE_ACTION_HELPER_FUNCS = [click, tap, focus];
+  test(`it executes registered fireEvent hooks for "click" helper`, async function (assert) {
+    await render(hbs`<button type="button">Click me</button>`);
 
-  SIMPLE_ACTION_HELPER_FUNCS.forEach((helperFn) => {
-    test(`it executes registered fireEvent hooks for "${helperFn.name}" helper`, async function (assert) {
-      await render(hbs`<input type="text" />`);
+    const eventTypes = ['mousedown', 'mouseup', 'click'];
+    const mockHooks = setupMockHooks(assert, eventTypes);
 
-      const element = find('input');
+    try {
+      const element = find('button');
+      await click(element);
 
-      const startHook = _registerHook(
-        `fireEvent:${helperFn.name}`,
-        'start',
-        () => {
-          assert.step(`fireEvent:${helperFn.name}:start`);
-        }
-      );
-      const endHook = _registerHook(`fireEvent:${helperFn.name}`, 'end', () => {
-        assert.step(`fireEvent:${helperFn.name}:end`);
-      });
+      const expectedSteps = buildExpectedSteps(eventTypes);
+      assert.verifySteps(expectedSteps);
+    } finally {
+      unregisterMockHooks(mockHooks);
+    }
+  });
 
-      try {
-        await helperFn(element);
+  test(`it executes registered fireEvent hooks for "tap" helper`, async function (assert) {
+    await render(hbs`<button type="button">Click me</button>`);
 
-        assert.verifySteps([
-          `fireEvent:${helperFn.name}:start`,
-          `fireEvent:${helperFn.name}:end`,
-        ]);
-      } finally {
-        startHook.unregister();
-        endHook.unregister();
-      }
-    });
+    const eventTypes = [
+      'touchstart',
+      'touchend',
+      'mousedown',
+      'mouseup',
+      'click',
+    ];
+    const mockHooks = setupMockHooks(assert, eventTypes);
+
+    try {
+      const element = find('button');
+      await tap(element);
+
+      const expectedSteps = buildExpectedSteps(eventTypes);
+      assert.verifySteps(expectedSteps);
+    } finally {
+      unregisterMockHooks(mockHooks);
+    }
   });
 });

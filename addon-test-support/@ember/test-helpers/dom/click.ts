@@ -1,7 +1,6 @@
 import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
-import settled from '../settled';
 import { Promise } from '../-utils';
 import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
@@ -28,19 +27,21 @@ export const DEFAULT_CLICK_OPTIONS = {
   @private
   @param {Element} element the element to click on
   @param {MouseEventInit} options the options to be merged into the mouse events
+  @return {Promise<Event | void>} resolves when settled
 */
 export function __click__(
   element: Element | Document | Window,
   options: MouseEventInit
-): void {
-  let mouseDownEvent = fireEvent(element, 'mousedown', options);
-
-  if (!isWindow(element) && !mouseDownEvent?.defaultPrevented) {
-    __focus__(element);
-  }
-
-  fireEvent(element, 'mouseup', options);
-  fireEvent(element, 'click', options);
+): Promise<Event | void> {
+  return Promise.resolve()
+    .then(() => fireEvent(element, 'mousedown', options))
+    .then((mouseDownEvent) =>
+      !isWindow(element) && !mouseDownEvent?.defaultPrevented
+        ? __focus__(element)
+        : Promise.resolve()
+    )
+    .then(() => fireEvent(element, 'mouseup', options))
+    .then(() => fireEvent(element, 'click', options));
 }
 
 /**
@@ -112,9 +113,7 @@ export default function click(
         throw new Error(`Can not \`click\` disabled ${element}`);
       }
 
-      __click__(element, options);
-
-      return settled();
+      return __click__(element, options);
     })
     .then(() => runHooks('click', 'end', target, _options));
 }

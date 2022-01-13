@@ -98,6 +98,7 @@ function fireEvent(
   options = {}
 ): Promise<Event | void> {
   return Promise.resolve()
+    .then(() => runHooks('fireEvent', 'start', element))
     .then(() => runHooks(`fireEvent:${eventType}`, 'start', element))
     .then(() => {
       if (!element) {
@@ -143,6 +144,7 @@ function fireEvent(
       return event;
     })
     .then((event) => settled().then(() => event))
+    .then((event) => runHooks('fireEvent', 'end', element).then(() => event))
     .then((event) =>
       runHooks(`fireEvent:${eventType}`, 'end', element).then(() => event)
     );

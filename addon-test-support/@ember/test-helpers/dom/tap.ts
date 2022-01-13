@@ -45,7 +45,7 @@ registerHook('tap', 'start', (target: Target) => {
   @public
   @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be merged into the touch events
-  @return {Promise<void>} resolves when settled
+  @return {Promise<Event | Event[] | void>} resolves when settled
 
   @example
   <caption>
@@ -57,7 +57,7 @@ registerHook('tap', 'start', (target: Target) => {
 export default function tap(
   target: Target,
   options: object = {}
-): Promise<void> {
+): Promise<Event | Event[] | void> {
   return Promise.resolve()
     .then(() => {
       return runHooks('tap', 'start', target, options);
@@ -76,14 +76,19 @@ export default function tap(
         throw new Error(`Can not \`tap\` disabled ${element}`);
       }
 
-      let touchstartEv = fireEvent(element, 'touchstart', options);
-      let touchendEv = fireEvent(element, 'touchend', options);
-
-      if (!touchstartEv.defaultPrevented && !touchendEv.defaultPrevented) {
-        __click__(element, options);
-      }
-
-      return settled();
+      return fireEvent(element, 'touchstart', options);
+    })
+    .then((touchstartEv) => {
+      let element = getElement(target);
+      return fireEvent(element as Element, 'touchend', options).then(
+        (touchendEv) => [touchstartEv, touchendEv]
+      );
+    })
+    .then(([touchstartEv, touchendEv]) => {
+      let element = getElement(target);
+      return !touchstartEv.defaultPrevented && !touchendEv.defaultPrevented
+        ? __click__(element as Element, options)
+        : Promise.resolve();
     })
     .then(() => {
       return runHooks('tap', 'end', target, options);
