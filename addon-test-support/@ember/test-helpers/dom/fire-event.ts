@@ -3,7 +3,6 @@ import tuple from '../-tuple';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
-import settled from '../settled';
 
 registerHook('fireEvent', 'start', (target: Target) => {
   log('fireEvent', target);
