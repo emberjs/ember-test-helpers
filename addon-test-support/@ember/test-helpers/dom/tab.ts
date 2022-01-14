@@ -227,11 +227,9 @@ function triggerResponderChange(
   return Promise.resolve()
     .then(() => runHooks('tab', 'start', debugData))
     .then(() => getActiveElement(ownerDocument))
-    .then((activeElement) => {
-      return runHooks('tab', 'targetFound', activeElement).then(
-        () => activeElement
-      );
-    })
+    .then((activeElement) =>
+      runHooks('tab', 'targetFound', activeElement).then(() => activeElement)
+    )
     .then((activeElement) => {
       let event = _buildKeyboardEvent('keydown', keyboardEventOptions);
       let defaultNotPrevented = activeElement.dispatchEvent(event);
@@ -242,19 +240,22 @@ function triggerResponderChange(
         let target = findNextResponders(rootElement, activeElement);
         if (target) {
           if (backwards && target.previous) {
-            __focus__(target.previous);
+            return __focus__(target.previous);
           } else if (!backwards && target.next) {
-            __focus__(target.next);
+            return __focus__(target.next);
           } else {
-            __blur__(activeElement);
+            return __blur__(activeElement);
           }
         }
       }
     })
     .then(() => {
       let activeElement = getActiveElement(ownerDocument);
-      fireEvent(activeElement, 'keyup', keyboardEventOptions);
-
+      return fireEvent(activeElement, 'keyup', keyboardEventOptions).then(
+        () => activeElement
+      );
+    })
+    .then((activeElement) => {
       if (!unRestrainTabIndex && activeElement.tabIndex > 0) {
         throw new Error(
           `tabindex of greater than 0 is not allowed. Found tabindex=${activeElement.tabIndex}`
