@@ -1,10 +1,5 @@
 import { module, test } from 'qunit';
-import {
-  click,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { click, setupContext, teardownContext } from '@ember/test-helpers';
 import {
   buildInstrumentedElement,
   instrumentElement,
@@ -13,9 +8,9 @@ import {
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
-  registerFireEventHooks,
+  registerHooks,
   unregisterHooks,
-  buildFireEventSteps,
+  buildExpectedSteps,
 } from '../../helpers/register-hooks';
 
 module('DOM Helper: click', function (hooks) {
@@ -49,23 +44,12 @@ module('DOM Helper: click', function (hooks) {
     insertElement(element);
 
     const eventTypes = ['mousedown', 'mouseup', 'click'];
-    const mockHooks = registerFireEventHooks(assert, eventTypes);
-    const startHook = _registerHook('click', 'start', () => {
-      assert.step('click:start');
-    });
-    const endHook = _registerHook('click', 'end', () => {
-      assert.step('click:end');
-    });
-    mockHooks.push(startHook, endHook);
+    const mockHooks = registerHooks(assert, 'click', { eventTypes });
 
     try {
       await click(element);
 
-      const expectedSteps = [
-        'click:start',
-        ...buildFireEventSteps(eventTypes),
-        'click:end',
-      ];
+      const expectedSteps = buildExpectedSteps('click', { eventTypes });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);
