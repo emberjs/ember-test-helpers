@@ -97,16 +97,12 @@ module('DOM Helper: typeIn', function (hooks) {
       'keyup',
       'change',
     ];
-    const mockHooks = registerHooks(assert, 'typeIn', {
-      eventTypes: expectedEvents,
-    });
+    const mockHooks = registerHooks(assert, 'typeIn', { expectedEvents });
 
     try {
       await typeIn(element, 'foo');
 
-      const expectedSteps = buildExpectedSteps('typeIn', {
-        eventTypes: expectedEvents,
-      });
+      const expectedSteps = buildExpectedSteps('typeIn', { expectedEvents });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

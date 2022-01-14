@@ -41,16 +41,12 @@ module('DOM Helper: select', function (hooks) {
     insertElement(element);
 
     const expectedEvents = ['input', 'change'];
-    const mockHooks = registerHooks(assert, 'select', {
-      eventTypes: expectedEvents,
-    });
+    const mockHooks = registerHooks(assert, 'select', { expectedEvents });
 
     try {
       await select(element, 'apple');
 
-      const expectedSteps = buildExpectedSteps('select', {
-        eventTypes: expectedEvents,
-      });
+      const expectedSteps = buildExpectedSteps('select', { expectedEvents });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

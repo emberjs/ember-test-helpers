@@ -43,13 +43,13 @@ module('DOM Helper: click', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    const eventTypes = ['mousedown', 'mouseup', 'click'];
-    const mockHooks = registerHooks(assert, 'click', { eventTypes });
+    const expectedEvents = ['mousedown', 'mouseup', 'click'];
+    const mockHooks = registerHooks(assert, 'click', { expectedEvents });
 
     try {
       await click(element);
 
-      const expectedSteps = buildExpectedSteps('click', { eventTypes });
+      const expectedSteps = buildExpectedSteps('click', { expectedEvents });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

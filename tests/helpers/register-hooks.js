@@ -6,10 +6,10 @@ import { _registerHook } from '@ember/test-helpers';
  * @param {Assert} assert Test assertion context
  * @param {string} helperName Helper name
  * @param {Object} [options] Options object
- * @param {string[]} [options.eventTypes] Event types to register as `fireEvent` hooks. NOTE: These are deduplicated to prevent duplicate step assertions.
+ * @param {string[]} [options.expectedEvents] Expected events to register as `fireEvent` hooks. (NOTE: These are deduplicated to prevent registering duplicate step assertions.)
  * @returns {HookUnregister[]} Unregisterable hooks
  */
-export const registerHooks = (assert, helperName, { eventTypes } = {}) => {
+export const registerHooks = (assert, helperName, { expectedEvents } = {}) => {
   const mockHooks = [
     _registerHook(helperName, 'start', () => {
       assert.step(`${helperName}:start`);
@@ -19,8 +19,8 @@ export const registerHooks = (assert, helperName, { eventTypes } = {}) => {
     }),
   ];
 
-  if (Array.isArray(eventTypes)) {
-    const fireEventHooks = registerFireEventHooks(assert, eventTypes);
+  if (Array.isArray(expectedEvents)) {
+    const fireEventHooks = registerFireEventHooks(assert, expectedEvents);
     mockHooks.push(...fireEventHooks);
   }
 
@@ -31,10 +31,10 @@ export const registerHooks = (assert, helperName, { eventTypes } = {}) => {
  * Register mock `fireEvent` hooks for provided event types.
  *
  * @param {Assert} assert Test assertion context
- * @param {string[]} [options.eventTypes] Event types to register as `fireEvent` hooks (these are deduplicated)
+ * @param {string[]} [options.expectedEvents] Expected events to register as `fireEvent` hooks (NOTE: These are deduplicated to prevent registering duplicate step assertions.)
  * @returns {HookUnregister[]} Unregisterable hooks
  */
-export const registerFireEventHooks = (assert, eventTypes) => {
+export const registerFireEventHooks = (assert, expectedEvents) => {
   const startHook = _registerHook('fireEvent', 'start', () => {
     assert.step(`fireEvent:start`);
   });
@@ -42,14 +42,16 @@ export const registerFireEventHooks = (assert, eventTypes) => {
     assert.step(`fireEvent:end`);
   });
 
-  const eventSpecificHooks = [...new Set(eventTypes)].flatMap((eventType) => [
-    _registerHook(`fireEvent:${eventType}`, 'start', () => {
-      assert.step(`fireEvent:${eventType}:start`);
-    }),
-    _registerHook(`fireEvent:${eventType}`, 'end', () => {
-      assert.step(`fireEvent:${eventType}:end`);
-    }),
-  ]);
+  const eventSpecificHooks = [...new Set(expectedEvents)].flatMap(
+    (eventType) => [
+      _registerHook(`fireEvent:${eventType}`, 'start', () => {
+        assert.step(`fireEvent:${eventType}:start`);
+      }),
+      _registerHook(`fireEvent:${eventType}`, 'end', () => {
+        assert.step(`fireEvent:${eventType}:end`);
+      }),
+    ]
+  );
 
   return [startHook, endHook, ...eventSpecificHooks];
 };
@@ -66,15 +68,16 @@ export const unregisterHooks = (hooks) => {
 /**
  * Build expected `fireEvent` steps for verification.
  *
- * @param {string[]} eventTypes Event types
+ * @param {string[]} expectedEvents Events expected to be executed
  * @return {string[]} Expected executed `fireEvent` steps
  */
-export const buildExpectedFireEventSteps = (eventTypes) =>
-  eventTypes?.flatMap((eventType) => [
+// TODO: rename `eventTypes` to `expectedEvents`
+export const buildExpectedFireEventSteps = (expectedEvents) =>
+  expectedEvents?.flatMap((event) => [
     'fireEvent:start',
-    `fireEvent:${eventType}:start`,
+    `fireEvent:${event}:start`,
     `fireEvent:end`,
-    `fireEvent:${eventType}:end`,
+    `fireEvent:${event}:end`,
   ]);
 
 /**
@@ -82,13 +85,14 @@ export const buildExpectedFireEventSteps = (eventTypes) =>
  *
  * @param {string} helperName Helper name
  * @param {Object} [options] Options object
- * @param {string[]} [options.eventTypes] Event types to register
+ * @param {string[]} [options.expectedEvents] Events expected to be executed
  * @return {string[]} Expected executed steps
  */
-export const buildExpectedSteps = (helperName, { eventTypes } = {}) =>
+// TODO: rename `eventTypes` to `expectedEvents`
+export const buildExpectedSteps = (helperName, { expectedEvents } = {}) =>
   [
     `${helperName}:start`,
-    ...buildExpectedFireEventSteps(eventTypes),
+    ...buildExpectedFireEventSteps(expectedEvents),
     `${helperName}:end`,
   ].filter(Boolean);
 

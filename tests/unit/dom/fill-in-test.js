@@ -46,13 +46,13 @@ module('DOM Helper: fillIn', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    const eventTypes = ['input', 'change'];
-    const mockHooks = registerHooks(assert, 'fillIn', { eventTypes });
+    const expectedEvents = ['input', 'change'];
+    const mockHooks = registerHooks(assert, 'fillIn', { expectedEvents });
 
     try {
       await fillIn(element, 'foo');
 
-      const expectedSteps = buildExpectedSteps('fillIn', { eventTypes });
+      const expectedSteps = buildExpectedSteps('fillIn', { expectedEvents });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

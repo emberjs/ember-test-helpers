@@ -58,15 +58,13 @@ module('DOM Helper: doubleClick', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    const mockHooks = registerHooks(assert, 'doubleClick', {
-      eventTypes: expectedEvents,
-    });
+    const mockHooks = registerHooks(assert, 'doubleClick', { expectedEvents });
 
     try {
       await doubleClick(element);
 
       const expectedSteps = buildExpectedSteps('doubleClick', {
-        eventTypes: expectedEvents,
+        expectedEvents,
       });
       assert.verifySteps(expectedSteps);
     } finally {

@@ -51,16 +51,12 @@ module('DOM Helper: tap', function (hooks) {
       'mouseup',
       'click',
     ];
-    const mockHooks = registerHooks(assert, 'tap', {
-      eventTypes: expectedEvents,
-    });
+    const mockHooks = registerHooks(assert, 'tap', { expectedEvents });
 
     try {
       await tap(element);
 
-      const expectedSteps = buildExpectedSteps('tap', {
-        eventTypes: expectedEvents,
-      });
+      const expectedSteps = buildExpectedSteps('tap', { expectedEvents });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);
