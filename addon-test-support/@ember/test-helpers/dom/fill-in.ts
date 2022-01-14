@@ -79,9 +79,9 @@ export default function fillIn(
       }
     })
     .then((element) =>
-      fireEvent(element, 'input').then(() =>
-        fireEvent(element, 'change').then(settled)
-      )
+      fireEvent(element, 'input')
+        .then(() => fireEvent(element, 'change'))
+        .then(settled)
     )
     .then(() => runHooks('fillIn', 'end', target, text));
 }
