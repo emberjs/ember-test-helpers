@@ -7,6 +7,7 @@ import {
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { registerHooks, unregisterHooks } from '../../helpers/register-hooks';
 
 module('DOM Helper: triggerEvent', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -44,20 +45,14 @@ module('DOM Helper: triggerEvent', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('triggerEvent', 'start', () => {
-      assert.step('triggerEvent:start');
-    });
-    let endHook = _registerHook('triggerEvent', 'end', () => {
-      assert.step('triggerEvent:end');
-    });
+    const mockHooks = registerHooks(assert, 'triggerEvent');
 
     try {
       await triggerEvent(element, 'mouseenter');
 
       assert.verifySteps(['triggerEvent:start', 'triggerEvent:end']);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

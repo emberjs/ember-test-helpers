@@ -7,6 +7,7 @@ import {
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { registerHooks, unregisterHooks } from '../../helpers/register-hooks';
 
 module('DOM Helper: triggerKeyEvent', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -44,20 +45,14 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('triggerKeyEvent', 'start', () => {
-      assert.step('triggerKeyEvent:start');
-    });
-    let endHook = _registerHook('triggerKeyEvent', 'end', () => {
-      assert.step('triggerKeyEvent:end');
-    });
+    const mockHooks = registerHooks(assert, 'triggerKeyEvent');
 
     try {
       await triggerKeyEvent(element, 'keypress', 13);
 
       assert.verifySteps(['triggerKeyEvent:start', 'triggerKeyEvent:end']);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

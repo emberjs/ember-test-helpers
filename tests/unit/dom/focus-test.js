@@ -12,6 +12,7 @@ import {
 } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { registerHooks, unregisterHooks } from '../../helpers/register-hooks';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
@@ -54,20 +55,14 @@ module('DOM Helper: focus', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = _registerHook('focus', 'start', () => {
-      assert.step('focus:start');
-    });
-    let endHook = _registerHook('focus', 'end', () => {
-      assert.step('focus:end');
-    });
+    const mockHooks = registerHooks(assert, 'focus');
 
     try {
       await focus(element);
 
       assert.verifySteps(['focus:start', 'focus:end']);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 
