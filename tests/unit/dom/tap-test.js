@@ -1,17 +1,12 @@
 import { module, test } from 'qunit';
-import {
-  tap,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { tap, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
-  registerFireEventHooks,
+  registerHooks,
   unregisterHooks,
-  buildFireEventSteps,
+  buildExpectedSteps,
 } from '../../helpers/register-hooks';
 
 module('DOM Helper: tap', function (hooks) {
@@ -49,30 +44,23 @@ module('DOM Helper: tap', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    const eventTypes = [
+    const expectedEvents = [
       'touchstart',
       'touchend',
       'mousedown',
       'mouseup',
       'click',
     ];
-    const mockHooks = registerFireEventHooks(assert, eventTypes);
-    const startHook = _registerHook('tap', 'start', () => {
-      assert.step('tap:start');
+    const mockHooks = registerHooks(assert, 'tap', {
+      eventTypes: expectedEvents,
     });
-    const endHook = _registerHook('tap', 'end', () => {
-      assert.step('tap:end');
-    });
-    mockHooks.push(startHook, endHook);
 
     try {
       await tap(element);
 
-      const expectedSteps = [
-        'tap:start',
-        ...buildFireEventSteps(eventTypes),
-        'tap:end',
-      ];
+      const expectedSteps = buildExpectedSteps('tap', {
+        eventTypes: expectedEvents,
+      });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

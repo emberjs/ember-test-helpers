@@ -1,17 +1,12 @@
 import { module, test } from 'qunit';
-import {
-  fillIn,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
-  registerFireEventHooks,
+  registerHooks,
   unregisterHooks,
-  buildFireEventSteps,
+  buildExpectedSteps,
 } from '../../helpers/register-hooks';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
@@ -52,23 +47,12 @@ module('DOM Helper: fillIn', function (hooks) {
     insertElement(element);
 
     const eventTypes = ['input', 'change'];
-    const mockHooks = registerFireEventHooks(assert, eventTypes);
-    const startHook = _registerHook('fillIn', 'start', () => {
-      assert.step('fillIn:start');
-    });
-    const endHook = _registerHook('fillIn', 'end', () => {
-      assert.step('fillIn:end');
-    });
-    mockHooks.push(startHook, endHook);
+    const mockHooks = registerHooks(assert, 'fillIn', { eventTypes });
 
     try {
       await fillIn(element, 'foo');
 
-      const expectedSteps = [
-        'fillIn:start',
-        ...buildFireEventSteps(eventTypes),
-        'fillIn:end',
-      ];
+      const expectedSteps = buildExpectedSteps('fillIn', { eventTypes });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);

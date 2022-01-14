@@ -1,19 +1,14 @@
 import { module, test } from 'qunit';
-import {
-  typeIn,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
-  registerFireEventHooks,
+  registerHooks,
   unregisterHooks,
-  buildFireEventSteps,
+  buildExpectedSteps,
 } from '../../helpers/register-hooks';
 
 /*
@@ -82,29 +77,36 @@ module('DOM Helper: typeIn', function (hooks) {
   });
 
   test('it executes registered typeIn hooks', async function (assert) {
-    assert.expect(23);
+    assert.expect(55);
 
     element = document.createElement('input');
     insertElement(element);
 
-    const eventTypes = ['keydown', 'keypress', 'input', 'keyup', 'change'];
-    const mockHooks = registerFireEventHooks(assert, eventTypes);
-    const startHook = _registerHook('typeIn', 'start', () => {
-      assert.step('typeIn:start');
+    const expectedEvents = [
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'change',
+    ];
+    const mockHooks = registerHooks(assert, 'typeIn', {
+      eventTypes: expectedEvents,
     });
-    const endHook = _registerHook('typeIn', 'end', () => {
-      assert.step('typeIn:end');
-    });
-    mockHooks.push(startHook, endHook);
 
     try {
-      await typeIn(element, 'f');
+      await typeIn(element, 'foo');
 
-      const expectedSteps = [
-        'typeIn:start',
-        ...buildFireEventSteps(eventTypes),
-        'typeIn:end',
-      ];
+      const expectedSteps = buildExpectedSteps('typeIn', {
+        eventTypes: expectedEvents,
+      });
       assert.verifySteps(expectedSteps);
     } finally {
       unregisterHooks(mockHooks);
