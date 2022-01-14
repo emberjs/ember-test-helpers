@@ -8,6 +8,11 @@ import {
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerFireEventHooks,
+  unregisterHooks,
+  buildFireEventSteps,
+} from '../../helpers/register-hooks';
 
 module('DOM Helper: tap', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -39,25 +44,38 @@ module('DOM Helper: tap', function (hooks) {
   });
 
   test('it executes registered tap hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(23);
 
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('tap', 'start', () => {
+    const eventTypes = [
+      'touchstart',
+      'touchend',
+      'mousedown',
+      'mouseup',
+      'click',
+    ];
+    const mockHooks = registerFireEventHooks(assert, eventTypes);
+    const startHook = _registerHook('tap', 'start', () => {
       assert.step('tap:start');
     });
-    let endHook = _registerHook('tap', 'end', () => {
+    const endHook = _registerHook('tap', 'end', () => {
       assert.step('tap:end');
     });
+    mockHooks.push(startHook, endHook);
 
     try {
       await tap(element);
 
-      assert.verifySteps(['tap:start', 'tap:end']);
+      const expectedSteps = [
+        'tap:start',
+        ...buildFireEventSteps(eventTypes),
+        'tap:end',
+      ];
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

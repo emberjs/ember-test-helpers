@@ -8,6 +8,11 @@ import {
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerFireEventHooks,
+  unregisterHooks,
+  buildFireEventSteps,
+} from '../../helpers/register-hooks';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
@@ -41,25 +46,32 @@ module('DOM Helper: fillIn', function (hooks) {
   });
 
   test('it executes registered fillIn hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(11);
 
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = _registerHook('fillIn', 'start', () => {
+    const eventTypes = ['input', 'change'];
+    const mockHooks = registerFireEventHooks(assert, eventTypes);
+    const startHook = _registerHook('fillIn', 'start', () => {
       assert.step('fillIn:start');
     });
-    let endHook = _registerHook('fillIn', 'end', () => {
+    const endHook = _registerHook('fillIn', 'end', () => {
       assert.step('fillIn:end');
     });
+    mockHooks.push(startHook, endHook);
 
     try {
       await fillIn(element, 'foo');
 
-      assert.verifySteps(['fillIn:start', 'fillIn:end']);
+      const expectedSteps = [
+        'fillIn:start',
+        ...buildFireEventSteps(eventTypes),
+        'fillIn:end',
+      ];
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

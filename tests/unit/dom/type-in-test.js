@@ -10,6 +10,11 @@ import { isIE11 } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerFireEventHooks,
+  unregisterHooks,
+  buildFireEventSteps,
+} from '../../helpers/register-hooks';
 
 /*
  * Event order based on https://jsbin.com/zitazuxabe/edit?html,js,console,output
@@ -77,25 +82,32 @@ module('DOM Helper: typeIn', function (hooks) {
   });
 
   test('it executes registered typeIn hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(23);
 
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = _registerHook('typeIn', 'start', () => {
+    const eventTypes = ['keydown', 'keypress', 'input', 'keyup', 'change'];
+    const mockHooks = registerFireEventHooks(assert, eventTypes);
+    const startHook = _registerHook('typeIn', 'start', () => {
       assert.step('typeIn:start');
     });
-    let endHook = _registerHook('typeIn', 'end', () => {
+    const endHook = _registerHook('typeIn', 'end', () => {
       assert.step('typeIn:end');
     });
+    mockHooks.push(startHook, endHook);
 
     try {
-      await typeIn(element, 'foo');
+      await typeIn(element, 'f');
 
-      assert.verifySteps(['typeIn:start', 'typeIn:end']);
+      const expectedSteps = [
+        'typeIn:start',
+        ...buildFireEventSteps(eventTypes),
+        'typeIn:end',
+      ];
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

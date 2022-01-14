@@ -12,6 +12,11 @@ import {
 } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerFireEventHooks,
+  unregisterHooks,
+  buildFireEventSteps,
+} from '../../helpers/register-hooks';
 
 module('DOM Helper: click', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -38,25 +43,32 @@ module('DOM Helper: click', function (hooks) {
   });
 
   test('it executes registered click hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(15);
 
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('click', 'start', () => {
+    const eventTypes = ['mousedown', 'mouseup', 'click'];
+    const mockHooks = registerFireEventHooks(assert, eventTypes);
+    const startHook = _registerHook('click', 'start', () => {
       assert.step('click:start');
     });
-    let endHook = _registerHook('click', 'end', () => {
+    const endHook = _registerHook('click', 'end', () => {
       assert.step('click:end');
     });
+    mockHooks.push(startHook, endHook);
 
     try {
       await click(element);
 
-      assert.verifySteps(['click:start', 'click:end']);
+      const expectedSteps = [
+        'click:start',
+        ...buildFireEventSteps(eventTypes),
+        'click:end',
+      ];
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 
