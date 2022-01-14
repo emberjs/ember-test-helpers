@@ -42,16 +42,15 @@ export const registerFireEventHooks = (assert, expectedEvents) => {
     assert.step(`fireEvent:end`);
   });
 
-  const eventSpecificHooks = [...new Set(expectedEvents)].flatMap(
-    (eventType) => [
-      _registerHook(`fireEvent:${eventType}`, 'start', () => {
-        assert.step(`fireEvent:${eventType}:start`);
-      }),
-      _registerHook(`fireEvent:${eventType}`, 'end', () => {
-        assert.step(`fireEvent:${eventType}:end`);
-      }),
-    ]
-  );
+  const eventTypes = [...new Set(expectedEvents)];
+  const eventSpecificHooks = eventTypes.flatMap((eventType) => [
+    _registerHook(`fireEvent:${eventType}`, 'start', () => {
+      assert.step(`fireEvent:${eventType}:start`);
+    }),
+    _registerHook(`fireEvent:${eventType}`, 'end', () => {
+      assert.step(`fireEvent:${eventType}:end`);
+    }),
+  ]);
 
   return [startHook, endHook, ...eventSpecificHooks];
 };
