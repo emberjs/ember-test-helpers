@@ -1,5 +1,5 @@
 import getElement from './-get-element';
-import isFormControl from './-is-form-control';
+import isFormControl, { FormControl } from './-is-form-control';
 import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
@@ -21,7 +21,7 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
   @public
   @param {string|Element} target the element or selector to enter text into
   @param {string} text the text to fill into the target element
-  @return {Promise<void>} resolves when the application is settled
+  @return {Promise<Element | void>} resolves when the application is settled
 
   @example
   <caption>
@@ -30,7 +30,10 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
 
   fillIn('input', 'hello world');
 */
-export default function fillIn(target: Target, text: string): Promise<void> {
+export default function fillIn(
+  target: Target,
+  text: string
+): Promise<Element | void> {
   return Promise.resolve()
     .then(() => runHooks('fillIn', 'start', target, text))
     .then(() => {
@@ -60,22 +63,25 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
         guardForMaxlength(element, text, 'fillIn');
 
-        __focus__(element);
-
-        element.value = text;
+        return __focus__(element).then(() => {
+          (element as FormControl).value = text;
+          return element;
+        });
       } else if (isContentEditable(element)) {
-        __focus__(element);
-
-        element.innerHTML = text;
+        return __focus__(element).then(() => {
+          element.innerHTML = text;
+          return element;
+        });
       } else {
         throw new Error(
           '`fillIn` is only usable on form controls or contenteditable elements.'
         );
       }
-
-      return fireEvent(element, 'input').then(() =>
-        fireEvent(element, 'change')
-      );
     })
+    .then((element) =>
+      fireEvent(element, 'input').then(() =>
+        fireEvent(element, 'change').then(settled)
+      )
+    )
     .then(() => runHooks('fillIn', 'end', target, text));
 }
