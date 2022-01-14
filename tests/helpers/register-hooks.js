@@ -71,7 +71,6 @@ export const unregisterHooks = (hooks) => {
  * @param {string[]} expectedEvents Events expected to be executed
  * @return {string[]} Expected executed `fireEvent` steps
  */
-// TODO: rename `eventTypes` to `expectedEvents`
 export const buildExpectedFireEventSteps = (expectedEvents) =>
   expectedEvents?.flatMap((event) => [
     'fireEvent:start',
@@ -88,7 +87,6 @@ export const buildExpectedFireEventSteps = (expectedEvents) =>
  * @param {string[]} [options.expectedEvents] Events expected to be executed
  * @return {string[]} Expected executed steps
  */
-// TODO: rename `eventTypes` to `expectedEvents`
 export const buildExpectedSteps = (helperName, { expectedEvents } = {}) =>
   [
     `${helperName}:start`,
