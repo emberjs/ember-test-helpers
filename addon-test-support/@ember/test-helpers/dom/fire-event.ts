@@ -97,9 +97,7 @@ function fireEvent(
   options = {}
 ): Promise<Event | void> {
   return Promise.resolve()
-    .then(() => {
-      return runHooks('fireEvent', 'start', element);
-    })
+    .then(() => runHooks('fireEvent', 'start', element))
     .then(() => runHooks(`fireEvent:${eventType}`, 'start', element))
     .then(() => {
       if (!element) {
@@ -144,10 +142,10 @@ function fireEvent(
       element.dispatchEvent(event);
       return event;
     })
-    .then((event) => runHooks('fireEvent', 'end', element).then(() => event))
     .then((event) =>
       runHooks(`fireEvent:${eventType}`, 'end', element).then(() => event)
-    );
+    )
+    .then((event) => runHooks('fireEvent', 'end', element).then(() => event));
 }
 
 export default fireEvent;

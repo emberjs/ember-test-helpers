@@ -75,8 +75,8 @@ export const buildExpectedFireEventSteps = (expectedEvents) =>
   expectedEvents?.flatMap((event) => [
     'fireEvent:start',
     `fireEvent:${event}:start`,
-    `fireEvent:end`,
     `fireEvent:${event}:end`,
+    `fireEvent:end`,
   ]);
 
 /**
