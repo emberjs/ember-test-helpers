@@ -26,9 +26,9 @@ export function __doubleClick__(
   return Promise.resolve()
     .then(() => fireEvent(element, 'mousedown', options))
     .then((mouseDownEvent) => {
-      if (!isWindow(element) && !mouseDownEvent?.defaultPrevented) {
-        __focus__(element);
-      }
+      return !isWindow(element) && !mouseDownEvent?.defaultPrevented
+        ? __focus__(element)
+        : Promise.resolve();
     })
     .then(() => fireEvent(element, 'mouseup', options))
     .then(() => fireEvent(element, 'click', options))
