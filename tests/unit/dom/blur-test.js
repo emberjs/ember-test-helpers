@@ -4,7 +4,6 @@ import {
   blur,
   setupContext,
   teardownContext,
-  _registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11, isEdge } from '../../helpers/browser-detect';

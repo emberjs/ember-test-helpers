@@ -1,10 +1,5 @@
 import { module, test } from 'qunit';
-import {
-  focus,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { focus, setupContext, teardownContext } from '@ember/test-helpers';
 import {
   buildInstrumentedElement,
   insertElement,
