@@ -245,11 +245,9 @@ export default function triggerKeyEvent(
         throw new Error(`Can not \`triggerKeyEvent\` on disabled ${element}`);
       }
 
-      __triggerKeyEvent__(element, eventType, key, modifiers);
-
-      return settled();
+      return __triggerKeyEvent__(element, eventType, key, modifiers).then(
+        settled
+      );
     })
-    .then(() => {
-      return runHooks('triggerKeyEvent', 'end', target, eventType, key);
-    });
+    .then(() => runHooks('triggerKeyEvent', 'end', target, eventType, key));
 }
