@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
-import {
-  select,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { select, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
+import {
+  buildExpectedSteps,
+  registerHooks,
+  unregisterHooks,
+} from '../../helpers/register-hooks';
 
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
 let additionalSteps = ['input', 'change'];
@@ -35,25 +35,25 @@ module('DOM Helper: select', function (hooks) {
   });
 
   test('it executes registered select hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(11);
 
     element = document.createElement('select');
     insertElement(element);
 
-    let startHook = _registerHook('select', 'start', () => {
-      assert.step('select:start');
-    });
-    let endHook = _registerHook('select', 'end', () => {
-      assert.step('select:end');
+    const expectedEvents = ['input', 'change'];
+    const mockHooks = registerHooks(assert, 'select', {
+      eventTypes: expectedEvents,
     });
 
     try {
       await select(element, 'apple');
 
-      assert.verifySteps(['select:start', 'select:end']);
+      const expectedSteps = buildExpectedSteps('select', {
+        eventTypes: expectedEvents,
+      });
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 
