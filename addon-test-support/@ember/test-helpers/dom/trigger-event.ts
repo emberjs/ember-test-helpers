@@ -83,9 +83,7 @@ export default function triggerEvent(
         throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
       }
 
-      fireEvent(element, eventType, options);
-
-      return settled();
+      return fireEvent(element, eventType, options).then(settled);
     })
     .then(() => {
       return runHooks('triggerEvent', 'end', target, eventType, options);
