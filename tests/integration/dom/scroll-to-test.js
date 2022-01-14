@@ -6,7 +6,6 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  _registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
