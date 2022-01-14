@@ -6,6 +6,7 @@ import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
+import settled from '../settled';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
@@ -113,7 +114,7 @@ export default function click(
         throw new Error(`Can not \`click\` disabled ${element}`);
       }
 
-      return __click__(element, options);
+      return __click__(element, options).then(settled);
     })
     .then(() => runHooks('click', 'end', target, _options));
 }
