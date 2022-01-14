@@ -76,19 +76,18 @@ export default function tap(
         throw new Error(`Can not \`tap\` disabled ${element}`);
       }
 
-      return fireEvent(element, 'touchstart', options);
-    })
-    .then((touchstartEv) => {
-      let element = getElement(target);
-      return fireEvent(element as Element, 'touchend', options).then(
-        (touchendEv) => [touchstartEv, touchendEv]
-      );
-    })
-    .then(([touchstartEv, touchendEv]) => {
-      let element = getElement(target);
-      return !touchstartEv.defaultPrevented && !touchendEv.defaultPrevented
-        ? __click__(element as Element, options)
-        : Promise.resolve();
+      return fireEvent(element, 'touchstart', options)
+        .then((touchstartEv) =>
+          fireEvent(element as Element, 'touchend', options).then(
+            (touchendEv) => [touchstartEv, touchendEv]
+          )
+        )
+        .then(([touchstartEv, touchendEv]) =>
+          !touchstartEv.defaultPrevented && !touchendEv.defaultPrevented
+            ? __click__(element as Element, options)
+            : Promise.resolve()
+        )
+        .then(settled);
     })
     .then(() => {
       return runHooks('tap', 'end', target, options);

@@ -2,11 +2,11 @@ import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import { Promise } from '../-utils';
+import settled from '../settled';
 import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
-import settled from '../settled';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;

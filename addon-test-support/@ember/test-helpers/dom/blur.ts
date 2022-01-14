@@ -42,7 +42,6 @@ export function __blur__(
     ? Promise.resolve()
         .then(() => fireEvent(element, 'blur', { bubbles: false, ...options }))
         .then(() => fireEvent(element, 'focusout', options))
-        .then(() => settled())
     : Promise.resolve();
 }
 
@@ -84,7 +83,7 @@ export default function blur(
         );
       }
 
-      return __blur__(element);
+      return __blur__(element).then(() => settled());
     })
     .then(() => runHooks('blur', 'end', target));
 }
