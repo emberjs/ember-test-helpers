@@ -19,7 +19,13 @@ import { hbs } from 'ember-cli-htmlbars';
 // Helpers
 //
 
-/** Register and return mock `fireEvent` hooks */
+/**
+ * Register and return mock `fireEvent` hooks
+ *
+ * @param {Assert} assert Test assertion context
+ * @param {string[]} eventTypes Event types to register
+ * @returns {HookUnregister[]} Unregisterable hooks
+ */
 const setupMockHooks = (assert, eventTypes) => {
   const startHook = _registerHook('fireEvent', 'start', () => {
     assert.step(`fireEvent:start`);
