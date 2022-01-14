@@ -6,7 +6,7 @@ import { _registerHook } from '@ember/test-helpers';
  * @param {Assert} assert Test assertion context
  * @param {string} helperName Helper name
  * @param {Object} [options] Options object
- * @param {string[]} [options.eventTypes] Event types to register
+ * @param {string[]} [options.eventTypes] Event types to register as `fireEvent` hooks. NOTE: These are deduplicated to prevent duplicate step assertions.
  * @returns {HookUnregister[]} Unregisterable hooks
  */
 export const registerHooks = (assert, helperName, { eventTypes } = {}) => {
@@ -31,7 +31,7 @@ export const registerHooks = (assert, helperName, { eventTypes } = {}) => {
  * Register mock `fireEvent` hooks for provided event types.
  *
  * @param {Assert} assert Test assertion context
- * @param {string[]} eventTypes Event types to register
+ * @param {string[]} [options.eventTypes] Event types to register as `fireEvent` hooks (these are deduplicated)
  * @returns {HookUnregister[]} Unregisterable hooks
  */
 export const registerFireEventHooks = (assert, eventTypes) => {
