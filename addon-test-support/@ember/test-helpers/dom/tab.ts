@@ -248,6 +248,8 @@ function triggerResponderChange(
           }
         }
       }
+
+      return Promise.resolve();
     })
     .then(() => {
       let activeElement = getActiveElement(ownerDocument);
