@@ -79,7 +79,15 @@ module('DOM Helper: doubleClick', function (hooks) {
       await setupContext(context);
       await doubleClick(`#${element.id}`);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via element with context set', async function (assert) {
@@ -88,7 +96,15 @@ module('DOM Helper: doubleClick', function (hooks) {
       await setupContext(context);
       await doubleClick(element);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via element without context set', async function (assert) {
@@ -116,7 +132,15 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await promise;
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('rejects if selector is not found', async function (assert) {
@@ -294,7 +318,15 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await doubleClick(iframeElement);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
   });
 
@@ -389,7 +421,15 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(nonFocusableElement);
       await doubleClick(element);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('preventDefault() on the mousedown event prevents triggering focus/blur events', async function (assert) {
