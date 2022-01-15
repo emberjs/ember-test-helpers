@@ -3,6 +3,7 @@ import {
   triggerKeyEvent,
   setupContext,
   teardownContext,
+  _registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
