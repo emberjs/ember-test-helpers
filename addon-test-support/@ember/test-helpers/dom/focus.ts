@@ -73,7 +73,7 @@ export function __focus__(
         throw new Error('There was a previously focused element');
       }
 
-      const browserIsNotFocused = !document?.hasFocus();
+      let browserIsNotFocused = !document?.hasFocus();
 
       // fire __blur__ manually with the correct relatedTarget when the browser is not
       // already in focus and there was a previously focused element
@@ -90,7 +90,7 @@ export function __focus__(
       // Firefox does not trigger the `focusin` event if the window
       // does not have focus. If the document does not have focus then
       // fire `focusin` event as well.
-      const browserIsFocused = document?.hasFocus();
+      let browserIsFocused = document?.hasFocus();
       return browserIsFocused
         ? Promise.resolve()
         : // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
@@ -152,7 +152,7 @@ export default function focus(target: Target): Promise<void> {
         throw new Error(`${element} is not focusable`);
       }
 
-      return __focus__(element).then(settled);
+      return __focus__(element);
     })
     .then(() => runHooks('focus', 'end', target));
 }
