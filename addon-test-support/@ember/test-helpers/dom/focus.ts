@@ -152,7 +152,7 @@ export default function focus(target: Target): Promise<void> {
         throw new Error(`${element} is not focusable`);
       }
 
-      return __focus__(element);
+      return __focus__(element).then(settled);
     })
     .then(() => runHooks('focus', 'end', target));
 }
