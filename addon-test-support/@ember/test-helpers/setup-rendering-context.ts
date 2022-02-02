@@ -70,6 +70,21 @@ function lookupOutletTemplate(owner: Owner): any {
 
 let templateId = 0;
 
+/**
+ * @private
+ * @param {unknown} maybeTF any object
+ * @returns {boolean} true if the passed object is likeley a TemplateFactory
+ */
+function isTemplateFactory(maybeTF: unknown): maybeTF is TemplateFactory {
+  return (
+    typeof maybeTF === 'function' &&
+    maybeTF.name === 'factory' &&
+    '__meta' in maybeTF
+  );
+}
+
+const TEST_LOCAL_TEMPLATE_FACTORY = hbs`<this.__renderable__ />`;
+
 export interface RenderOptions {
   /**
     The owner object to use as the basis for the template. In most cases you
@@ -96,12 +111,8 @@ export function render(
   let template: TemplateFactory;
 
   if (hasEmberVersion(3, 25)) {
-    if (
-      typeof renderable === 'function' &&
-      renderable.name === 'factory' &&
-      '__meta' in renderable
-    ) {
-      template = renderable as TemplateFactory;
+    if (isTemplateFactory(renderable)) {
+      template = renderable;
     } else {
       // NOTE: this only works with ember-source@3.25+
       if (!context) {
@@ -109,8 +120,9 @@ export function render(
           'cannot render strict mode templates outside of a test context'
         );
       }
-      context.setProperties({ __renderable__: renderable });
-      template = hbs`<this.__renderable__ />`;
+
+      context.__renderable__ = renderable;
+      template = TEST_LOCAL_TEMPLATE_FACTORY;
     }
   } else {
     template = renderable as TemplateFactory;
