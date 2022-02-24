@@ -11,6 +11,7 @@ import {
   getSettledState,
   render,
 } from '@ember/test-helpers';
+import getElement from '@ember/test-helpers/dom/-get-element';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
 import { hbs } from 'ember-cli-htmlbars';
@@ -117,6 +118,16 @@ const TestComponent5 = Component.extend({
   },
 });
 
+const TestComponent6 = Component.extend({
+  layout: hbs`<div class="test-component"></div>`,
+
+  click() {
+    later(() => {
+      throw new Error('bazinga');
+    }, 10);
+  },
+});
+
 module('settled real-world scenarios', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
@@ -166,7 +177,6 @@ module('settled real-world scenarios', function (hooks) {
   test('does not error for various argument types', async function (assert) {
     assert.expect(0); // no assertions, just shouldn't error
 
-    await settled(3000);
     await settled(null);
     await settled(undefined);
     await settled();
@@ -215,5 +225,24 @@ module('settled real-world scenarios', function (hooks) {
     await settled({ waitForTimers: false });
 
     assert.equal(this.element.textContent, 'async value');
+  });
+
+  test('it rejects with run loop errors', async function (assert) {
+    this.owner.register('component:x-test-6', TestComponent6);
+
+    await render(hbs`{{x-test-6}}`);
+
+    // Run in next tick, so that the test progresses to the assertion.
+    setTimeout(() => {
+      // Intentionally not using the `click` helper, because it uses `settled`
+      // internally.
+      getElement('.test-component').click();
+    });
+
+    await assert.rejects(
+      settled({ rejectOnError: true }),
+      /bazinga/,
+      'rejects with the error thrown inside the run loop'
+    );
   });
 });
