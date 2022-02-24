@@ -5,6 +5,7 @@ import {
   teardownContext,
   _registerHook,
 } from '@ember/test-helpers';
+import { later } from '@ember/runloop';
 import {
   buildInstrumentedElement,
   instrumentElement,
@@ -58,6 +59,20 @@ module('DOM Helper: click', function (hooks) {
       startHook.unregister();
       endHook.unregister();
     }
+  });
+
+  test('rejects with error thrown inside the run loop', async function (assert) {
+    element = document.createElement('div');
+    insertElement(element);
+
+    element.addEventListener('click', () =>
+      later(() => {
+        throw new Error('bazinga');
+      }, 10)
+    );
+
+    await setupContext(context);
+    await assert.rejects(click(element), /bazinga/);
   });
 
   module('non-focusable element types', function () {
