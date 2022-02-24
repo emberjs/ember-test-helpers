@@ -5,7 +5,9 @@ import Ember from 'ember';
 import EmberApplicationInstance from '@ember/application/instance';
 
 import { nextTick } from './-utils';
-import waitUntil from './wait-until';
+import waitUntil, { Options } from './wait-until';
+// @ts-ignore Referenced in DocBlock.
+import type { setupOnerror } from './setup-onerror';
 import { hasPendingTransitions } from './setup-application-context';
 import { hasPendingWaiters } from '@ember/test-waiters';
 import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
@@ -281,8 +283,18 @@ export function isSettled(): boolean {
   a definition of "settled state").
 
   @public
+  @param {Object} [options] options passed to {@link waitUntil}
+  @param {number} [options.timeout=Infinity] the maximum amount of time to wait
+  @param {string} [options.timeoutMessage='settled timed out'] the message to
+use in the reject on timeout
+  @param {boolean} [options.rejectOnError] reject when an operation in a run
+loop has failed; defaults to `true`, if the test context has been setup for usage with {@link setupOnerror}
   @returns {Promise<void>} resolves when settled
 */
-export default function settled(): Promise<void> {
-  return waitUntil(isSettled, { timeout: Infinity }).then(() => {});
+export default function settled(options?: Options): Promise<void> {
+  return waitUntil(isSettled, {
+    timeout: Infinity,
+    timeoutMessage: 'settled timed out',
+    ...options,
+  }).then(() => {});
 }
