@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { Promise } from 'rsvp';
-import { waitUntil } from '@ember/test-helpers';
+import { waitUntil, setupContext, teardownContext } from '@ember/test-helpers';
+import { later } from '@ember/runloop';
 
 module('DOM helper: waitUntil', function () {
   test('waits until the provided function returns true', async function (assert) {
@@ -88,5 +89,21 @@ module('DOM helper: waitUntil', function () {
     }
 
     await new Promise((resolve) => setTimeout(resolve, 100));
+  });
+
+  test('rejects when run loop throws', async function (assert) {
+    const context = await setupContext({});
+
+    later(() => {
+      throw new Error('error goes here');
+    }, 10);
+
+    await assert.rejects(
+      waitUntil(() => false, { rejectOnError: true }),
+      /error goes here/,
+      'valid error was thrown'
+    );
+
+    await teardownContext(context);
   });
 });
