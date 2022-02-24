@@ -156,6 +156,13 @@ module('setupRenderingContext', function (hooks) {
       assert.ok(isSettled(), 'should be settled');
     });
 
+    test('`render` rejects with error thrown inside the run loop', async function (assert) {
+      await assert.rejects(
+        render(hbs`<UnknownComponent />`),
+        /unknown-component/
+      );
+    });
+
     overwriteTest('element');
 
     test('it sets up test metadata', function (assert) {
