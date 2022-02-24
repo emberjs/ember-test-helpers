@@ -568,6 +568,7 @@ while *not* settled (e.g. "loading" or "pending" states).
 
     *   `options.timeout` **[number][67]** the maximum amount of time to wait (optional, default `1000`)
     *   `options.timeoutMessage` **[string][62]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
+    *   `options.rejectOnError` **[boolean][69]** reject when an operation in a run loop has failed (optional, default `true`, if the test context has been setup for usage with [`setupOnerror`][49])
 
 #### Examples
 
