@@ -115,7 +115,7 @@ function fillOut(
     .map((character) => keyEntry(element, character));
   return inputFunctions.reduce((currentPromise, func) => {
     return currentPromise.then(() => delayedExecute(delay)).then(func);
-  }, Promise.resolve(undefined));
+  }, Promise.resolve<void>(undefined));
 }
 
 // eslint-disable-next-line require-jsdoc
