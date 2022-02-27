@@ -1,4 +1,5 @@
 import { get } from '@ember/object';
+import RouterService from '@ember/routing/router-service';
 import { Promise } from './-utils';
 import {
   BaseContext,
@@ -16,9 +17,27 @@ export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
 }
 
+/**
+ * @internal
+ * Not all properties of the `EmberRouter` are published in the types or
+ * officially public API, so we copy them over from the `RouterService`.
+ * We can't use the `RouterService` directly, because it's not natively
+ * available on all supported Ember versions and since we don't want to
+ * introduce side-effects by initializing through looking it up.
+ */
+type Router = Pick<
+  RouterService,
+  'currentRoute' | 'currentRouteName' | 'currentURL' | 'rootURL' | 'willDestroy'
+> & {
+  /** @deprecated */
+  location: { getURL(): string };
+
+  _routerMicrolib: { activeTransition: object };
+};
+
 const CAN_USE_ROUTER_EVENTS = hasEmberVersion(3, 6);
 let routerTransitionsPending: boolean | null = null;
-const ROUTER = new WeakMap();
+const ROUTER = new WeakMap<object, RouterService | Router>();
 const HAS_SETUP_ROUTER = new WeakMap();
 
 // eslint-disable-next-line require-jsdoc
@@ -55,7 +74,10 @@ export function hasPendingTransitions(): boolean | null {
     return null;
   }
 
-  let routerMicrolib = router._routerMicrolib || router.router;
+  // @TODO: Is `router` correct for `RouterService`?
+  // https://github.com/emberjs/ember.js/blob/v4.4.0-alpha.3/packages/%40ember/-internals/routing/lib/services/router.ts#L59-L73
+  // @ts-expect-error
+  let routerMicrolib = (router as Router)._routerMicrolib || router.router;
 
   if (routerMicrolib === undefined) {
     return null;
@@ -87,9 +109,9 @@ export function setupRouterSettlednessTracking() {
   HAS_SETUP_ROUTER.set(context, true);
 
   let { owner } = context;
-  let router;
+  let router: RouterService | Router;
   if (CAN_USE_ROUTER_EVENTS) {
-    router = owner.lookup('service:router');
+    router = owner.lookup('service:router') as RouterService;
 
     // track pending transitions via the public routeWillChange / routeDidChange APIs
     // routeWillChange can fire many times and is only useful to know when we have _started_
@@ -97,7 +119,7 @@ export function setupRouterSettlednessTracking() {
     router.on('routeWillChange', () => (routerTransitionsPending = true));
     router.on('routeDidChange', () => (routerTransitionsPending = false));
   } else {
-    router = owner.lookup('router:main');
+    router = owner.lookup('router:main') as Router;
     ROUTER.set(context, router);
   }
 
@@ -171,7 +193,7 @@ export function currentRouteName(): string {
     );
   }
 
-  let router = context.owner.lookup('router:main');
+  let router = context.owner.lookup('router:main') as Router;
 
   return get(router, 'currentRouteName');
 }
@@ -190,7 +212,7 @@ export function currentURL(): string {
     );
   }
 
-  let router = context.owner.lookup('router:main');
+  let router = context.owner.lookup('router:main') as Router;
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
     return get(router, 'currentURL');
