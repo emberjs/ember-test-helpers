@@ -46,9 +46,8 @@
 /server/
 
 # typescript
-#
-# avoid publishing .d.ts or .ts files
-# until they have become enforced "public" APIs
+
+# avoid publishing source `.ts` files
 *.ts
-# to enable d.ts consumption remove the next line
-# !*.d.ts
+# only publish type defintions
+!/addon-test-support/**/*.d.ts
