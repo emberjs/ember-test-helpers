@@ -23,18 +23,20 @@
     "test": "tests"
   },
   "scripts": {
-    "prepack": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
-    "postpack": "rimraf addon-test-support/**/*.js",
-    "clean": "git clean -x -f",
-    "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md",
+    "prepack": "yarn build && run-s build:*:verify",
+    "postpack": "yarn clean",
+    "build": "run-p --aggregate-output build:*",
+    "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
+    "clean": "run-p --aggregate-output clean:*",
+    "clean:js": "rimraf addon-test-support/**/*.js",
     "lint": "npm-run-all lint:*",
     "lint:js": "eslint --cache .",
     "lint:ts": "tsc -p tsconfig.json --noEmit",
-    "postpublish": "npm-run-all clean",
     "release": "release-it",
     "start": "ember serve",
     "test": "ember test",
-    "test:all": "ember try:each"
+    "test:all": "ember try:each",
+    "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md"
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.0",
