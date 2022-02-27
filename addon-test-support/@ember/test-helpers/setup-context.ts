@@ -44,6 +44,7 @@ registerDeprecationHandler((message, options, next) => {
   }
 
   getDeprecationsForContext(context).push({ message, options });
+  // @ts-expect-error https://github.com/DefinitelyTyped/DefinitelyTyped/pull/59014
   next.apply(null, [message, options]);
 });
 

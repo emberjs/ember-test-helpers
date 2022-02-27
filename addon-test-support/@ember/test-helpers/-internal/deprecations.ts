@@ -93,6 +93,7 @@ if (typeof URLSearchParams !== 'undefined') {
   if (disabledDeprecations) {
     registerDeprecationHandler((message, options, next) => {
       if (!disabledDeprecations.includes(options.id)) {
+        // @ts-expect-error https://github.com/DefinitelyTyped/DefinitelyTyped/pull/59014
         next.apply(null, [message, options]);
       }
     });
@@ -106,6 +107,7 @@ if (typeof URLSearchParams !== 'undefined') {
         debugger; // eslint-disable-line no-debugger
       }
 
+      // @ts-expect-error https://github.com/DefinitelyTyped/DefinitelyTyped/pull/59014
       next.apply(null, [message, options]);
     });
   }
