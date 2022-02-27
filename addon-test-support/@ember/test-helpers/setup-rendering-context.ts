@@ -18,6 +18,7 @@ import { deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import { backburner } from './-internal/backburner';
+import type { OutletView } from './-internal/view';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -112,7 +113,7 @@ export function render(
       let testMetadata = getTestMetadata(context);
       testMetadata.usedHelpers.push('render');
 
-      let toplevelView = owner.lookup('-top-level-view:main');
+      let toplevelView = owner.lookup('-top-level-view:main') as OutletView;
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
@@ -127,6 +128,7 @@ export function render(
           outlet: 'main',
           name: 'application',
           controller: undefined,
+          model: undefined,
           ViewClass: undefined,
           template: OutletTemplate,
         },
@@ -139,6 +141,7 @@ export function render(
               outlet: 'main',
               name: 'index',
               controller: context,
+              model: undefined,
               ViewClass: undefined,
               template: lookupTemplate(ownerToRenderFrom, templateFullName),
               outlets: {},
