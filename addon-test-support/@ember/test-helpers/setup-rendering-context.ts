@@ -17,6 +17,7 @@ import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
+import { backburner } from './-internal/backburner';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -155,7 +156,7 @@ export function render(
       // setting outletState should ensureInstance, since we know we need to
       // render), but on Ember < 3.23 that is not guaranteed.
       if (!hasEmberVersion(3, 23)) {
-        run.backburner.ensureInstance();
+        backburner.ensureInstance();
       }
 
       // returning settled here because the actual rendering does not happen until

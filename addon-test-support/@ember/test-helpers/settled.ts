@@ -1,5 +1,5 @@
 /* globals jQuery */
-import { _backburner } from '@ember/runloop';
+import { backburner } from './-internal/backburner';
 import Ember from 'ember';
 
 import EmberApplicationInstance from '@ember/application/instance';
@@ -220,8 +220,8 @@ export interface SettledState {
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState(): SettledState {
-  let hasPendingTimers = _backburner.hasTimers();
-  let hasRunLoop = Boolean(_backburner.currentInstance);
+  let hasPendingTimers = backburner.hasTimers();
+  let hasRunLoop = Boolean(backburner.currentInstance);
   let hasPendingLegacyWaiters = checkWaiters();
   let hasPendingTestWaiters = hasPendingWaiters();
   let pendingRequestCount = pendingRequests();

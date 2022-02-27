@@ -1,4 +1,4 @@
-import { _backburner, run } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import type Resolver from 'ember-resolver';
 import { setOwner } from '@ember/application';
@@ -17,6 +17,7 @@ import { getResolver } from './resolver';
 import { getApplication } from './application';
 import { Promise } from './-utils';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
+import { backburner } from './-internal/backburner';
 import {
   registerDestructor,
   associateDestroyableChild,
@@ -369,7 +370,7 @@ export default function setupContext(
   let testMetadata: ITestMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupContext');
 
-  _backburner.DEBUG = true;
+  backburner.DEBUG = true;
 
   registerDestructor(context, cleanup);
 

@@ -1,9 +1,9 @@
 import {
-  _backburner,
+  backburner,
   DebugInfo as BackburnerDebugInfo,
   QueueItem,
   DeferredActionQueues,
-} from '@ember/runloop';
+} from './backburner';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import {
   getPendingWaiterState,
@@ -17,7 +17,7 @@ const SCHEDULED_ASYNC = 'Scheduled async';
 const SCHEDULED_AUTORUN = 'Scheduled autorun';
 
 type MaybeDebugInfo = BackburnerDebugInfo | null;
-type WaiterDebugInfo = true | unknown[];
+type WaiterDebugInfo = true | TestWaiterDebugInfo[];
 
 interface SettledState {
   hasPendingTimers: boolean;
@@ -52,7 +52,7 @@ export default interface DebugInfo {
  * @returns {boolean} True if `getDebugInfo` is present in backburner, otherwise false.
  */
 export function backburnerDebugInfoAvailable() {
-  return typeof _backburner.getDebugInfo === 'function';
+  return typeof backburner.getDebugInfo === 'function';
 }
 
 /**
@@ -63,8 +63,8 @@ export function backburnerDebugInfoAvailable() {
  * @returns {MaybeDebugInfo | null} Backburner debugInfo or, if the getDebugInfo method is not present, null
  */
 export function getDebugInfo(): MaybeDebugInfo {
-  return _backburner.DEBUG === true && backburnerDebugInfoAvailable()
-    ? <BackburnerDebugInfo>_backburner.getDebugInfo()
+  return backburner.DEBUG === true && backburnerDebugInfoAvailable()
+    ? (backburner.getDebugInfo() as BackburnerDebugInfo)
     : null;
 }
 
@@ -110,7 +110,7 @@ export class TestDebugInfo implements DebugInfo {
         this._summaryInfo.pendingScheduledQueueItemCount =
           this._debugInfo.instanceStack
             .filter((q) => q)
-            .reduce((total: Number, item) => {
+            .reduce((total: number, item) => {
               Object.keys(item).forEach((queueName: string) => {
                 total += item[queueName].length;
               });
@@ -168,7 +168,7 @@ export class TestDebugInfo implements DebugInfo {
 
           if (Array.isArray(waiterDebugInfo)) {
             _console.group(waiterName);
-            waiterDebugInfo.forEach((debugInfo: TestWaiterDebugInfo) => {
+            waiterDebugInfo.forEach((debugInfo) => {
               _console.log(
                 `${debugInfo.label ? debugInfo.label : 'stack'}: ${
                   debugInfo.stack
