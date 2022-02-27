@@ -48,7 +48,7 @@
     "@babel/cli": "^7.14.8",
     "@babel/preset-typescript": "^7.15.0",
     "@ember/optional-features": "^2.0.0",
-    "@types/ember": "^3.16.5",
+    "@types/ember": "^4.0.0",
     "@types/ember-testing-helpers": "^0.0.4",
     "@types/rsvp": "^4.0.4",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
