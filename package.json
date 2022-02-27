@@ -36,7 +36,8 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
-    "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md"
+    "build:docs:verify": "git diff --quiet API.md || (echo '`API.md` has changed, please run `yarn build:docs` & commit the changes to update the API documentation' && exit 1)",
+    "build:docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md"
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.0",
