@@ -1,4 +1,4 @@
-import type Resolver from '@ember/application/resolver';
+import type Resolver from 'ember-resolver';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
