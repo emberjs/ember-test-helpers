@@ -70,6 +70,8 @@ function lookupOutletTemplate(owner: Owner): any {
 
 let templateId = 0;
 
+const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
+
 export interface RenderOptions {
   /**
     The owner object to use as the basis for the template. In most cases you
@@ -115,9 +117,17 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      templateId += 1;
-      let templateFullName = `template:-undertest-${templateId}`;
-      ownerToRenderFrom.register(templateFullName, template);
+      if (wasPassedComponent) {
+        context = {
+          ProvidedComponent: template, // should be renamed to templateOrComponent
+        };
+        template = INVOKE_PROVIDED_COMPONENT;
+      } else {
+        templateId += 1;
+        let templateFullName = `template:-undertest-${templateId}`;
+        ownerToRenderFrom.register(templateFullName, template);
+        template = lookupTemplate(ownerToRenderFrom, templateFullName);
+      }  
 
       let outletState = {
         render: {
@@ -139,7 +149,7 @@ export function render(
               name: 'index',
               controller: context,
               ViewClass: undefined,
-              template: lookupTemplate(ownerToRenderFrom, templateFullName),
+              template,
               outlets: {},
             },
             outlets: {},
