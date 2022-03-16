@@ -10,6 +10,7 @@ import {
   isSettled,
   getSettledState,
   render,
+  rerender,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
@@ -159,6 +160,15 @@ module('settled real-world scenarios', function (hooks) {
 
     await render(hbs`{{x-test-1}}`);
     await settled();
+
+    assert.equal(this.element.textContent, 'async value');
+  });
+
+  test('rerender', async function (assert) {
+    this.owner.register('component:x-test-1', TestComponent1);
+
+    await render(hbs`{{x-test-1}}`);
+    await rerender();
 
     assert.equal(this.element.textContent, 'async value');
   });
