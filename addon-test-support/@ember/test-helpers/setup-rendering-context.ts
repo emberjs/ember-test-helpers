@@ -17,9 +17,12 @@ import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
+import { getInternalComponentManager } from '@glimmer/manager';
+import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
+const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
 
 export interface RenderingTestContext extends TestContext {
   render(template: TemplateFactory): Promise<void>;
@@ -84,19 +87,24 @@ export interface RenderOptions {
   Renders the provided template and appends it to the DOM.
 
   @public
-  @param {CompiledTemplate} template the template to render
+  @param {CompiledTemplate} templateOrComponent the template to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 */
 export function render(
-  template: TemplateFactory,
+  templateOrComponent: TemplateFactory | ComponentInstance,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();
 
-  if (!template) {
+  if (!templateOrComponent) {
     throw new Error('you must pass a template to `render()`');
   }
+
+  const wasPassedComponent = !!getInternalComponentManager(
+    templateOrComponent,
+    true
+  );
 
   return Promise.resolve()
     .then(() => runHooks('render', 'start'))
@@ -115,9 +123,20 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      templateId += 1;
-      let templateFullName = `template:-undertest-${templateId}`;
-      ownerToRenderFrom.register(templateFullName, template);
+      if (wasPassedComponent) {
+        context = {
+          ProvidedComponent: templateOrComponent,
+        };
+        templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+      } else {
+        templateId += 1;
+        let templateFullName = `template:-undertest-${templateId}`;
+        ownerToRenderFrom.register(templateFullName, templateOrComponent);
+        templateOrComponent = lookupTemplate(
+          ownerToRenderFrom,
+          templateFullName
+        );
+      }
 
       let outletState = {
         render: {
@@ -139,7 +158,7 @@ export function render(
               name: 'index',
               controller: context,
               ViewClass: undefined,
-              template: lookupTemplate(ownerToRenderFrom, templateFullName),
+              template: templateOrComponent,
               outlets: {},
             },
             outlets: {},

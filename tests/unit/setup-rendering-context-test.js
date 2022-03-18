@@ -28,6 +28,9 @@ import {
 import { hbs } from 'ember-cli-htmlbars';
 import { getOwner } from '@ember/application';
 import Engine from '@ember/engine';
+import { precompileTemplate } from '@ember/template-compilation';
+import { setComponentTemplate } from '@ember/component';
+import templateOnly from '@ember/component/template-only';
 
 async function buildEngineOwner(parentOwner, registry) {
   parentOwner.register(
@@ -553,6 +556,25 @@ module('setupRenderingContext', function (hooks) {
 
     test('context supports getOwner', async function (assert) {
       assert.equal(getOwner(this), this.owner);
+    });
+
+    test('render accepts a component instead of a template', async function (assert) {
+      const name = 'Chris';
+      const template = precompileTemplate('<p>hello my name is {{name}}</p>', {
+        scope() {
+          return {
+            name,
+          };
+        },
+      });
+      const component = setComponentTemplate(template, templateOnly());
+
+      await render(component);
+      assert.equal(
+        this.element.textContent,
+        'hello my name is Chris',
+        'has rendered content'
+      );
     });
 
     module('this.render and this.clearRender deprecations', function () {
