@@ -17,7 +17,7 @@ import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
-import { getInternalComponentManager } from '@glimmer/manager';
+import getComponentManager from './-internal/get-component-manager';
 import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -101,10 +101,7 @@ export function render(
     throw new Error('you must pass a template to `render()`');
   }
 
-  const wasPassedComponent = !!getInternalComponentManager(
-    templateOrComponent,
-    true
-  );
+  const wasPassedComponent = !!getComponentManager(templateOrComponent, true);
 
   return Promise.resolve()
     .then(() => runHooks('render', 'start'))
