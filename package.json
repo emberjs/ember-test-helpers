@@ -54,6 +54,7 @@
     "@ember/optional-features": "^2.0.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/interfaces": "^0.84.1",
+    "@glimmer/reference": "^0.84.1",
     "@types/ember": "^3.16.5",
     "@types/ember-testing-helpers": "^0.0.4",
     "@types/rsvp": "^4.0.4",
