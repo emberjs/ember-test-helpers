@@ -1,7 +1,8 @@
 /* globals EmberENV */
 import { module, test } from 'qunit';
 import Service from '@ember/service';
-import Component from '@ember/component';
+import Component, { setComponentTemplate } from '@ember/component';
+import GlimmerComponent from '@glimmer/component';
 import { helper } from '@ember/component/helper';
 import {
   getApplication,
@@ -29,7 +30,6 @@ import { hbs } from 'ember-cli-htmlbars';
 import { getOwner } from '@ember/application';
 import Engine from '@ember/engine';
 import { precompileTemplate } from '@ember/template-compilation';
-import { setComponentTemplate } from '@ember/component';
 import templateOnly from '@ember/component/template-only';
 
 async function buildEngineOwner(parentOwner, registry) {
@@ -558,23 +558,82 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(getOwner(this), this.owner);
     });
 
-    test('render accepts a component instead of a template', async function (assert) {
-      const name = 'Chris';
-      const template = precompileTemplate('<p>hello my name is {{name}}</p>', {
-        scope() {
-          return {
-            name,
-          };
-        },
-      });
-      const component = setComponentTemplate(template, templateOnly());
+    module('using render with a component', function () {
+      test('works with a template-only component', async function (assert) {
+        const name = 'Chris';
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
+            },
+          }
+        );
+        const component = setComponentTemplate(template, templateOnly());
 
-      await render(component);
-      assert.equal(
-        this.element.textContent,
-        'hello my name is Chris',
-        'has rendered content'
-      );
+        await render(component);
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris',
+          'has rendered content'
+        );
+      });
+
+      test('works with a glimmer component', async function (assert) {
+        const name = 'Chris';
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
+            },
+          }
+        );
+
+        class Foo extends GlimmerComponent {
+          favoriteColor = 'red';
+        }
+
+        const component = setComponentTemplate(template, Foo);
+
+        await render(component);
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris and my favorite color is red',
+          'has rendered content'
+        );
+      });
+
+      test('works with a classic component', async function (assert) {
+        const name = 'Chris';
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
+            },
+          }
+        );
+
+        const Foo = Component.extend({
+          favoriteColor: 'red',
+
+          layout: template,
+        });
+
+        await render(Foo);
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris and my favorite color is red',
+          'has rendered content'
+        );
+      });
     });
 
     module('this.render and this.clearRender deprecations', function () {

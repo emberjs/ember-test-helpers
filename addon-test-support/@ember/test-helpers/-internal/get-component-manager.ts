@@ -4,7 +4,7 @@ import {
   importSync,
   dependencySatisfies,
 } from '@embroider/macros';
-import { InternalComponentManager } from '@glimmer/interfaces';
+import type { InternalComponentManager } from '@glimmer/interfaces';
 
 let getComponentManager: (
   definition: object,
