@@ -8,17 +8,35 @@ import type { InternalComponentManager } from '@glimmer/interfaces';
 
 let getComponentManager: (
   definition: object,
-  isOptional?: boolean
+  owner: object
 ) => InternalComponentManager | null;
 
 if (macroCondition(dependencySatisfies('ember-source', '>=3.27.0'))) {
-  getComponentManager =
+  let _getComponentManager =
     //@ts-ignore
     importSync('@glimmer/manager').getInternalComponentManager;
+
+  getComponentManager = (definition: object, owner: object) => {
+    return _getComponentManager(definition, true);
+  };
+} else if (
+  macroCondition(dependencySatisfies('ember-source', '>=3.25.0-beta.1'))
+) {
+  let _getComponentManager = (Ember as any).__loader.require(
+    '@glimmer/manager'
+  ).getInternalComponentManager;
+
+  getComponentManager = (definition: object, owner: object) => {
+    return _getComponentManager(definition, true);
+  };
 } else {
-  getComponentManager = (Ember as any).__loader.require(
+  let _getComponentManager = (Ember as any).__loader.require(
     '@glimmer/runtime'
   ).getComponentManager;
+
+  getComponentManager = (definition: object, owner: object) => {
+    return _getComponentManager(owner, definition);
+  };
 }
 
 export default getComponentManager;

@@ -17,7 +17,8 @@ import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
-import getComponentManager from './-internal/get-component-manager';
+import isComponent from './-internal/is-component';
+import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -101,8 +102,6 @@ export function render(
     throw new Error('you must pass a template to `render()`');
   }
 
-  const wasPassedComponent = !!getComponentManager(templateOrComponent, true);
-
   return Promise.resolve()
     .then(() => runHooks('render', 'start'))
     .then(() => {
@@ -120,11 +119,32 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (wasPassedComponent) {
-        context = {
-          ProvidedComponent: templateOrComponent,
-        };
-        templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+      if (isComponent(templateOrComponent, owner)) {
+        if (
+          macroCondition(dependencySatisfies('ember-source', '3.25.0-beta.1'))
+        ) {
+          // In 3.25+, we can treat components as one big object and just pass them around/invoke them
+          // wherever, so we just assign the component to the `ProvidedComponent` property and invoke it
+          // in the test's template
+          context = {
+            ProvidedComponent: templateOrComponent,
+          };
+          templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+        } else {
+          // Below 3.25, however, we *cannot* treat components as one big object and instead have to
+          // register their class and template independently and then invoke them with the `component`
+          // helper so they can actually be found by the resolver and rendered
+          templateId += 1;
+          let name = `-undertest-${templateId}`;
+          let componentFullName = `component:${name}`;
+          let templateFullName = `template:components/${name}`;
+          context = {
+            ProvidedComponent: name,
+          };
+          ownerToRenderFrom.register(componentFullName, templateOrComponent);
+          templateOrComponent = hbs`{{component this.ProvidedComponent}}`;
+          ownerToRenderFrom.register(templateFullName, templateOrComponent);
+        }
       } else {
         templateId += 1;
         let templateFullName = `template:-undertest-${templateId}`;
