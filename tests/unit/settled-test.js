@@ -36,12 +36,14 @@ module('settled', function (hooks) {
               hasPendingTransitions: null,
               hasRunLoop: false,
               pendingRequestCount: 0,
+              isRenderPending: false,
               debugInfo: new TestDebugInfo({
                 hasPendingTimers: false,
                 hasRunLoop: false,
                 hasPendingLegacyWaiters: false,
                 hasPendingTestWaiters: false,
                 hasPendingRequests: false,
+                isRenderPending: false,
               }),
             },
             'post cond - getSettledState'
@@ -188,6 +190,7 @@ module('settled', function (hooks) {
         hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: false,
+        isRenderPending: false,
         pendingRequestCount: 0,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: false,
@@ -195,6 +198,7 @@ module('settled', function (hooks) {
           hasPendingLegacyWaiters: false,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
     });
@@ -213,6 +217,7 @@ module('settled', function (hooks) {
         hasPendingWaiters: false,
         hasPendingTransitions: null,
         hasRunLoop: true,
+        isRenderPending: true,
         pendingRequestCount: 0,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: true,
@@ -220,6 +225,7 @@ module('settled', function (hooks) {
           hasPendingLegacyWaiters: false,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: true,
         }),
       });
     });
@@ -240,12 +246,14 @@ module('settled', function (hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        isRenderPending: false,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: true,
           hasRunLoop: false,
           hasPendingLegacyWaiters: false,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
     });
@@ -266,12 +274,14 @@ module('settled', function (hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        isRenderPending: false,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: true,
           hasRunLoop: false,
           hasPendingLegacyWaiters: false,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
     });
@@ -289,12 +299,14 @@ module('settled', function (hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
+          isRenderPending: true,
           debugInfo: new TestDebugInfo({
             hasPendingTimers: false,
             hasRunLoop: true,
             hasPendingLegacyWaiters: false,
             hasPendingTestWaiters: false,
             hasPendingRequests: false,
+            isRenderPending: true,
           }),
         });
       });
@@ -324,12 +336,14 @@ module('settled', function (hooks) {
           hasPendingTransitions: null,
           hasRunLoop: false,
           pendingRequestCount: 1,
+          isRenderPending: false,
           debugInfo: new TestDebugInfo({
             hasPendingTimers: false,
             hasRunLoop: false,
             hasPendingLegacyWaiters: false,
             hasPendingTestWaiters: false,
             hasPendingRequests: true,
+            isRenderPending: false,
           }),
         });
       } else {
@@ -339,6 +353,7 @@ module('settled', function (hooks) {
           hasPendingWaiters: true,
           hasPendingTransitions: null,
           hasRunLoop: false,
+          isRenderPending: false,
           pendingRequestCount: 0,
           debugInfo: new TestDebugInfo({
             hasPendingTimers: false,
@@ -346,6 +361,7 @@ module('settled', function (hooks) {
             hasPendingLegacyWaiters: true,
             hasPendingTestWaiters: false,
             hasPendingRequests: false,
+            isRenderPending: false,
           }),
         });
       }
@@ -365,12 +381,14 @@ module('settled', function (hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        isRenderPending: false,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: false,
           hasRunLoop: false,
           hasPendingLegacyWaiters: true,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
 
@@ -395,6 +413,7 @@ module('settled', function (hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        isRenderPending: false,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: false,
           hasRunLoop: false,
@@ -408,6 +427,7 @@ module('settled', function (hooks) {
 
           hasPendingTestWaiters: true,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
 
@@ -430,12 +450,14 @@ module('settled', function (hooks) {
         hasPendingTransitions: null,
         hasRunLoop: false,
         pendingRequestCount: 0,
+        isRenderPending: false,
         debugInfo: new TestDebugInfo({
           hasPendingTimers: false,
           hasRunLoop: false,
           hasPendingLegacyWaiters: true,
           hasPendingTestWaiters: false,
           hasPendingRequests: false,
+          isRenderPending: false,
         }),
       });
 
@@ -447,12 +469,14 @@ module('settled', function (hooks) {
           hasPendingTransitions: null,
           hasRunLoop: true,
           pendingRequestCount: 0,
+          isRenderPending: true,
           debugInfo: new TestDebugInfo({
             hasPendingTimers: false,
             hasRunLoop: true,
             hasPendingLegacyWaiters: true,
             hasPendingTestWaiters: false,
             hasPendingRequests: false,
+            isRenderPending: true,
           }),
         });
 
@@ -464,6 +488,7 @@ module('settled', function (hooks) {
           hasPendingWaiters: true,
           hasPendingTransitions: null,
           hasRunLoop: true,
+          isRenderPending: true,
           pendingRequestCount: 0,
           debugInfo: new TestDebugInfo({
             hasPendingTimers: true,
@@ -471,6 +496,7 @@ module('settled', function (hooks) {
             hasPendingLegacyWaiters: true,
             hasPendingTestWaiters: false,
             hasPendingRequests: false,
+            isRenderPending: true,
           }),
         });
 

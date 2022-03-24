@@ -25,6 +25,7 @@ interface SettledState {
   hasPendingLegacyWaiters: boolean;
   hasPendingTestWaiters: boolean;
   hasPendingRequests: boolean;
+  isRenderPending: boolean;
 }
 
 interface SummaryInfo {
