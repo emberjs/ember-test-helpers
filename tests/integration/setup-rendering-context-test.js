@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import Component from '@ember/component';
+import Component, { setComponentTemplate } from '@ember/component';
+import GlimmerComponent from '@glimmer/component';
 import { helper } from '@ember/component/helper';
 import { registerWaiter } from '@ember/test';
 import {
@@ -9,14 +10,17 @@ import {
   teardownContext,
   waitFor,
   render,
+  rerender,
   click,
 } from '@ember/test-helpers';
+import templateOnly from '@ember/component/template-only';
 
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { precompileTemplate } from '@ember/template-compilation';
 import { defer } from 'rsvp';
+import { tracked } from '@glimmer/tracking';
 
 const PromiseWrapperTemplate = hbs`
 {{~#if this.settled~}}
@@ -154,6 +158,44 @@ module('setupRenderingContext "real world"', function (hooks) {
         );
 
         assert.equal(this.element.textContent, '4');
+      });
+    }
+  });
+
+  module('render with a component', function () {
+    if (hasEmberVersion(3, 25)) {
+      test('can render locally defined components', async function (assert) {
+        class MyComponent extends GlimmerComponent {}
+
+        setComponentTemplate(hbs`my name is {{@name}}`, MyComponent);
+
+        const somePerson = new (class {
+          @tracked name = 'Zoey';
+        })();
+
+        const template = precompileTemplate(
+          '<MyComponent @name={{somePerson.name}} />',
+          {
+            scope() {
+              return {
+                somePerson,
+                MyComponent,
+              };
+            },
+          }
+        );
+
+        const component = setComponentTemplate(template, templateOnly());
+
+        await render(component);
+
+        assert.equal(this.element.textContent, 'my name is Zoey');
+
+        somePerson.name = 'Tomster';
+
+        await rerender();
+
+        assert.equal(this.element.textContent, 'my name is Tomster');
       });
     }
   });

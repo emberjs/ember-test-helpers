@@ -12,6 +12,7 @@ import {
   _registerHook,
   getTestMetadata,
   render,
+  rerender,
   clearRender,
   setApplication,
   setResolver,
@@ -564,6 +565,7 @@ module('setupRenderingContext', function (hooks) {
       module('using render with a component in Ember >= 3.25', function () {
         test('works with a template-only component', async function (assert) {
           const name = 'Chris';
+
           const template = precompileTemplate(
             '<p>hello my name is {{name}}</p>',
             {
@@ -636,6 +638,25 @@ module('setupRenderingContext', function (hooks) {
             'has rendered content'
           );
         });
+
+        test('components passed to render do *not* have access to the test context', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {
+            foo = 'foo';
+          }
+
+          const component = setComponentTemplate(template, Foo);
+          await render(component);
+
+          assert.equal(this.element.textContent, 'the value of foo is foo');
+
+          this.set('foo', 'bar');
+          await rerender();
+          assert.equal(this.element.textContent, 'the value of foo is foo');
+        });
       });
     } else {
       module('using render with a component in Ember < 3.25', function () {
@@ -689,6 +710,25 @@ module('setupRenderingContext', function (hooks) {
             'hello my favorite color is red',
             'has rendered content'
           );
+        });
+
+        test('components passed to render do *not* have access to the test context', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {
+            foo = 'foo';
+          }
+
+          const component = setComponentTemplate(template, Foo);
+          await render(component);
+
+          assert.equal(this.element.textContent, 'the value of foo is foo');
+
+          this.set('foo', 'bar');
+          await rerender();
+          assert.equal(this.element.textContent, 'the value of foo is foo');
         });
       });
     }
