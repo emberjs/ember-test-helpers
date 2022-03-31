@@ -1,4 +1,8 @@
 import { futureTick, Promise } from './-utils';
+import setupOnerror, {
+  resetOnerror,
+  _getContextForOnError,
+} from './setup-onerror';
 
 const TIMEOUTS = [0, 1, 2, 5, 7];
 const MAX_TIMEOUT = 10;
@@ -8,6 +12,17 @@ type Falsy = false | 0 | '' | null | undefined;
 export interface Options {
   timeout?: number;
   timeoutMessage?: string;
+
+  /**
+   * Instrument `Ember.onerror` and reject, when it is called. This is useful
+   * for detecting that an operation inside a run loop has failed.
+   *
+   * This uses {@link setupOnerror}, so it will override any error listeners you
+   * might have set up before.
+   *
+   * @default true if the test context has been setup for usage with {@link setupOnerror}
+   */
+  rejectOnError?: boolean;
 }
 
 /**
@@ -21,6 +36,7 @@ export interface Options {
   @param {Object} [options] options used to override defaults
   @param {number} [options.timeout=1000] the maximum amount of time to wait
   @param {string} [options.timeoutMessage='waitUntil timed out'] the message to use in the reject on timeout
+  @param {boolean} [options.rejectOnError] reject when an operation in a run loop has failed; defaults to `true`, if the test context has been setup for usage with {@link setupOnerror}
   @returns {Promise} resolves with the callback value when it returns a truthy value
 
   @example
@@ -33,19 +49,24 @@ export interface Options {
 */
 export default function waitUntil<T>(
   callback: () => T | void | Falsy,
-  options: Options = {}
+  {
+    timeout = 1000,
+    timeoutMessage = 'waitUntil timed out',
+    rejectOnError = Boolean(_getContextForOnError(false)),
+  }: Options = {}
 ): Promise<T> {
-  let timeout = 'timeout' in options ? (options.timeout as number) : 1000;
-  let timeoutMessage =
-    'timeoutMessage' in options
-      ? options.timeoutMessage
-      : 'waitUntil timed out';
-
   // creating this error eagerly so it has the proper invocation stack
   let waitUntilTimedOut = new Error(timeoutMessage);
 
   return new Promise(function (resolve, reject) {
     let time = 0;
+    let error: unknown = undefined;
+
+    if (rejectOnError) {
+      setupOnerror((e) => {
+        error = e;
+      });
+    }
 
     // eslint-disable-next-line require-jsdoc
     function scheduleCheck(timeoutsIndex: number) {
@@ -65,13 +86,20 @@ export default function waitUntil<T>(
           return;
         }
 
+        if (typeof error !== 'undefined') {
+          resetOnerror();
+          reject(error);
+          return;
+        }
+
         if (value) {
+          if (rejectOnError) resetOnerror();
           resolve(value);
         } else if (time < timeout) {
           scheduleCheck(timeoutsIndex + 1);
         } else {
+          if (rejectOnError) resetOnerror();
           reject(waitUntilTimedOut);
-          return;
         }
       }, interval);
     }

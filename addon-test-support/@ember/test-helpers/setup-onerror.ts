@@ -23,23 +23,46 @@ let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
  * });
  */
 export default function setupOnerror(onError?: (error: Error) => void): void {
+  if (typeof onError !== 'function') {
+    onError = cachedOnerror.get(_getContextForOnError(true));
+  }
+
+  Ember.onerror = onError;
+}
+
+/**
+ * If setup correctly, returns the test context that will be used for {@link setupOnerror}. If `throwIfNotSetup` is true, throws an error, if the test context is not setup correctly.
+ *
+ * @private
+ * @param {Boolean} [throwIfNotSetup=false] if `true`, will throw an error instead of returning `undefined`, if the test context has not been setup for {@link setupOnerror}
+ * @returns {BaseContext | undefined} the test context that will be used for{@link setupOnerror}, if setup correctly
+ * @throws {Error} if test context has not been setup for {@link setupOnerror}
+ */
+export function _getContextForOnError(
+  throwIfNotSetup: true
+): BaseContext | never;
+export function _getContextForOnError(
+  throwIfNotSetup?: false
+): BaseContext | undefined;
+// eslint-disable-next-line require-jsdoc
+export function _getContextForOnError(
+  throwIfNotSetup = false
+): BaseContext | undefined | never {
   let context = getContext();
 
   if (!context) {
+    if (!throwIfNotSetup) return;
     throw new Error('Must setup test context before calling setupOnerror');
   }
 
   if (!cachedOnerror.has(context)) {
+    if (!throwIfNotSetup) return;
     throw new Error(
       '_cacheOriginalOnerror must be called before setupOnerror. Normally, this will happen as part of your test harness.'
     );
   }
 
-  if (typeof onError !== 'function') {
-    onError = cachedOnerror.get(context);
-  }
-
-  Ember.onerror = onError;
+  return context;
 }
 
 /**
