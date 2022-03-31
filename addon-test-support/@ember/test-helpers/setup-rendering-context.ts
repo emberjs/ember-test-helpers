@@ -119,33 +119,19 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (isComponent(templateOrComponent, owner)) {
-        if (
-          macroCondition(dependencySatisfies('ember-source', '3.25.0-beta.1'))
-        ) {
-          // In 3.25+, we can treat components as one big object and just pass them around/invoke them
-          // wherever, so we just assign the component to the `ProvidedComponent` property and invoke it
-          // in the test's template
-          context = {
-            ProvidedComponent: templateOrComponent,
-          };
-          templateOrComponent = INVOKE_PROVIDED_COMPONENT;
-        } else {
-          // Below 3.25, however, we *cannot* treat components as one big object and instead have to
-          // register their class and template independently and then invoke them with the `component`
-          // helper so they can actually be found by the resolver and rendered
-          templateId += 1;
-          let name = `-undertest-${templateId}`;
-          let componentFullName = `component:${name}`;
-          let templateFullName = `template:components/${name}`;
-          context = {
-            ProvidedComponent: name,
-          };
-          ownerToRenderFrom.register(componentFullName, templateOrComponent);
-          templateOrComponent = hbs`{{component this.ProvidedComponent}}`;
-          ownerToRenderFrom.register(templateFullName, templateOrComponent);
+      if (macroCondition(dependencySatisfies('ember-source', '<3.24.0'))) {
+        // Pre 3.24, we just don't support rendering components at all, so we error
+        // if we find anything that isn't a template.
+        const isTemplate =
+          Object.prototype.hasOwnProperty.call(templateOrComponent, '__id') &&
+          Object.prototype.hasOwnProperty.call(templateOrComponent, '__meta');
+
+        if (!isTemplate) {
+          throw new Error(
+            'Prior to Ember 3.24, you may only pass templates to `render`.'
+          );
         }
-      } else {
+
         templateId += 1;
         let templateFullName = `template:-undertest-${templateId}`;
         ownerToRenderFrom.register(templateFullName, templateOrComponent);
@@ -153,6 +139,44 @@ export function render(
           ownerToRenderFrom,
           templateFullName
         );
+      } else {
+        if (isComponent(templateOrComponent, owner)) {
+          if (
+            macroCondition(
+              dependencySatisfies('ember-source', '>=3.25.0-beta.1')
+            )
+          ) {
+            // In 3.25+, we can treat components as one big object and just pass them around/invoke them
+            // wherever, so we just assign the component to the `ProvidedComponent` property and invoke it
+            // in the test's template
+            context = {
+              ProvidedComponent: templateOrComponent,
+            };
+            templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+          } else {
+            // Below 3.25, however, we *cannot* treat components as one big object and instead have to
+            // register their class and template independently and then invoke them with the `component`
+            // helper so they can actually be found by the resolver and rendered
+            templateId += 1;
+            let name = `-undertest-${templateId}`;
+            let componentFullName = `component:${name}`;
+            let templateFullName = `template:components/${name}`;
+            context = {
+              ProvidedComponent: name,
+            };
+            ownerToRenderFrom.register(componentFullName, templateOrComponent);
+            templateOrComponent = hbs`{{component this.ProvidedComponent}}`;
+            ownerToRenderFrom.register(templateFullName, templateOrComponent);
+          }
+        } else {
+          templateId += 1;
+          let templateFullName = `template:-undertest-${templateId}`;
+          ownerToRenderFrom.register(templateFullName, templateOrComponent);
+          templateOrComponent = lookupTemplate(
+            ownerToRenderFrom,
+            templateFullName
+          );
+        }
       }
 
       let outletState = {

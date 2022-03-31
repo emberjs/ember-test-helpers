@@ -1,5 +1,4 @@
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
-import Component from '@ember/component';
 
 import getComponentManager from './get-component-manager';
 
@@ -16,8 +15,9 @@ function isComponent(maybeComponent: object, owner: object): boolean {
   } else {
     return (
       !!getComponentManager(maybeComponent, owner) ||
-      maybeComponent instanceof Component ||
-      maybeComponent.toString() === '@ember/component/template-only'
+      ['@ember/component', '@ember/component/template-only'].includes(
+        maybeComponent.toString()
+      )
     );
   }
 }

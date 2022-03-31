@@ -658,7 +658,7 @@ module('setupRenderingContext', function (hooks) {
           assert.equal(this.element.textContent, 'the value of foo is foo');
         });
       });
-    } else {
+    } else if (hasEmberVersion(3, 24)) {
       module('using render with a component in Ember < 3.25', function () {
         test('works with a template-only component', async function (assert) {
           const template = precompileTemplate(

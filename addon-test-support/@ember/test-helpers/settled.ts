@@ -292,5 +292,5 @@ export function isSettled(): boolean {
   @returns {Promise<void>} resolves when settled
 */
 export default function settled(): Promise<void> {
-  return waitUntil(isSettled, { timeout: Infinity }).then(() => { });
+  return waitUntil(isSettled, { timeout: Infinity }).then(() => {});
 }
