@@ -7,10 +7,13 @@ import {
 
 let renderSettled: () => Promise<void>;
 
-if (macroCondition(dependencySatisfies('ember-source', '>=4.4.0'))) {
+// TODO need to add the actual version `@ember/renderer` landed once we know it
+if (macroCondition(dependencySatisfies('ember-source', '>=4.9999999.0'))) {
   //@ts-ignore
   renderSettled = importSync('@ember/renderer').renderSettled;
-} else if (macroCondition(dependencySatisfies('ember-source', '>=3.27.0'))) {
+} else if (
+  macroCondition(dependencySatisfies('ember-source', '>=3.27.0-alpha.1'))
+) {
   //@ts-ignore
   renderSettled = importSync('@ember/-internals/glimmer').renderSettled;
 } else {
