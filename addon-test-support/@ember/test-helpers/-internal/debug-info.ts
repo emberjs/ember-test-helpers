@@ -40,6 +40,7 @@ interface SummaryInfo {
   pendingScheduledQueueItemCount: Number;
   pendingScheduledQueueItemStackTraces: (string | undefined)[];
   hasRunLoop: boolean;
+  isRenderPending: boolean;
 }
 
 export default interface DebugInfo {
