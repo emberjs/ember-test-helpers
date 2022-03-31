@@ -6,7 +6,7 @@ import {
   _registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
+import { isIE11, isFirefox } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -48,6 +48,27 @@ if (isIE11) {
     'input',
     'change',
     'focus',
+  ];
+} else if (isFirefox) {
+  expectedEvents = [
+    'focus',
+    'focusin',
+    'keydown',
+    'keypress',
+    'input',
+    'keyup',
+    'selectionchange',
+    'keydown',
+    'keypress',
+    'input',
+    'keyup',
+    'selectionchange',
+    'keydown',
+    'keypress',
+    'input',
+    'keyup',
+    'change',
+    'selectionchange',
   ];
 }
 
@@ -164,7 +185,9 @@ module('DOM Helper: typeIn', function (hooks) {
     element.setAttribute('contenteditable', 'true');
     await typeIn(element, 'foo');
 
-    assert.verifySteps(expectedEvents);
+    // For this specific case, Firefox does not emit `selectionchange`.
+    assert.verifySteps(expectedEvents.filter((s) => s !== 'selectionchange'));
+
     assert.strictEqual(
       document.activeElement,
       element,
@@ -302,7 +325,7 @@ module('DOM Helper: typeIn', function (hooks) {
     await assert.rejects(
       typeIn(element, tooLongString).finally(() => {
         // should throw before the second input event (or second keyup for IE)
-        const expectedNumberOfSteps = isIE11 ? 6 : 8;
+        const expectedNumberOfSteps = isIE11 ? 6 : isFirefox ? 9 : 8;
         assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
       }),
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
@@ -355,7 +378,7 @@ module('DOM Helper: typeIn', function (hooks) {
     await assert.rejects(
       typeIn(element, tooLongString).finally(() => {
         // should throw before the second input event (or second keyup for IE)
-        const expectedNumberOfSteps = isIE11 ? 6 : 8;
+        const expectedNumberOfSteps = isIE11 ? 6 : isFirefox ? 9 : 8;
         assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
       }),
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
