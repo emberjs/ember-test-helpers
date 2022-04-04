@@ -5,6 +5,16 @@
 
 
 
+
+## v2.7.0 (2022-04-04)
+
+#### :rocket: Enhancement
+* [#1185](https://github.com/emberjs/ember-test-helpers/pull/1185) feat: add `start` and `end` hooks to the `fireEvent` helper ([@shamrt](https://github.com/shamrt))
+
+#### Committers: 1
+- Shane Martin ([@shamrt](https://github.com/shamrt))
+
+
 ## v2.6.2 (2022-04-04)
 
 #### :bug: Bug Fix
