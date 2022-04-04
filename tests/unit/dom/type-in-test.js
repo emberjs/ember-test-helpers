@@ -1,15 +1,15 @@
 import { module, test } from 'qunit';
-import {
-  typeIn,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11, isFirefox } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerHooks,
+  unregisterHooks,
+  buildExpectedSteps,
+} from '../../helpers/register-hooks';
 
 /*
  * Event order based on https://jsbin.com/zitazuxabe/edit?html,js,console,output
@@ -98,25 +98,35 @@ module('DOM Helper: typeIn', function (hooks) {
   });
 
   test('it executes registered typeIn hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(55);
 
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = _registerHook('typeIn', 'start', () => {
-      assert.step('typeIn:start');
-    });
-    let endHook = _registerHook('typeIn', 'end', () => {
-      assert.step('typeIn:end');
-    });
+    const expectedEvents = [
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'keydown',
+      'keypress',
+      'input',
+      'keyup',
+      'change',
+    ];
+    const mockHooks = registerHooks(assert, 'typeIn', { expectedEvents });
 
     try {
       await typeIn(element, 'foo');
 
-      assert.verifySteps(['typeIn:start', 'typeIn:end']);
+      const expectedSteps = buildExpectedSteps('typeIn', { expectedEvents });
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

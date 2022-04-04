@@ -6,9 +6,13 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  _registerHook,
 } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  buildExpectedSteps,
+  registerHooks,
+  unregisterHooks,
+} from '../../helpers/register-hooks';
 
 module('DOM Helper: scroll-to', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -25,14 +29,10 @@ module('DOM Helper: scroll-to', function (hooks) {
   });
 
   test('it executes registered scrollTo hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(7);
 
-    let startHook = _registerHook('scrollTo', 'start', () => {
-      assert.step('scrollTo:start');
-    });
-    let endHook = _registerHook('scrollTo', 'end', () => {
-      assert.step('scrollTo:end');
-    });
+    const expectedEvents = ['scroll'];
+    const mockHooks = registerHooks(assert, 'scrollTo', { expectedEvents });
 
     await render(hbs`
       <div
@@ -49,12 +49,14 @@ module('DOM Helper: scroll-to', function (hooks) {
       </div>
       `);
 
-    await scrollTo('.container', 0, 50);
+    try {
+      await scrollTo('.container', 0, 50);
 
-    assert.verifySteps(['scrollTo:start', 'scrollTo:end']);
-
-    startHook.unregister();
-    endHook.unregister();
+      const expectedSteps = buildExpectedSteps('scrollTo', { expectedEvents });
+      assert.verifySteps(expectedSteps);
+    } finally {
+      unregisterHooks(mockHooks);
+    }
   });
 
   test('Scroll in vertical direction', async function (assert) {

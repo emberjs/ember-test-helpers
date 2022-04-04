@@ -53,9 +53,7 @@ export default function scrollTo(
       element.scrollTop = y;
       element.scrollLeft = x;
 
-      fireEvent(element, 'scroll');
-
-      return settled();
+      return fireEvent(element, 'scroll').then(settled);
     })
     .then(() => runHooks('scrollTo', 'end', target));
 }

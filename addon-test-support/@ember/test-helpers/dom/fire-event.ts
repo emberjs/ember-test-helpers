@@ -1,5 +1,12 @@
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
+import Target from './-target';
+import { log } from '@ember/test-helpers/dom/-logging';
+import { runHooks, registerHook } from '../-internal/helper-hooks';
+
+registerHook('fireEvent', 'start', (target: Target) => {
+  log('fireEvent', target);
+});
 
 // eslint-disable-next-line require-jsdoc
 const MOUSE_EVENT_CONSTRUCTOR = (() => {
@@ -61,19 +68,19 @@ function fireEvent(
   element: Element | Document | Window,
   eventType: KeyboardEventType,
   options?: any
-): Event;
+): Promise<Event>;
 
 function fireEvent(
   element: Element | Document | Window,
   eventType: MouseEventType,
   options?: any
-): Event | void;
+): Promise<Event | void>;
 
 function fireEvent(
   element: Element | Document | Window,
   eventType: string,
   options?: any
-): Event;
+): Promise<Event>;
 
 /**
   Internal helper used to build and dispatch events throughout the other DOM helpers.
@@ -88,48 +95,57 @@ function fireEvent(
   element: Element | Document | Window,
   eventType: string,
   options = {}
-): Event | void {
-  if (!element) {
-    throw new Error('Must pass an element to `fireEvent`');
-  }
+): Promise<Event | void> {
+  return Promise.resolve()
+    .then(() => runHooks('fireEvent', 'start', element))
+    .then(() => runHooks(`fireEvent:${eventType}`, 'start', element))
+    .then(() => {
+      if (!element) {
+        throw new Error('Must pass an element to `fireEvent`');
+      }
 
-  let event;
-  if (isKeyboardEventType(eventType)) {
-    event = _buildKeyboardEvent(eventType, options);
-  } else if (isMouseEventType(eventType)) {
-    let rect;
-    if (element instanceof Window && element.document.documentElement) {
-      rect = element.document.documentElement.getBoundingClientRect();
-    } else if (isDocument(element)) {
-      rect = element.documentElement!.getBoundingClientRect();
-    } else if (isElement(element)) {
-      rect = element.getBoundingClientRect();
-    } else {
-      return;
-    }
+      let event;
+      if (isKeyboardEventType(eventType)) {
+        event = _buildKeyboardEvent(eventType, options);
+      } else if (isMouseEventType(eventType)) {
+        let rect;
+        if (element instanceof Window && element.document.documentElement) {
+          rect = element.document.documentElement.getBoundingClientRect();
+        } else if (isDocument(element)) {
+          rect = element.documentElement!.getBoundingClientRect();
+        } else if (isElement(element)) {
+          rect = element.getBoundingClientRect();
+        } else {
+          return;
+        }
 
-    let x = rect.left + 1;
-    let y = rect.top + 1;
-    let simulatedCoordinates = {
-      screenX: x + 5, // Those numbers don't really mean anything.
-      screenY: y + 95, // They're just to make the screenX/Y be different of clientX/Y..
-      clientX: x,
-      clientY: y,
-      ...options,
-    };
+        let x = rect.left + 1;
+        let y = rect.top + 1;
+        let simulatedCoordinates = {
+          screenX: x + 5, // Those numbers don't really mean anything.
+          screenY: y + 95, // They're just to make the screenX/Y be different of clientX/Y..
+          clientX: x,
+          clientY: y,
+          ...options,
+        };
 
-    event = buildMouseEvent(eventType, simulatedCoordinates);
-  } else if (
-    isFileSelectionEventType(eventType) &&
-    isFileSelectionInput(element)
-  ) {
-    event = buildFileEvent(eventType, element, options);
-  } else {
-    event = buildBasicEvent(eventType, options);
-  }
+        event = buildMouseEvent(eventType, simulatedCoordinates);
+      } else if (
+        isFileSelectionEventType(eventType) &&
+        isFileSelectionInput(element)
+      ) {
+        event = buildFileEvent(eventType, element, options);
+      } else {
+        event = buildBasicEvent(eventType, options);
+      }
 
-  element.dispatchEvent(event);
-  return event;
+      element.dispatchEvent(event);
+      return event;
+    })
+    .then((event) =>
+      runHooks(`fireEvent:${eventType}`, 'end', element).then(() => event)
+    )
+    .then((event) => runHooks('fireEvent', 'end', element).then(() => event));
 }
 
 export default fireEvent;

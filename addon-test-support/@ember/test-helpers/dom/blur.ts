@@ -15,11 +15,12 @@ registerHook('blur', 'start', (target: Target) => {
   @private
   @param {Element} element the element to trigger events on
   @param {Element} relatedTarget the element that is focused after blur
+  @return {Promise<Event | void>} resolves when settled
 */
 export function __blur__(
   element: HTMLElement | Element | Document | SVGElement,
   relatedTarget: HTMLElement | Element | Document | SVGElement | null = null
-): void {
+): Promise<Event | void> {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }
@@ -36,11 +37,12 @@ export function __blur__(
   // Chrome/Firefox does not trigger the `blur` event if the window
   // does not have focus. If the document does not have focus then
   // fire `blur` event via native event.
-  if (browserIsNotFocused || needsCustomEventOptions) {
-    let options = { relatedTarget };
-    fireEvent(element, 'blur', { bubbles: false, ...options });
-    fireEvent(element, 'focusout', options);
-  }
+  let options = { relatedTarget };
+  return browserIsNotFocused || needsCustomEventOptions
+    ? Promise.resolve()
+        .then(() => fireEvent(element, 'blur', { bubbles: false, ...options }))
+        .then(() => fireEvent(element, 'focusout', options))
+    : Promise.resolve();
 }
 
 /**
@@ -81,9 +83,7 @@ export default function blur(
         );
       }
 
-      __blur__(element);
-
-      return settled();
+      return __blur__(element).then(() => settled());
     })
     .then(() => runHooks('blur', 'end', target));
 }

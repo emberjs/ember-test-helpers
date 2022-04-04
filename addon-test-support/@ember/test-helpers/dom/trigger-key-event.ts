@@ -140,44 +140,47 @@ function keyCodeFromKey(key: string) {
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
   @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
+  @return {Promise<Event>} resolves when settled
  */
 export function __triggerKeyEvent__(
   element: Element | Document,
   eventType: KeyboardEventType,
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
-) {
-  let props;
-  if (typeof key === 'number') {
-    props = {
-      keyCode: key,
-      which: key,
-      key: keyFromKeyCodeAndModifiers(key, modifiers),
-      ...modifiers,
-    };
-  } else if (typeof key === 'string' && key.length !== 0) {
-    let firstCharacter = key[0];
-    if (firstCharacter !== firstCharacter.toUpperCase()) {
+): Promise<Event> {
+  return Promise.resolve().then(() => {
+    let props;
+    if (typeof key === 'number') {
+      props = {
+        keyCode: key,
+        which: key,
+        key: keyFromKeyCodeAndModifiers(key, modifiers),
+        ...modifiers,
+      };
+    } else if (typeof key === 'string' && key.length !== 0) {
+      let firstCharacter = key[0];
+      if (firstCharacter !== firstCharacter.toUpperCase()) {
+        throw new Error(
+          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+        );
+      }
+
+      if (isNumeric(key) && key.length > 1) {
+        throw new Error(
+          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
+        );
+      }
+
+      let keyCode = keyCodeFromKey(key);
+      props = { keyCode, which: keyCode, key, ...modifiers };
+    } else {
       throw new Error(
-        `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+        `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``
       );
     }
 
-    if (isNumeric(key) && key.length > 1) {
-      throw new Error(
-        `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
-      );
-    }
-
-    let keyCode = keyCodeFromKey(key);
-    props = { keyCode, which: keyCode, key, ...modifiers };
-  } else {
-    throw new Error(
-      `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``
-    );
-  }
-
-  fireEvent(element, eventType, props);
+    return fireEvent(element, eventType, props);
+  });
 }
 
 /**
@@ -242,11 +245,9 @@ export default function triggerKeyEvent(
         throw new Error(`Can not \`triggerKeyEvent\` on disabled ${element}`);
       }
 
-      __triggerKeyEvent__(element, eventType, key, modifiers);
-
-      return settled();
+      return __triggerKeyEvent__(element, eventType, key, modifiers).then(
+        settled
+      );
     })
-    .then(() => {
-      return runHooks('triggerKeyEvent', 'end', target, eventType, key);
-    });
+    .then(() => runHooks('triggerKeyEvent', 'end', target, eventType, key));
 }

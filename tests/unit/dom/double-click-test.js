@@ -3,7 +3,6 @@ import {
   doubleClick,
   setupContext,
   teardownContext,
-  _registerHook,
 } from '@ember/test-helpers';
 import {
   buildInstrumentedElement,
@@ -12,6 +11,21 @@ import {
 } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerHooks,
+  unregisterHooks,
+  buildExpectedSteps,
+} from '../../helpers/register-hooks';
+
+const expectedEvents = [
+  'mousedown',
+  'mouseup',
+  'click',
+  'mousedown',
+  'mouseup',
+  'click',
+  'dblclick',
+];
 
 module('DOM Helper: doubleClick', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -39,25 +53,22 @@ module('DOM Helper: doubleClick', function (hooks) {
   });
 
   test('it executes registered doubleClick hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(31);
 
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('doubleClick', 'start', () => {
-      assert.step('doubleClick:start');
-    });
-    let endHook = _registerHook('doubleClick', 'end', () => {
-      assert.step('doubleClick:end');
-    });
+    const mockHooks = registerHooks(assert, 'doubleClick', { expectedEvents });
 
     try {
       await doubleClick(element);
 
-      assert.verifySteps(['doubleClick:start', 'doubleClick:end']);
+      const expectedSteps = buildExpectedSteps('doubleClick', {
+        expectedEvents,
+      });
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

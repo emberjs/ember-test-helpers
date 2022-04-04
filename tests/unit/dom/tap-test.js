@@ -1,13 +1,13 @@
 import { module, test } from 'qunit';
-import {
-  tap,
-  setupContext,
-  teardownContext,
-  _registerHook,
-} from '@ember/test-helpers';
+import { tap, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import {
+  registerHooks,
+  unregisterHooks,
+  buildExpectedSteps,
+} from '../../helpers/register-hooks';
 
 module('DOM Helper: tap', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -39,25 +39,27 @@ module('DOM Helper: tap', function (hooks) {
   });
 
   test('it executes registered tap hooks', async function (assert) {
-    assert.expect(3);
+    assert.expect(23);
 
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('tap', 'start', () => {
-      assert.step('tap:start');
-    });
-    let endHook = _registerHook('tap', 'end', () => {
-      assert.step('tap:end');
-    });
+    const expectedEvents = [
+      'touchstart',
+      'touchend',
+      'mousedown',
+      'mouseup',
+      'click',
+    ];
+    const mockHooks = registerHooks(assert, 'tap', { expectedEvents });
 
     try {
       await tap(element);
 
-      assert.verifySteps(['tap:start', 'tap:end']);
+      const expectedSteps = buildExpectedSteps('tap', { expectedEvents });
+      assert.verifySteps(expectedSteps);
     } finally {
-      startHook.unregister();
-      endHook.unregister();
+      unregisterHooks(mockHooks);
     }
   });
 

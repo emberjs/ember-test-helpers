@@ -17,23 +17,25 @@ registerHook('doubleClick', 'start', (target: Target) => {
   @private
   @param {Element} element the element to double-click on
   @param {MouseEventInit} options the options to be merged into the mouse events
+  @returns {Promise<Event | void>} resolves when settled
 */
 export function __doubleClick__(
   element: Element | Document | Window,
   options: MouseEventInit
-): void {
-  let mouseDownEvent = fireEvent(element, 'mousedown', options);
-
-  if (!isWindow(element) && !mouseDownEvent?.defaultPrevented) {
-    __focus__(element);
-  }
-
-  fireEvent(element, 'mouseup', options);
-  fireEvent(element, 'click', options);
-  fireEvent(element, 'mousedown', options);
-  fireEvent(element, 'mouseup', options);
-  fireEvent(element, 'click', options);
-  fireEvent(element, 'dblclick', options);
+): Promise<Event | void> {
+  return Promise.resolve()
+    .then(() => fireEvent(element, 'mousedown', options))
+    .then((mouseDownEvent) => {
+      return !isWindow(element) && !mouseDownEvent?.defaultPrevented
+        ? __focus__(element)
+        : Promise.resolve();
+    })
+    .then(() => fireEvent(element, 'mouseup', options))
+    .then(() => fireEvent(element, 'click', options))
+    .then(() => fireEvent(element, 'mousedown', options))
+    .then(() => fireEvent(element, 'mouseup', options))
+    .then(() => fireEvent(element, 'click', options))
+    .then(() => fireEvent(element, 'dblclick', options));
 }
 
 /**
@@ -113,9 +115,7 @@ export default function doubleClick(
         throw new Error(`Can not \`doubleClick\` disabled ${element}`);
       }
 
-      __doubleClick__(element, options);
-
-      return settled();
+      return __doubleClick__(element, options).then(settled);
     })
     .then(() => runHooks('doubleClick', 'end', target, _options));
 }

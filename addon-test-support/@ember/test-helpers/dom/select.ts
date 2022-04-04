@@ -77,8 +77,9 @@ export default function select(
         );
       }
 
-      __focus__(element);
-
+      return __focus__(element).then(() => element);
+    })
+    .then((element) => {
       for (let i = 0; i < element.options.length; i++) {
         let elementOption = element.options.item(i);
         if (elementOption) {
@@ -90,10 +91,9 @@ export default function select(
         }
       }
 
-      fireEvent(element, 'input');
-      fireEvent(element, 'change');
-
-      return settled();
+      return fireEvent(element, 'input')
+        .then(() => fireEvent(element, 'change'))
+        .then(settled);
     })
     .then(() =>
       runHooks('select', 'end', target, options, keepPreviouslySelected)

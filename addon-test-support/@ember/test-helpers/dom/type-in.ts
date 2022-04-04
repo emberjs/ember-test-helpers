@@ -91,16 +91,13 @@ export default function typeIn(
         }
       }
 
-      __focus__(element);
-
       let { delay = 50 } = options;
 
-      return fillOut(element, text, delay)
+      return __focus__(element)
+        .then(() => fillOut(element, text, delay))
         .then(() => fireEvent(element, 'change'))
         .then(settled)
-        .then(() => {
-          return runHooks('typeIn', 'end', target, text, options);
-        });
+        .then(() => runHooks('typeIn', 'end', target, text, options));
     });
 }
 
@@ -147,7 +144,7 @@ function keyEntry(
           const newValue = element.innerHTML + character;
           element.innerHTML = newValue;
         }
-        fireEvent(element, 'input');
+        return fireEvent(element, 'input');
       })
       .then(() => __triggerKeyEvent__(element, 'keyup', characterKey, options));
   };
