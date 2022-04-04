@@ -4,6 +4,27 @@
 
 
 
+
+## v2.6.2 (2022-04-04)
+
+#### :bug: Bug Fix
+* [#1173](https://github.com/emberjs/ember-test-helpers/pull/1173) Fix the way the pending requests module is used in settled.ts ([@raycohen](https://github.com/raycohen))
+
+#### :memo: Documentation
+* [#1157](https://github.com/emberjs/ember-test-helpers/pull/1157) [docs] Clarify render example ([@sdahlbac](https://github.com/sdahlbac))
+
+#### :house: Internal
+* [#1195](https://github.com/emberjs/ember-test-helpers/pull/1195) test(fillIn,typeIn): account for `selectionchange` in Firefox ([@buschtoens](https://github.com/buschtoens))
+* [#1169](https://github.com/emberjs/ember-test-helpers/pull/1169) Fix CI tests ([@snewcomer](https://github.com/snewcomer))
+* [#1166](https://github.com/emberjs/ember-test-helpers/pull/1166) [test] bug: Fix latest ember.js errors for LinkTo invocation ([@snewcomer](https://github.com/snewcomer))
+
+#### Committers: 4
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+- Ray Cohen ([@raycohen](https://github.com/raycohen))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+- Simon Dahlbacka ([@sdahlbac](https://github.com/sdahlbac))
+
+
 ## v2.6.0 (2021-11-04)
 
 #### :rocket: Enhancement
