@@ -16,9 +16,15 @@ if (macroCondition(dependencySatisfies('ember-source', '>=4.9999999.0'))) {
 ) {
   //@ts-ignore
   renderSettled = importSync('@ember/-internals/glimmer').renderSettled;
-} else {
+} else if (
+  macroCondition(dependencySatisfies('ember-source', '>=3.6.0-alpha.1'))
+) {
   renderSettled = (Ember as any).__loader.require(
     '@ember/-internals/glimmer'
+  ).renderSettled;
+} else {
+  renderSettled = (Ember as any).__loader.require(
+    'ember-glimmer'
   ).renderSettled;
 }
 

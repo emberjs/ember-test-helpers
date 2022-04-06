@@ -123,8 +123,13 @@ export function render(
         // Pre 3.24, we just don't support rendering components at all, so we error
         // if we find anything that isn't a template.
         const isTemplate =
-          Object.prototype.hasOwnProperty.call(templateOrComponent, '__id') &&
-          Object.prototype.hasOwnProperty.call(templateOrComponent, '__meta');
+          (Object.prototype.hasOwnProperty.call(templateOrComponent, '__id') &&
+            Object.prototype.hasOwnProperty.call(
+              templateOrComponent,
+              '__meta'
+            )) ||
+          (Object.prototype.hasOwnProperty.call(templateOrComponent, 'id') &&
+            Object.prototype.hasOwnProperty.call(templateOrComponent, 'meta'));
 
         if (!isTemplate) {
           throw new Error(
