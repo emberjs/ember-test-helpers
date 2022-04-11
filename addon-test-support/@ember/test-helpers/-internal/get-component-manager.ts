@@ -11,7 +11,7 @@ let getComponentManager: (
   owner: object
 ) => InternalComponentManager | null;
 
-if (macroCondition(dependencySatisfies('ember-source', '>=3.27.0'))) {
+if (macroCondition(dependencySatisfies('ember-source', '>=3.27.0-alpha.1'))) {
   let _getComponentManager =
     //@ts-ignore
     importSync('@glimmer/manager').getInternalComponentManager;
