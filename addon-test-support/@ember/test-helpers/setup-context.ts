@@ -32,6 +32,9 @@ import {
   Warning,
 } from './-internal/warnings';
 
+export const CALLED_SET = '__INTERNAL__called_set';
+export const CALLED_SET_PROPERTIES = '__INTERNAL__called_set_properties';
+
 // This handler exists to provide the underlying data to enable the following methods:
 // * getDeprecations()
 // * getDeprecationsDuringCallback()
@@ -414,6 +417,7 @@ export default function setupContext(
         enumerable: true,
         value(key: string, value: any): any {
           let ret = run(function () {
+            set(context, CALLED_SET, true);
             return set(context, key, value);
           });
 
@@ -427,6 +431,7 @@ export default function setupContext(
         enumerable: true,
         value(hash: { [key: string]: any }): { [key: string]: any } {
           let ret = run(function () {
+            set(context, CALLED_SET_PROPERTIES, true);
             return setProperties(context, hash);
           });
 

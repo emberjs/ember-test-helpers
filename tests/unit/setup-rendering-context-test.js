@@ -13,6 +13,7 @@ import {
   getTestMetadata,
   render,
   rerender,
+  getWarnings,
   clearRender,
   setApplication,
   setResolver,
@@ -657,6 +658,64 @@ module('setupRenderingContext', function (hooks) {
           await rerender();
           assert.equal(this.element.textContent, 'the value of foo is foo');
         });
+
+        test('setting properties on the test context when rendering a component triggers a warning', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {}
+
+          const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'FOO');
+          this.setProperties({
+            foo: 'bar?',
+          });
+
+          await render(component);
+
+          const warnings = getWarnings();
+
+          assert.ok(
+            warnings.some((v) => v.options && v.options.id === 'set-warning'),
+            'throws a warning for this.set'
+          );
+
+          assert.ok(
+            warnings.some(
+              (v) => v.options && v.options.id === 'set-properties-warning'
+            ),
+            'throws a warning for this.setProperties'
+          );
+        });
+
+        test('setting properties on the test context when rendering a template does not trigger a warning', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          this.set('foo', 'FOO');
+          this.setProperties({
+            foo: 'bar?',
+          });
+
+          await render(template);
+
+          const warnings = getWarnings();
+
+          assert.notOk(
+            warnings.some((v) => v.options && v.options.id === 'set-warning'),
+            'does not throw a warning for this.set'
+          );
+
+          assert.notOk(
+            warnings.some(
+              (v) => v.options && v.options.id === 'set-properties-warning'
+            ),
+            'does not throw a warning for this.setProperties'
+          );
+        });
       });
     } else if (hasEmberVersion(3, 24)) {
       module('using render with a component in Ember < 3.25', function () {
@@ -729,6 +788,64 @@ module('setupRenderingContext', function (hooks) {
           this.set('foo', 'bar');
           await rerender();
           assert.equal(this.element.textContent, 'the value of foo is foo');
+        });
+
+        test('setting properties on the test context when rendering a component triggers a warning', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {}
+
+          const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'FOO');
+          this.setProperties({
+            foo: 'bar?',
+          });
+
+          await render(component);
+
+          const warnings = getWarnings();
+
+          assert.ok(
+            warnings.some((v) => v.options && v.options.id === 'set-warning'),
+            'throws a warning for this.set'
+          );
+
+          assert.ok(
+            warnings.some(
+              (v) => v.options && v.options.id === 'set-properties-warning'
+            ),
+            'throws a warning for this.setProperties'
+          );
+        });
+
+        test('setting properties on the test context when rendering a template does not trigger a warning', async function (assert) {
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          this.set('foo', 'FOO');
+          this.setProperties({
+            foo: 'bar?',
+          });
+
+          await render(template);
+
+          const warnings = getWarnings();
+
+          assert.notOk(
+            warnings.some((v) => v.options && v.options.id === 'set-warning'),
+            'does not throw a warning for this.set'
+          );
+
+          assert.notOk(
+            warnings.some(
+              (v) => v.options && v.options.id === 'set-properties-warning'
+            ),
+            'does not throw a warning for this.setProperties'
+          );
         });
       });
     }
