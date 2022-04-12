@@ -420,7 +420,7 @@ export default function setupContext(
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+                'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
               );
             }
             return set(context, key, value);
@@ -438,7 +438,7 @@ export default function setupContext(
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+                'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
               );
             }
             return setProperties(context, hash);

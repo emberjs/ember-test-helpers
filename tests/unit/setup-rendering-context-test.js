@@ -12,7 +12,6 @@ import {
   _registerHook,
   getTestMetadata,
   render,
-  rerender,
   clearRender,
   setApplication,
   setResolver,
@@ -674,7 +673,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+                  'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
                 );
             },
             'errors on this.set'
@@ -686,7 +685,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+                  'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
                 );
             },
             'errors on this.setProperties'
@@ -797,7 +796,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+                  'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
                 );
             },
             'errors on this.set'
@@ -809,7 +808,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+                  'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
                 );
             },
             'errors on this.setProperties'
