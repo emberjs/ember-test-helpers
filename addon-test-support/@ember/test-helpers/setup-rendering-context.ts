@@ -90,7 +90,7 @@ export interface RenderOptions {
   Renders the provided template and appends it to the DOM.
 
   @public
-  @param {CompiledTemplate} templateOrComponent the template to render
+  @param {Template|Component} templateOrComponent the component (or template) to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 */
@@ -125,17 +125,12 @@ export function render(
         // Pre 3.24, we just don't support rendering components at all, so we error
         // if we find anything that isn't a template.
         const isTemplate =
-          (Object.prototype.hasOwnProperty.call(templateOrComponent, '__id') &&
-            Object.prototype.hasOwnProperty.call(
-              templateOrComponent,
-              '__meta'
-            )) ||
-          (Object.prototype.hasOwnProperty.call(templateOrComponent, 'id') &&
-            Object.prototype.hasOwnProperty.call(templateOrComponent, 'meta'));
+          ('__id' in templateOrComponent && '__meta' in templateOrComponent) ||
+          ('id' in templateOrComponent && 'meta' in templateOrComponent);
 
         if (!isTemplate) {
           throw new Error(
-            'Prior to Ember 3.24, you may only pass templates to `render`.'
+            `Using \`render\` with something other than a pre-compiled template is not supported until Ember 3.24 (you are on ${Ember.VERSION}).`
           );
         }
 

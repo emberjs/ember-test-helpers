@@ -26,7 +26,7 @@ module('rerender real-world', function (hooks) {
     await teardownContext(this);
   });
 
-  test('rerender and settled describe different scenarios', async function (assert) {
+  test('using rerender to test loading states works', async function (assert) {
     let waiter = buildWaiter('test:wat');
     let token;
     let deferredResolve;
@@ -56,9 +56,10 @@ module('rerender real-world', function (hooks) {
       MyComponent
     );
 
-    const somePerson = new (class {
+    class Person {
       @tracked name = 'Zoey';
-    })();
+    }
+    const somePerson = new Person();
 
     const template = precompileTemplate(
       '<MyComponent @name={{somePerson.name}} />',
@@ -77,7 +78,7 @@ module('rerender real-world', function (hooks) {
     const renderPromise = render(component);
 
     // No actual render
-    assert.equal(this.element.textContent, '', 'Nothing on the screen yet');
+    assert.equal(this.element.textContent, '', 'precond - Nothing on the screen yet');
 
     // This lets us wait for rendering to actually occur without resolving the render promise itself.
     // This way, we can make assertions about the initial state while also keeping the settled state
@@ -91,7 +92,7 @@ module('rerender real-world', function (hooks) {
       'initial render'
     );
 
-    // updated the component's name argument so it'll trigger a rerender
+    // updated the person's name to trigger a rerender
     somePerson.name = 'Tomster';
 
     // Same logic as render before. We hold on to this promise so we can control when to actually
@@ -109,8 +110,8 @@ module('rerender real-world', function (hooks) {
     // At this point, we've got both render and rerender suspended, so settled state should reflect
     // that there is a render pending AND that the waiter that got kicked off in the component's
     // constructor is pending
-    assert.equal(settledState.isRenderPending, true);
-    assert.equal(settledState.hasPendingWaiters, true);
+    assert.equal(settledState.isRenderPending, true, 'ensure isRenderPending is true');
+    assert.equal(settledState.hasPendingWaiters, true, 'ensure test harness / setup is working -- test waiter is pending');
 
     // This should resolve isRenderPending but not affect the waiters at all since rerender only
     // waits on pending render operations. **The point of this whole test is basically to prove that

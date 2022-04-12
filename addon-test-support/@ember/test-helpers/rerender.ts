@@ -14,7 +14,7 @@ import renderSettled from './-internal/render-settled';
   been rendered in the DOM. **THAT** is what `await rerender()` is _perfect_
   for.
   @public
-  @returns {Promise<void>} a promise which fulfills when rendering has settled
+  @returns {Promise<void>} a promise which fulfills when rendering has completed
 */
 export default function rerender() {
   return renderSettled();
