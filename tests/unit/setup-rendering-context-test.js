@@ -13,7 +13,6 @@ import {
   getTestMetadata,
   render,
   rerender,
-  getWarnings,
   clearRender,
   setApplication,
   setResolver,
@@ -650,16 +649,15 @@ module('setupRenderingContext', function (hooks) {
           }
 
           const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'bar');
+
           await render(component);
 
           assert.equal(this.element.textContent, 'the value of foo is foo');
-
-          this.set('foo', 'bar');
-          await rerender();
-          assert.equal(this.element.textContent, 'the value of foo is foo');
         });
 
-        test('setting properties on the test context when rendering a component triggers a warning', async function (assert) {
+        test('setting properties on the test context when rendering a component throws an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -668,29 +666,34 @@ module('setupRenderingContext', function (hooks) {
 
           const component = setComponentTemplate(template, Foo);
 
-          this.set('foo', 'FOO');
-          this.setProperties({
-            foo: 'bar?',
-          });
-
           await render(component);
 
-          const warnings = getWarnings();
-
-          assert.ok(
-            warnings.some((v) => v.options && v.options.id === 'set-warning'),
-            'throws a warning for this.set'
+          assert.throws(
+            () => this.set('foo', 'FOO'),
+            (err) => {
+              return err
+                .toString()
+                .includes(
+                  'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+                );
+            },
+            'errors on this.set'
           );
 
-          assert.ok(
-            warnings.some(
-              (v) => v.options && v.options.id === 'set-properties-warning'
-            ),
-            'throws a warning for this.setProperties'
+          assert.throws(
+            () => this.setProperties({ foo: 'bar?' }),
+            (err) => {
+              return err
+                .toString()
+                .includes(
+                  'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+                );
+            },
+            'errors on this.setProperties'
           );
         });
 
-        test('setting properties on the test context when rendering a template does not trigger a warning', async function (assert) {
+        test('setting properties on the test context when rendering a template does not throw an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -702,19 +705,7 @@ module('setupRenderingContext', function (hooks) {
 
           await render(template);
 
-          const warnings = getWarnings();
-
-          assert.notOk(
-            warnings.some((v) => v.options && v.options.id === 'set-warning'),
-            'does not throw a warning for this.set'
-          );
-
-          assert.notOk(
-            warnings.some(
-              (v) => v.options && v.options.id === 'set-properties-warning'
-            ),
-            'does not throw a warning for this.setProperties'
-          );
+          assert.true(true, 'no assertions are thrown');
         });
       });
     } else if (hasEmberVersion(3, 24)) {
@@ -781,16 +772,15 @@ module('setupRenderingContext', function (hooks) {
           }
 
           const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'bar');
+
           await render(component);
 
           assert.equal(this.element.textContent, 'the value of foo is foo');
-
-          this.set('foo', 'bar');
-          await rerender();
-          assert.equal(this.element.textContent, 'the value of foo is foo');
         });
 
-        test('setting properties on the test context when rendering a component triggers a warning', async function (assert) {
+        test('setting properties on the test context when rendering a component throws an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -799,29 +789,34 @@ module('setupRenderingContext', function (hooks) {
 
           const component = setComponentTemplate(template, Foo);
 
-          this.set('foo', 'FOO');
-          this.setProperties({
-            foo: 'bar?',
-          });
-
           await render(component);
 
-          const warnings = getWarnings();
-
-          assert.ok(
-            warnings.some((v) => v.options && v.options.id === 'set-warning'),
-            'throws a warning for this.set'
+          assert.throws(
+            () => this.set('foo', 'FOO'),
+            (err) => {
+              return err
+                .toString()
+                .includes(
+                  'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+                );
+            },
+            'errors on this.set'
           );
 
-          assert.ok(
-            warnings.some(
-              (v) => v.options && v.options.id === 'set-properties-warning'
-            ),
-            'throws a warning for this.setProperties'
+          assert.throws(
+            () => this.setProperties({ foo: 'bar?' }),
+            (err) => {
+              return err
+                .toString()
+                .includes(
+                  'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+                );
+            },
+            'errors on this.setProperties'
           );
         });
 
-        test('setting properties on the test context when rendering a template does not trigger a warning', async function (assert) {
+        test('setting properties on the test context when rendering a template does not throw an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -833,19 +828,7 @@ module('setupRenderingContext', function (hooks) {
 
           await render(template);
 
-          const warnings = getWarnings();
-
-          assert.notOk(
-            warnings.some((v) => v.options && v.options.id === 'set-warning'),
-            'does not throw a warning for this.set'
-          );
-
-          assert.notOk(
-            warnings.some(
-              (v) => v.options && v.options.id === 'set-properties-warning'
-            ),
-            'does not throw a warning for this.setProperties'
-          );
+          assert.true(true, 'no assertions are thrown');
         });
       });
     }

@@ -19,8 +19,7 @@ import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
-import { warn } from '@ember/debug';
-import { CALLED_SET, CALLED_SET_PROPERTIES } from './setup-context';
+import { ComponentRenderMap } from './setup-context';
 import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -144,21 +143,9 @@ export function render(
         );
       } else {
         if (isComponent(templateOrComponent, owner)) {
-          if (context.get(CALLED_SET)) {
-            warn(
-              "Calling `this.set` when rendering a component is an epic troll. Probably don't do it.",
-              { id: 'set-warning' }
-            );
-          }
-
-          if (context.get(CALLED_SET_PROPERTIES)) {
-            warn(
-              "Calling `this.setProperties` when rendering a component is an epic troll. Probably don't do it.",
-              {
-                id: 'set-properties-warning',
-              }
-            );
-          }
+          // We use this to track when `render` is used with a component so that we can throw an
+          // assertion if `this.{set,setProperty} is used in the same test
+          ComponentRenderMap.set(context, true);
 
           if (
             macroCondition(

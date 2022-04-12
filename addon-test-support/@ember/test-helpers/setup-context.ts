@@ -32,9 +32,6 @@ import {
   Warning,
 } from './-internal/warnings';
 
-export const CALLED_SET = '__INTERNAL__called_set';
-export const CALLED_SET_PROPERTIES = '__INTERNAL__called_set_properties';
-
 // This handler exists to provide the underlying data to enable the following methods:
 // * getDeprecations()
 // * getDeprecationsDuringCallback()
@@ -345,6 +342,10 @@ export function getWarningsDuringCallback(
   return getWarningsDuringCallbackForContext(context, callback);
 }
 
+// This WeakMap is used to track whenever a component is rendered in a test so that we can throw
+// assertions when someone uses `this.{set,setProperties}` while rendering a component.
+export const ComponentRenderMap = new WeakMap();
+
 /**
   Used by test framework addons to setup the provided context for testing.
 
@@ -417,7 +418,11 @@ export default function setupContext(
         enumerable: true,
         value(key: string, value: any): any {
           let ret = run(function () {
-            set(context, CALLED_SET, true);
+            if (ComponentRenderMap.has(context)) {
+              assert(
+                'Calling `this.set` when rendering a component does not work since components do not have access to the test context.'
+              );
+            }
             return set(context, key, value);
           });
 
@@ -431,7 +436,11 @@ export default function setupContext(
         enumerable: true,
         value(hash: { [key: string]: any }): { [key: string]: any } {
           let ret = run(function () {
-            set(context, CALLED_SET_PROPERTIES, true);
+            if (ComponentRenderMap.has(context)) {
+              assert(
+                'Calling `this.setProperties` when rendering a component does not work since components do not have access to the test context.'
+              );
+            }
             return setProperties(context, hash);
           });
 
