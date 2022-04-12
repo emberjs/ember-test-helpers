@@ -26,6 +26,7 @@ import type { ComponentInstance } from '@glimmer/interfaces';
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
 const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
+const DYNAMIC_INVOKE_PROVIDED_COMPONENT = hbs`{{component this.ProvidedComponent}}`;
 
 export interface RenderingTestContext extends TestContext {
   render(template: TemplateFactory): Promise<void>;
@@ -183,7 +184,7 @@ export function render(
               ProvidedComponent: name,
             };
             ownerToRenderFrom.register(componentFullName, templateOrComponent);
-            templateOrComponent = hbs`{{component this.ProvidedComponent}}`;
+            templateOrComponent = DYNAMIC_INVOKE_PROVIDED_COMPONENT;
             ownerToRenderFrom.register(templateFullName, templateOrComponent);
           }
         } else {

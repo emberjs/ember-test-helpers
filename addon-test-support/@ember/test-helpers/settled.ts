@@ -216,6 +216,8 @@ export interface SettledState {
   - `pendingRequestCount` - The count of pending AJAX requests.
   - `debugInfo` - Debug information that's combined with info return from backburner's
     getDebugInfo method.
+  - `isRenderPending` - Checks if there are any pending render operations. This will be true as long
+    as there are tracked values in the template that have not been rerendered yet.
 
   @public
   @returns {Object} object with properties for each of the metrics used to determine settledness

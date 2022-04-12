@@ -16,8 +16,13 @@ import GlimmerComponent from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { hbs } from 'ember-cli-htmlbars';
 import { module, test } from 'qunit';
+import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('rerender real-world', function (hooks) {
+  // this test requires Ember 3.25 in order to use lexically scoped values in templates
+  if (!hasEmberVersion(3, 25)) {
+    return;
+  }
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);
@@ -78,7 +83,11 @@ module('rerender real-world', function (hooks) {
     const renderPromise = render(component);
 
     // No actual render
-    assert.equal(this.element.textContent, '', 'precond - Nothing on the screen yet');
+    assert.equal(
+      this.element.textContent,
+      '',
+      'precond - Nothing on the screen yet'
+    );
 
     // This lets us wait for rendering to actually occur without resolving the render promise itself.
     // This way, we can make assertions about the initial state while also keeping the settled state
@@ -110,8 +119,16 @@ module('rerender real-world', function (hooks) {
     // At this point, we've got both render and rerender suspended, so settled state should reflect
     // that there is a render pending AND that the waiter that got kicked off in the component's
     // constructor is pending
-    assert.equal(settledState.isRenderPending, true, 'ensure isRenderPending is true');
-    assert.equal(settledState.hasPendingWaiters, true, 'ensure test harness / setup is working -- test waiter is pending');
+    assert.equal(
+      settledState.isRenderPending,
+      true,
+      'ensure isRenderPending is true'
+    );
+    assert.equal(
+      settledState.hasPendingWaiters,
+      true,
+      'ensure test harness / setup is working -- test waiter is pending'
+    );
 
     // This should resolve isRenderPending but not affect the waiters at all since rerender only
     // waits on pending render operations. **The point of this whole test is basically to prove that

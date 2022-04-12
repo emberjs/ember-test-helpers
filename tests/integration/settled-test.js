@@ -167,10 +167,12 @@ module('settled real-world scenarios', function (hooks) {
   test('rerender - it basically works', async function (assert) {
     this.owner.register('component:x-test-1', TestComponent1);
 
-    await render(hbs`{{x-test-1}}`);
+    let renderPromise = render(hbs`{{x-test-1}}`);
     await rerender();
 
-    assert.equal(this.element.textContent, 'async value');
+    assert.equal(this.element.textContent, 'initial value');
+
+    await renderPromise;
   });
 
   test('does not error for various argument types', async function (assert) {

@@ -37,7 +37,7 @@
     "test:all": "ember try:each"
   },
   "peerDependencies": {
-    "ember-source": "*"
+    "ember-source": ">=3.8.0"
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.0",
