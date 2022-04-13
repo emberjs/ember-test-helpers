@@ -649,14 +649,48 @@ module('setupRenderingContext', function (hooks) {
 
           const component = setComponentTemplate(template, Foo);
 
-          this.set('foo', 'bar');
+          this.foo = 'bar';
 
           await render(component);
 
           assert.equal(this.element.textContent, 'the value of foo is foo');
         });
 
-        test('setting properties on the test context when rendering a component throws an assertion', async function (assert) {
+        test('setting properties on the test context *before* rendering a component throws an assertion', async function (assert) {
+          assert.expect(1);
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {}
+
+          const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'FOO');
+          this.set('bar', 'BAR');
+          this.setProperties({
+            baz: 'BAZ',
+            baq: 'BAQ',
+          });
+
+          let error;
+          try {
+            await render(component);
+          } catch (err) {
+            error = err;
+          } finally {
+            assert.equal(
+              error.toString(),
+              `Error: Assertion Failed: You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:
+  - foo
+  - bar
+  - baz
+  - baq`
+            );
+          }
+        });
+
+        test('setting properties on the test context *after* rendering a component throws an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -673,7 +707,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
+                  'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
                 );
             },
             'errors on this.set'
@@ -685,7 +719,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
+                  'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
                 );
             },
             'errors on this.setProperties'
@@ -772,14 +806,48 @@ module('setupRenderingContext', function (hooks) {
 
           const component = setComponentTemplate(template, Foo);
 
-          this.set('foo', 'bar');
+          this.foo = 'bar';
 
           await render(component);
 
           assert.equal(this.element.textContent, 'the value of foo is foo');
         });
 
-        test('setting properties on the test context when rendering a component throws an assertion', async function (assert) {
+        test('setting properties on the test context *before* rendering a component throws an assertion', async function (assert) {
+          assert.expect(1);
+          const template = precompileTemplate(
+            'the value of foo is {{this.foo}}'
+          );
+
+          class Foo extends GlimmerComponent {}
+
+          const component = setComponentTemplate(template, Foo);
+
+          this.set('foo', 'FOO');
+          this.set('bar', 'BAR');
+          this.setProperties({
+            baz: 'BAZ',
+            baq: 'BAQ',
+          });
+
+          let error;
+          try {
+            await render(component);
+          } catch (err) {
+            error = err;
+          } finally {
+            assert.equal(
+              error.toString(),
+              `Error: Assertion Failed: You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:
+  - foo
+  - bar
+  - baz
+  - baq`
+            );
+          }
+        });
+
+        test('setting properties on the test context *after* rendering a component throws an assertion', async function (assert) {
           const template = precompileTemplate(
             'the value of foo is {{this.foo}}'
           );
@@ -796,7 +864,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
+                  'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
                 );
             },
             'errors on this.set'
@@ -808,7 +876,7 @@ module('setupRenderingContext', function (hooks) {
               return err
                 .toString()
                 .includes(
-                  'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
+                  'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
                 );
             },
             'errors on this.setProperties'

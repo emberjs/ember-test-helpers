@@ -344,7 +344,8 @@ export function getWarningsDuringCallback(
 
 // This WeakMap is used to track whenever a component is rendered in a test so that we can throw
 // assertions when someone uses `this.{set,setProperties}` while rendering a component.
-export const ComponentRenderMap = new WeakMap();
+export const ComponentRenderMap = new WeakMap<BaseContext, true>();
+export const SetUsage = new WeakMap<BaseContext, Array<string>>();
 
 /**
   Used by test framework addons to setup the provided context for testing.
@@ -420,9 +421,19 @@ export default function setupContext(
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'You cannot call `this.set` when you have passed a component to `render()` (the rendered component does not have access to the test context).'
+                'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
               );
+            } else {
+              let setCalls = SetUsage.get(context);
+
+              if (setCalls === undefined) {
+                setCalls = [];
+                SetUsage.set(context, setCalls);
+              }
+
+              setCalls?.push(key);
             }
+
             return set(context, key, value);
           });
 
@@ -438,8 +449,17 @@ export default function setupContext(
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'You cannot call `this.setProperties` when you have passed a component to `render()` (the rendered component does not have access to the test context)'
+                'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
               );
+            } else {
+              let setCalls = SetUsage.get(context);
+
+              if (SetUsage.get(context) === undefined) {
+                setCalls = [];
+                SetUsage.set(context, setCalls);
+              }
+
+              setCalls?.push(...Object.keys(hash));
             }
             return setProperties(context, hash);
           });

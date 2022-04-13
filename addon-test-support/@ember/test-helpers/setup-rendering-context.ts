@@ -14,12 +14,12 @@ import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
-import { deprecate } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
-import { ComponentRenderMap } from './setup-context';
+import { ComponentRenderMap, SetUsage } from './setup-context';
 import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -146,6 +146,16 @@ export function render(
           // We use this to track when `render` is used with a component so that we can throw an
           // assertion if `this.{set,setProperty} is used in the same test
           ComponentRenderMap.set(context, true);
+
+          const setCalls = SetUsage.get(context);
+
+          if (setCalls !== undefined) {
+            assert(
+              `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
+                .map((key) => `  - ${key}`)
+                .join('\n')}`
+            );
+          }
 
           if (
             macroCondition(
