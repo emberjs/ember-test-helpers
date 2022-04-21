@@ -191,6 +191,7 @@ export interface SettledState {
   hasPendingWaiters: boolean;
   hasPendingRequests: boolean;
   hasPendingTransitions: boolean | null;
+  isRenderPending: boolean;
   pendingRequestCount: number;
   debugInfo?: DebugInfo;
 }
@@ -215,6 +216,8 @@ export interface SettledState {
   - `pendingRequestCount` - The count of pending AJAX requests.
   - `debugInfo` - Debug information that's combined with info return from backburner's
     getDebugInfo method.
+  - `isRenderPending` - Checks if there are any pending render operations. This will be true as long
+    as there are tracked values in the template that have not been rerendered yet.
 
   @public
   @returns {Object} object with properties for each of the metrics used to determine settledness
@@ -226,6 +229,9 @@ export function getSettledState(): SettledState {
   let hasPendingTestWaiters = hasPendingWaiters();
   let pendingRequestCount = pendingRequests();
   let hasPendingRequests = pendingRequestCount > 0;
+  // TODO: Ideally we'd have a function in Ember itself that can synchronously identify whether
+  // or not there are any pending render operations, but this will have to suffice for now
+  let isRenderPending = !!hasRunLoop;
 
   return {
     hasPendingTimers,
@@ -233,6 +239,7 @@ export function getSettledState(): SettledState {
     hasPendingWaiters: hasPendingLegacyWaiters || hasPendingTestWaiters,
     hasPendingRequests,
     hasPendingTransitions: hasPendingTransitions(),
+    isRenderPending,
     pendingRequestCount,
     debugInfo: new TestDebugInfo({
       hasPendingTimers,
@@ -240,6 +247,7 @@ export function getSettledState(): SettledState {
       hasPendingLegacyWaiters,
       hasPendingTestWaiters,
       hasPendingRequests,
+      isRenderPending,
     }),
   };
 }
@@ -261,6 +269,7 @@ export function isSettled(): boolean {
     hasPendingRequests,
     hasPendingWaiters,
     hasPendingTransitions,
+    isRenderPending,
   } = getSettledState();
 
   if (
@@ -268,7 +277,8 @@ export function isSettled(): boolean {
     hasRunLoop ||
     hasPendingRequests ||
     hasPendingWaiters ||
-    hasPendingTransitions
+    hasPendingTransitions ||
+    isRenderPending
   ) {
     return false;
   }

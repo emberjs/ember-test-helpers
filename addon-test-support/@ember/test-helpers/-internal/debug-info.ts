@@ -25,6 +25,7 @@ interface SettledState {
   hasPendingLegacyWaiters: boolean;
   hasPendingTestWaiters: boolean;
   hasPendingRequests: boolean;
+  isRenderPending: boolean;
 }
 
 interface SummaryInfo {
@@ -39,6 +40,7 @@ interface SummaryInfo {
   pendingScheduledQueueItemCount: Number;
   pendingScheduledQueueItemStackTraces: (string | undefined)[];
   hasRunLoop: boolean;
+  isRenderPending: boolean;
 }
 
 export default interface DebugInfo {

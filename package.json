@@ -36,8 +36,12 @@
     "test": "ember test",
     "test:all": "ember try:each"
   },
+  "peerDependencies": {
+    "ember-source": ">=3.8.0"
+  },
   "dependencies": {
     "@ember/test-waiters": "^3.0.0",
+    "@embroider/macros": "^1.6.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.8",
     "ember-cli-babel": "^7.26.6",
@@ -48,6 +52,9 @@
     "@babel/cli": "^7.14.8",
     "@babel/preset-typescript": "^7.15.0",
     "@ember/optional-features": "^2.0.0",
+    "@glimmer/component": "^1.0.4",
+    "@glimmer/interfaces": "^0.84.1",
+    "@glimmer/reference": "^0.84.1",
     "@types/ember": "^3.16.5",
     "@types/ember-testing-helpers": "^0.0.4",
     "@types/rsvp": "^4.0.4",

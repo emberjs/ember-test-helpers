@@ -14,12 +14,18 @@ import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
-import { deprecate } from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
+import isComponent from './-internal/is-component';
+import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import { ComponentRenderMap, SetUsage } from './setup-context';
+import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
+const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
+const DYNAMIC_INVOKE_PROVIDED_COMPONENT = hbs`{{component this.ProvidedComponent}}`;
 
 export interface RenderingTestContext extends TestContext {
   render(template: TemplateFactory): Promise<void>;
@@ -84,17 +90,17 @@ export interface RenderOptions {
   Renders the provided template and appends it to the DOM.
 
   @public
-  @param {CompiledTemplate} template the template to render
+  @param {Template|Component} templateOrComponent the component (or template) to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 */
 export function render(
-  template: TemplateFactory,
+  templateOrComponent: TemplateFactory | ComponentInstance,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();
 
-  if (!template) {
+  if (!templateOrComponent) {
     throw new Error('you must pass a template to `render()`');
   }
 
@@ -115,9 +121,79 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      templateId += 1;
-      let templateFullName = `template:-undertest-${templateId}`;
-      ownerToRenderFrom.register(templateFullName, template);
+      if (macroCondition(dependencySatisfies('ember-source', '<3.24.0'))) {
+        // Pre 3.24, we just don't support rendering components at all, so we error
+        // if we find anything that isn't a template.
+        const isTemplate =
+          ('__id' in templateOrComponent && '__meta' in templateOrComponent) ||
+          ('id' in templateOrComponent && 'meta' in templateOrComponent);
+
+        if (!isTemplate) {
+          throw new Error(
+            `Using \`render\` with something other than a pre-compiled template is not supported until Ember 3.24 (you are on ${Ember.VERSION}).`
+          );
+        }
+
+        templateId += 1;
+        let templateFullName = `template:-undertest-${templateId}`;
+        ownerToRenderFrom.register(templateFullName, templateOrComponent);
+        templateOrComponent = lookupTemplate(
+          ownerToRenderFrom,
+          templateFullName
+        );
+      } else {
+        if (isComponent(templateOrComponent, owner)) {
+          // We use this to track when `render` is used with a component so that we can throw an
+          // assertion if `this.{set,setProperty} is used in the same test
+          ComponentRenderMap.set(context, true);
+
+          const setCalls = SetUsage.get(context);
+
+          if (setCalls !== undefined) {
+            assert(
+              `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
+                .map((key) => `  - ${key}`)
+                .join('\n')}`
+            );
+          }
+
+          if (
+            macroCondition(
+              dependencySatisfies('ember-source', '>=3.25.0-beta.1')
+            )
+          ) {
+            // In 3.25+, we can treat components as one big object and just pass them around/invoke them
+            // wherever, so we just assign the component to the `ProvidedComponent` property and invoke it
+            // in the test's template
+            context = {
+              ProvidedComponent: templateOrComponent,
+            };
+            templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+          } else {
+            // Below 3.25, however, we *cannot* treat components as one big object and instead have to
+            // register their class and template independently and then invoke them with the `component`
+            // helper so they can actually be found by the resolver and rendered
+            templateId += 1;
+            let name = `-undertest-${templateId}`;
+            let componentFullName = `component:${name}`;
+            let templateFullName = `template:components/${name}`;
+            context = {
+              ProvidedComponent: name,
+            };
+            ownerToRenderFrom.register(componentFullName, templateOrComponent);
+            templateOrComponent = DYNAMIC_INVOKE_PROVIDED_COMPONENT;
+            ownerToRenderFrom.register(templateFullName, templateOrComponent);
+          }
+        } else {
+          templateId += 1;
+          let templateFullName = `template:-undertest-${templateId}`;
+          ownerToRenderFrom.register(templateFullName, templateOrComponent);
+          templateOrComponent = lookupTemplate(
+            ownerToRenderFrom,
+            templateFullName
+          );
+        }
+      }
 
       let outletState = {
         render: {
@@ -139,7 +215,7 @@ export function render(
               name: 'index',
               controller: context,
               ViewClass: undefined,
-              template: lookupTemplate(ownerToRenderFrom, templateFullName),
+              template: templateOrComponent,
               outlets: {},
             },
             outlets: {},
