@@ -7,8 +7,7 @@ import {
 
 let renderSettled: () => Promise<void>;
 
-// TODO need to add the actual version `@ember/renderer` landed once we know it
-if (macroCondition(dependencySatisfies('ember-source', '>=4.9999999.0'))) {
+if (macroCondition(dependencySatisfies('ember-source', '>=4.5.0-beta.1'))) {
   //@ts-ignore
   renderSettled = importSync('@ember/renderer').renderSettled;
 } else if (
