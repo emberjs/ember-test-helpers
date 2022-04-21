@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
-    "@babel/preset-typescript": "^7.15.0",
+    "@babel/preset-typescript": "^7.16.7",
     "@ember/optional-features": "^2.0.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/interfaces": "^0.84.1",
