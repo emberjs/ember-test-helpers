@@ -44,6 +44,24 @@ const ContainerProxyMixin = (Ember as any)._ContainerProxyMixin;
 
 const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
   _emberTestHelpersMockOwner: true,
+
+  /**
+   * Unregister a factory and its instance.
+   *
+   * Overrides `RegistryProxy#unregister` in order to clear any cached instances
+   * of the unregistered factory.
+   *
+   * @param {string} fullName Name of the factory to unregister.
+   *
+   * @see {@link https://github.com/emberjs/ember.js/pull/12680}
+   * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
+   */
+  unregister(fullName: string) {
+    this.__container__.reset(fullName);
+
+    // We overwrote this method from RegistryProxyMixin.
+    this.__registry__.unregister(fullName);
+  },
 });
 
 /**
