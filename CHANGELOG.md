@@ -6,6 +6,22 @@
 
 
 
+
+## v2.8.0 (2022-05-17)
+
+#### :rocket: Enhancement
+* [#1211](https://github.com/emberjs/ember-test-helpers/pull/1211) Implement [embrerjs/rfcs#785](https://github.com/emberjs/rfcs/pull/785) ([@cafreeman](https://github.com/cafreeman))
+  - Add `rerender` API
+  - Allow `render` to accept components (e.g. `<template></template>`).
+
+#### :bug: Bug Fix
+* [#1216](https://github.com/emberjs/ember-test-helpers/pull/1216) Fix usage of `owner.unregister` within `ember-engines` tests ([@buschtoens](https://github.com/buschtoens))
+
+#### Committers: 2
+- Chris Freeman ([@cafreeman](https://github.com/cafreeman))
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+
+
 ## v2.7.0 (2022-04-04)
 
 #### :rocket: Enhancement
