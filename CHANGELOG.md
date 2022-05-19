@@ -7,6 +7,16 @@
 
 
 
+
+## v2.8.1 (2022-05-19)
+
+#### :bug: Bug Fix
+* [#1221](https://github.com/emberjs/ember-test-helpers/pull/1221) Fix issues with `embroider-optimized` scenarios. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.8.0 (2022-05-17)
 
 #### :rocket: Enhancement
