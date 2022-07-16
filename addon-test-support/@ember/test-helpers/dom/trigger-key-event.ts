@@ -97,7 +97,7 @@ const keyFromKeyCode: { [key: number]: string } = {
   219: '[',
   220: '\\',
   221: ']',
-  222: '\'',
+  222: "'",
 };
 
 /**
