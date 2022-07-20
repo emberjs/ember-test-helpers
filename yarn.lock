@@ -2168,6 +2168,11 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
+"@tsconfig/ember@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@tsconfig/ember/-/ember-1.0.1.tgz#d7556d81f108438c17e4030acb4e1be6b2974e88"
+  integrity sha512-aPzLw5BfQxsFPrh5fNDOK4SbSkp2q5fMlrKVeniVjMz1lAcyOh2eH5THkKKcBi1YN1/fbMdAWN/dKGW6lg2+8g==
+
 "@types/acorn@^4.0.3":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@types/acorn/-/acorn-4.0.6.tgz#d61ca5480300ac41a7d973dd5b84d0a591154a22"

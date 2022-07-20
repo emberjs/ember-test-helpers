@@ -9,6 +9,9 @@ Compatibility
 - Ember 3.8 or above
 - Ember CLI 3.8 or above
 - Node.js 10 or above
+- TypeScript 4.7
+  - SemVer policy: [simple majors](https://www.semver-ts.org/#simple-majors)
+  - the public API is defined by [API.md](./API.md).
 
 
 Installation
