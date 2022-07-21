@@ -121,7 +121,7 @@ export function setupRouterSettlednessTracking() {
 */
 export function visit(
   url: string,
-  options?: { [key: string]: any }
+  options?: Record<string, unknown>
 ): Promise<void> {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
