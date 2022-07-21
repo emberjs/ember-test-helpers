@@ -7,8 +7,12 @@ export interface HTMLElementContentEditable extends HTMLElement {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isElement(target: any): target is Element {
-  return target.nodeType === Node.ELEMENT_NODE;
+export function isElement(target: unknown): target is Element {
+  return (
+    target !== null &&
+    typeof target === 'object' &&
+    Reflect.get(target, 'nodeType') === Node.ELEMENT_NODE
+  );
 }
 
 // eslint-disable-next-line require-jsdoc
@@ -17,8 +21,12 @@ export function isWindow(target: Target): target is Window {
 }
 
 // eslint-disable-next-line require-jsdoc
-export function isDocument(target: any): target is Document {
-  return target.nodeType === Node.DOCUMENT_NODE;
+export function isDocument(target: unknown): target is Document {
+  return (
+    target !== null &&
+    typeof target === 'object' &&
+    Reflect.get(target, 'nodeType') === Node.DOCUMENT_NODE
+  );
 }
 
 // eslint-disable-next-line require-jsdoc
