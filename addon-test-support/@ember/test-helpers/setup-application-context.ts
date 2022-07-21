@@ -214,7 +214,7 @@ export function currentURL(): string {
 
   @public
   @param {Object} context the context to setup
-  @returns {Promise<Object>} resolves with the context that was setup
+  @returns {Promise<void>} resolves when the context is set up
 */
 export default function setupApplicationContext(
   context: TestContext
