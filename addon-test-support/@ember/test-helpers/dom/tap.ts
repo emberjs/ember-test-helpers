@@ -56,7 +56,7 @@ registerHook('tap', 'start', (target: Target) => {
 */
 export default function tap(
   target: Target,
-  options: object = {}
+  options: TouchEventInit = {}
 ): Promise<Event | Event[] | void> {
   return Promise.resolve()
     .then(() => {
