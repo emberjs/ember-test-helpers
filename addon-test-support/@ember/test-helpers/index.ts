@@ -14,8 +14,10 @@ export {
   resumeTest,
   getDeprecations,
   getDeprecationsDuringCallback,
+  DeprecationFailure,
   getWarnings,
   getWarningsDuringCallback,
+  Warning,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
 export {

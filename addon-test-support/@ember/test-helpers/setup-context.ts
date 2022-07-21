@@ -64,6 +64,13 @@ export interface BaseContext {
   [key: string]: unknown;
 }
 
+/**
+ * The public API for the test context, which test authors can depend on being
+ * available.
+ *
+ * Note: this is *not* user-constructible; it becomes available by calling
+ * `setupContext()` with a `BaseContext`.
+ */
 export interface TestContext extends BaseContext {
   owner: Owner;
 
@@ -230,6 +237,8 @@ export function getDeprecations(): Array<DeprecationFailure> {
   return getDeprecationsForContext(context);
 }
 
+export type { DeprecationFailure };
+
 /**
  * Returns deprecations which have occured so far for a the current test context
  *
@@ -300,6 +309,8 @@ export function getWarnings(): Array<Warning> {
 
   return getWarningsForContext(context);
 }
+
+export type { Warning };
 
 /**
  * Returns warnings which have occured so far for a the current test context
