@@ -6,8 +6,7 @@
       "dummy/*": ["./tests/dummy/app/*", "./app/*"],
       "@ember/test-helpers": ["./addon-test-support/@ember/test-helpers"],
       "@ember/test-helpers/*": ["./addon-test-support/@ember/test-helpers/*"],
-      "@ember/destroyable": ["./node_modules/ember-destroyable-polyfill"],
-      "*": ["./types/*", "./node_modules/@types/*"]
+      "*": ["./types/*"]
     }
   },
   "exclude": ["node_modules"],

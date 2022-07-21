@@ -1,6 +1,6 @@
 import { _backburner, run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
-import type Resolver from '@ember/application/resolver';
+import type Resolver from 'ember-resolver';
 import { setOwner } from '@ember/application';
 
 import buildOwner, { Owner } from './build-owner';
@@ -61,15 +61,15 @@ registerWarnHandler((message, options, next) => {
 });
 
 export interface BaseContext {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface TestContext extends BaseContext {
   owner: Owner;
 
-  set(key: string, value: any): any;
-  setProperties(hash: { [key: string]: any }): { [key: string]: any };
-  get(key: string): any;
+  set<T>(key: string, value: T): T;
+  setProperties<T extends Record<string, unknown>>(hash: T): T;
+  get(key: string): unknown;
   getProperties(...args: string[]): Pick<BaseContext, string>;
 
   pauseTest(): Promise<void>;
@@ -79,8 +79,8 @@ export interface TestContext extends BaseContext {
 // eslint-disable-next-line require-jsdoc
 export function isTestContext(context: BaseContext): context is TestContext {
   return (
-    typeof context.pauseTest === 'function' &&
-    typeof context.resumeTest === 'function'
+    typeof context['pauseTest'] === 'function' &&
+    typeof context['resumeTest'] === 'function'
   );
 }
 
@@ -189,13 +189,16 @@ export function resumeTest(): void {
 function cleanup(context: BaseContext) {
   _teardownAJAXHooks();
 
+  // SAFETY: this is intimate API *designed* for us to override.
   (Ember as any).testing = false;
 
   unsetContext();
 
-  // this should not be required, but until https://github.com/emberjs/ember.js/pull/19106
-  // lands in a 3.20 patch release
-  context.owner.destroy();
+  if (isTestContext(context)) {
+    // this should not be required, but until https://github.com/emberjs/ember.js/pull/19106
+    // lands in a 3.20 patch release
+    context.owner.destroy();
+  }
 }
 
 /**
@@ -368,10 +371,11 @@ export default function setupContext(
   context: BaseContext,
   options: { resolver?: Resolver } = {}
 ): Promise<TestContext> {
+  // SAFETY: this is intimate API *designed* for us to override.
   (Ember as any).testing = true;
   setContext(context);
 
-  let testMetadata: ITestMetadata = getTestMetadata(context);
+  let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupContext');
 
   _backburner.DEBUG = true;
@@ -417,7 +421,7 @@ export default function setupContext(
       Object.defineProperty(context, 'set', {
         configurable: true,
         enumerable: true,
-        value(key: string, value: any): any {
+        value(key: string, value: unknown): unknown {
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
@@ -487,17 +491,17 @@ export default function setupContext(
         writable: false,
       });
 
-      let resume: Function | undefined;
-      context.resumeTest = function resumeTest() {
+      let resume: ((value?: unknown) => void) | undefined;
+      context['resumeTest'] = function resumeTest() {
         assert(
           'Testing has not been paused. There is nothing to resume.',
-          Boolean(resume)
+          !!resume
         );
-        (resume as Function)();
+        resume();
         global.resumeTest = resume = undefined;
       };
 
-      context.pauseTest = function pauseTest() {
+      context['pauseTest'] = function pauseTest() {
         console.info('Testing paused. Use `resumeTest()` to continue.'); // eslint-disable-line no-console
 
         return new Promise((resolve) => {

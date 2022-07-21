@@ -79,7 +79,7 @@ export default function tap(
       return fireEvent(element, 'touchstart', options)
         .then((touchstartEv) =>
           fireEvent(element as Element, 'touchend', options).then(
-            (touchendEv) => [touchstartEv, touchendEv]
+            (touchendEv) => [touchstartEv, touchendEv] as const
           )
         )
         .then(([touchstartEv, touchendEv]) =>

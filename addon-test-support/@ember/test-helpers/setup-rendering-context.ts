@@ -42,8 +42,8 @@ export function isRenderingTestContext(
 ): context is RenderingTestContext {
   return (
     isTestContext(context) &&
-    typeof context.render === 'function' &&
-    typeof context.clearRender === 'function'
+    typeof context['render'] === 'function' &&
+    typeof context['clearRender'] === 'function'
   );
 }
 
@@ -117,7 +117,10 @@ export function render(
       let testMetadata = getTestMetadata(context);
       testMetadata.usedHelpers.push('render');
 
-      let toplevelView = owner.lookup('-top-level-view:main');
+      // SAFETY: this is all wildly unsafe, because it is all using private API.
+      // At some point we should define a path forward for this kind of internal
+      // API. For now, just flagging it as *NOT* being safe!
+      let toplevelView = owner.lookup('-top-level-view:main') as any;
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
@@ -213,7 +216,11 @@ export function render(
       // setting outletState should ensureInstance, since we know we need to
       // render), but on Ember < 3.23 that is not guaranteed.
       if (!hasEmberVersion(3, 23)) {
-        run.backburner.ensureInstance();
+        // SAFETY: this was correct and type checked on the Ember v3 types, but
+        // since the `run` namespace does not exist in Ember v4, this no longer
+        // can be type checked. When (eventually) dropping support for Ember v3,
+        // and therefore for versions before 3.23, this can be removed entirely.
+        (run as any).backburner.ensureInstance();
       }
 
       // returning settled here because the actual rendering does not happen until

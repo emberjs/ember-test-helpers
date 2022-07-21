@@ -89,7 +89,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // those warnings will be squelched
   if (disabledWarnings) {
     registerWarnHandler((message, options, next) => {
-      if (!disabledWarnings.includes(options.id)) {
+      if (!options || !disabledWarnings.includes(options.id)) {
         next.apply(null, [message, options]);
       }
     });
@@ -99,7 +99,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // `some-other-thing` warning is triggered, this `debugger` will be hit`
   if (debugWarnings) {
     registerWarnHandler((message, options, next) => {
-      if (debugWarnings.includes(options.id)) {
+      if (options && debugWarnings.includes(options.id)) {
         debugger; // eslint-disable-line no-debugger
       }
 

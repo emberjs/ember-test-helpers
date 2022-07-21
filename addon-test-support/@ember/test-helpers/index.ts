@@ -1,3 +1,8 @@
+import {
+  Backburner,
+  DeferredActionQueues,
+} from '@ember/runloop/-private/backburner';
+
 export { setResolver, getResolver } from './resolver';
 export { getApplication, setApplication } from './application';
 export {
@@ -54,3 +59,13 @@ export { default as find } from './dom/find';
 export { default as findAll } from './dom/find-all';
 export { default as typeIn } from './dom/type-in';
 export { default as scrollTo } from './dom/scroll-to';
+
+// Declaration-merge for our internal purposes.
+declare module '@ember/runloop' {
+  interface PrivateBackburner extends Backburner {
+    hasTimers(): boolean;
+    currentInstance: DeferredActionQueues | null;
+  }
+
+  export const _backburner: PrivateBackburner;
+}

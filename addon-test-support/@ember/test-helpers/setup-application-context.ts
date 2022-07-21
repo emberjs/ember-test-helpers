@@ -11,6 +11,7 @@ import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 import getTestMetadata, { ITestMetadata } from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
+import { Router } from '@ember/routing';
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
@@ -74,7 +75,7 @@ export function hasPendingTransitions(): boolean | null {
  */
 export function setupRouterSettlednessTracking() {
   const context = getContext();
-  if (context === undefined) {
+  if (context === undefined || !isTestContext(context)) {
     throw new Error(
       'Cannot setupRouterSettlednessTracking outside of a test context'
     );
@@ -87,9 +88,9 @@ export function setupRouterSettlednessTracking() {
   HAS_SETUP_ROUTER.set(context, true);
 
   let { owner } = context;
-  let router;
+  let router: Router;
   if (CAN_USE_ROUTER_EVENTS) {
-    router = owner.lookup('service:router');
+    router = owner.lookup('service:router') as Router;
 
     // track pending transitions via the public routeWillChange / routeDidChange APIs
     // routeWillChange can fire many times and is only useful to know when we have _started_
@@ -97,7 +98,7 @@ export function setupRouterSettlednessTracking() {
     router.on('routeWillChange', () => (routerTransitionsPending = true));
     router.on('routeDidChange', () => (routerTransitionsPending = false));
   } else {
-    router = owner.lookup('router:main');
+    router = owner.lookup('router:main') as Router;
     ROUTER.set(context, router);
   }
 
@@ -173,7 +174,7 @@ export function currentRouteName(): string {
 
   let router = context.owner.lookup('router:main');
 
-  return get(router, 'currentRouteName');
+  return get(router, 'currentRouteName') as string;
 }
 
 const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
@@ -193,9 +194,12 @@ export function currentURL(): string {
   let router = context.owner.lookup('router:main');
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
-    return get(router, 'currentURL');
+    return get(router, 'currentURL') as string;
   } else {
-    return get(router, 'location').getURL();
+    // SAFETY: this is *positively ancient* and should probably be removed at
+    // some point; old routers which don't have `currentURL` *should* have a
+    // `location` with `getURL()` per the docs for 2.12.
+    return (get(router, 'location') as any).getURL();
   }
 }
 

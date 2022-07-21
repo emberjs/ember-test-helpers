@@ -49,10 +49,8 @@ export default function waitUntil<T>(
 
     // eslint-disable-next-line require-jsdoc
     function scheduleCheck(timeoutsIndex: number) {
-      let interval = TIMEOUTS[timeoutsIndex];
-      if (interval === undefined) {
-        interval = MAX_TIMEOUT;
-      }
+      let knownTimeout = TIMEOUTS[timeoutsIndex];
+      let interval = knownTimeout === undefined ? MAX_TIMEOUT : knownTimeout;
 
       futureTick(function () {
         time += interval;
