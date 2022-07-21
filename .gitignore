@@ -28,3 +28,4 @@
 # tyescript related output files
 addon-test-support/**/*.js
 addon-test-support/**/*.d.ts
+public-types

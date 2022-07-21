@@ -23,7 +23,10 @@
     "test": "tests"
   },
   "scripts": {
-    "prepack": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
+    "build:types": "tsc",
+    "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
+    "build": "npm-run-all --parallel build:*",
+    "prepack": "yarn build",
     "postpack": "rimraf addon-test-support/**/*.js",
     "clean": "git clean -x -f",
     "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md",
@@ -152,5 +155,12 @@
   "volta": {
     "node": "12.22.4",
     "yarn": "1.22.4"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "public-types/*"
+      ]
+    }
   }
 }
