@@ -9,7 +9,7 @@ import {
 import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
-import getTestMetadata, { ITestMetadata } from './test-metadata';
+import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
 import { Router } from '@ember/routing';
 
@@ -219,7 +219,7 @@ export function currentURL(): string {
 export default function setupApplicationContext(
   context: TestContext
 ): Promise<void> {
-  let testMetadata: ITestMetadata = getTestMetadata(context);
+  let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupApplicationContext');
 
   return Promise.resolve();

@@ -36,7 +36,7 @@ export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
 export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
-export { default as getTestMetadata } from './test-metadata';
+export { default as getTestMetadata, TestMetadata } from './test-metadata';
 export {
   registerHook as _registerHook,
   runHooks as _runHooks,

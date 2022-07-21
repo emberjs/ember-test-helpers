@@ -13,7 +13,7 @@ import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
-import getTestMetadata, { ITestMetadata } from './test-metadata';
+import getTestMetadata, { TestMetadata } from './test-metadata';
 import { assert, deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
@@ -276,7 +276,7 @@ export function clearRender(): Promise<void> {
 export default function setupRenderingContext(
   context: TestContext
 ): Promise<RenderingTestContext> {
-  let testMetadata: ITestMetadata = getTestMetadata(context);
+  let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
   return Promise.resolve()
