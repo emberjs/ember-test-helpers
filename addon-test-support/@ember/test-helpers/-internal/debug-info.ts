@@ -37,12 +37,16 @@ interface SummaryInfo {
   isRenderPending: boolean;
 }
 
+/**
+ * The base functionality which may be present on the `SettledState` interface
+ * in the `settled` module (**not** the one in this module).
+ */
 export default interface DebugInfo {
   toConsole: () => void;
 }
 
 /**
- * Determins if the `getDebugInfo` method is available in the
+ * Determines if the `getDebugInfo` method is available in the
  * running verison of backburner.
  *
  * @returns {boolean} True if `getDebugInfo` is present in backburner, otherwise false.
