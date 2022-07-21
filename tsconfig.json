@@ -9,6 +9,5 @@
       "*": ["./types/*"]
     }
   },
-  "exclude": ["node_modules"],
-  "include": ["./addon-test-support/**/*.ts"]
+  "include": ["./addon-test-support/**/*.ts", "tests/**/*.ts"]
 }
