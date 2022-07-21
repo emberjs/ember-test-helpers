@@ -23,7 +23,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:types": "tsc",
+    "build:types": "tsc --project types.tsconfig.json",
     "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
     "build": "npm-run-all --parallel build:*",
     "prepack": "yarn build",

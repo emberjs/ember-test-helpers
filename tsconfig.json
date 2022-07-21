@@ -1,11 +1,6 @@
 {
   "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
-    // Use TS to emit declarations
-    "noEmit": false,
-    "emitDeclarationOnly": true,
-    "outDir": "public-types",
-
     "paths": {
       "dummy/tests/*": ["./tests/*"],
       "dummy/*": ["./tests/dummy/app/*", "./app/*"],
