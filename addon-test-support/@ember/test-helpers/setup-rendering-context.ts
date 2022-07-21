@@ -293,8 +293,9 @@ export default function setupRenderingContext(
             for: '@ember/test-helpers',
             since: {
               enabled: '2.0.0',
+              available: '2.0.0',
             },
-          } as any // @types/ember is missing since + for
+          }
         );
 
         return render(template);
@@ -310,8 +311,9 @@ export default function setupRenderingContext(
             for: '@ember/test-helpers',
             since: {
               enabled: '2.0.0',
+              available: '2.0.0',
             },
-          } as any // @types/ember is missing since + for
+          }
         );
 
         return clearRender();
