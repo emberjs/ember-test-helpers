@@ -234,7 +234,7 @@ export function getDeprecations(): Array<DeprecationFailure> {
  * Returns deprecations which have occured so far for a the current test context
  *
  * @public
- * @param {CallableFunction} [callback] The callback that when executed will have its DeprecationFailure recorded
+ * @param {Function} [callback] The callback that when executed will have its DeprecationFailure recorded
  * @returns {Array<DeprecationFailure> | Promise<Array<DeprecationFailure>>} An array of deprecation messages
  * @example <caption>Usage via ember-qunit</caption>
  *
@@ -259,7 +259,7 @@ export function getDeprecations(): Array<DeprecationFailure> {
  * });
  */
 export function getDeprecationsDuringCallback(
-  callback: CallableFunction
+  callback: () => void
 ): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
   const context = getContext();
 
@@ -305,7 +305,7 @@ export function getWarnings(): Array<Warning> {
  * Returns warnings which have occured so far for a the current test context
  *
  * @public
- * @param {CallableFunction} [callback] The callback that when executed will have its warnings recorded
+ * @param {Function} [callback] The callback that when executed will have its warnings recorded
  * @returns {Array<Warning> | Promise<Array<Warning>>} An array of warnings information
  * @example <caption>Usage via ember-qunit</caption>
  *
@@ -332,7 +332,7 @@ export function getWarnings(): Array<Warning> {
  * });
  */
 export function getWarningsDuringCallback(
-  callback: CallableFunction
+  callback: () => void
 ): Array<Warning> | Promise<Array<Warning>> {
   const context = getContext();
 

@@ -53,12 +53,12 @@ export function getDeprecationsForContext(
  *
  * @private
  * @param {BaseContext} [context] the test context
- * @param {CallableFunction} [callback] The callback that when executed will have its DeprecationFailure recorded
+ * @param {Function} [callback] The callback that when executed will have its DeprecationFailure recorded
  * @return {Array<DeprecationFailure>} The Deprecation Failures associated with the corresponding baseContext which occured while the CallbackFunction was executed
  */
 export function getDeprecationsDuringCallbackForContext(
   context: BaseContext,
-  callback: CallableFunction
+  callback: () => void
 ): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
   if (!context) {
     throw new TypeError(

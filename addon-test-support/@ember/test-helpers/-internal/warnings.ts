@@ -48,12 +48,12 @@ export function getWarningsForContext(context: BaseContext): Array<Warning> {
  *
  * @private
  * @param {BaseContext} [context] the test context
- * @param {CallableFunction} [callback] The callback that when executed will have its warnings recorded
+ * @param {Function} [callback] The callback that when executed will have its warnings recorded
  * @return {Array<Warning>} The warnings associated with the corresponding baseContext which occured while the CallbackFunction was executed
  */
 export function getWarningsDuringCallbackForContext(
   context: BaseContext,
-  callback: CallableFunction
+  callback: () => void
 ): Array<Warning> | Promise<Array<Warning>> {
   if (!context) {
     throw new TypeError(
