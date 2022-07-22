@@ -182,8 +182,12 @@ export function currentRouteName(): string {
   }
 
   let router = context.owner.lookup('router:main');
-
-  return get(router, 'currentRouteName') as string;
+  let currentRouteName = get(router, 'currentRouteName');
+  assert(
+    'currentRouteName shoudl be a string',
+    typeof currentRouteName === 'string'
+  );
+  return currentRouteName;
 }
 
 const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
@@ -203,7 +207,9 @@ export function currentURL(): string {
   let router = context.owner.lookup('router:main');
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
-    return get(router, 'currentURL') as string;
+    let currentUrl = get(router, 'currentURL');
+    assert('currentUrl should be a string', typeof currentUrl === 'string');
+    return currentUrl;
   } else {
     // SAFETY: this is *positively ancient* and should probably be removed at
     // some point; old routers which don't have `currentURL` *should* have a
