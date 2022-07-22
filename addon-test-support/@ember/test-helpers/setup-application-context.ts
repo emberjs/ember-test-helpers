@@ -12,6 +12,8 @@ import settled from './settled';
 import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
 import { Router } from '@ember/routing';
+import RouterService from '@ember/routing/router-service';
+import { assert } from '@ember/debug';
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
@@ -88,9 +90,14 @@ export function setupRouterSettlednessTracking() {
   HAS_SETUP_ROUTER.set(context, true);
 
   let { owner } = context;
-  let router: Router;
+  let router: Router | RouterService;
   if (CAN_USE_ROUTER_EVENTS) {
-    router = owner.lookup('service:router') as Router;
+    let routerService = owner.lookup('service:router');
+    assert(
+      'router service is not available',
+      routerService instanceof RouterService
+    );
+    router = routerService;
 
     // track pending transitions via the public routeWillChange / routeDidChange APIs
     // routeWillChange can fire many times and is only useful to know when we have _started_
@@ -98,7 +105,9 @@ export function setupRouterSettlednessTracking() {
     router.on('routeWillChange', () => (routerTransitionsPending = true));
     router.on('routeDidChange', () => (routerTransitionsPending = false));
   } else {
-    router = owner.lookup('router:main') as Router;
+    let mainRouter = owner.lookup('router:main');
+    assert('router:main is not available', mainRouter instanceof Router);
+    router = mainRouter;
     ROUTER.set(context, router);
   }
 

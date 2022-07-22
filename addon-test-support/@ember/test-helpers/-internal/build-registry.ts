@@ -29,13 +29,12 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
   ];
 
   for (let i = 0, l = methods.length; i < l; i++) {
-    let method = methods[i];
+    let methodName = methods[i];
 
-    if (method && method in container) {
-      container[method] = function (...args: unknown[]) {
-        // SAFETY: `method` is defined because we *just* checked that it is in
-        // the conditional wrapping this.
-        return container._registry[method!](...args);
+    if (methodName && methodName in container) {
+      const knownMethod = methodName;
+      container[knownMethod] = function (...args: unknown[]) {
+        return container._registry[knownMethod](...args);
       };
     }
   }
