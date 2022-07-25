@@ -22,6 +22,7 @@ import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
 import type { ComponentInstance } from '@glimmer/interfaces';
+import ViewMixin from '@ember/component/-private/view-mixin';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;

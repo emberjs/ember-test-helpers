@@ -208,9 +208,22 @@ export function currentURL(): string {
   let router = context.owner.lookup('router:main');
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
-    let currentUrl = get(router, 'currentURL');
-    assert('currentUrl should be a string', typeof currentUrl === 'string');
-    return currentUrl;
+    let routerCurrentURL = get(router, 'currentURL');
+
+    // SAFETY: this path is a lie for the sake of the public-facing types. The
+    // framework itself sees this path, but users never do. A user who calls the
+    // API without calling `visit()` will see an `UnrecognizedURLError`, rather
+    // than getting back `null`.
+    if (routerCurrentURL === null) {
+      return routerCurrentURL as never as string;
+    }
+
+    assert(
+      `currentUrl should be a string, but was ${typeof routerCurrentURL}`,
+      typeof routerCurrentURL === 'string'
+    );
+
+    return routerCurrentURL;
   } else {
     // SAFETY: this is *positively ancient* and should probably be removed at
     // some point; old routers which don't have `currentURL` *should* have a
