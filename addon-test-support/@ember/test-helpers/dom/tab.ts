@@ -87,8 +87,7 @@ function compileFocusAreas(root: Element = document.body) {
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_SKIP;
       },
-    },
-    false
+    }
   );
 
   let node: Node | null;

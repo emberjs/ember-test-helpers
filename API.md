@@ -934,7 +934,7 @@ a new test metadata object if one does not exist.
 
 *   `context` **BaseContext** the context to use
 
-Returns **ITestMetadata** the test metadata for the provided context
+Returns **TestMetadata** the test metadata for the provided context
 
 ## getDeprecations
 

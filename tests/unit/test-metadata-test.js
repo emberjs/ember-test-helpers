@@ -1,13 +1,13 @@
 import QUnit, { module, test } from 'qunit';
 import { getTestMetadata } from '@ember/test-helpers';
-import { TestMetadata } from '@ember/test-helpers/test-metadata';
+import { __TestMetadata } from '@ember/test-helpers/test-metadata';
 
 module('Test Metadata', function () {
   test('getTestMetadata returns default test metadata', function (assert) {
     let test = QUnit.config.current;
     let testMetadata = getTestMetadata(test);
 
-    assert.ok(testMetadata instanceof TestMetadata);
+    assert.ok(testMetadata instanceof __TestMetadata);
     assert.deepEqual(testMetadata.setupTypes, []);
   });
 

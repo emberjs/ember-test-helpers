@@ -1,4 +1,4 @@
-import { getContext } from '../setup-context';
+import { getContext, isTestContext } from '../setup-context';
 import { isDocument, isElement } from './-target';
 
 /**
@@ -9,13 +9,14 @@ import { isDocument, isElement } from './-target';
 */
 export default function getRootElement(): Element | Document {
   let context = getContext();
-  let owner = context && context.owner;
 
-  if (!owner) {
+  if (!context || !isTestContext(context) || !context.owner) {
     throw new Error(
       'Must setup rendering context before attempting to interact with elements.'
     );
   }
+
+  let owner = context.owner;
 
   let rootElement;
   // When the host app uses `setApplication` (instead of `setResolver`) the owner has

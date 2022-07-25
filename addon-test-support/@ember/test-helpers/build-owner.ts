@@ -1,5 +1,5 @@
 import Application from '@ember/application';
-import type Resolver from '@ember/application/resolver';
+import type Resolver from 'ember-resolver';
 
 import { Promise } from './-utils';
 
@@ -13,6 +13,7 @@ export interface Owner
     ContainerProxyMixin,
     RegistryProxyMixin {
   _emberTestHelpersMockOwner?: boolean;
+  rootElement?: string | Element;
 
   _lookupFactory?(key: string): any;
 

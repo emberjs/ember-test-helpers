@@ -11,6 +11,10 @@
 * `yarn lint`
 * `yarn lint:fix`
 
+## Types
+
+When updating the API, you will need to update the type tests (in `tests/api.ts`) as well. The kinds of changes required will make it clear whether the change is backwards compatible or not!
+
 ## Running tests
 
 * `ember test` – Runs the test suite on the current Ember version

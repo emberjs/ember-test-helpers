@@ -159,7 +159,7 @@ export function __triggerKeyEvent__(
       };
     } else if (typeof key === 'string' && key.length !== 0) {
       let firstCharacter = key[0];
-      if (firstCharacter !== firstCharacter.toUpperCase()) {
+      if (!firstCharacter || firstCharacter !== firstCharacter.toUpperCase()) {
         throw new Error(
           `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
         );

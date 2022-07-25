@@ -9,8 +9,11 @@ import {
 import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
-import getTestMetadata, { ITestMetadata } from './test-metadata';
+import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
+import type { Router } from '@ember/routing';
+import type RouterService from '@ember/routing/router-service';
+import { assert } from '@ember/debug';
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;
@@ -74,7 +77,7 @@ export function hasPendingTransitions(): boolean | null {
  */
 export function setupRouterSettlednessTracking() {
   const context = getContext();
-  if (context === undefined) {
+  if (context === undefined || !isTestContext(context)) {
     throw new Error(
       'Cannot setupRouterSettlednessTracking outside of a test context'
     );
@@ -87,9 +90,15 @@ export function setupRouterSettlednessTracking() {
   HAS_SETUP_ROUTER.set(context, true);
 
   let { owner } = context;
-  let router;
+  let router: Router | RouterService;
   if (CAN_USE_ROUTER_EVENTS) {
-    router = owner.lookup('service:router');
+    // SAFETY: unfortunately we cannot `assert` here at present because the
+    // class is not exported, only the type, since it is not designed to be
+    // sub-classed. The most we can do at present is assert that it at least
+    // *exists* and assume that if it does exist, it is bound correctly.
+    let routerService = owner.lookup('service:router');
+    assert('router service is not set up correctly', !!routerService);
+    router = routerService as RouterService;
 
     // track pending transitions via the public routeWillChange / routeDidChange APIs
     // routeWillChange can fire many times and is only useful to know when we have _started_
@@ -97,7 +106,11 @@ export function setupRouterSettlednessTracking() {
     router.on('routeWillChange', () => (routerTransitionsPending = true));
     router.on('routeDidChange', () => (routerTransitionsPending = false));
   } else {
-    router = owner.lookup('router:main');
+    // SAFETY: similarly, this cast cannot be made safer because on the versions
+    // where we fall into this path, this is *also* not an exported class.
+    let mainRouter = owner.lookup('router:main');
+    assert('router:main is not available', !!mainRouter);
+    router = mainRouter as Router;
     ROUTER.set(context, router);
   }
 
@@ -120,7 +133,7 @@ export function setupRouterSettlednessTracking() {
 */
 export function visit(
   url: string,
-  options?: { [key: string]: any }
+  options?: Record<string, unknown>
 ): Promise<void> {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
@@ -172,8 +185,12 @@ export function currentRouteName(): string {
   }
 
   let router = context.owner.lookup('router:main');
-
-  return get(router, 'currentRouteName');
+  let currentRouteName = get(router, 'currentRouteName');
+  assert(
+    'currentRouteName shoudl be a string',
+    typeof currentRouteName === 'string'
+  );
+  return currentRouteName;
 }
 
 const HAS_CURRENT_URL_ON_ROUTER = hasEmberVersion(2, 13);
@@ -193,9 +210,27 @@ export function currentURL(): string {
   let router = context.owner.lookup('router:main');
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
-    return get(router, 'currentURL');
+    let routerCurrentURL = get(router, 'currentURL');
+
+    // SAFETY: this path is a lie for the sake of the public-facing types. The
+    // framework itself sees this path, but users never do. A user who calls the
+    // API without calling `visit()` will see an `UnrecognizedURLError`, rather
+    // than getting back `null`.
+    if (routerCurrentURL === null) {
+      return routerCurrentURL as never as string;
+    }
+
+    assert(
+      `currentUrl should be a string, but was ${typeof routerCurrentURL}`,
+      typeof routerCurrentURL === 'string'
+    );
+
+    return routerCurrentURL;
   } else {
-    return get(router, 'location').getURL();
+    // SAFETY: this is *positively ancient* and should probably be removed at
+    // some point; old routers which don't have `currentURL` *should* have a
+    // `location` with `getURL()` per the docs for 2.12.
+    return (get(router, 'location') as any).getURL();
   }
 }
 
@@ -210,12 +245,12 @@ export function currentURL(): string {
 
   @public
   @param {Object} context the context to setup
-  @returns {Promise<Object>} resolves with the context that was setup
+  @returns {Promise<void>} resolves when the context is set up
 */
 export default function setupApplicationContext(
   context: TestContext
 ): Promise<void> {
-  let testMetadata: ITestMetadata = getTestMetadata(context);
+  let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupApplicationContext');
 
   return Promise.resolve();

@@ -1,3 +1,8 @@
+import {
+  Backburner,
+  DeferredActionQueues,
+} from '@ember/runloop/-private/backburner';
+
 export { setResolver, getResolver } from './resolver';
 export { getApplication, setApplication } from './application';
 export {
@@ -9,8 +14,12 @@ export {
   resumeTest,
   getDeprecations,
   getDeprecationsDuringCallback,
+  DeprecationFailure,
   getWarnings,
   getWarningsDuringCallback,
+  Warning,
+  BaseContext,
+  TestContext,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
 export {
@@ -29,9 +38,9 @@ export { default as settled, isSettled, getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
-export { getDebugInfo } from './-internal/debug-info';
+export { getDebugInfo, default as DebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
-export { default as getTestMetadata } from './test-metadata';
+export { default as getTestMetadata, TestMetadata } from './test-metadata';
 export {
   registerHook as _registerHook,
   runHooks as _runHooks,
@@ -54,3 +63,13 @@ export { default as find } from './dom/find';
 export { default as findAll } from './dom/find-all';
 export { default as typeIn } from './dom/type-in';
 export { default as scrollTo } from './dom/scroll-to';
+
+// Declaration-merge for our internal purposes.
+declare module '@ember/runloop' {
+  interface PrivateBackburner extends Backburner {
+    hasTimers(): boolean;
+    currentInstance: DeferredActionQueues | null;
+  }
+
+  export const _backburner: PrivateBackburner;
+}

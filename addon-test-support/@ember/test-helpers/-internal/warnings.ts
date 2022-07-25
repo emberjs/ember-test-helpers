@@ -48,12 +48,12 @@ export function getWarningsForContext(context: BaseContext): Array<Warning> {
  *
  * @private
  * @param {BaseContext} [context] the test context
- * @param {CallableFunction} [callback] The callback that when executed will have its warnings recorded
+ * @param {Function} [callback] The callback that when executed will have its warnings recorded
  * @return {Array<Warning>} The warnings associated with the corresponding baseContext which occured while the CallbackFunction was executed
  */
 export function getWarningsDuringCallbackForContext(
   context: BaseContext,
-  callback: CallableFunction
+  callback: () => void
 ): Array<Warning> | Promise<Array<Warning>> {
   if (!context) {
     throw new TypeError(
@@ -89,7 +89,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // those warnings will be squelched
   if (disabledWarnings) {
     registerWarnHandler((message, options, next) => {
-      if (!disabledWarnings.includes(options.id)) {
+      if (!options || !disabledWarnings.includes(options.id)) {
         next.apply(null, [message, options]);
       }
     });
@@ -99,7 +99,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // `some-other-thing` warning is triggered, this `debugger` will be hit`
   if (debugWarnings) {
     registerWarnHandler((message, options, next) => {
-      if (debugWarnings.includes(options.id)) {
+      if (options && debugWarnings.includes(options.id)) {
         debugger; // eslint-disable-line no-debugger
       }
 

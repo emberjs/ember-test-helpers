@@ -13,7 +13,7 @@ export interface DeprecationOptions {
 
 export interface DeprecationFailure {
   message: string;
-  options: DeprecationOptions;
+  options?: DeprecationOptions;
 }
 
 const DEPRECATIONS = new WeakMap<BaseContext, Array<DeprecationFailure>>();
@@ -53,12 +53,12 @@ export function getDeprecationsForContext(
  *
  * @private
  * @param {BaseContext} [context] the test context
- * @param {CallableFunction} [callback] The callback that when executed will have its DeprecationFailure recorded
+ * @param {Function} [callback] The callback that when executed will have its DeprecationFailure recorded
  * @return {Array<DeprecationFailure>} The Deprecation Failures associated with the corresponding baseContext which occured while the CallbackFunction was executed
  */
 export function getDeprecationsDuringCallbackForContext(
   context: BaseContext,
-  callback: CallableFunction
+  callback: () => void
 ): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
   if (!context) {
     throw new TypeError(
@@ -92,7 +92,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // those deprecations will be squelched
   if (disabledDeprecations) {
     registerDeprecationHandler((message, options, next) => {
-      if (!disabledDeprecations.includes(options.id)) {
+      if (!options || !disabledDeprecations.includes(options.id)) {
         next.apply(null, [message, options]);
       }
     });
@@ -102,7 +102,7 @@ if (typeof URLSearchParams !== 'undefined') {
   // `some-other-thing` deprecation is triggered, this `debugger` will be hit`
   if (debugDeprecations) {
     registerDeprecationHandler((message, options, next) => {
-      if (debugDeprecations.includes(options.id)) {
+      if (options && debugDeprecations.includes(options.id)) {
         debugger; // eslint-disable-line no-debugger
       }
 

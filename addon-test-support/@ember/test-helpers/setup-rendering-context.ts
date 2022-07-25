@@ -13,7 +13,7 @@ import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
-import getTestMetadata, { ITestMetadata } from './test-metadata';
+import getTestMetadata, { TestMetadata } from './test-metadata';
 import { assert, deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
@@ -22,6 +22,7 @@ import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
 import type { ComponentInstance } from '@glimmer/interfaces';
+import ViewMixin from '@ember/component/-private/view-mixin';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -42,8 +43,8 @@ export function isRenderingTestContext(
 ): context is RenderingTestContext {
   return (
     isTestContext(context) &&
-    typeof context.render === 'function' &&
-    typeof context.clearRender === 'function'
+    typeof context['render'] === 'function' &&
+    typeof context['clearRender'] === 'function'
   );
 }
 
@@ -117,7 +118,10 @@ export function render(
       let testMetadata = getTestMetadata(context);
       testMetadata.usedHelpers.push('render');
 
-      let toplevelView = owner.lookup('-top-level-view:main');
+      // SAFETY: this is all wildly unsafe, because it is all using private API.
+      // At some point we should define a path forward for this kind of internal
+      // API. For now, just flagging it as *NOT* being safe!
+      let toplevelView = owner.lookup('-top-level-view:main') as any;
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
@@ -213,7 +217,11 @@ export function render(
       // setting outletState should ensureInstance, since we know we need to
       // render), but on Ember < 3.23 that is not guaranteed.
       if (!hasEmberVersion(3, 23)) {
-        run.backburner.ensureInstance();
+        // SAFETY: this was correct and type checked on the Ember v3 types, but
+        // since the `run` namespace does not exist in Ember v4, this no longer
+        // can be type checked. When (eventually) dropping support for Ember v3,
+        // and therefore for versions before 3.23, this can be removed entirely.
+        (run as any).backburner.ensureInstance();
       }
 
       // returning settled here because the actual rendering does not happen until
@@ -269,7 +277,7 @@ export function clearRender(): Promise<void> {
 export default function setupRenderingContext(
   context: TestContext
 ): Promise<RenderingTestContext> {
-  let testMetadata: ITestMetadata = getTestMetadata(context);
+  let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
   return Promise.resolve()
@@ -286,8 +294,9 @@ export default function setupRenderingContext(
             for: '@ember/test-helpers',
             since: {
               enabled: '2.0.0',
+              available: '2.0.0',
             },
-          } as any // @types/ember is missing since + for
+          }
         );
 
         return render(template);
@@ -303,8 +312,9 @@ export default function setupRenderingContext(
             for: '@ember/test-helpers',
             since: {
               enabled: '2.0.0',
+              available: '2.0.0',
             },
-          } as any // @types/ember is missing since + for
+          }
         );
 
         return clearRender();

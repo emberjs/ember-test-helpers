@@ -1,15 +1,10 @@
+import { _backburner } from '@ember/runloop';
 import {
-  _backburner,
   DebugInfo as BackburnerDebugInfo,
   QueueItem,
-  DeferredActionQueues,
-} from '@ember/runloop';
+} from '@ember/runloop/-private/backburner';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
-import {
-  getPendingWaiterState,
-  PendingWaiterState,
-  TestWaiterDebugInfo,
-} from '@ember/test-waiters';
+import { getPendingWaiterState, PendingWaiterState } from '@ember/test-waiters';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';
@@ -17,7 +12,6 @@ const SCHEDULED_ASYNC = 'Scheduled async';
 const SCHEDULED_AUTORUN = 'Scheduled autorun';
 
 type MaybeDebugInfo = BackburnerDebugInfo | null;
-type WaiterDebugInfo = true | unknown[];
 
 interface SettledState {
   hasPendingTimers: boolean;
@@ -37,18 +31,22 @@ interface SummaryInfo {
   pendingTimersCount: number;
   hasPendingTimers: boolean;
   pendingTimersStackTraces: (string | undefined)[];
-  pendingScheduledQueueItemCount: Number;
+  pendingScheduledQueueItemCount: number;
   pendingScheduledQueueItemStackTraces: (string | undefined)[];
   hasRunLoop: boolean;
   isRenderPending: boolean;
 }
 
+/**
+ * The base functionality which may be present on the `SettledState` interface
+ * in the `settled` module (**not** the one in this module).
+ */
 export default interface DebugInfo {
   toConsole: () => void;
 }
 
 /**
- * Determins if the `getDebugInfo` method is available in the
+ * Determines if the `getDebugInfo` method is available in the
  * running verison of backburner.
  *
  * @returns {boolean} True if `getDebugInfo` is present in backburner, otherwise false.
@@ -112,9 +110,12 @@ export class TestDebugInfo implements DebugInfo {
         this._summaryInfo.pendingScheduledQueueItemCount =
           this._debugInfo.instanceStack
             .filter((q) => q)
-            .reduce((total: Number, item) => {
-              Object.keys(item).forEach((queueName: string) => {
-                total += item[queueName].length;
+            .reduce((total, item) => {
+              Object.keys(item).forEach((queueName) => {
+                // SAFETY: this cast is *not* safe, but the underlying type is
+                // not currently able to be safer than this because it was
+                // built as a bag-of-queues *and* a structured item originally.
+                total += (item[queueName] as QueueItem[]).length;
               });
 
               return total;
@@ -122,21 +123,17 @@ export class TestDebugInfo implements DebugInfo {
         this._summaryInfo.pendingScheduledQueueItemStackTraces =
           this._debugInfo.instanceStack
             .filter((q) => q)
-            .reduce(
-              (
-                stacks: string[],
-                deferredActionQueues: DeferredActionQueues
-              ) => {
-                Object.keys(deferredActionQueues).forEach((queue) => {
-                  deferredActionQueues[queue].forEach(
-                    (queueItem: QueueItem) =>
-                      queueItem.stack && stacks.push(queueItem.stack)
-                  );
-                });
-                return stacks;
-              },
-              []
-            );
+            .reduce((stacks, deferredActionQueues) => {
+              Object.keys(deferredActionQueues).forEach((queue) => {
+                // SAFETY: this cast is *not* safe, but the underlying type is
+                // not currently able to be safer than this because it was
+                // built as a bag-of-queues *and* a structured item originally.
+                (deferredActionQueues[queue] as QueueItem[]).forEach(
+                  (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
+                );
+              });
+              return stacks;
+            }, [] as string[]);
       }
 
       if (this._summaryInfo.hasPendingTestWaiters) {
@@ -165,12 +162,12 @@ export class TestDebugInfo implements DebugInfo {
 
       Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(
         (waiterName) => {
-          let waiterDebugInfo: WaiterDebugInfo =
+          let waiterDebugInfo =
             summary.pendingTestWaiterInfo.waiters[waiterName];
 
           if (Array.isArray(waiterDebugInfo)) {
             _console.group(waiterName);
-            waiterDebugInfo.forEach((debugInfo: TestWaiterDebugInfo) => {
+            waiterDebugInfo.forEach((debugInfo) => {
               _console.log(
                 `${debugInfo.label ? debugInfo.label : 'stack'}: ${
                   debugInfo.stack
@@ -221,7 +218,7 @@ export class TestDebugInfo implements DebugInfo {
     });
   }
 
-  _formatCount(title: string, count: Number): string {
+  _formatCount(title: string, count: number): string {
     return `${title}: ${count}`;
   }
 }

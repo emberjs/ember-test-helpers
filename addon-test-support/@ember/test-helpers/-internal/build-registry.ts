@@ -1,4 +1,4 @@
-import type Resolver from '@ember/application/resolver';
+import type Resolver from 'ember-resolver';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
@@ -29,11 +29,12 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
   ];
 
   for (let i = 0, l = methods.length; i < l; i++) {
-    let method = methods[i];
+    let methodName = methods[i];
 
-    if (method in container) {
-      container[method] = function (...args: unknown[]) {
-        return container._registry[method](...args);
+    if (methodName && methodName in container) {
+      const knownMethod = methodName;
+      container[knownMethod] = function (...args: unknown[]) {
+        return container._registry[knownMethod](...args);
       };
     }
   }
@@ -57,10 +58,10 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
    */
   unregister(fullName: string) {
-    this.__container__.reset(fullName);
+    this['__container__'].reset(fullName);
 
     // We overwrote this method from RegistryProxyMixin.
-    this.__registry__.unregister(fullName);
+    this['__registry__'].unregister(fullName);
   },
 });
 

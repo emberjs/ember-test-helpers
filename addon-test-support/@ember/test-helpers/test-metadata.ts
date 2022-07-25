@@ -1,16 +1,6 @@
 import { BaseContext } from './setup-context';
 
-export interface ITestMetadata {
-  testName?: string;
-  setupTypes: string[];
-  usedHelpers: string[];
-  [key: string]: any;
-
-  readonly isRendering: boolean;
-  readonly isApplication: boolean;
-}
-
-export class TestMetadata implements ITestMetadata {
+class TestMetadata {
   [key: string]: any;
   testName?: string;
   setupTypes: string[];
@@ -33,16 +23,31 @@ export class TestMetadata implements ITestMetadata {
   }
 }
 
-const TEST_METADATA = new WeakMap<BaseContext, ITestMetadata>();
+export {
+  // Exported only for testing purposes.
+  TestMetadata as __TestMetadata,
+};
+
+// Only export the type side of the item: this way the only way (it is legal) to
+// construct it is here, but users can still reference the type.
+export type {
+  /**
+   * A non-user-constructible interface representing the metadata associated
+   * with a test, designed for test frameworks to use e.g. with their reporters.
+   */
+  TestMetadata,
+};
+
+const TEST_METADATA = new WeakMap<BaseContext, TestMetadata>();
 
 /**
  * Gets the test metadata associated with the provided test context. Will create
  * a new test metadata object if one does not exist.
  *
  * @param {BaseContext} context the context to use
- * @returns {ITestMetadata} the test metadata for the provided context
+ * @returns {TestMetadata} the test metadata for the provided context
  */
-export default function getTestMetadata(context: BaseContext): ITestMetadata {
+export default function getTestMetadata(context: BaseContext): TestMetadata {
   if (!TEST_METADATA.has(context)) {
     TEST_METADATA.set(context, new TestMetadata());
   }

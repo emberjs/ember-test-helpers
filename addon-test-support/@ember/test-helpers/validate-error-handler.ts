@@ -1,4 +1,9 @@
 import Ember from 'ember';
+
+type ErrorHandlerValidation =
+  | Readonly<{ isValid: true; message: null }>
+  | Readonly<{ isValid: false; message: string }>;
+
 const VALID = Object.freeze({ isValid: true, message: null });
 const INVALID = Object.freeze({
   isValid: false,
@@ -28,7 +33,9 @@ const INVALID = Object.freeze({
  *   assert.ok(result.isValid, result.message);
  * });
  */
-export default function validateErrorHandler(callback = Ember.onerror) {
+export default function validateErrorHandler(
+  callback = Ember.onerror
+): ErrorHandlerValidation {
   if (callback === undefined || callback === null) {
     return VALID;
   }

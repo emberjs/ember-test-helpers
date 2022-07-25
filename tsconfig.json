@@ -1,49 +1,13 @@
 {
+  "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
-    "target": "es2019",
-    "allowJs": false,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "noEmitOnError": false,
-    "noEmit": true,
-    "declaration": true,
-    "inlineSourceMap": true,
-    "inlineSources": true,
-    "module": "ES2015",
     "paths": {
-      "dummy/tests/*": [
-        "./tests/*"
-      ],
-      "dummy/*": [
-        "./tests/dummy/app/*",
-        "./app/*"
-      ],
-      "@ember/test-helpers": [
-        "./addon-test-support/@ember/test-helpers"
-      ],
-      "@ember/test-helpers/*": [
-        "./addon-test-support/@ember/test-helpers/*"
-      ],
-      "@ember/destroyable": ["./node_modules/ember-destroyable-polyfill"],
-      "*": [
-        "./types/*",
-        "./node_modules/@types/*"
-      ]
+      "dummy/tests/*": ["./tests/*"],
+      "dummy/*": ["./tests/dummy/app/*", "./app/*"],
+      "@ember/test-helpers": ["./addon-test-support/@ember/test-helpers"],
+      "@ember/test-helpers/*": ["./addon-test-support/@ember/test-helpers/*"],
+      "*": ["./types/*"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "./addon-test-support/**/*.ts"
-  ]
+  "include": ["./addon-test-support/**/*.ts", "tests/**/*.ts"]
 }
