@@ -11,7 +11,7 @@ import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
-import { Router } from '@ember/routing';
+import type { Router } from '@ember/routing';
 import type RouterService from '@ember/routing/router-service';
 import { assert } from '@ember/debug';
 
@@ -106,9 +106,11 @@ export function setupRouterSettlednessTracking() {
     router.on('routeWillChange', () => (routerTransitionsPending = true));
     router.on('routeDidChange', () => (routerTransitionsPending = false));
   } else {
+    // SAFETY: similarly, this cast cannot be made safer because on the versions
+    // where we fall into this path, this is *also* not an exported class.
     let mainRouter = owner.lookup('router:main');
-    assert('router:main is not available', mainRouter instanceof Router);
-    router = mainRouter;
+    assert('router:main is not available', !!mainRouter);
+    router = mainRouter as Router;
     ROUTER.set(context, router);
   }
 
