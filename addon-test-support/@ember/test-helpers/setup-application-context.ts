@@ -12,7 +12,7 @@ import settled from './settled';
 import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
 import { Router } from '@ember/routing';
-import RouterService from '@ember/routing/router-service';
+import type RouterService from '@ember/routing/router-service';
 import { assert } from '@ember/debug';
 
 export interface ApplicationTestContext extends TestContext {
@@ -92,12 +92,13 @@ export function setupRouterSettlednessTracking() {
   let { owner } = context;
   let router: Router | RouterService;
   if (CAN_USE_ROUTER_EVENTS) {
+    // SAFETY: unfortunately we cannot `assert` here at present because the
+    // class is not exported, only the type, since it is not designed to be
+    // sub-classed. The most we can do at present is assert that it at least
+    // *exists* and assume that if it does exist, it is bound correctly.
     let routerService = owner.lookup('service:router');
-    assert(
-      'router service is not available',
-      routerService instanceof RouterService
-    );
-    router = routerService;
+    assert('router service is not set up correctly', !!routerService);
+    router = routerService as RouterService;
 
     // track pending transitions via the public routeWillChange / routeDidChange APIs
     // routeWillChange can fire many times and is only useful to know when we have _started_
