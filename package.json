@@ -112,7 +112,9 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "version": 2,
+    "type": "addon",
+    "main": "./addon-main.cjs"
   },
   "release-it": {
     "scripts": {
