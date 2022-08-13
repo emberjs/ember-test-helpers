@@ -2,19 +2,14 @@
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'dummy',
+    modulePrefix: 'test-app',
     environment,
     rootURL: '/',
-    locationType: 'auto',
+    locationType: 'history',
     EmberENV: {
-      _EMBER_TRY_CURRENT_SCENARIO: process.env.EMBER_TRY_CURRENT_SCENARIO,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. EMBER_NATIVE_DECORATOR_SUPPORT: true
-      },
-      EXTEND_PROTOTYPES: {
-        // Prevent Ember Data from overriding Date.parse.
-        Date: false,
       },
     },
 
@@ -43,6 +38,7 @@ module.exports = function (environment) {
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
   }
+
   if (environment === 'production') {
     // here you can enable a production-specific feature
   }
