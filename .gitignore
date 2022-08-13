@@ -26,6 +26,6 @@
 /package.json.ember-try
 
 # tyescript related output files
-addon-test-support/**/*.js
-addon-test-support/**/*.d.ts
+src/**/*.js
+src/**/*.d.ts
 public-types

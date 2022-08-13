@@ -2,12 +2,10 @@
   "extends": "@tsconfig/ember/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "dummy/tests/*": ["./tests/*"],
-      "dummy/*": ["./tests/dummy/app/*", "./app/*"],
-      "@ember/test-helpers": ["./addon-test-support/@ember/test-helpers"],
-      "@ember/test-helpers/*": ["./addon-test-support/@ember/test-helpers/*"],
+      "@ember/test-helpers": ["./src"],
+      "@ember/test-helpers/*": ["./src"],
       "*": ["./types/*"]
     }
   },
-  "include": ["./addon-test-support/**/*.ts", "tests/**/*.ts"]
+  "include": ["./src/**/*.ts", "tests/**/*.ts"]
 }
