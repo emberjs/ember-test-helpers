@@ -352,7 +352,7 @@ Triggers an event on the specified target.
 
 #### Parameters
 
-*   `target` **([string][62] | [Element][63])** the element or selector to trigger the event on
+*   `target` **([string][62] | [Element][63] | [Document][77])** the element or selector to trigger the event on
 *   `eventType` **[string][62]** the type of event to trigger
 *   `options` **[Object][70]** additional properties to be set on the event
 
@@ -400,7 +400,7 @@ Optionally the user can also provide a POJO with extra modifiers for the event.
 
 #### Parameters
 
-*   `target` **([string][62] | [Element][63])** the element or selector to trigger the event on
+*   `target` **([string][62] | [Element][63] | [Document][77])** the element or selector to trigger the event on
 *   `eventType` **(`"keydown"` | `"keyup"` | `"keypress"`)** the type of event to trigger
 *   `key` **([number][67] | [string][62])** the `keyCode`(number) or `key`(string) of the event being triggered
 *   `modifiers` **[Object][70]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
@@ -1205,3 +1205,5 @@ Returns **([Array][68]\<Warning> | [Promise][64]<[Array][68]\<Warning>>)** An ar
 [75]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
 
 [76]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[77]: https://developer.mozilla.org/en-US/docs/Web/API/Document
