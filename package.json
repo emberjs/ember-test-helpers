@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build:types": "tsc --project types.tsconfig.json",
-    "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript src --out-dir dist/ --ignore '**/*.d.ts'",
+    "build:js": "pnpm babel --extensions '.ts' --presets @babel/preset-typescript src --out-dir dist/ --ignore '**/*.d.ts'",
     "build": "npm-run-all --parallel build:*",
     "prepack": "pnpm build",
     "clean": "git clean -x -f",
@@ -135,7 +135,7 @@
   },
   "release-it": {
     "scripts": {
-      "after:bump": "yarn docs"
+      "after:bump": "pnpm docs"
     },
     "plugins": {
       "release-it-lerna-changelog": {
