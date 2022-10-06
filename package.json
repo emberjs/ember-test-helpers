@@ -24,11 +24,19 @@
   },
   "files": [
     "dist",
-    "public-types"
+    "public-types",
+    "addon-main.cjs"
   ],
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "public-types/*"
+      ]
+    }
   },
   "scripts": {
     "build:types": "tsc --project types.tsconfig.json",
@@ -152,12 +160,5 @@
   "volta": {
     "node": "14.20.0",
     "yarn": "1.22.4"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "public-types/*"
-      ]
-    }
   }
 }
