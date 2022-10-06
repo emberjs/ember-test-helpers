@@ -54,7 +54,7 @@ export function isRenderingTestContext(
   @param {string} templateFullName the fill template name
   @returns {Template} the template representing `templateFullName`
 */
-function lookupTemplate(owner: Owner, templateFullName: string) {
+function lookupTemplate(owner: Owner, templateFullName: `${string}:${string}`) {
   let template = owner.lookup(templateFullName);
   if (typeof template === 'function') return template(owner);
   return template;
@@ -139,7 +139,7 @@ export function render(
         }
 
         templateId += 1;
-        let templateFullName = `template:-undertest-${templateId}`;
+        let templateFullName: `${string}:${string}` = `template:-undertest-${templateId}`;
         ownerToRenderFrom.register(templateFullName, templateOrComponent);
         templateOrComponent = lookupTemplate(
           ownerToRenderFrom,
@@ -172,7 +172,7 @@ export function render(
           templateOrComponent = INVOKE_PROVIDED_COMPONENT;
         } else {
           templateId += 1;
-          let templateFullName = `template:-undertest-${templateId}`;
+          let templateFullName: `${string}:${string}` = `template:-undertest-${templateId}`;
           ownerToRenderFrom.register(templateFullName, templateOrComponent);
           templateOrComponent = lookupTemplate(
             ownerToRenderFrom,

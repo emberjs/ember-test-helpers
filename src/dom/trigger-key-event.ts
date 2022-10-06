@@ -8,7 +8,7 @@ import {
 } from './fire-event';
 import { Promise, isNumeric } from '../-utils';
 import Target from './-target';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 import { find } from '../ie-11-polyfills';

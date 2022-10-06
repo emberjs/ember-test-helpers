@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import { Promise } from '../-utils';
 import Target from './-target';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 

@@ -5,7 +5,7 @@ import settled from '../settled';
 import { Promise } from '../-utils';
 import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
 
 const PRIMARY_BUTTON = 1;
