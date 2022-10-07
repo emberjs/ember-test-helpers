@@ -61,7 +61,7 @@
     "@glimmer/reference": "^0.84.1",
     "@tsconfig/ember": "^1.0.1",
     "@types/ember": "~4.0.0",
-    "@types/ember__application": "~4.0.0",
+    "@types/ember__application": "~4.0.2",
     "@types/ember__component": "~4.0.8",
     "@types/ember__debug": "~4.0.1",
     "@types/ember__destroyable": "~4.0.0",
