@@ -48,7 +48,7 @@
     "@embroider/util": "^1.6.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.8",
-    "ember-cli-babel": "^7.26.6",
+    "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^5.7.1",
     "ember-destroyable-polyfill": "^2.0.3"
   },
