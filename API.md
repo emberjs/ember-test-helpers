@@ -494,13 +494,32 @@ Navigate the application to the provided URL.
 *   `url` **[string][62]** The URL to visit (e.g. `/posts`)
 *   `options` **[object][70]** app boot options
 
+#### Examples
+
+```javascript
+await visit('/posts/1');
+await visit('/', { rootElement: '#container' });
+```
+
 Returns **[Promise][64]\<void>** resolves when settled
 
 ### currentRouteName
 
+#### Examples
+
+```javascript
+assert.equal(currentRouteName(), 'posts.index');
+```
+
 Returns **[string][62]** the currently active route name
 
 ### currentURL
+
+#### Examples
+
+```javascript
+assert.equal(currentURL(), '/posts/1');
+```
 
 Returns **[string][62]** the applications current url
 
