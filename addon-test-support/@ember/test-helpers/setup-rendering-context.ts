@@ -93,6 +93,12 @@ export interface RenderOptions {
   @param {Template|Component} templateOrComponent the component (or template) to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Render a div element with the class 'container'.
+  </caption>
+  await render(hbs`<div class="container"></div>`);
 */
 export function render(
   templateOrComponent: TemplateFactory | ComponentInstance,
@@ -265,6 +271,16 @@ export function clearRender(): Promise<void> {
   @public
   @param {Object} context the context to setup for rendering
   @returns {Promise<Object>} resolves with the context that was setup
+
+  @example
+  <caption>
+    Rendering out a paragraph element containing the content 'hello', and then clearing that content via clearRender.
+  </caption>
+
+  await render(hbs`<p>Hello!</p>`);
+  assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
+  await clearRender();
+  assert.equal(this.element.textContent, '', 'has rendered content');
 */
 export default function setupRenderingContext(
   context: TestContext
