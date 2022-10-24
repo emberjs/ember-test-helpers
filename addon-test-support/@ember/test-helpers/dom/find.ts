@@ -7,6 +7,13 @@ import getElement from './-get-element';
   @public
   @param {string} selector the selector to search for
   @return {Element} matched element or null
+
+  @example
+  <caption>
+    Find all of the elements matching '.my-selector'.
+  </caption>
+  findAll('.my-selector');
+
 */
 export default function find(selector: string): Element | null {
   if (!selector) {

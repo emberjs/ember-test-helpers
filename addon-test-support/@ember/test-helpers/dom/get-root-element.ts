@@ -6,6 +6,13 @@ import { isDocument, isElement } from './-target';
 
   @public
   @returns {Element} the root element
+
+  @example
+  <caption>
+    Getting the root element of the application and checking that it is equal
+    to the element with id 'ember-testing'.
+  </caption>
+  assert.equal(getRootElement(), document.querySelector('#ember-testing'));
 */
 export default function getRootElement(): Element | Document {
   let context = getContext();
