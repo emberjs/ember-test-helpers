@@ -551,6 +551,20 @@ Navigate the application to the provided URL.
 *   `url` **[string][64]** The URL to visit (e.g. `/posts`)
 *   `options` **[object][72]** app boot options
 
+#### Examples
+
+Visiting the route for post 1.
+
+```javascript
+await visit('/posts/1');
+```
+
+Visiting the route for post 1 while also providing the `rootElement` app boot option.
+
+```javascript
+await visit('/', { rootElement: '#container' });
+```
+
 Returns **[Promise][66]\<void>** resolves when settled
 
 ### currentRouteName
@@ -1241,23 +1255,23 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 
 [54]: #getdeprecations
 
-[55]: #examples-22
+[55]: #examples-23
 
 [56]: #getdeprecationsduringcallback
 
 [57]: #parameters-29
 
-[58]: #examples-23
+[58]: #examples-24
 
 [59]: #getwarnings
 
-[60]: #examples-24
+[60]: #examples-25
 
 [61]: #getwarningsduringcallback
 
 [62]: #parameters-30
 
-[63]: #examples-25
+[63]: #examples-26
 
 [64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

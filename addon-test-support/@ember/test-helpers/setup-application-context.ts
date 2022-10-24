@@ -117,6 +117,18 @@ export function setupRouterSettlednessTracking() {
   @param {string} url The URL to visit (e.g. `/posts`)
   @param {object} options app boot options
   @returns {Promise<void>} resolves when settled
+
+  @example
+  <caption>
+    Visiting the route for post 1.
+  </caption>
+  await visit('/posts/1');
+
+  @example
+  <caption>
+    Visiting the route for post 1 while also providing the `rootElement` app boot option.
+  </caption>
+  await visit('/', { rootElement: '#container' });
 */
 export function visit(
   url: string,
