@@ -311,7 +311,7 @@ keyboard.
 
 #### Parameters
 
-*   `options` **[Object][72]?** optional tab behaviors (optional, default `{}`)
+*   `options` **[Object][72]?** optional tab behaviors
 
     *   `options.backwards` **[boolean][71]** indicates if the the user navigates backwards (optional, default `false`)
     *   `options.unRestrainTabIndex` **[boolean][71]** indicates if tabbing should throw an error when tabindex is greater than 0 (optional, default `false`)
@@ -573,6 +573,14 @@ Renders the provided template and appends it to the DOM.
 
 *   `templateOrComponent` **(Template | Component)** the component (or template) to render
 *   `options` **RenderOptions** options hash containing engine owner ({ owner: engineOwner })
+
+#### Examples
+
+Render a div element with the class 'container'.
+
+```javascript
+await render(hbs`<div class="container"></div>`);
+```
 
 Returns **[Promise][66]\<void>** resolves when settled
 
@@ -882,6 +890,17 @@ element).
 #### Parameters
 
 *   `context` **TestContext** the context to setup for rendering
+
+#### Examples
+
+Rendering out a paragraph element containing the content 'hello', and then clearing that content via clearRender.
+
+```javascript
+await render(hbs`<p>Hello!</p>`);
+assert.equal(this.element.textContent, 'Hello!', 'has rendered content');
+await clearRender();
+assert.equal(this.element.textContent, '', 'has rendered content');
+```
 
 Returns **[Promise][66]\<RenderingTestContext>** resolves with the context that was setup
 
@@ -1241,23 +1260,23 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 
 [54]: #getdeprecations
 
-[55]: #examples-22
+[55]: #examples-24
 
 [56]: #getdeprecationsduringcallback
 
 [57]: #parameters-29
 
-[58]: #examples-23
+[58]: #examples-25
 
 [59]: #getwarnings
 
-[60]: #examples-24
+[60]: #examples-26
 
 [61]: #getwarningsduringcallback
 
 [62]: #parameters-30
 
-[63]: #examples-25
+[63]: #examples-27
 
 [64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
