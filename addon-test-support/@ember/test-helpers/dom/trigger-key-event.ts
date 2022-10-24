@@ -88,8 +88,16 @@ const keyFromKeyCode: { [key: number]: string } = {
   90: 'z',
   91: 'Meta',
   93: 'Meta', // There is two keys that map to meta,
+  186: ';',
   187: '=',
+  188: ',',
   189: '-',
+  190: '.',
+  191: '/',
+  219: '[',
+  220: '\\',
+  221: ']',
+  222: "'",
 };
 
 /**
