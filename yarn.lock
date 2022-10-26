@@ -1994,6 +1994,14 @@
     semver "^7.3.2"
     typescript-memoize "^1.0.0-alpha.3"
 
+"@embroider/test-setup@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@embroider/test-setup/-/test-setup-1.8.3.tgz#445b9fe5a363ce50367ac2114750597f98d7806d"
+  integrity sha512-BCCbBG7UWkCw+cQ401Ip6LnqTRaQDeKImxR+e7Q4oP6H4EBj7p4iGR1z6fhMy4NNyXKPB6jk3bGa9bTiiNoEAw==
+  dependencies:
+    lodash "^4.17.21"
+    resolve "^1.20.0"
+
 "@embroider/util@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@embroider/util/-/util-1.6.0.tgz#6a817dfd5192afaab41e80ebce623d5812b30985"
@@ -9629,7 +9637,7 @@ konan@^2.1.1:
     "@babel/parser" "^7.10.5"
     "@babel/traverse" "^7.10.5"
 
-latest-version@^5.0.0, latest-version@^5.1.0:
+latest-version@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-5.1.0.tgz#119dfe908fe38d15dfa43ecd13fa12ec8832face"
   integrity sha512-weT+r0kTkRQdCdYCNtkMwWXQTMEswKrFBkm4ckQOMVhhqhIMI1UT2hMj+1iigIhgSZm5gTmrRXBNoGUgaTY1xA==

@@ -1,43 +1,9 @@
 'use strict';
 
 const getChannelURL = require('ember-source-channel-url');
-const latestVersion = require('latest-version');
+const { embroiderSafe } = require('@embroider/test-setup');
 
 module.exports = async function () {
-  const EMBROIDER_VERSION = await latestVersion('@embroider/core');
-
-  const embroider = {
-    safe: {
-      name: 'embroider-safe',
-      npm: {
-        devDependencies: {
-          '@embroider/core': EMBROIDER_VERSION,
-          '@embroider/webpack': EMBROIDER_VERSION,
-          '@embroider/compat': EMBROIDER_VERSION,
-          '@embroider/test-setup': EMBROIDER_VERSION,
-        },
-      },
-      env: {
-        EMBROIDER_TEST_SETUP_OPTIONS: 'safe',
-      },
-    },
-
-    optimized: {
-      name: 'embroider-optimized',
-      npm: {
-        devDependencies: {
-          '@embroider/core': EMBROIDER_VERSION,
-          '@embroider/webpack': EMBROIDER_VERSION,
-          '@embroider/compat': EMBROIDER_VERSION,
-          '@embroider/test-setup': EMBROIDER_VERSION,
-        },
-      },
-      env: {
-        EMBROIDER_TEST_SETUP_OPTIONS: 'optimized',
-      },
-    },
-  };
-
   return {
     useYarn: true,
     scenarios: [
@@ -154,7 +120,7 @@ module.exports = async function () {
           devDependencies: {},
         },
       },
-      embroider.safe,
+      embroiderSafe(),
       // disable embroider optimized test scenarios, as the dynamism these
       // tests use is not compatible with embroider we are still exploring
       // appropriate paths forward.
@@ -162,8 +128,9 @@ module.exports = async function () {
       // Steps to re-enable:
       //
       // 1. have a strategy to make this work
-      // 2. uncomment the next line
-      // embroider.optimized,
+      // 2. unpack embroiderOptimized from @embroider/test-setup
+      // 3. uncomment the next line
+      // embroiderOptimized(),
       //
       // 3. add "embroider-optimized" to .github/workflows/ci-build.yml's
       //    ember-try-scenario list.
