@@ -1,4 +1,4 @@
-import type Resolver from 'ember-resolver';
+import type { Resolver } from '@ember/owner';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
@@ -58,9 +58,11 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
    */
   unregister(fullName: string) {
+    // @ts-expect-error
     this['__container__'].reset(fullName);
 
     // We overwrote this method from RegistryProxyMixin.
+    // @ts-expect-error
     this['__registry__'].unregister(fullName);
   },
 });
@@ -73,6 +75,7 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
 export default function (resolver: Resolver) {
   let fallbackRegistry, registry, container;
   let namespace = EmberObject.create({
+    // @ts-expect-error
     Resolver: {
       create() {
         return resolver;
@@ -102,11 +105,13 @@ export default function (resolver: Resolver) {
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
+    // @ts-expect-error
     __registry__: registry,
     __container__: null,
   });
 
   container = registry.container({ owner: owner });
+  // @ts-expect-error
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);

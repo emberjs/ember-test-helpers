@@ -1,5 +1,5 @@
 import Application from '@ember/application';
-import type Resolver from 'ember-resolver';
+import type { Resolver } from '@ember/owner';
 
 import { Promise } from './-utils';
 
@@ -55,7 +55,7 @@ export default function buildOwner(
     );
   }
 
-  let { owner } = legacyBuildRegistry(resolver) as { owner: Owner };
+  let { owner } = legacyBuildRegistry(resolver) as unknown as { owner: Owner };
 
   return Promise.resolve(owner);
 }

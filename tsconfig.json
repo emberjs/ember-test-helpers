@@ -9,5 +9,5 @@
       "*": ["./types/*"]
     }
   },
-  "include": ["./addon-test-support/**/*.ts", "tests/**/*.ts"]
+  "include": ["addon-test-support/**/*.ts", "tests/**/*.ts", "types/**/*.ts"]
 }

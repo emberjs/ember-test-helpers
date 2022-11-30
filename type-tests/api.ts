@@ -67,7 +67,7 @@ import {
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
 import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
-import EmberResolver from 'ember-resolver';
+import type { Resolver as EmberResolver } from '@ember/owner';
 import Application from '@ember/application';
 import { TemplateFactory } from 'ember-cli-htmlbars';
 

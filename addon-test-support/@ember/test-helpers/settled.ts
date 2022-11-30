@@ -48,7 +48,7 @@ if (typeof jQuery !== 'undefined' && _internalPendingRequestsModule) {
   //
   // This can be removed once Ember 4.0.0 is released
   EmberApplicationInstance.reopen({
-    willDestroy(...args: any[]) {
+    willDestroy(this: EmberApplicationInstance, ...args: any[]) {
       jQuery(document).off(
         'ajaxSend',
         _internalPendingRequestsModule.incrementPendingRequests
