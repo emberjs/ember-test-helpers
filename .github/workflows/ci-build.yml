@@ -18,8 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: volta-cli/action@v1
-        with:
-          node-version: 10.x
       - run: yarn install --frozen-lockfile --ignore-engines
       - run: yarn lint
       - run: yarn test
@@ -32,8 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: volta-cli/action@v1
-        with:
-          node-version: 12.x
       - run: yarn install --no-lockfile
       - run: yarn test
 
@@ -74,7 +70,7 @@ jobs:
 
   types:
     runs-on: ubuntu-latest
-      
+
     needs: test
 
     strategy:
@@ -87,8 +83,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: volta-cli/action@v1
-        with:
-          node-version: 12.x
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: install TS version
