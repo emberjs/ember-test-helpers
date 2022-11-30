@@ -19,7 +19,13 @@ module.exports = function (defaults) {
 
   try {
     const { maybeEmbroider } = require('@embroider/test-setup'); // eslint-disable-line node/no-missing-require
-    return maybeEmbroider(app);
+    return maybeEmbroider(app, {
+      skipBabel: [
+        {
+          package: 'qunit',
+        },
+      ],
+    });
   } catch (e) {
     // This exists, so that we can continue to support node 10 for some of our
     // test scenarios. Specifically those not scenario testing embroider. As
