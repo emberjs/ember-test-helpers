@@ -2018,10 +2018,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@glimmer/component@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@glimmer/component/-/component-1.0.4.tgz#1c85a5181615a6647f6acfaaed68e28ad7e9626e"
-  integrity sha512-sS4N8wtcKfYdUJ6O3m8nbTut6NjErdz94Ap8VB1ekcg4WSD+7sI7Nmv6kt2rdPoe363nUdjUbRBzHNWhLzraBw==
+"@glimmer/component@^1.0.4", "@glimmer/component@^1.1.0":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@glimmer/component/-/component-1.1.2.tgz#892ec0c9f0b6b3e41c112be502fde073cf24d17c"
+  integrity sha512-XyAsEEa4kWOPy+gIdMjJ8XlzA3qrGH55ZDv6nA16ibalCR17k74BI0CztxuRds+Rm6CtbUVgheCVlcCULuqD7A==
   dependencies:
     "@glimmer/di" "^0.1.9"
     "@glimmer/env" "^0.1.7"
@@ -2450,16 +2450,17 @@
     "@types/htmlbars-inline-precompile" "*"
     "@types/rsvp" "*"
 
-"@types/ember__application@*", "@types/ember__application@~4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/ember__application/-/ember__application-4.0.0.tgz#a4d2fead37845550dad83bb1fd8afd52052563a7"
-  integrity sha512-1Atwevfyu1/vjiezPPdP4s96BxWGelEQlCJRU5ZQV9WlzVuMTuCDPumZ1lQdS4/EYycFZeod030FjE3CT9mZFA==
+"@types/ember__application@*", "@types/ember__application@~4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@types/ember__application/-/ember__application-4.0.4.tgz#ffe9cab0898d05d4b67b098bd605035bb9fbe0fc"
+  integrity sha512-UGZ4qx+cgztipXTQbIaBSOVysXoa8JenhKmS2DPu+ZIjt50fDyh7mFDGsAppqGSbZQjWAUr+Cj5eTgGrV3Nldg==
   dependencies:
+    "@glimmer/component" "^1.1.0"
     "@types/ember" "*"
-    "@types/ember-resolver" "*"
     "@types/ember__application" "*"
     "@types/ember__engine" "*"
     "@types/ember__object" "*"
+    "@types/ember__owner" "*"
     "@types/ember__routing" "*"
 
 "@types/ember__array@*":
@@ -2523,6 +2524,11 @@
     "@types/ember" "*"
     "@types/ember__object" "*"
     "@types/rsvp" "*"
+
+"@types/ember__owner@*":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@types/ember__owner/-/ember__owner-4.0.2.tgz#ecad24830ad3f624da402dd6f56ed8881c94a473"
+  integrity sha512-o68xsw62HA269AWebw8VcrPKDDfoNqU+F06hwpIy5vZ5bJY1RAdOp+IFRVaKK+DqpkwQCIpDZVUta5f5QE6jrw==
 
 "@types/ember__polyfills@*", "@types/ember__polyfills@~4.0.0":
   version "4.0.0"
