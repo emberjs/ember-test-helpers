@@ -52,4 +52,4 @@
 # until they have become enforced "public" APIs
 *.ts
 # to enable d.ts consumption remove the next line
-# !*.d.ts
+!*.d.ts
