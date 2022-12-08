@@ -160,7 +160,7 @@
   "typesVersions": {
     "*": {
       "*": [
-        "public-types/*"
+        "public-types/addon-test-support/@ember/test-helpers/*"
       ]
     }
   }
