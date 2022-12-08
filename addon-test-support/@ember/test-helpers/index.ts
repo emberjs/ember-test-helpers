@@ -5,6 +5,7 @@ import {
 
 export { setResolver, getResolver } from './resolver';
 export { getApplication, setApplication } from './application';
+export { default as hasEmberVersion } from './has-ember-version';
 export {
   default as setupContext,
   getContext,
