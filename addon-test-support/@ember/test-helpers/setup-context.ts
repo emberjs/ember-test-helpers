@@ -200,12 +200,6 @@ function cleanup(context: BaseContext) {
   (Ember as any).testing = false;
 
   unsetContext();
-
-  if (isTestContext(context)) {
-    // this should not be required, but until https://github.com/emberjs/ember.js/pull/19106
-    // lands in a 3.20 patch release
-    context.owner.destroy();
-  }
 }
 
 /**
