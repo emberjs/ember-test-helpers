@@ -6,6 +6,12 @@ import {
 export { setResolver, getResolver } from './resolver';
 export { getApplication, setApplication } from './application';
 export { default as hasEmberVersion } from './has-ember-version';
+export type {
+  BaseContext,
+  DeprecationFailure,
+  TestContext,
+  Warning,
+} from './setup-context';
 export {
   default as setupContext,
   getContext,
@@ -15,12 +21,8 @@ export {
   resumeTest,
   getDeprecations,
   getDeprecationsDuringCallback,
-  DeprecationFailure,
   getWarnings,
   getWarningsDuringCallback,
-  Warning,
-  BaseContext,
-  TestContext,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
 export {
@@ -39,9 +41,11 @@ export { default as settled, isSettled, getSettledState } from './settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
-export { getDebugInfo, default as DebugInfo } from './-internal/debug-info';
+export type { default as DebugInfo } from './-internal/debug-info';
+export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
-export { default as getTestMetadata, TestMetadata } from './test-metadata';
+export type { TestMetadata } from './test-metadata';
+export { default as getTestMetadata } from './test-metadata';
 export {
   registerHook as _registerHook,
   runHooks as _runHooks,
