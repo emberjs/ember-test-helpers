@@ -11,7 +11,7 @@ import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 import getTestMetadata from './test-metadata';
 import { runHooks } from './-internal/helper-hooks';
-import type { Router } from '@ember/routing';
+import type Router from '@ember/routing/router';
 import type RouterService from '@ember/routing/router-service';
 import { assert } from '@ember/debug';
 
