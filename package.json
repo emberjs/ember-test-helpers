@@ -25,7 +25,7 @@
   "scripts": {
     "build:types": "tsc --project types.tsconfig.json",
     "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
-    "build": "npm-run-all --parallel build:*",
+    "build": "concurrently \"npm:build:*\" --names \"build:\"",
     "prepack": "yarn build",
     "postpack": "rimraf addon-test-support/**/*.js",
     "clean": "git clean -x -f",
@@ -33,7 +33,7 @@
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:js": "eslint --cache .",
     "lint:ts": "tsc --noEmit && tsc --noEmit --project type-tests",
-    "postpublish": "npm-run-all clean",
+    "postpublish": "yarn clean",
     "release": "release-it",
     "start": "ember serve",
     "test": "concurrently \"npm:test:*\" --names \"test:\"",
