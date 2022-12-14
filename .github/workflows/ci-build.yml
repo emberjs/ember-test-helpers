@@ -24,7 +24,7 @@ jobs:
 
   floating-dependencies:
     timeout-minutes: 10
-    name: "Floating Dependencies"
+    name: 'Floating Dependencies'
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +35,7 @@ jobs:
 
   try-scenarios:
     timeout-minutes: 10
-    name: "Try: ${{ matrix.ember-try-scenario }}"
+    name: 'Try: ${{ matrix.ember-try-scenario }}'
 
     runs-on: ubuntu-latest
 
@@ -55,7 +55,7 @@ jobs:
           - ember-default
           - with-jquery
           - embroider-safe
-          - embroider-optimized
+          # - embroider-optimized # see comments in ember-try.js
 
     steps:
       - uses: actions/checkout@v2
