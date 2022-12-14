@@ -311,7 +311,7 @@ keyboard.
 
 #### Parameters
 
-*   `options` **[Object][72]?** optional tab behaviors
+*   `options` **[Object][72]?** optional tab behaviors (optional, default `{}`)
 
     *   `options.backwards` **[boolean][71]** indicates if the the user navigates backwards (optional, default `false`)
     *   `options.unRestrainTabIndex` **[boolean][71]** indicates if tabbing should throw an error when tabindex is greater than 0 (optional, default `false`)
@@ -891,7 +891,7 @@ Sets up the basic framework used by application tests.
 
 *   `context` **[Object][72]** the context to setup
 
-Returns **[Promise][66]<[Object][72]>** resolves with the context that was setup
+Returns **[Promise][66]\<void>** resolves when the context is set up
 
 ### validateErrorHandler
 
@@ -1018,7 +1018,7 @@ Returns deprecations which have occured so far for a the current test context
 
 ### Parameters
 
-*   `callback` **CallableFunction?** The callback that when executed will have its DeprecationFailure recorded
+*   `callback` **[Function][79]?** The callback that when executed will have its DeprecationFailure recorded
 
 ### Examples
 
@@ -1076,7 +1076,7 @@ Returns warnings which have occured so far for a the current test context
 
 ### Parameters
 
-*   `callback` **CallableFunction?** The callback that when executed will have its warnings recorded
+*   `callback` **[Function][79]?** The callback that when executed will have its warnings recorded
 
 ### Examples
 
