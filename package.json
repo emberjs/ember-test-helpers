@@ -36,7 +36,7 @@
     "postpublish": "yarn clean",
     "release": "release-it",
     "start": "ember serve",
-    "test": "concurrently \"npm:test:*\" --names \"test:\"",
+    "test": "ember test",
     "test:all": "ember try:each"
   },
   "peerDependencies": {
