@@ -160,7 +160,7 @@
   "typesVersions": {
     "*": {
       "*": [
-        "public-types/*"
+        "public-types/@ember/test-helpers/*"
       ]
     }
   }
