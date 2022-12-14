@@ -8,6 +8,29 @@
 
 
 
+
+## v2.9.0 (2022-12-14)
+
+#### :rocket: Enhancement
+* [#1269](https://github.com/emberjs/ember-test-helpers/pull/1269) Re-export hasEmberVersion (and its type) from @ember/test-helpers ([@gitKrystan](https://github.com/gitKrystan))
+* [#1278](https://github.com/emberjs/ember-test-helpers/pull/1278) perf: Remove excessive destroy call ([@runspired](https://github.com/runspired))
+* [#1234](https://github.com/emberjs/ember-test-helpers/pull/1234) Introduce public TypeScript support ([@chriskrycho](https://github.com/chriskrycho))
+
+#### :bug: Bug Fix
+* [#1277](https://github.com/emberjs/ember-test-helpers/pull/1277) Actually publish .d.ts ([@gitKrystan](https://github.com/gitKrystan))
+* [#1270](https://github.com/emberjs/ember-test-helpers/pull/1270) Fix typesVersions path ([@gitKrystan](https://github.com/gitKrystan))
+* [#1233](https://github.com/emberjs/ember-test-helpers/pull/1233) Add more keyCode mappings ([@CvX](https://github.com/CvX))
+
+#### :memo: Documentation
+* [#1259](https://github.com/emberjs/ember-test-helpers/pull/1259) DOCS: API: publish docs for tab ([@geneukum](https://github.com/geneukum))
+
+#### Committers: 5
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Chris Thoburn ([@runspired](https://github.com/runspired))
+- Geordan Neukum ([@geneukum](https://github.com/geneukum))
+- Jarek Radosz ([@CvX](https://github.com/CvX))
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+
 ## v2.8.1 (2022-05-19)
 
 #### :bug: Bug Fix
