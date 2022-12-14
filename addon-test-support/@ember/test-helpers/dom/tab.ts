@@ -31,7 +31,7 @@ interface InertHTMLElement extends HTMLElement {
 }
 
 /**
-  Compiles a list of nodes that can be focused. Walkes the tree, discardes hidden elements and a few edge cases. To calculate the right.
+  Compiles a list of nodes that can be focused. Walks the tree, discards hidden elements and a few edge cases. To calculate the right.
   @private
   @param {Element} root the root element to start traversing on
   @returns {Array} list of focusable nodes
@@ -43,7 +43,7 @@ function compileFocusAreas(root: Element = document.body) {
     throw new Error('Element must be in the DOM');
   }
 
-  let activeElment = getActiveElement(ownerDocument);
+  let activeElement = getActiveElement(ownerDocument);
   let treeWalker = ownerDocument.createTreeWalker(
     root,
     NodeFilter.SHOW_ELEMENT,
@@ -76,13 +76,13 @@ function compileFocusAreas(root: Element = document.body) {
         }
 
         // Always accept the 'activeElement' of the document, as it might fail the next check, elements with tabindex="-1"
-        // can be focused programtically, we'll therefor ensure the current active element is in the list.
-        if (node === activeElment) {
+        // can be focused programmatically, we'll therefor ensure the current active element is in the list.
+        if (node === activeElement) {
           return NodeFilter.FILTER_ACCEPT;
         }
 
         // UA parses the tabindex attribute and applies its default values, If the tabIndex is non negative, the UA can
-        // foucs it.
+        // focus it.
         return node.tabIndex >= 0
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_SKIP;
@@ -173,14 +173,12 @@ function findNextResponders(root: Element, activeElement: HTMLElement) {
   </caption>
   tab({ backwards: true });
 */
-export default function triggerTab(options?: {
-  backwards: boolean;
-  unRestrainTabIndex: boolean;
-}): Promise<void> {
+export default function triggerTab({
+  backwards = false,
+  unRestrainTabIndex = false,
+} = {}): Promise<void> {
   return Promise.resolve()
     .then(() => {
-      let backwards = (options && options.backwards) || false;
-      let unRestrainTabIndex = (options && options.unRestrainTabIndex) || false;
       return triggerResponderChange(backwards, unRestrainTabIndex);
     })
     .then(() => {
@@ -190,7 +188,7 @@ export default function triggerTab(options?: {
 
 /**
   @private
-  @param {boolean} backwards when `true` it selects the previous foucs area
+  @param {boolean} backwards when `true` it selects the previous focus area
   @param {boolean} unRestrainTabIndex when `true`, will not throw an error if tabindex > 0 is encountered
   @returns {Promise<void>} resolves when all events are fired
  */
