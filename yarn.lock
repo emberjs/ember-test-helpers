@@ -1514,6 +1514,14 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
+"@types/ember-resolver@^5.0.13":
+  version "5.0.13"
+  resolved "https://registry.yarnpkg.com/@types/ember-resolver/-/ember-resolver-5.0.13.tgz#db66678076ca625ed80b629c09619ae85c1c1f7a"
+  integrity sha512-pO964cAPhAaFJoS28M8+b5MzAhQ/tVuNM4GDUIAexheQat36axG2WTG8LQ5ea07MSFPesrRFk2T3z88pfvdYKA==
+  dependencies:
+    "@types/ember__object" "*"
+    "@types/ember__owner" "*"
+
 "@types/ember-testing-helpers@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@types/ember-testing-helpers/-/ember-testing-helpers-0.0.4.tgz#d305b418d477c6f84fcd4dcb851a3efadbc4a2bd"
