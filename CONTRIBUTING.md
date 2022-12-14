@@ -3,7 +3,7 @@
 ## Installation
 
 * `git clone <repository-url>`
-* `cd @ember/test-helpers`
+* `cd ember-test-helpers`
 * `yarn install`
 
 ## Linting
@@ -26,4 +26,4 @@ When updating the API, you will need to update the type tests (in `tests/api.ts`
 * `ember serve`
 * Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+For more information on using ember-cli, visit [https://cli.emberjs.com/release/](https://cli.emberjs.com/release/).
