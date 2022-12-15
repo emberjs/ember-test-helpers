@@ -493,6 +493,14 @@ Find the first element matched by the given selector. Equivalent to calling
 
 *   `selector` **[string][64]** the selector to search for
 
+#### Examples
+
+Find all of the elements matching '.my-selector'.
+
+```javascript
+findAll('.my-selector');
+```
+
 Returns **[Element][65]** matched element or null
 
 ### findAll
@@ -505,11 +513,28 @@ of a `NodeList`.
 
 *   `selector` **[string][64]** the selector to search for
 
+#### Examples
+
+Finding the first element with id 'foo'
+
+```javascript
+find('#foo');
+```
+
 Returns **[Array][70]** array of matched elements
 
 ### getRootElement
 
 Get the root element of the application under test (usually `#ember-testing`)
+
+#### Examples
+
+Getting the root element of the application and checking that it is equal
+to the element with id 'ember-testing'.
+
+```javascript
+assert.equal(getRootElement(), document.querySelector('#ember-testing'));
+```
 
 Returns **[Element][65]** the root element
 
@@ -1216,23 +1241,23 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 
 [54]: #getdeprecations
 
-[55]: #examples-19
+[55]: #examples-22
 
 [56]: #getdeprecationsduringcallback
 
 [57]: #parameters-29
 
-[58]: #examples-20
+[58]: #examples-23
 
 [59]: #getwarnings
 
-[60]: #examples-21
+[60]: #examples-24
 
 [61]: #getwarningsduringcallback
 
 [62]: #parameters-30
 
-[63]: #examples-22
+[63]: #examples-25
 
 [64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
