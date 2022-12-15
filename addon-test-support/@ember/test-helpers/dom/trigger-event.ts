@@ -57,7 +57,7 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
 export default function triggerEvent(
   target: Target,
   eventType: string,
-  options?: object
+  options?: Record<string, unknown>
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {

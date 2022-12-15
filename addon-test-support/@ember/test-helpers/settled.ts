@@ -193,7 +193,7 @@ export interface SettledState {
   hasPendingTransitions: boolean | null;
   isRenderPending: boolean;
   pendingRequestCount: number;
-  debugInfo?: DebugInfo;
+  debugInfo: DebugInfo;
 }
 
 /**

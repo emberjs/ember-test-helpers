@@ -45,7 +45,7 @@ registerHook('tap', 'start', (target: Target) => {
   @public
   @param {string|Element} target the element or selector to tap on
   @param {Object} options the options to be merged into the touch events
-  @return {Promise<Event | Event[] | void>} resolves when settled
+  @return {Promise<void>} resolves when settled
 
   @example
   <caption>
@@ -57,7 +57,7 @@ registerHook('tap', 'start', (target: Target) => {
 export default function tap(
   target: Target,
   options: TouchEventInit = {}
-): Promise<Event | Event[] | void> {
+): Promise<void> {
   return Promise.resolve()
     .then(() => {
       return runHooks('tap', 'start', target, options);

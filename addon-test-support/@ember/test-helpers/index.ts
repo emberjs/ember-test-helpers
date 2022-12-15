@@ -30,6 +30,7 @@ export {
   render,
   clearRender,
 } from './setup-rendering-context';
+export type { RenderingTestContext } from './setup-rendering-context';
 export { default as rerender } from './rerender';
 export {
   default as setupApplicationContext,
@@ -68,6 +69,7 @@ export { default as find } from './dom/find';
 export { default as findAll } from './dom/find-all';
 export { default as typeIn } from './dom/type-in';
 export { default as scrollTo } from './dom/scroll-to';
+export type { default as Target } from './dom/-target';
 
 // Declaration-merge for our internal purposes.
 declare module '@ember/runloop' {

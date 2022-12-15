@@ -80,7 +80,7 @@ export interface TestContext extends BaseContext {
   getProperties(...args: string[]): Pick<BaseContext, string>;
 
   pauseTest(): Promise<void>;
-  resumeTest(): Promise<void>;
+  resumeTest(): void;
 }
 
 // eslint-disable-next-line require-jsdoc
