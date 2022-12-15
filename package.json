@@ -29,7 +29,7 @@
     "prepack": "yarn build",
     "postpack": "rimraf addon-test-support/**/*.js public-types",
     "clean": "git clean -x -f",
-    "docs": "documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md",
+    "docs": "yarn build && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o API.md",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:js": "eslint --cache .",
     "lint:ts": "tsc --noEmit && tsc --noEmit --project type-tests",

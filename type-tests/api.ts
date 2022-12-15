@@ -63,6 +63,7 @@ import {
   DebugInfo as InternalDebugInfo,
   DeprecationFailure,
   Warning,
+  tab,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
@@ -94,6 +95,15 @@ expectTypeOf(select).toEqualTypeOf<
     options: string | string[],
     keepPreviouslySelected?: boolean
   ) => Promise<void>
+>();
+expectTypeOf(tab).toEqualTypeOf<
+  ({
+    backwards,
+    unRestrainTabIndex,
+  }?: {
+    backwards?: boolean | undefined;
+    unRestrainTabIndex?: boolean | undefined;
+  }) => Promise<void>
 >();
 expectTypeOf(tap).toEqualTypeOf<
   (target: Target, options?: TouchEventInit) => Promise<void>
