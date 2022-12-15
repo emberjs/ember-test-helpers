@@ -9,6 +9,7 @@ import {
   focus,
   scrollTo,
   select,
+  tab,
   tap,
   triggerEvent,
   triggerKeyEvent,
@@ -45,6 +46,7 @@ import {
   unsetContext,
   teardownContext,
   setupRenderingContext,
+  RenderingTestContext,
   getApplication,
   setApplication,
   setupApplicationContext,
@@ -63,7 +65,6 @@ import {
   DebugInfo as InternalDebugInfo,
   DeprecationFailure,
   Warning,
-  tab,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
@@ -219,7 +220,7 @@ expectTypeOf(teardownContext).toEqualTypeOf<
   ) => Promise<void>
 >();
 expectTypeOf(setupRenderingContext).toEqualTypeOf<
-  (context: TestContext) => Promise<void>
+  (context: TestContext) => Promise<RenderingTestContext>
 >();
 expectTypeOf(getApplication).toEqualTypeOf<() => Application | undefined>();
 expectTypeOf(setApplication).toEqualTypeOf<

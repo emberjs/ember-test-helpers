@@ -30,6 +30,7 @@ export {
   render,
   clearRender,
 } from './setup-rendering-context';
+export type { RenderingTestContext } from './setup-rendering-context';
 export { default as rerender } from './rerender';
 export {
   default as setupApplicationContext,

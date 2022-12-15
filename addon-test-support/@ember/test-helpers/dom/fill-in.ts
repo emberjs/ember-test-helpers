@@ -21,7 +21,7 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
   @public
   @param {string|Element} target the element or selector to enter text into
   @param {string} text the text to fill into the target element
-  @return {Promise<Element | void>} resolves when the application is settled
+  @return {Promise<void>} resolves when the application is settled
 
   @example
   <caption>
@@ -30,10 +30,7 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
 
   fillIn('input', 'hello world');
 */
-export default function fillIn(
-  target: Target,
-  text: string
-): Promise<Element | void> {
+export default function fillIn(target: Target, text: string): Promise<void> {
   return Promise.resolve()
     .then(() => runHooks('fillIn', 'start', target, text))
     .then(() => {

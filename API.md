@@ -223,7 +223,7 @@ Emulating filling an input with text using `fillIn`
 fillIn('input', 'hello world');
 ```
 
-Returns **[Promise][66]<([Element][65] | void)>** resolves when the application is settled
+Returns **[Promise][66]\<void>** resolves when the application is settled
 
 ### focus
 
@@ -376,7 +376,7 @@ Emulating tapping a button using `tap`
 tap('button');
 ```
 
-Returns **[Promise][66]<([Event][73] | [Array][70]<[Event][73]> | void)>** resolves when settled
+Returns **[Promise][66]\<void>** resolves when settled
 
 ### triggerEvent
 
@@ -394,7 +394,7 @@ Using `triggerEvent` to upload a file
 
 When using `triggerEvent` to upload a file the `eventType` must be `change` and you must pass the
 `options` param as an object with a key `files` containing an array of
-[Blob][74].
+[Blob][73].
 
 ```javascript
 triggerEvent(
@@ -406,8 +406,8 @@ triggerEvent(
 
 Using `triggerEvent` to upload a dropped file
 
-When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][75],
-you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer`     object should have a `files` key, containing an array of [File][76].
+When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][74],
+you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer`     object should have a `files` key, containing an array of [File][75].
 
 ```javascript
 triggerEvent(
@@ -426,8 +426,8 @@ Returns **[Promise][66]\<void>** resolves when the application is settled
 ### triggerKeyEvent
 
 Triggers a keyboard event of given type in the target element.
-It also requires the developer to provide either a string with the [`key`][77]
-or the numeric [`keyCode`][78] of the pressed key.
+It also requires the developer to provide either a string with the [`key`][76]
+or the numeric [`keyCode`][77] of the pressed key.
 Optionally the user can also provide a POJO with extra modifiers for the event.
 
 #### Parameters
@@ -596,7 +596,7 @@ while *not* settled (e.g. "loading" or "pending" states).
 
 #### Parameters
 
-*   `callback` **[Function][79]** the callback to use for testing when waiting should stop
+*   `callback` **[Function][78]** the callback to use for testing when waiting should stop
 *   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
 
     *   `options.timeout` **[number][69]** the maximum amount of time to wait (optional, default `1000`)
@@ -856,9 +856,9 @@ element).
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to setup for rendering
+*   `context` **TestContext** the context to setup for rendering
 
-Returns **[Promise][66]<[Object][72]>** resolves with the context that was setup
+Returns **[Promise][66]\<RenderingTestContext>** resolves with the context that was setup
 
 ### getApplication
 
@@ -906,7 +906,7 @@ everything is on fire...
 
 #### Parameters
 
-*   `callback` **[Function][79]** the callback to validate (optional, default `Ember.onerror`)
+*   `callback` **[Function][78]** the callback to validate (optional, default `Ember.onerror`)
 
 #### Examples
 
@@ -931,7 +931,7 @@ without an `onError` argument.
 
 #### Parameters
 
-*   `onError` **[Function][79]** the onError function to be set on Ember.onerror
+*   `onError` **[Function][78]** the onError function to be set on Ember.onerror
 
 #### Examples
 
@@ -1018,7 +1018,7 @@ Returns deprecations which have occured so far for a the current test context
 
 ### Parameters
 
-*   `callback` **[Function][79]?** The callback that when executed will have its DeprecationFailure recorded
+*   `callback` **[Function][78]?** The callback that when executed will have its DeprecationFailure recorded
 
 ### Examples
 
@@ -1076,7 +1076,7 @@ Returns warnings which have occured so far for a the current test context
 
 ### Parameters
 
-*   `callback` **[Function][79]?** The callback that when executed will have its warnings recorded
+*   `callback` **[Function][78]?** The callback that when executed will have its warnings recorded
 
 ### Examples
 
@@ -1252,16 +1252,14 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 
 [72]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[73]: https://developer.mozilla.org/docs/Web/API/Event
+[73]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
 
-[74]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+[74]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
 
-[75]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
+[75]: https://developer.mozilla.org/en-US/docs/Web/API/File
 
-[76]: https://developer.mozilla.org/en-US/docs/Web/API/File
+[76]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
 
-[77]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+[77]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
 
-[78]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-
-[79]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[78]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
