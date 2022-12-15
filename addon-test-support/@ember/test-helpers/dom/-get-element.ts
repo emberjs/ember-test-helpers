@@ -1,7 +1,13 @@
 import getRootElement from './get-root-element';
 import Target, { isDocument, isElement } from './-target';
 
-function getElement(target: string): Element | null;
+function getElement<K extends keyof HTMLElementTagNameMap>(
+  target: K
+): HTMLElementTagNameMap[K] | null;
+function getElement<K extends keyof SVGElementTagNameMap>(
+  target: K
+): SVGElementTagNameMap[K] | null;
+function getElement<E extends Element = Element>(target: string): E | null;
 function getElement(target: Element): Element;
 function getElement(target: Document): Document;
 function getElement(target: Window): Document;

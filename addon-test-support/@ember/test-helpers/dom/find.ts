@@ -1,12 +1,22 @@
 import getElement from './-get-element';
 
+// Derived from `querySelector` types.
+export default function find<K extends keyof HTMLElementTagNameMap>(
+  selector: K
+): HTMLElementTagNameMap[K] | null;
+export default function find<K extends keyof SVGElementTagNameMap>(
+  selector: K
+): SVGElementTagNameMap[K] | null;
+export default function find<E extends Element = Element>(
+  selector: string
+): E | null;
 /**
   Find the first element matched by the given selector. Equivalent to calling
   `querySelector()` on the test root element.
 
   @public
   @param {string} selector the selector to search for
-  @return {Element} matched element or null
+  @return {Element | null} matched element or null
 */
 export default function find(selector: string): Element | null {
   if (!selector) {
