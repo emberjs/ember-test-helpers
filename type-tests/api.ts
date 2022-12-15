@@ -74,6 +74,7 @@ import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backbu
 import type { Resolver as EmberResolver } from '@ember/owner';
 import Application from '@ember/application';
 import { TemplateFactory } from 'ember-cli-htmlbars';
+import { Input } from '@ember/component';
 
 // DOM Interaction Helpers
 expectTypeOf(blur).toEqualTypeOf<(target?: Target) => Promise<void>>();
@@ -109,13 +110,22 @@ expectTypeOf(tab).toEqualTypeOf<
 expectTypeOf(tap).toEqualTypeOf<
   (target: Target, options?: TouchEventInit) => Promise<void>
 >();
+
 expectTypeOf(triggerEvent).toEqualTypeOf<
-  (
-    target: Target,
-    eventType: string,
-    options?: Record<string, unknown>
-  ) => Promise<void>
+  (target: Target, eventType: string, options?: EventInit) => Promise<void>
 >();
+// `toBeCallableWith` doesn't seem to be working properly.
+triggerEvent('#my-element', 'mousedown', { clientX: 1 });
+// @ts-expect-error 'clientX' does not exist in type 'CustomEventInit<unknown>'
+triggerEvent('#my-element', 'focus', { clientX: 1 });
+triggerEvent('#my-element', 'keydown', {
+  key: 'ArrowDown',
+});
+// Uses custom FileSelectionEventOptions
+triggerEvent('#my-element', 'change', {
+  files: [],
+});
+
 expectTypeOf(triggerKeyEvent).toEqualTypeOf<
   (
     target: Target,
