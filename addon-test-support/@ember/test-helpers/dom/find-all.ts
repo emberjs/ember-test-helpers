@@ -5,6 +5,9 @@ import { toArray } from '../ie-11-polyfills';
 // would simply be defined as a tweaked re-export as `querySelector` is, but it
 // is non-trivial (to say the least!) to preserve overloads like this while also
 // changing the return type (from `NodeListOf` to `Array`).
+export default function findAll<
+  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
+>(selector: K): Array<(HTMLElementTagNameMap | SVGElementTagNameMap)[K]>;
 export default function findAll<K extends keyof HTMLElementTagNameMap>(
   selector: K
 ): Array<HTMLElementTagNameMap[K]>;
