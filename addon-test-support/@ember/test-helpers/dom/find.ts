@@ -3,7 +3,7 @@ import getElement from './-get-element';
 // Derived from `querySelector` types.
 export default function find<
   K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
->(selector: K): (HTMLElementTagNameMap | SVGElementTagNameMap)[K] | null;
+>(selector: K): HTMLElementTagNameMap[K] | SVGElementTagNameMap[K] | null;
 export default function find<K extends keyof HTMLElementTagNameMap>(
   selector: K
 ): HTMLElementTagNameMap[K] | null;
