@@ -22,7 +22,7 @@ import { toArray } from '../ie-11-polyfills';
 */
 export default function findAll<
   K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
->(selector: K): Array<(HTMLElementTagNameMap | SVGElementTagNameMap)[K]>;
+>(selector: K): Array<HTMLElementTagNameMap[K] | SVGElementTagNameMap[K]>;
 export default function findAll<K extends keyof HTMLElementTagNameMap>(
   selector: K
 ): Array<HTMLElementTagNameMap[K]>;
