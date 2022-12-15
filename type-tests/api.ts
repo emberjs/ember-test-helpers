@@ -24,6 +24,7 @@ import {
   currentURL,
   // Rendering Helpers
   render,
+  rerender,
   clearRender,
   // Wait Helpers
   waitFor,
@@ -109,7 +110,11 @@ expectTypeOf(tap).toEqualTypeOf<
   (target: Target, options?: TouchEventInit) => Promise<void>
 >();
 expectTypeOf(triggerEvent).toEqualTypeOf<
-  (target: Target, eventType: string, options?: object) => Promise<void>
+  (
+    target: Target,
+    eventType: string,
+    options?: Record<string, unknown>
+  ) => Promise<void>
 >();
 expectTypeOf(triggerKeyEvent).toEqualTypeOf<
   (
@@ -135,8 +140,16 @@ expectTypeOf(typeIn).toEqualTypeOf<
 >();
 
 // DOM Query Helpers
-expectTypeOf(find).toEqualTypeOf<(selector: string) => Element | null>();
+expectTypeOf(find).toEqualTypeOf<Document['querySelector']>();
+expectTypeOf(find('a')).toEqualTypeOf<HTMLAnchorElement | SVGAElement | null>();
+expectTypeOf(find('div')).toEqualTypeOf<HTMLDivElement | null>();
+expectTypeOf(find('circle')).toEqualTypeOf<SVGCircleElement | null>();
+expectTypeOf(find('.corkscrew')).toEqualTypeOf<Element | null>();
 expectTypeOf(findAll).toEqualTypeOf<(selector: string) => Array<Element>>();
+expectTypeOf(findAll('a')).toEqualTypeOf<(HTMLAnchorElement | SVGAElement)[]>();
+expectTypeOf(findAll('div')).toEqualTypeOf<HTMLDivElement[]>();
+expectTypeOf(findAll('circle')).toEqualTypeOf<SVGCircleElement[]>();
+expectTypeOf(findAll('.corkscrew')).toEqualTypeOf<Element[]>();
 expectTypeOf(getRootElement).toEqualTypeOf<() => Element | Document>();
 
 // Routing Helpers
@@ -153,6 +166,7 @@ expectTypeOf(render).toMatchTypeOf<
     options?: { owner?: Owner }
   ) => Promise<void>
 >();
+expectTypeOf(rerender).toMatchTypeOf<() => Promise<void>>();
 expectTypeOf(clearRender).toEqualTypeOf<() => Promise<void>>();
 
 // Wait Helpers
@@ -186,7 +200,7 @@ expectTypeOf(getSettledState).toEqualTypeOf<
     hasPendingTransitions: boolean | null;
     isRenderPending: boolean;
     pendingRequestCount: number;
-    debugInfo?: InternalDebugInfo;
+    debugInfo: InternalDebugInfo;
   }
 >();
 
