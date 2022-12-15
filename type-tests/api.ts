@@ -136,7 +136,15 @@ expectTypeOf(typeIn).toEqualTypeOf<
 
 // DOM Query Helpers
 expectTypeOf(find).toEqualTypeOf<(selector: string) => Element | null>();
+expectTypeOf(find('a')).toEqualTypeOf<HTMLAnchorElement | SVGAElement | null>();
+expectTypeOf(find('div')).toEqualTypeOf<HTMLDivElement | null>();
+expectTypeOf(find('circle')).toEqualTypeOf<SVGCircleElement | null>();
+expectTypeOf(find('.corkscrew')).toEqualTypeOf<Element | null>();
 expectTypeOf(findAll).toEqualTypeOf<(selector: string) => Array<Element>>();
+expectTypeOf(findAll('a')).toEqualTypeOf<(HTMLAnchorElement | SVGAElement)[]>();
+expectTypeOf(findAll('div')).toEqualTypeOf<HTMLDivElement[]>();
+expectTypeOf(findAll('circle')).toEqualTypeOf<SVGCircleElement[]>();
+expectTypeOf(findAll('.corkscrew')).toEqualTypeOf<Element[]>();
 expectTypeOf(getRootElement).toEqualTypeOf<() => Element | Document>();
 
 // Routing Helpers

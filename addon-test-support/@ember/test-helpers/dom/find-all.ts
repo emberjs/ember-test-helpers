@@ -1,6 +1,10 @@
 import getElements from './-get-elements';
 import { toArray } from '../ie-11-polyfills';
 
+// Derived, with modification, from the types for `querySelectorAll`. These
+// would simply be defined as a tweaked re-export as `querySelector` is, but it
+// is non-trivial (to say the least!) to preserve overloads like this while also
+// changing the return type (from `NodeListOf` to `Array`).
 /**
   Find all elements matched by the given selector. Similar to calling
   `querySelectorAll()` on the test root element, but returns an array instead
@@ -16,6 +20,16 @@ import { toArray } from '../ie-11-polyfills';
   </caption>
   find('#foo');
 */
+export default function findAll<
+  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
+>(selector: K): Array<(HTMLElementTagNameMap | SVGElementTagNameMap)[K]>;
+export default function findAll<K extends keyof HTMLElementTagNameMap>(
+  selector: K
+): Array<HTMLElementTagNameMap[K]>;
+export default function findAll<K extends keyof SVGElementTagNameMap>(
+  selector: K
+): Array<SVGElementTagNameMap[K]>;
+export default function findAll(selector: string): Element[];
 export default function findAll(selector: string): Element[] {
   if (!selector) {
     throw new Error('Must pass a selector to `findAll`.');
