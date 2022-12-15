@@ -3,7 +3,7 @@ import Target, { isDocument, isElement } from './-target';
 
 function getElement<
   K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
->(target: K): (HTMLElementTagNameMap | SVGElementTagNameMap)[K] | null;
+>(target: K): (HTMLElementTagNameMap[K] | SVGElementTagNameMap[K]) | null;
 function getElement<K extends keyof HTMLElementTagNameMap>(
   target: K
 ): HTMLElementTagNameMap[K] | null;
