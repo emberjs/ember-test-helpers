@@ -29,7 +29,6 @@ export {
   default as setupRenderingContext,
   render,
   clearRender,
-  RenderingTestContext,
 } from './setup-rendering-context';
 export type { RenderingTestContext } from './setup-rendering-context';
 export { default as rerender } from './rerender';
