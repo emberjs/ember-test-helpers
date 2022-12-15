@@ -100,6 +100,29 @@ const keyFromKeyCode: { [key: number]: string } = {
   222: "'",
 };
 
+const keyFromKeyCodeWithShift: { [key: number]: string } = {
+  48: ')',
+  49: '!',
+  50: '@',
+  51: '#',
+  52: '$',
+  53: '%',
+  54: '^',
+  55: '&',
+  56: '*',
+  57: '(',
+  186: ':',
+  187: '+',
+  188: '<',
+  189: '_',
+  190: '>',
+  191: '?',
+  219: '{',
+  220: '|',
+  221: '}',
+  222: '"',
+};
+
 /**
   Calculates the value of KeyboardEvent#key given a keycode and the modifiers.
   Note that this works if the key is pressed in combination with the shift key, but it cannot
@@ -119,10 +142,11 @@ function keyFromKeyCodeAndModifiers(
       return String.fromCharCode(keycode).toLocaleLowerCase();
     }
   }
-  let key = keyFromKeyCode[keycode];
-  if (key) {
-    return key;
-  }
+
+  return (
+    (modifiers.shiftKey && keyFromKeyCodeWithShift[keycode]) ||
+    keyFromKeyCode[keycode]
+  );
 }
 
 /**

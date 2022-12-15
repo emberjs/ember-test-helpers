@@ -241,6 +241,12 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
     await checkKey(90, 'z');
     await checkKey(65, 'A', { shiftKey: true });
     await checkKey(90, 'Z', { shiftKey: true });
+    await checkKey(49, '!', { shiftKey: true });
+    await checkKey(187, '+', { shiftKey: true });
+    await checkKey(38, 'ArrowUp', { shiftKey: true });
+
+    // an invalid keyCode
+    await checkKey(999, '');
   });
 
   test('The value of the `event.keyCode` is properly inferred from the given key', async function (assert) {

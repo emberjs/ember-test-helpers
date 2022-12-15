@@ -13,7 +13,7 @@ import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
-import getTestMetadata, { TestMetadata } from './test-metadata';
+import getTestMetadata from './test-metadata';
 import { assert, deprecate } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
@@ -22,7 +22,6 @@ import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
 import type { ComponentInstance } from '@glimmer/interfaces';
-import ViewMixin from '@ember/component/-private/view-mixin';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -31,8 +30,6 @@ const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
 export interface RenderingTestContext extends TestContext {
   render(template: TemplateFactory): Promise<void>;
   clearRender(): Promise<void>;
-
-  $?(selector: string): any;
 
   element: Element | Document;
 }
@@ -271,8 +268,8 @@ export function clearRender(): Promise<void> {
     element).
 
   @public
-  @param {Object} context the context to setup for rendering
-  @returns {Promise<Object>} resolves with the context that was setup
+  @param {TestContext} context the context to setup for rendering
+  @returns {Promise<RenderingTestContext>} resolves with the context that was setup
 */
 export default function setupRenderingContext(
   context: TestContext

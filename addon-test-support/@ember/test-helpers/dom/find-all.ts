@@ -23,6 +23,12 @@ export default function findAll(selector: string): Element[];
   @public
   @param {string} selector the selector to search for
   @return {Array} array of matched elements
+
+  @example
+  <caption>
+    Finding the first element with id 'foo'
+  </caption>
+  find('#foo');
 */
 export default function findAll(selector: string): Element[] {
   if (!selector) {

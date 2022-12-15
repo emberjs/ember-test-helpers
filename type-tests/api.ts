@@ -9,6 +9,7 @@ import {
   focus,
   scrollTo,
   select,
+  tab,
   tap,
   triggerEvent,
   triggerKeyEvent,
@@ -65,6 +66,7 @@ import {
   DebugInfo as InternalDebugInfo,
   DeprecationFailure,
   Warning,
+  Target,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
@@ -72,8 +74,6 @@ import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backbu
 import EmberResolver from 'ember-resolver';
 import Application from '@ember/application';
 import { TemplateFactory } from 'ember-cli-htmlbars';
-
-type Target = string | Element | Document | Window;
 
 // DOM Interaction Helpers
 expectTypeOf(blur).toEqualTypeOf<(target?: Target) => Promise<void>>();
@@ -96,6 +96,15 @@ expectTypeOf(select).toEqualTypeOf<
     options: string | string[],
     keepPreviouslySelected?: boolean
   ) => Promise<void>
+>();
+expectTypeOf(tab).toEqualTypeOf<
+  ({
+    backwards,
+    unRestrainTabIndex,
+  }?: {
+    backwards?: boolean | undefined;
+    unRestrainTabIndex?: boolean | undefined;
+  }) => Promise<void>
 >();
 expectTypeOf(tap).toEqualTypeOf<
   (target: Target, options?: TouchEventInit) => Promise<void>
