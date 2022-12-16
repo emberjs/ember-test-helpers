@@ -21,7 +21,16 @@ import type {
   ComponentInstance,
   InternalComponentManager,
 } from '@glimmer/interfaces';
-import { getInternalComponentManager } from '@glimmer/manager';
+import { importSync } from '@embroider/macros';
+
+let getInternalComponentManager: (
+  definition: object
+) => InternalComponentManager;
+
+// this would be much better as a regular `import` statement, but there really isn't any way to make typescript happy with thayar
+getInternalComponentManager =
+  //@ts-ignore
+  importSync('@glimmer/manager').getInternalComponentManager;
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
