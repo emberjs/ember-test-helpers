@@ -10,16 +10,13 @@ import {
   insertElement,
   instrumentElement,
 } from '../../helpers/events';
-import { isIE11, isEdge } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
 
-if (isIE11) {
-  focusSteps = ['focusin', 'focus'];
-  blurSteps = ['focusout', 'blur'];
-} else if (isEdge) {
+if (isEdge) {
   blurSteps = ['focusout', 'blur'];
 }
 

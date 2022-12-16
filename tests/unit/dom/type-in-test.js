@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { typeIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11, isFirefox } from '../../helpers/browser-detect';
+import { isFirefox } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -33,23 +33,7 @@ let expectedEvents = [
   'change',
 ];
 
-if (isIE11) {
-  expectedEvents = [
-    'focusin',
-    'keydown',
-    'keypress',
-    'keyup',
-    'keydown',
-    'keypress',
-    'keyup',
-    'keydown',
-    'keypress',
-    'keyup',
-    'input',
-    'change',
-    'focus',
-  ];
-} else if (isFirefox) {
+if (isFirefox) {
   expectedEvents = [
     'focus',
     'focusin',
@@ -335,7 +319,7 @@ module('DOM Helper: typeIn', function (hooks) {
     await assert.rejects(
       typeIn(element, tooLongString).finally(() => {
         // should throw before the second input event (or second keyup for IE)
-        const expectedNumberOfSteps = isIE11 ? 6 : isFirefox ? 9 : 8;
+        const expectedNumberOfSteps = isFirefox ? 9 : 8;
         assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
       }),
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")
@@ -388,7 +372,7 @@ module('DOM Helper: typeIn', function (hooks) {
     await assert.rejects(
       typeIn(element, tooLongString).finally(() => {
         // should throw before the second input event (or second keyup for IE)
-        const expectedNumberOfSteps = isIE11 ? 6 : isFirefox ? 9 : 8;
+        const expectedNumberOfSteps = isFirefox ? 9 : 8;
         assert.verifySteps(expectedEvents.slice(0, expectedNumberOfSteps));
       }),
       new Error("Can not `typeIn` with text: 'fo' that exceeds maxlength: '1'.")

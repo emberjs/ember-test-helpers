@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { tap, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
@@ -176,17 +175,6 @@ module('DOM Helper: tap', function (hooks) {
       'click',
     ];
 
-    if (isIE11) {
-      tapSteps = [
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focusin',
-        'mouseup',
-        'click',
-        'focus',
-      ];
-    }
     test('tapping a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');
 
