@@ -17,7 +17,10 @@ import { assert } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
-import type { ComponentInstance, InternalComponentManager } from '@glimmer/interfaces';
+import type {
+  ComponentInstance,
+  InternalComponentManager,
+} from '@glimmer/interfaces';
 import { getInternalComponentManager } from '@glimmer/manager';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
@@ -152,8 +155,8 @@ export function render(
         if (setCalls !== undefined) {
           assert(
             `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
-.map((key) => `  - ${key}`)
-.join('\n')}`
+              .map((key) => `  - ${key}`)
+              .join('\n')}`
           );
         }
 

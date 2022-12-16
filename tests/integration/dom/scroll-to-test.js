@@ -7,7 +7,6 @@ import {
   setupRenderingContext,
   teardownContext,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   buildExpectedSteps,
   registerHooks,
@@ -15,10 +14,6 @@ import {
 } from '../../helpers/register-hooks';
 
 module('DOM Helper: scroll-to', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);

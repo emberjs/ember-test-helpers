@@ -6,7 +6,6 @@ import {
   insertElement,
 } from '../../helpers/events';
 import { isIE11 } from '../../helpers/browser-detect';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
   unregisterHooks,
@@ -14,10 +13,6 @@ import {
 } from '../../helpers/register-hooks';
 
 module('DOM Helper: click', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {

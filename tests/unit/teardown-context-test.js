@@ -9,7 +9,6 @@ import {
   isSettled,
 } from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import Ember from 'ember';
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
@@ -18,10 +17,6 @@ import setupManualTestWaiter from '../helpers/manual-test-waiter';
 import { registerDestructor } from '@ember/destroyable';
 
 module('teardownContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   setupManualTestWaiter(hooks);
 
   let context;
