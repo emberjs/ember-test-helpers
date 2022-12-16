@@ -15,7 +15,6 @@ import {
 import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
-import { Promise } from './-utils';
 import getTestMetadata from './test-metadata';
 import {
   registerDestructor,

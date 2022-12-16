@@ -1,5 +1,4 @@
 import { get } from '@ember/object';
-import { Promise } from './-utils';
 import {
   BaseContext,
   getContext,

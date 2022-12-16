@@ -1,8 +1,6 @@
 import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
-import { Promise } from './-utils';
-
 import legacyBuildRegistry from './-internal/build-registry';
 import ContainerProxyMixin from '@ember/engine/-private/container-proxy-mixin';
 import RegistryProxyMixin from '@ember/engine/-private/registry-proxy-mixin';

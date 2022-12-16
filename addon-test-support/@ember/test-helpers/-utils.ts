@@ -1,24 +1,8 @@
 /* globals Promise */
 
-import RSVP from 'rsvp';
-
-const HAS_PROMISE =
-  typeof Promise === 'function' &&
-  // @ts-ignore this is checking if someone has explicitly done `window.Promise = window.Promise || Ember.RSVP.Promise
-  Promise !== RSVP.Promise;
-
-import PromisePolyfill from './-internal/promise-polyfill';
 import isFormControl from './dom/-is-form-control';
 
-const _Promise: typeof Promise = HAS_PROMISE
-  ? Promise
-  : (PromisePolyfill as typeof Promise);
-
-export { _Promise as Promise };
-
-export const nextTick = HAS_PROMISE
-  ? (cb: () => void) => Promise.resolve().then(cb)
-  : RSVP.asap;
+export const nextTick = (cb: () => void) => Promise.resolve().then(cb);
 export const futureTick = setTimeout;
 
 /**

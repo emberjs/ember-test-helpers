@@ -1,5 +1,4 @@
 import { TestContext } from './setup-context';
-import { Promise } from './-utils';
 import settled from './settled';
 import { _cleanupOnerror } from './setup-onerror';
 import { destroy } from '@ember/destroyable';

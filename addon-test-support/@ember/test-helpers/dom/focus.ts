@@ -2,7 +2,6 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import { Promise } from '../-utils';
 import Target, { isDocument } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import { runHooks, registerHook } from '../-internal/helper-hooks';
