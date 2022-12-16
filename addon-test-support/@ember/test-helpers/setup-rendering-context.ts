@@ -13,7 +13,7 @@ import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
-import { assert, deprecate } from '@ember/debug';
+import { assert } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
