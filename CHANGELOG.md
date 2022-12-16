@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## v2.9.1 (2022-12-16)
+
+***Note:** these were all back-ported from master since they could go out on 2.9. This will be the last 2.9 release unless there are critical bug fixes here!*
+
+#### :bug: Bug Fix
+
+* Let ESLint have its way about docstring location (a8fac83)
+* DOC: API: add render helper examples (f476a20)
+* Tweak TS style for indexing multiple types (for getElement) (f01ad9f)
+* Use export type for RenderingTestContext (2dc5077)
+* Tweak TS style for indexing multiple types (3214483)
+* Address PR feedback (5e87a54)
+* DOC: API: add DOM query helper examples (83b7f5f)
+* Export type for Target (335019d)
+* Upgrade expect-type and fix issues the new version reveals (bae5e33)
+* Correctly handle special char keyCodes with Shift (d537923)
+* Add tab type test (64f40d5)
+* Generate documentation (939f29f)
+* Ensure types reflect optional-ness of tab options (95285cc)
+* Fix typesVersions config again (53fa899)
+* Clean up public-types after pack (b9dcbca)
+
 ## v2.9.0 (2022-12-14)
 
 #### :rocket: Enhancement
