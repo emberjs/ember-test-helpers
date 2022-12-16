@@ -51,7 +51,7 @@ export interface RenderingTestContext extends TestContext {
  * @returns {boolean} True if it's a component, false if not
  */
 function isComponent(maybeComponent: object): boolean {
-  let manager = getInternalComponentManager(maybeComponent, true);
+  let manager = getInternalComponentManager(maybeComponent);
 
   return !!manager;
 }
