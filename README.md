@@ -6,8 +6,8 @@ A test-framework-agnostic set of helpers for testing Ember.js applications
 Compatibility
 ------------------------------------------------------------------------------
 
-- Ember.js v3.28 or above
-- Ember CLI v3.28 or above
+- Ember.js v4 or above
+- Ember CLI v4 or above
 - Node.js v14 or above
 - TypeScript 4.7
   - SemVer policy: [simple majors](https://www.semver-ts.org/#simple-majors)
