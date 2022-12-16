@@ -256,9 +256,6 @@ module('setupRenderingContext', function (hooks) {
       assert.ok(isSettled(), 'should be settled');
     });
 
-    overwriteTest('render');
-    overwriteTest('clearRender');
-
     test('can invoke template only components', async function (assert) {
       await render(hbs`{{template-only}}`);
 
@@ -899,30 +896,6 @@ module('setupRenderingContext', function (hooks) {
         });
       });
     }
-
-    module('this.render and this.clearRender deprecations', function () {
-      test('this.render() and this.clearRender deprecation message', async function (assert) {
-        await this.render(hbs`<button>Click me</button>`);
-
-        assert.expect(3);
-
-        assert.equal(
-          this.element.querySelector('button').textContent.trim(),
-          'Click me',
-          'Button is still rendered'
-        );
-
-        assert.deprecationsInclude(
-          'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.'
-        );
-
-        await this.clearRender();
-
-        assert.deprecationsInclude(
-          'Using this.clearRender has been deprecated, consider using `clearRender` imported from `@ember/test-helpers`.'
-        );
-      });
-    });
   }
 
   module('with only application set', function (hooks) {

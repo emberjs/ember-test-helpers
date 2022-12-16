@@ -27,22 +27,26 @@ const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
 const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
 
-export interface RenderingTestContext extends TestContext {
-  render(template: TemplateFactory): Promise<void>;
-  clearRender(): Promise<void>;
+const hasCalledSetupRenderingContext = Symbol();
 
+export interface RenderingTestContext extends TestContext {
   element: Element | Document;
+  [hasCalledSetupRenderingContext]?: true;
+}
+
+//  Isolates the notion of transforming a TextContext into a RenderingTestContext.
+// eslint-disable-next-line require-jsdoc
+function prepare(context: TestContext): RenderingTestContext {
+  let renderingTestContext = context as RenderingTestContext;
+  (context as RenderingTestContext)[hasCalledSetupRenderingContext] = true;
+  return context as RenderingTestContext;
 }
 
 // eslint-disable-next-line require-jsdoc
 export function isRenderingTestContext(
   context: BaseContext
 ): context is RenderingTestContext {
-  return (
-    isTestContext(context) &&
-    typeof context['render'] === 'function' &&
-    typeof context['clearRender'] === 'function'
-  );
+  return isTestContext(context) && hasCalledSetupRenderingContext in context;
 }
 
 /**
@@ -293,58 +297,11 @@ export default function setupRenderingContext(
   let testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
+  let renderingContext = prepare(context);
+
   return Promise.resolve()
     .then(() => {
-      let { owner } = context;
-
-      let renderDeprecationWrapper = function (template: TemplateFactory) {
-        deprecate(
-          'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.',
-          false,
-          {
-            id: 'ember-test-helpers.setup-rendering-context.render',
-            until: '3.0.0',
-            for: '@ember/test-helpers',
-            since: {
-              enabled: '2.0.0',
-              available: '2.0.0',
-            },
-          }
-        );
-
-        return render(template);
-      };
-
-      let clearRenderDeprecationWrapper = function () {
-        deprecate(
-          'Using this.clearRender has been deprecated, consider using `clearRender` imported from `@ember/test-helpers`.',
-          false,
-          {
-            id: 'ember-test-helpers.setup-rendering-context.clearRender',
-            until: '3.0.0',
-            for: '@ember/test-helpers',
-            since: {
-              enabled: '2.0.0',
-              available: '2.0.0',
-            },
-          }
-        );
-
-        return clearRender();
-      };
-
-      Object.defineProperty(context, 'render', {
-        configurable: true,
-        enumerable: true,
-        value: renderDeprecationWrapper,
-        writable: false,
-      });
-      Object.defineProperty(context, 'clearRender', {
-        configurable: true,
-        enumerable: true,
-        value: clearRenderDeprecationWrapper,
-        writable: false,
-      });
+      let { owner } = renderingContext;
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
       // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
@@ -378,13 +335,13 @@ export default function setupRenderingContext(
 
       // initially render a simple empty template
       return render(EMPTY_TEMPLATE).then(() => {
-        (run as Function)(toplevelView, 'appendTo', getRootElement());
+        run(toplevelView, 'appendTo', getRootElement());
 
         return settled();
       });
     })
     .then(() => {
-      Object.defineProperty(context, 'element', {
+      Object.defineProperty(renderingContext, 'element', {
         configurable: true,
         enumerable: true,
         // ensure the element is based on the wrapping toplevel view
@@ -402,6 +359,6 @@ export default function setupRenderingContext(
         writable: false,
       });
 
-      return context as RenderingTestContext;
+      return renderingContext;
     });
 }
