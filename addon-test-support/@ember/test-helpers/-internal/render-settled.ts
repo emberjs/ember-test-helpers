@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import {
   macroCondition,
   importSync,
@@ -11,20 +10,12 @@ if (macroCondition(dependencySatisfies('ember-source', '>=4.5.0-beta.1'))) {
   //@ts-ignore
   renderSettled = importSync('@ember/renderer').renderSettled;
 } else if (
-  macroCondition(dependencySatisfies('ember-source', '>=3.27.0-alpha.1'))
+  macroCondition(dependencySatisfies('ember-source', '>=4.0.0-alpha.1'))
 ) {
   //@ts-ignore
   renderSettled = importSync('@ember/-internals/glimmer').renderSettled;
-} else if (
-  macroCondition(dependencySatisfies('ember-source', '>=3.6.0-alpha.1'))
-) {
-  renderSettled = (Ember as any).__loader.require(
-    '@ember/-internals/glimmer'
-  ).renderSettled;
 } else {
-  renderSettled = (Ember as any).__loader.require(
-    'ember-glimmer'
-  ).renderSettled;
+  throw new Error('Using an unsupported version of Ember  (@ember/test-helpers@3.0.0+ requires Ember 4 or higher)');
 }
 
 export default renderSettled;
