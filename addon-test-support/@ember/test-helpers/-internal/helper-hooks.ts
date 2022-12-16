@@ -1,5 +1,3 @@
-import { Promise } from '../-utils';
-
 type Hook = (...args: any[]) => void | Promise<void>;
 type HookLabel = 'start' | 'end' | string;
 type HookUnregister = {

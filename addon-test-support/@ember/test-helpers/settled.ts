@@ -109,7 +109,7 @@ function decrementAjaxPendingRequests(event: any, xhr: XMLHttpRequest): void {
         requests.splice(i, 1);
       }
     }
-  }, 0);
+  });
 }
 
 /**

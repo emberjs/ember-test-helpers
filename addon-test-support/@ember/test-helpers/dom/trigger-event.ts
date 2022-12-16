@@ -1,7 +1,6 @@
 import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import { Promise } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';

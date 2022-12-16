@@ -1,4 +1,3 @@
-import { Promise } from '../-utils';
 import settled from '../settled';
 import getElement from './-get-element';
 import isFormControl, { FormControl } from './-is-form-control';

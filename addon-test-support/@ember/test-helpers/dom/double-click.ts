@@ -2,7 +2,6 @@ import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
-import { Promise } from '../-utils';
 import { DEFAULT_CLICK_OPTIONS } from './click';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';

@@ -6,7 +6,7 @@ import {
   KeyboardEventType,
   isKeyboardEventType,
 } from './fire-event';
-import { Promise, isNumeric } from '../-utils';
+import { isNumeric } from '../-utils';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';

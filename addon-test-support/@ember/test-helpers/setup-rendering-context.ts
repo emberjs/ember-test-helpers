@@ -8,7 +8,6 @@ import {
   isTestContext,
   getContext,
 } from './setup-context';
-import { Promise } from './-utils';
 import settled from './settled';
 import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';

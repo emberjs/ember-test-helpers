@@ -2,7 +2,6 @@ import waitUntil from '../wait-until';
 import getElement from './-get-element';
 import getElements from './-get-elements';
 import { toArray } from '../ie-11-polyfills';
-import { Promise } from '../-utils';
 
 export interface Options {
   timeout?: number;
