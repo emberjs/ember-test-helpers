@@ -72,6 +72,8 @@ jobs:
       matrix:
         ts-version:
           - 4.7
+          - 4.8
+          - 4.9
           - next
 
     steps:
