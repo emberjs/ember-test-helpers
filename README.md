@@ -9,7 +9,7 @@ Compatibility
 - Ember.js v4 or above
 - Ember CLI v4 or above
 - Node.js v14 or above
-- TypeScript 4.7
+- TypeScript 4.7, 4.8, and 4.9
   - SemVer policy: [simple majors](https://www.semver-ts.org/#simple-majors)
   - the public API is defined by [API.md](./API.md).
 
@@ -21,7 +21,7 @@ Installation
 #### yarn
 ```bash
 yarn add --dev @ember/test-helpers
-````
+```
 
 #### npm
 ```bash
