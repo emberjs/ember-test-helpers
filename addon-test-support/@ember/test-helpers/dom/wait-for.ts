@@ -1,7 +1,6 @@
 import waitUntil from '../wait-until';
 import getElement from './-get-element';
 import getElements from './-get-elements';
-import { toArray } from '../ie-11-polyfills';
 
 export interface Options {
   timeout?: number;
@@ -45,7 +44,7 @@ export default function waitFor(
       callback = () => {
         let elements = getElements(selector);
         if (elements.length === count) {
-          return toArray(elements);
+          return Array.from(elements);
         }
         return;
       };

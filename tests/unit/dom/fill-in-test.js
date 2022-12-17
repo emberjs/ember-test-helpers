@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11, isFirefox } from '../../helpers/browser-detect';
+import { isFirefox } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
@@ -11,9 +11,7 @@ import {
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
-if (isIE11) {
-  clickSteps = ['focusin', 'input', 'change', 'focus'];
-} else if (isFirefox) {
+if (isFirefox) {
   clickSteps.push('selectionchange');
 }
 

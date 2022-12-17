@@ -10,7 +10,7 @@ import {
   insertElement,
   instrumentElement,
 } from '../../helpers/events';
-import { isIE11, isEdge } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let _focusSteps = ['focus', 'focusin'];
@@ -35,10 +35,6 @@ function moveFocus(from, to) {
 
 module('DOM Helper: tab', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
-  if (isIE11) {
     return;
   }
 
