@@ -5,7 +5,6 @@ import {
   instrumentElement,
   insertElement,
 } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
 import {
   registerHooks,
   unregisterHooks,
@@ -179,10 +178,6 @@ module('DOM Helper: click', function (hooks) {
 
   module('focusable element types', function () {
     let clickSteps = ['mousedown', 'focus', 'focusin', 'mouseup', 'click'];
-
-    if (isIE11) {
-      clickSteps = ['mousedown', 'focusin', 'mouseup', 'click', 'focus'];
-    }
 
     test('clicking a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');

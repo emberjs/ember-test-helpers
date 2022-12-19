@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { select, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
 import {
   buildExpectedSteps,
   registerHooks,
@@ -10,9 +9,6 @@ import {
 
 let selectSteps = ['focus', 'focusin', 'input', 'change'];
 let additionalSteps = ['input', 'change'];
-if (isIE11) {
-  selectSteps = ['focusin', 'focus', 'input', 'change'];
-}
 
 module('DOM Helper: select', function (hooks) {
   let context, element;

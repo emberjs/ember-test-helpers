@@ -10,7 +10,7 @@ import {
   insertElement,
   instrumentElement,
 } from '../../helpers/events';
-import { isIE11, isEdge } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 
 let _focusSteps = ['focus', 'focusin'];
 let _blurSteps = isEdge ? ['focusout', 'blur'] : ['blur', 'focusout'];
@@ -33,10 +33,6 @@ function moveFocus(from, to) {
 }
 
 module('DOM Helper: tab', function (hooks) {
-  if (isIE11) {
-    return;
-  }
-
   let context, element, elements;
 
   hooks.beforeEach(function () {

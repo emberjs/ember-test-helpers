@@ -1,5 +1,4 @@
 import getElements from './-get-elements';
-import { toArray } from '../ie-11-polyfills';
 
 // Derived, with modification, from the types for `querySelectorAll`. These
 // would simply be defined as a tweaked re-export as `querySelector` is, but it
@@ -39,5 +38,5 @@ export default function findAll(selector: string): Element[] {
     throw new Error('The `findAll` test helper only takes a single argument.');
   }
 
-  return toArray(getElements(selector));
+  return Array.from(getElements(selector));
 }

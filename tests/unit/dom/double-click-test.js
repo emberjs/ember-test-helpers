@@ -9,7 +9,6 @@ import {
   instrumentElement,
   insertElement,
 } from '../../helpers/events';
-import { isIE11 } from '../../helpers/browser-detect';
 import {
   registerHooks,
   unregisterHooks,
@@ -219,20 +218,6 @@ module('DOM Helper: doubleClick', function (hooks) {
       'click',
       'dblclick',
     ];
-
-    if (isIE11) {
-      clickSteps = [
-        'mousedown',
-        'focusin',
-        'mouseup',
-        'click',
-        'focus',
-        'mousedown',
-        'mouseup',
-        'click',
-        'dblclick',
-      ];
-    }
 
     test('double-clicking a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');

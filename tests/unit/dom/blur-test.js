@@ -7,15 +7,12 @@ import {
   _registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isIE11, isEdge } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
 
-if (isIE11) {
-  focusSteps = ['focusin', 'focus'];
-  blurSteps = ['focusout', 'blur'];
-} else if (isEdge) {
+if (isEdge) {
   blurSteps = ['focusout', 'blur'];
 }
 
