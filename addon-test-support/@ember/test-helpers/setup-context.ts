@@ -59,16 +59,14 @@ registerWarnHandler((message, options, next) => {
   next.apply(null, [message, options]);
 });
 
-export interface BaseContext {
-  [key: string]: unknown;
-}
+export type BaseContext = object;
 
 /**
  * The public API for the test context, which test authors can depend on being
  * available.
  *
  * Note: this is *not* user-constructible; it becomes available by calling
- * `setupContext()` with a `BaseContext`.
+ * `setupContext()` with a base context object.
  */
 export interface TestContext extends BaseContext {
   owner: Owner;
@@ -76,7 +74,7 @@ export interface TestContext extends BaseContext {
   set<T>(key: string, value: T): T;
   setProperties<T extends Record<string, unknown>>(hash: T): T;
   get(key: string): unknown;
-  getProperties(...args: string[]): Pick<BaseContext, string>;
+  getProperties(...args: string[]): Record<string, unknown>;
 
   pauseTest(): Promise<void>;
   resumeTest(): void;
@@ -84,9 +82,10 @@ export interface TestContext extends BaseContext {
 
 // eslint-disable-next-line require-jsdoc
 export function isTestContext(context: BaseContext): context is TestContext {
+  let maybeContext = context as Record<string, unknown>;
   return (
-    typeof context['pauseTest'] === 'function' &&
-    typeof context['resumeTest'] === 'function'
+    typeof maybeContext['pauseTest'] === 'function' &&
+    typeof maybeContext['resumeTest'] === 'function'
   );
 }
 
@@ -366,15 +365,17 @@ export const SetUsage = new WeakMap<BaseContext, Array<string>>();
   - setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
 
   @public
-  @param {Object} context the context to setup
+  @param {Object} base the context to setup
   @param {Object} [options] options used to override defaults
   @param {Resolver} [options.resolver] a resolver to use for customizing normal resolution
   @returns {Promise<Object>} resolves with the context that was setup
 */
-export default function setupContext(
-  context: BaseContext,
+export default function setupContext<T extends object>(
+  base: T,
   options: { resolver?: Resolver } = {}
-): Promise<TestContext> {
+): Promise<T & TestContext> {
+  let context = base as T & TestContext;
+
   // SAFETY: this is intimate API *designed* for us to override.
   (Ember as any).testing = true;
   setContext(context);
@@ -425,7 +426,8 @@ export default function setupContext(
       Object.defineProperty(context, 'set', {
         configurable: true,
         enumerable: true,
-        value(key: string, value: unknown): unknown {
+        // SAFETY: in all of these `defineProperty` calls, we can't actually guarantee any safety w.r.t. the corresponding field's type in `TestContext`
+        value(key: any, value: any): unknown {
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
@@ -453,7 +455,8 @@ export default function setupContext(
       Object.defineProperty(context, 'setProperties', {
         configurable: true,
         enumerable: true,
-        value(hash: { [key: string]: any }): { [key: string]: any } {
+        // SAFETY: in all of these `defineProperty` calls, we can't actually guarantee any safety w.r.t. the corresponding field's type in `TestContext`
+        value(hash: any): unknown {
           let ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
@@ -489,13 +492,14 @@ export default function setupContext(
       Object.defineProperty(context, 'getProperties', {
         configurable: true,
         enumerable: true,
-        value(...args: string[]): Pick<BaseContext, string> {
+        // SAFETY: in all of these `defineProperty` calls, we can't actually guarantee any safety w.r.t. the corresponding field's type in `TestContext`
+        value(...args: any[]): Record<string, unknown> {
           return getProperties(context, args);
         },
         writable: false,
       });
 
-      let resume: ((value?: unknown) => void) | undefined;
+      let resume: ((value?: void | PromiseLike<void>) => void) | undefined;
       context['resumeTest'] = function resumeTest() {
         assert(
           'Testing has not been paused. There is nothing to resume.',
@@ -516,6 +520,6 @@ export default function setupContext(
 
       _setupAJAXHooks();
 
-      return context as TestContext;
+      return context;
     });
 }
