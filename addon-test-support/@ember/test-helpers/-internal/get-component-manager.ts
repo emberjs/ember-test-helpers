@@ -4,12 +4,8 @@ import {
   importSync,
   dependencySatisfies,
 } from '@embroider/macros';
-import type { InternalComponentManager } from '@glimmer/interfaces';
 
-let getComponentManager: (
-  definition: object,
-  owner: object
-) => InternalComponentManager | null;
+let getComponentManager: (definition: object, owner: object) => unknown;
 
 if (macroCondition(dependencySatisfies('ember-source', '>=3.27.0-alpha.1'))) {
   let _getComponentManager =

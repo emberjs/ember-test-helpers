@@ -10,7 +10,7 @@ import {
 } from './setup-context';
 import { Promise } from './-utils';
 import settled from './settled';
-import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
+import { hbs } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
@@ -21,14 +21,13 @@ import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
-import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
 const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
 
 export interface RenderingTestContext extends TestContext {
-  render(template: TemplateFactory): Promise<void>;
+  render(template: object): Promise<void>;
   clearRender(): Promise<void>;
 
   element: Element | Document;
@@ -100,7 +99,7 @@ export interface RenderOptions {
   await render(hbs`<div class="container"></div>`);
 */
 export function render(
-  templateOrComponent: TemplateFactory | ComponentInstance,
+  templateOrComponent: object,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();
@@ -298,7 +297,7 @@ export default function setupRenderingContext(
     .then(() => {
       let { owner } = context;
 
-      let renderDeprecationWrapper = function (template: TemplateFactory) {
+      let renderDeprecationWrapper = function (template: object) {
         deprecate(
           'Using this.render has been deprecated, consider using `render` imported from `@ember/test-helpers`.',
           false,
