@@ -15,7 +15,6 @@ import {
   _registerHook,
   isSettled,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 
@@ -30,10 +29,6 @@ Router.map(function () {
 });
 
 module('setupApplicationContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(async function () {
     let registry = {
       'router:main': Router,
@@ -68,19 +63,6 @@ module('setupApplicationContext', function (hooks) {
         },
       }),
     };
-
-    if (!hasEmberVersion(3, 12)) {
-      registry = {
-        ...registry,
-        // overrides for older Ember's
-        'template:application': hbs`
-            <div class="nav">{{#link-to "posts"}}posts{{/link-to}} | {{#link-to "widgets"}}widgets{{/link-to}}</div>
-            {{outlet}}
-          `,
-        'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}to slow{{/link-to}}`,
-        'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
-      };
-    }
 
     setResolverRegistry(registry);
 

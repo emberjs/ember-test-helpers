@@ -15,12 +15,22 @@ import { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
 import { assert } from '@ember/debug';
 import { runHooks } from './-internal/helper-hooks';
-import hasEmberVersion from './has-ember-version';
-import isComponent from './-internal/is-component';
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
-import type { ComponentInstance } from '@glimmer/interfaces';
+import type {
+  ComponentInstance,
+  InternalComponentManager,
+} from '@glimmer/interfaces';
+import { importSync } from '@embroider/macros';
+
+let getInternalComponentManager: (
+  definition: object
+) => InternalComponentManager;
+
+// this would be much better as a regular `import` statement, but there really isn't any way to make typescript happy with thayar
+getInternalComponentManager =
+  //@ts-ignore
+  importSync('@glimmer/manager').getInternalComponentManager;
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -31,6 +41,19 @@ const hasCalledSetupRenderingContext = Symbol();
 export interface RenderingTestContext extends TestContext {
   element: Element | Document;
   [hasCalledSetupRenderingContext]?: true;
+}
+
+/**
+ * We should ultimately get a new API from @glimmer/runtime that provides this functionality
+ * (see https://github.com/emberjs/rfcs/pull/785 for more info).
+ * @private
+ * @param {Object} maybeComponent The thing you think might be a component
+ * @returns {boolean} True if it's a component, false if not
+ */
+function isComponent(maybeComponent: object): boolean {
+  let manager = getInternalComponentManager(maybeComponent);
+
+  return !!manager;
 }
 
 //  Isolates the notion of transforming a TextContext into a RenderingTestContext.
@@ -131,19 +154,31 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (macroCondition(dependencySatisfies('ember-source', '<3.24.0'))) {
-        // Pre 3.24, we just don't support rendering components at all, so we error
-        // if we find anything that isn't a template.
-        const isTemplate =
-          ('__id' in templateOrComponent && '__meta' in templateOrComponent) ||
-          ('id' in templateOrComponent && 'meta' in templateOrComponent);
+      if (isComponent(templateOrComponent)) {
+        // We use this to track when `render` is used with a component so that we can throw an
+        // assertion if `this.{set,setProperty} is used in the same test
+        ComponentRenderMap.set(context, true);
 
-        if (!isTemplate) {
-          throw new Error(
-            `Using \`render\` with something other than a pre-compiled template is not supported until Ember 3.24 (you are on ${Ember.VERSION}).`
+        const setCalls = SetUsage.get(context);
+
+        if (setCalls !== undefined) {
+          assert(
+            `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
+              .map((key) => `  - ${key}`)
+              .join('\n')}`
           );
         }
 
+        let ProvidedComponent = ensureSafeComponent(
+          templateOrComponent,
+          context
+        );
+
+        context = {
+          ProvidedComponent,
+        };
+        templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+      } else {
         templateId += 1;
         let templateFullName = `template:-undertest-${templateId}` as const;
         ownerToRenderFrom.register(templateFullName, templateOrComponent);
@@ -151,40 +186,6 @@ export function render(
           ownerToRenderFrom,
           templateFullName
         );
-      } else {
-        if (isComponent(templateOrComponent, owner)) {
-          // We use this to track when `render` is used with a component so that we can throw an
-          // assertion if `this.{set,setProperty} is used in the same test
-          ComponentRenderMap.set(context, true);
-
-          const setCalls = SetUsage.get(context);
-
-          if (setCalls !== undefined) {
-            assert(
-              `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
-                .map((key) => `  - ${key}`)
-                .join('\n')}`
-            );
-          }
-
-          let ProvidedComponent = ensureSafeComponent(
-            templateOrComponent,
-            context
-          );
-
-          context = {
-            ProvidedComponent,
-          };
-          templateOrComponent = INVOKE_PROVIDED_COMPONENT;
-        } else {
-          templateId += 1;
-          let templateFullName = `template:-undertest-${templateId}` as const;
-          ownerToRenderFrom.register(templateFullName, templateOrComponent);
-          templateOrComponent = lookupTemplate(
-            ownerToRenderFrom,
-            templateFullName
-          );
-        }
       }
 
       let outletState = {
@@ -215,20 +216,6 @@ export function render(
         },
       };
       toplevelView.setOutletState(outletState);
-
-      // Ember's rendering engine is integration with the run loop so that when a run
-      // loop starts, the rendering is scheduled to be done.
-      //
-      // Ember should be ensuring an instance on its own here (the act of
-      // setting outletState should ensureInstance, since we know we need to
-      // render), but on Ember < 3.23 that is not guaranteed.
-      if (!hasEmberVersion(3, 23)) {
-        // SAFETY: this was correct and type checked on the Ember v3 types, but
-        // since the `run` namespace does not exist in Ember v4, this no longer
-        // can be type checked. When (eventually) dropping support for Ember v3,
-        // and therefore for versions before 3.23, this can be removed entirely.
-        (run as any).backburner.ensureInstance();
-      }
 
       // returning settled here because the actual rendering does not happen until
       // the renderer detects it is dirty (which happens on backburner's end

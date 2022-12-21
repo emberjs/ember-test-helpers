@@ -6,15 +6,10 @@ import {
   setupRenderingContext,
   teardownContext,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { elementToString } from '@ember/test-helpers/dom/-logging';
 import { hbs } from 'ember-cli-htmlbars';
 
 module('elementToString()', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);

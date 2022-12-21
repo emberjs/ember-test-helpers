@@ -31,7 +31,6 @@ import { getOwner } from '@ember/application';
 import Engine from '@ember/engine';
 import { precompileTemplate } from '@ember/template-compilation';
 import templateOnly from '@ember/component/template-only';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 async function buildEngineOwner(parentOwner, registry) {
   parentOwner.register(
@@ -532,346 +531,178 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(getOwner(this), this.owner);
     });
 
-    if (hasEmberVersion(3, 25)) {
-      // render tests for components in 3.25+ where we can use lexical scope
-      module('using render with a component in Ember >= 3.25', function () {
-        test('works with a template-only component', async function (assert) {
-          const name = 'Chris';
+    module('using render with a component in Ember >= 3.25', function () {
+      test('works with a template-only component', async function (assert) {
+        const name = 'Chris';
 
-          const template = precompileTemplate(
-            '<p>hello my name is {{name}}</p>',
-            {
-              scope() {
-                return {
-                  name,
-                };
-              },
-            }
-          );
-          const component = setComponentTemplate(template, templateOnly());
-          await render(component);
-          assert.equal(
-            this.element.textContent,
-            'hello my name is Chris',
-            'has rendered content'
-          );
-        });
-
-        test('works with a glimmer component', async function (assert) {
-          const name = 'Chris';
-          const template = precompileTemplate(
-            '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
-            {
-              scope() {
-                return {
-                  name,
-                };
-              },
-            }
-          );
-
-          class Foo extends GlimmerComponent {
-            favoriteColor = 'red';
-          }
-
-          setComponentTemplate(template, Foo);
-          await render(Foo);
-
-          assert.equal(
-            this.element.textContent,
-            'hello my name is Chris and my favorite color is red',
-            'has rendered content'
-          );
-        });
-
-        test('works with a classic component', async function (assert) {
-          const name = 'Chris';
-          const template = precompileTemplate(
-            '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
-            {
-              scope() {
-                return {
-                  name,
-                };
-              },
-            }
-          );
-
-          const Foo = Component.extend({
-            favoriteColor: 'red',
-          });
-
-          setComponentTemplate(template, Foo);
-          await render(Foo);
-
-          assert.equal(
-            this.element.textContent,
-            'hello my name is Chris and my favorite color is red',
-            'has rendered content'
-          );
-        });
-
-        test('components passed to render do *not* have access to the test context', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {
-            foo = 'foo';
-          }
-
-          const component = setComponentTemplate(template, Foo);
-
-          this.foo = 'bar';
-
-          await render(component);
-
-          assert.equal(this.element.textContent, 'the value of foo is foo');
-        });
-
-        test('setting properties on the test context *before* rendering a component throws an assertion', async function (assert) {
-          assert.expect(1);
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {}
-
-          const component = setComponentTemplate(template, Foo);
-
-          this.set('foo', 'FOO');
-          this.set('bar', 'BAR');
-          this.setProperties({
-            baz: 'BAZ',
-            baq: 'BAQ',
-          });
-
-          let error;
-          try {
-            await render(component);
-          } catch (err) {
-            error = err;
-          } finally {
-            assert.equal(
-              error.toString(),
-              `Error: Assertion Failed: You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:
-  - foo
-  - bar
-  - baz
-  - baq`
-            );
-          }
-        });
-
-        test('setting properties on the test context *after* rendering a component throws an assertion', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {}
-
-          const component = setComponentTemplate(template, Foo);
-
-          await render(component);
-
-          assert.throws(
-            () => this.set('foo', 'FOO'),
-            (err) => {
-              return err
-                .toString()
-                .includes(
-                  'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
-                );
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
             },
-            'errors on this.set'
-          );
-
-          assert.throws(
-            () => this.setProperties({ foo: 'bar?' }),
-            (err) => {
-              return err
-                .toString()
-                .includes(
-                  'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
-                );
-            },
-            'errors on this.setProperties'
-          );
-        });
-
-        test('setting properties on the test context when rendering a template does not throw an assertion', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          this.set('foo', 'FOO');
-          this.setProperties({
-            foo: 'bar?',
-          });
-
-          await render(template);
-
-          assert.true(true, 'no assertions are thrown');
-        });
+          }
+        );
+        const component = setComponentTemplate(template, templateOnly());
+        await render(component);
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris',
+          'has rendered content'
+        );
       });
-    } else if (hasEmberVersion(3, 24)) {
-      module('using render with a component in Ember < 3.25', function () {
-        test('works with a template-only component', async function (assert) {
-          const template = precompileTemplate(
-            '<p>this is a template-only component with no dynamic content</p>'
-          );
-          const component = setComponentTemplate(template, templateOnly());
-          await render(component);
-          assert.equal(
-            this.element.textContent,
-            'this is a template-only component with no dynamic content',
-            'has rendered content'
-          );
-        });
 
-        test('works with a glimmer component', async function (assert) {
-          const template = precompileTemplate(
-            '<p>hello my favorite color is {{this.favoriteColor}}</p>'
-          );
-
-          class Foo extends GlimmerComponent {
-            favoriteColor = 'red';
-          }
-
-          const component = setComponentTemplate(template, Foo);
-
-          await render(component);
-          assert.equal(
-            this.element.textContent,
-            'hello my favorite color is red',
-            'has rendered content'
-          );
-        });
-
-        test('works with a classic component', async function (assert) {
-          const template = precompileTemplate(
-            '<p>hello my favorite color is {{this.favoriteColor}}</p>'
-          );
-
-          const Foo = Component.extend({
-            favoriteColor: 'red',
-          });
-
-          const component = setComponentTemplate(template, Foo);
-
-          await render(component);
-
-          assert.equal(
-            this.element.textContent,
-            'hello my favorite color is red',
-            'has rendered content'
-          );
-        });
-
-        test('components passed to render do *not* have access to the test context', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {
-            foo = 'foo';
-          }
-
-          const component = setComponentTemplate(template, Foo);
-
-          this.foo = 'bar';
-
-          await render(component);
-
-          assert.equal(this.element.textContent, 'the value of foo is foo');
-        });
-
-        test('setting properties on the test context *before* rendering a component throws an assertion', async function (assert) {
-          assert.expect(1);
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {}
-
-          const component = setComponentTemplate(template, Foo);
-
-          this.set('foo', 'FOO');
-          this.set('bar', 'BAR');
-          this.setProperties({
-            baz: 'BAZ',
-            baq: 'BAQ',
-          });
-
-          let error;
-          try {
-            await render(component);
-          } catch (err) {
-            error = err;
-          } finally {
-            assert.equal(
-              error.toString(),
-              `Error: Assertion Failed: You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:
-  - foo
-  - bar
-  - baz
-  - baq`
-            );
-          }
-        });
-
-        test('setting properties on the test context *after* rendering a component throws an assertion', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
-
-          class Foo extends GlimmerComponent {}
-
-          const component = setComponentTemplate(template, Foo);
-
-          await render(component);
-
-          assert.throws(
-            () => this.set('foo', 'FOO'),
-            (err) => {
-              return err
-                .toString()
-                .includes(
-                  'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
-                );
+      test('works with a glimmer component', async function (assert) {
+        const name = 'Chris';
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
             },
-            'errors on this.set'
-          );
+          }
+        );
 
-          assert.throws(
-            () => this.setProperties({ foo: 'bar?' }),
-            (err) => {
-              return err
-                .toString()
-                .includes(
-                  'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
-                );
-            },
-            'errors on this.setProperties'
-          );
-        });
+        class Foo extends GlimmerComponent {
+          favoriteColor = 'red';
+        }
 
-        test('setting properties on the test context when rendering a template does not throw an assertion', async function (assert) {
-          const template = precompileTemplate(
-            'the value of foo is {{this.foo}}'
-          );
+        setComponentTemplate(template, Foo);
+        await render(Foo);
 
-          this.set('foo', 'FOO');
-          this.setProperties({
-            foo: 'bar?',
-          });
-
-          await render(template);
-
-          assert.true(true, 'no assertions are thrown');
-        });
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris and my favorite color is red',
+          'has rendered content'
+        );
       });
-    }
+
+      test('works with a classic component', async function (assert) {
+        const name = 'Chris';
+        const template = precompileTemplate(
+          '<p>hello my name is {{name}} and my favorite color is {{this.favoriteColor}}</p>',
+          {
+            scope() {
+              return {
+                name,
+              };
+            },
+          }
+        );
+
+        const Foo = Component.extend({
+          favoriteColor: 'red',
+        });
+
+        setComponentTemplate(template, Foo);
+        await render(Foo);
+
+        assert.equal(
+          this.element.textContent,
+          'hello my name is Chris and my favorite color is red',
+          'has rendered content'
+        );
+      });
+
+      test('components passed to render do *not* have access to the test context', async function (assert) {
+        const template = precompileTemplate('the value of foo is {{this.foo}}');
+
+        class Foo extends GlimmerComponent {
+          foo = 'foo';
+        }
+
+        const component = setComponentTemplate(template, Foo);
+
+        this.foo = 'bar';
+
+        await render(component);
+
+        assert.equal(this.element.textContent, 'the value of foo is foo');
+      });
+
+      test('setting properties on the test context *before* rendering a component throws an assertion', async function (assert) {
+        assert.expect(1);
+        const template = precompileTemplate('the value of foo is {{this.foo}}');
+
+        class Foo extends GlimmerComponent {}
+
+        const component = setComponentTemplate(template, Foo);
+
+        this.set('foo', 'FOO');
+        this.set('bar', 'BAR');
+        this.setProperties({
+          baz: 'BAZ',
+          baq: 'BAQ',
+        });
+
+        let error;
+        try {
+          await render(component);
+        } catch (err) {
+          error = err;
+        } finally {
+          assert.equal(
+            error.toString(),
+            `Error: Assertion Failed: You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:
+- foo
+- bar
+- baz
+- baq`
+          );
+        }
+      });
+
+      test('setting properties on the test context *after* rendering a component throws an assertion', async function (assert) {
+        const template = precompileTemplate('the value of foo is {{this.foo}}');
+
+        class Foo extends GlimmerComponent {}
+
+        const component = setComponentTemplate(template, Foo);
+
+        await render(component);
+
+        assert.throws(
+          () => this.set('foo', 'FOO'),
+          (err) => {
+            return err
+              .toString()
+              .includes(
+                'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
+              );
+          },
+          'errors on this.set'
+        );
+
+        assert.throws(
+          () => this.setProperties({ foo: 'bar?' }),
+          (err) => {
+            return err
+              .toString()
+              .includes(
+                'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
+              );
+          },
+          'errors on this.setProperties'
+        );
+      });
+
+      test('setting properties on the test context when rendering a template does not throw an assertion', async function (assert) {
+        const template = precompileTemplate('the value of foo is {{this.foo}}');
+
+        this.set('foo', 'FOO');
+        this.setProperties({
+          foo: 'bar?',
+        });
+
+        await render(template);
+
+        assert.true(true, 'no assertions are thrown');
+      });
+    });
   }
 
   module('with only application set', function (hooks) {

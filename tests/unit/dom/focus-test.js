@@ -11,7 +11,6 @@ import {
   instrumentElement,
 } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
@@ -21,10 +20,6 @@ if (isEdge) {
 }
 
 module('DOM Helper: focus', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {

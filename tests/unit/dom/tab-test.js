@@ -11,7 +11,6 @@ import {
   instrumentElement,
 } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let _focusSteps = ['focus', 'focusin'];
 let _blurSteps = isEdge ? ['focusout', 'blur'] : ['blur', 'focusout'];
@@ -34,10 +33,6 @@ function moveFocus(from, to) {
 }
 
 module('DOM Helper: tab', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element, elements;
 
   hooks.beforeEach(function () {

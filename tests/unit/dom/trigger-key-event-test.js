@@ -6,13 +6,8 @@ import {
   _registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: triggerKeyEvent', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {

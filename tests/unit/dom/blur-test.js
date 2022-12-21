@@ -8,7 +8,6 @@ import {
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
@@ -18,10 +17,6 @@ if (isEdge) {
 }
 
 module('DOM Helper: blur', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, elementWithFocus;
 
   hooks.beforeEach(async function (assert) {
