@@ -38,10 +38,11 @@ export interface RenderingTestContext extends TestContext {
 export function isRenderingTestContext(
   context: BaseContext
 ): context is RenderingTestContext {
+  let maybeContext = context as Partial<RenderingTestContext>;
   return (
     isTestContext(context) &&
-    typeof context['render'] === 'function' &&
-    typeof context['clearRender'] === 'function'
+    typeof maybeContext['render'] === 'function' &&
+    typeof maybeContext['clearRender'] === 'function'
   );
 }
 
