@@ -9,7 +9,7 @@ import {
   getContext,
 } from './setup-context';
 import settled from './settled';
-import { hbs, TemplateFactory } from 'ember-cli-htmlbars';
+import { hbs } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
@@ -20,7 +20,6 @@ import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
-import type { ComponentInstance } from '@glimmer/interfaces';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -102,7 +101,7 @@ export interface RenderOptions {
   await render(hbs`<div class="container"></div>`);
 */
 export function render(
-  templateOrComponent: TemplateFactory | ComponentInstance,
+  templateOrComponent: object,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();

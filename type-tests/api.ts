@@ -161,10 +161,7 @@ expectTypeOf(currentURL).toEqualTypeOf<() => string>();
 
 // Rendering Helpers
 expectTypeOf(render).toMatchTypeOf<
-  (
-    templateOrComponent: TemplateFactory | ComponentInstance,
-    options?: { owner?: Owner }
-  ) => Promise<void>
+  (templateOrComponent: object, options?: { owner?: Owner }) => Promise<void>
 >();
 expectTypeOf(rerender).toMatchTypeOf<() => Promise<void>>();
 expectTypeOf(clearRender).toEqualTypeOf<() => Promise<void>>();
