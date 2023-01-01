@@ -43,7 +43,7 @@
     "ember-source": "^4.0.0"
   },
   "dependencies": {
-    "@ember/test-waiters": "^3.0.0",
+    "@ember/test-waiters": "^3.0.2",
     "@embroider/macros": "^1.10.0",
     "@embroider/util": "^1.9.0",
     "ember-auto-import": "^2.5.0",
