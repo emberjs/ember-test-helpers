@@ -495,10 +495,10 @@ Find the first element matched by the given selector. Equivalent to calling
 
 #### Examples
 
-Find all of the elements matching '.my-selector'.
+Finding the first element with id 'foo'
 
 ```javascript
-findAll('.my-selector');
+find('#foo');
 ```
 
 Returns **([Element][65] | null)** matched element or null
@@ -515,10 +515,10 @@ of a `NodeList`.
 
 #### Examples
 
-Finding the first element with id 'foo'
+Find all of the elements matching '.my-selector'.
 
 ```javascript
-find('#foo');
+findAll('.my-selector');
 ```
 
 Returns **[Array][70]** array of matched elements
