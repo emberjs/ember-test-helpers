@@ -834,7 +834,7 @@ Responsible for:
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to setup
+*   `base` **[Object][72]** the context to setup
 *   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
 
     *   `options.resolver` **Resolver?** a resolver to use for customizing normal resolution
