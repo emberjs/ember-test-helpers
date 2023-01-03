@@ -31,6 +31,10 @@ import {
   Warning,
 } from './-internal/warnings';
 
+export interface SetupContextOptions {
+  resolver?: Resolver | undefined;
+}
+
 // This handler exists to provide the underlying data to enable the following methods:
 // * getDeprecations()
 // * getDeprecationsDuringCallback()
@@ -372,7 +376,7 @@ export const SetUsage = new WeakMap<BaseContext, Array<string>>();
 */
 export default function setupContext<T extends object>(
   base: T,
-  options: { resolver?: Resolver } = {}
+  options: SetupContextOptions = {}
 ): Promise<T & TestContext> {
   let context = base as T & TestContext;
 
