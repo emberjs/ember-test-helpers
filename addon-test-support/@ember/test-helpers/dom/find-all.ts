@@ -25,9 +25,9 @@ export default function findAll(selector: string): Element[];
 
   @example
   <caption>
-    Finding the first element with id 'foo'
+    Find all of the elements matching '.my-selector'.
   </caption>
-  find('#foo');
+  findAll('.my-selector');
 */
 export default function findAll(selector: string): Element[] {
   if (!selector) {

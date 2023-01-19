@@ -495,10 +495,10 @@ Find the first element matched by the given selector. Equivalent to calling
 
 #### Examples
 
-Find all of the elements matching '.my-selector'.
+Finding the first element with id 'foo'
 
 ```javascript
-findAll('.my-selector');
+find('#foo');
 ```
 
 Returns **([Element][65] | null)** matched element or null
@@ -515,10 +515,10 @@ of a `NodeList`.
 
 #### Examples
 
-Finding the first element with id 'foo'
+Find all of the elements matching '.my-selector'.
 
 ```javascript
-find('#foo');
+findAll('.my-selector');
 ```
 
 Returns **[Array][70]** array of matched elements
@@ -834,7 +834,7 @@ Responsible for:
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to setup
+*   `base` **[Object][72]** the context to setup
 *   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
 
     *   `options.resolver` **Resolver?** a resolver to use for customizing normal resolution

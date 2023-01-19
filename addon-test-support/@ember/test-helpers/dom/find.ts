@@ -21,10 +21,9 @@ export default function find(selector: string): Element | null;
 
   @example
   <caption>
-    Find all of the elements matching '.my-selector'.
+    Finding the first element with id 'foo'
   </caption>
-  findAll('.my-selector');
-
+  find('#foo');
 */
 export default function find(selector: string): Element | null {
   if (!selector) {
