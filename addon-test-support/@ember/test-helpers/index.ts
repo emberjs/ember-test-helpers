@@ -11,6 +11,7 @@ export type {
   DeprecationFailure,
   TestContext,
   Warning,
+  SetupContextOptions,
 } from './setup-context';
 export {
   default as setupContext,
@@ -25,6 +26,7 @@ export {
   getWarningsDuringCallback,
 } from './setup-context';
 export { default as teardownContext } from './teardown-context';
+export type { TeardownContextOptions } from './teardown-context';
 export {
   default as setupRenderingContext,
   render,

@@ -3,6 +3,10 @@ import settled from './settled';
 import { _cleanupOnerror } from './setup-onerror';
 import { destroy } from '@ember/destroyable';
 
+export interface TeardownContextOptions {
+  waitForSettled?: boolean | undefined;
+}
+
 /**
   Used by test framework addons to tear down the provided context after testing is completed.
 
@@ -20,13 +24,8 @@ import { destroy } from '@ember/destroyable';
 */
 export default function teardownContext(
   context: TestContext,
-  options?: { waitForSettled?: boolean }
+  { waitForSettled = true }: TeardownContextOptions = {}
 ): Promise<void> {
-  let waitForSettled = true;
-  if (options !== undefined && 'waitForSettled' in options) {
-    waitForSettled = options.waitForSettled!;
-  }
-
   return Promise.resolve()
     .then(() => {
       _cleanupOnerror(context);
