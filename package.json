@@ -100,7 +100,7 @@
     "webpack": "^5.75.0"
   },
   "engines": {
-    "node": "14.* || 16.* || >= 18"
+    "node": "16.* || >= 18"
   },
   "publishConfig": {
     "access": "public",
@@ -141,7 +141,7 @@
     }
   },
   "volta": {
-    "node": "14.21.1",
+    "node": "16.19.0",
     "yarn": "1.22.19"
   },
   "typesVersions": {
