@@ -2,6 +2,10 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import Component, { setComponentTemplate } from '@ember/component';
 import GlimmerComponent from '@glimmer/component';
+// @tracked is conditionally used if the ember version >= 3.25
+// eslint-disable-next-line no-unused-vars
+import { tracked } from '@glimmer/tracking';
+
 import { helper } from '@ember/component/helper';
 import { registerWaiter } from '@ember/test';
 import {
@@ -20,7 +24,6 @@ import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { precompileTemplate } from '@ember/template-compilation';
 import { defer } from 'rsvp';
-import { tracked } from '@glimmer/tracking';
 
 const PromiseWrapperTemplate = hbs`
 {{~#if this.settled~}}

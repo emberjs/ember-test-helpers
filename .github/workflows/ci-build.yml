@@ -16,11 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - run: yarn install --frozen-lockfile --ignore-engines
-      - run: yarn lint
-      - run: yarn test
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pnpm
+      - run: pnpm lint
+      - run: pnpm test
 
   floating-dependencies:
     timeout-minutes: 10
@@ -28,10 +27,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - run: yarn install --no-lockfile
-      - run: yarn test
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pnpm
+      - name: Install Dependencies (without lockfile)
+        run: rm pnpm-lock.yaml && pnpm install
+      - run: pnpm test
 
   try-scenarios:
     timeout-minutes: 10
@@ -55,10 +55,8 @@ jobs:
           # - embroider-optimized # see comments in ember-try.js
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - name: install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pnpm
       - name: test
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
 
@@ -77,11 +75,9 @@ jobs:
           - next
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - name: install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pnpm
       - name: install TS version
-        run: yarn install --dev typescript@${{matrix.ts-version}}
+        run: pnpm add --save-dev typescript@${{matrix.ts-version}}
       - name: test types
-        run: yarn lint:ts
+        run: pnpm lint:ts

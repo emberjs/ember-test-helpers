@@ -1,4 +1,8 @@
 import { setComponentTemplate } from '@ember/component';
+// @tracked is conditionally used if the ember version >= 3.25
+// eslint-disable-next-line no-unused-vars
+import { tracked } from '@glimmer/tracking';
+
 import templateOnly from '@ember/component/template-only';
 import { precompileTemplate } from '@ember/template-compilation';
 import {
@@ -13,7 +17,6 @@ import {
 } from '@ember/test-helpers';
 import { buildWaiter } from '@ember/test-waiters';
 import GlimmerComponent from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { hbs } from 'ember-cli-htmlbars';
 import { module, test } from 'qunit';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
