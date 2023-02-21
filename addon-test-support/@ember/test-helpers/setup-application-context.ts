@@ -31,7 +31,7 @@ export function isApplicationTestContext(
 }
 
 /**
-  Determines if we have any pending router transtions (used to determine `settled` state)
+  Determines if we have any pending router transitions (used to determine `settled` state)
 
   @public
   @returns {(boolean|null)} if there are pending transitions
@@ -198,7 +198,7 @@ export function currentRouteName(): string {
   let router = context.owner.lookup('router:main');
   let currentRouteName = get(router, 'currentRouteName');
   assert(
-    'currentRouteName shoudl be a string',
+    'currentRouteName should be a string',
     typeof currentRouteName === 'string'
   );
   return currentRouteName;

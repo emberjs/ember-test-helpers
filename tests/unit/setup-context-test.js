@@ -158,7 +158,7 @@ module('setupContext', function (hooks) {
         assert.deepEqual(testMetadata.setupTypes, ['setupContext']);
       });
 
-      test('it retutns false for isRendering/isApplication in non-rendering/application tests', function (assert) {
+      test('it returns false for isRendering/isApplication in non-rendering/application tests', function (assert) {
         let testMetadata = getTestMetadata(this);
 
         assert.ok(!testMetadata.isRendering);

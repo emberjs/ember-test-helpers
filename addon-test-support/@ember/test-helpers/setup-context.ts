@@ -110,7 +110,7 @@ export function setContext(context: BaseContext): void {
 }
 
 /**
-  Retrive the "global testing context" as stored by `setContext`.
+  Retrieve the "global testing context" as stored by `setContext`.
 
   @public
   @returns {Object} the previously stored testing context
@@ -207,7 +207,7 @@ function cleanup(context: BaseContext) {
 }
 
 /**
- * Returns deprecations which have occured so far for a the current test context
+ * Returns deprecations which have occurred so far for a the current test context
  *
  * @public
  * @returns {Array<DeprecationFailure>} An array of deprecation messages
@@ -219,7 +219,7 @@ function cleanup(context: BaseContext) {
  *   setupRenderingTest(hooks);
  *
  *   test('does something awesome', function(assert) {
-       const deprecations = getDeprecations() // => returns deprecations which have occured so far in this test
+       const deprecations = getDeprecations() // => returns deprecations which have occurred so far in this test
  *   });
  * });
  */
@@ -238,7 +238,7 @@ export function getDeprecations(): Array<DeprecationFailure> {
 export type { DeprecationFailure };
 
 /**
- * Returns deprecations which have occured so far for a the current test context
+ * Returns deprecations which have occurred so far for a the current test context
  *
  * @public
  * @param {Function} [callback] The callback that when executed will have its DeprecationFailure recorded
@@ -254,14 +254,14 @@ export type { DeprecationFailure };
  *     const deprecations = getDeprecationsDuringCallback(() => {
  *       // code that might emit some deprecations
  *
- *     }); // => returns deprecations which occured while the callback was invoked
+ *     }); // => returns deprecations which occurred while the callback was invoked
  *   });
  *
  *
  *   test('does something awesome', async function(assert) {
  *     const deprecations = await getDeprecationsDuringCallback(async () => {
  *       // awaited code that might emit some deprecations
- *     }); // => returns deprecations which occured while the callback was invoked
+ *     }); // => returns deprecations which occurred while the callback was invoked
  *   });
  * });
  */
@@ -280,7 +280,7 @@ export function getDeprecationsDuringCallback(
 }
 
 /**
- * Returns warnings which have occured so far for a the current test context
+ * Returns warnings which have occurred so far for a the current test context
  *
  * @public
  * @returns {Array<Warning>} An array of warnings
@@ -292,7 +292,7 @@ export function getDeprecationsDuringCallback(
  *   setupRenderingTest(hooks);
  *
  *   test('does something awesome', function(assert) {
-       const warnings = getWarnings() // => returns warnings which have occured so far in this test
+       const warnings = getWarnings() // => returns warnings which have occurred so far in this test
  *   });
  * });
  */
@@ -311,7 +311,7 @@ export function getWarnings(): Array<Warning> {
 export type { Warning };
 
 /**
- * Returns warnings which have occured so far for a the current test context
+ * Returns warnings which have occurred so far for a the current test context
  *
  * @public
  * @param {Function} [callback] The callback that when executed will have its warnings recorded
@@ -328,7 +328,7 @@ export type { Warning };
  *     const warnings = getWarningsDuringCallback(() => {
  *     warn('some warning');
  *
- *     }); // => returns warnings which occured while the callback was invoked
+ *     }); // => returns warnings which occurred while the callback was invoked
  *   });
  *
  *   test('does something awesome', async function(assert) {
@@ -336,7 +336,7 @@ export type { Warning };
  *
  *     const warnings = await getWarningsDuringCallback(async () => {
  *       warn('some other warning');
- *     }); // => returns warnings which occured while the callback was invoked
+ *     }); // => returns warnings which occurred while the callback was invoked
  *   });
  * });
  */
@@ -406,7 +406,7 @@ export default function setupContext<T extends object>(
     .then(() => {
       let { resolver } = options;
 
-      // This handles precendence, specifying a specific option of
+      // This handles precedence, specifying a specific option of
       // resolver always trumps whatever is auto-detected, then we fallback to
       // the suite-wide registrations
       //

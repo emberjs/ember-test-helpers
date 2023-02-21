@@ -12,7 +12,7 @@ export interface Warning {
 }
 
 // the WARNINGS data structure which is used to weakly associated warnings with
-// the test context their occured within
+// the test context their occurred within
 const WARNINGS = new WeakMap<BaseContext, Array<Warning>>();
 
 /**
@@ -43,13 +43,13 @@ export function getWarningsForContext(context: BaseContext): Array<Warning> {
 /**
  *
  * Provides the list of warnings associated with a given test context which
- * occured only while a the provided callback is executed. This callback can be
- * synchonous, or it can be an async function.
+ * occurred only while a the provided callback is executed. This callback can be
+ * synchronous, or it can be an async function.
  *
  * @private
  * @param {BaseContext} [context] the test context
  * @param {Function} [callback] The callback that when executed will have its warnings recorded
- * @return {Array<Warning>} The warnings associated with the corresponding baseContext which occured while the CallbackFunction was executed
+ * @return {Array<Warning>} The warnings associated with the corresponding baseContext which occurred while the CallbackFunction was executed
  */
 export function getWarningsDuringCallbackForContext(
   context: BaseContext,

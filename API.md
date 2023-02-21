@@ -843,7 +843,7 @@ Returns **[Promise][66]<[Object][72]>** resolves with the context that was setup
 
 ### getContext
 
-Retrive the "global testing context" as stored by `setContext`.
+Retrieve the "global testing context" as stored by `setContext`.
 
 Returns **[Object][72]** the previously stored testing context
 
@@ -1050,7 +1050,7 @@ Returns **[Promise][66]\<void>** a promise which fulfills when rendering has com
 
 ## getDeprecations
 
-Returns deprecations which have occured so far for a the current test context
+Returns deprecations which have occurred so far for a the current test context
 
 ### Examples
 
@@ -1063,7 +1063,7 @@ module('awesome-sauce', function(hooks) {
   setupRenderingTest(hooks);
 
   test('does something awesome', function(assert) {
-const deprecations = getDeprecations() // => returns deprecations which have occured so far in this test
+const deprecations = getDeprecations() // => returns deprecations which have occurred so far in this test
   });
 });
 ```
@@ -1072,7 +1072,7 @@ Returns **[Array][70]\<DeprecationFailure>** An array of deprecation messages
 
 ## getDeprecationsDuringCallback
 
-Returns deprecations which have occured so far for a the current test context
+Returns deprecations which have occurred so far for a the current test context
 
 ### Parameters
 
@@ -1092,14 +1092,14 @@ module('awesome-sauce', function(hooks) {
     const deprecations = getDeprecationsDuringCallback(() => {
       // code that might emit some deprecations
 
-    }); // => returns deprecations which occured while the callback was invoked
+    }); // => returns deprecations which occurred while the callback was invoked
   });
 
 
   test('does something awesome', async function(assert) {
     const deprecations = await getDeprecationsDuringCallback(async () => {
       // awaited code that might emit some deprecations
-    }); // => returns deprecations which occured while the callback was invoked
+    }); // => returns deprecations which occurred while the callback was invoked
   });
 });
 ```
@@ -1108,7 +1108,7 @@ Returns **([Array][70]\<DeprecationFailure> | [Promise][66]<[Array][70]\<Depreca
 
 ## getWarnings
 
-Returns warnings which have occured so far for a the current test context
+Returns warnings which have occurred so far for a the current test context
 
 ### Examples
 
@@ -1121,7 +1121,7 @@ module('awesome-sauce', function(hooks) {
   setupRenderingTest(hooks);
 
   test('does something awesome', function(assert) {
-const warnings = getWarnings() // => returns warnings which have occured so far in this test
+const warnings = getWarnings() // => returns warnings which have occurred so far in this test
   });
 });
 ```
@@ -1130,7 +1130,7 @@ Returns **[Array][70]\<Warning>** An array of warnings
 
 ## getWarningsDuringCallback
 
-Returns warnings which have occured so far for a the current test context
+Returns warnings which have occurred so far for a the current test context
 
 ### Parameters
 
@@ -1151,7 +1151,7 @@ module('awesome-sauce', function(hooks) {
     const warnings = getWarningsDuringCallback(() => {
     warn('some warning');
 
-    }); // => returns warnings which occured while the callback was invoked
+    }); // => returns warnings which occurred while the callback was invoked
   });
 
   test('does something awesome', async function(assert) {
@@ -1159,7 +1159,7 @@ module('awesome-sauce', function(hooks) {
 
     const warnings = await getWarningsDuringCallback(async () => {
       warn('some other warning');
-    }); // => returns warnings which occured while the callback was invoked
+    }); // => returns warnings which occurred while the callback was invoked
   });
 });
 ```
