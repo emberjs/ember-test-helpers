@@ -69,7 +69,7 @@ export function __click__(
   to continue to emulate how actual browsers handle clicking a given element.
 
   Use the `options` hash to change the parameters of the [MouseEvents](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent).
-  You can use this to specifiy modifier keys as well.
+  You can use this to specify modifier keys as well.
 
   @public
   @param {string|Element} target the element or selector to click on

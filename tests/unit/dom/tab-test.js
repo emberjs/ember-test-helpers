@@ -112,7 +112,7 @@ module('DOM Helper: tab', function (hooks) {
     ]);
   });
 
-  test('tabs between foucsable elements', async function (assert) {
+  test('tabs between focusable elements', async function (assert) {
     elements = [
       buildInstrumentedElement('input', ['target.className']),
       buildInstrumentedElement('input', ['target.className']),

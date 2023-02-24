@@ -190,7 +190,7 @@ module('DOM Helper: typeIn', function (hooks) {
     assert.equal(element.innerHTML, 'foo');
   });
 
-  test('typing in a non-typable element', async function (assert) {
+  test('typing in a non-typeable element', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await setupContext(context);
@@ -275,9 +275,9 @@ module('DOM Helper: typeIn', function (hooks) {
   test('does not wait for other promises to settle', async function (assert) {
     element = buildInstrumentedElement('input');
 
-    let runcount = 0;
+    let runCount = 0;
     let onInput = function () {
-      return Promise.resolve().then(() => runcount++);
+      return Promise.resolve().then(() => runCount++);
     };
 
     element.oninput = function () {
@@ -288,7 +288,7 @@ module('DOM Helper: typeIn', function (hooks) {
     await typeIn(element, 'foo');
 
     assert.verifySteps(expectedEvents);
-    assert.equal(runcount, 1, 'debounced function only called once');
+    assert.equal(runCount, 1, 'debounced function only called once');
   });
 
   test('typing in an input with a maxlength with suitable value', async function (assert) {

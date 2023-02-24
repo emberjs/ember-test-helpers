@@ -97,7 +97,7 @@ module('DOM Helper: blur', function (hooks) {
     );
   });
 
-  test('bluring via selector with context set', async function (assert) {
+  test('blurring via selector with context set', async function (assert) {
     await setupContext(context);
     await blur(`#${elementWithFocus.id}`);
 
@@ -109,7 +109,7 @@ module('DOM Helper: blur', function (hooks) {
     );
   });
 
-  test('bluring via selector without context set', function (assert) {
+  test('blurring via selector without context set', function (assert) {
     elementWithFocus.setAttribute('data-skip-steps', true);
 
     assert.rejects(
@@ -118,7 +118,7 @@ module('DOM Helper: blur', function (hooks) {
     );
   });
 
-  test('bluring via element with context set', async function (assert) {
+  test('blurring via element with context set', async function (assert) {
     await setupContext(context);
     await blur(elementWithFocus);
 
@@ -130,7 +130,7 @@ module('DOM Helper: blur', function (hooks) {
     );
   });
 
-  test('bluring via element without context set', async function (assert) {
+  test('blurring via element without context set', async function (assert) {
     await blur(elementWithFocus);
 
     assert.verifySteps(blurSteps);

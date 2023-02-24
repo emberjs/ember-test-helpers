@@ -48,13 +48,13 @@ export function getDeprecationsForContext(
 /**
  *
  * Provides the list of deprecation failures associated with a given base
- * context which occure while a callback is executed. This callback can be
- * synchonous, or it can be an async function.
+ * context which occur while a callback is executed. This callback can be
+ * synchronous, or it can be an async function.
  *
  * @private
  * @param {BaseContext} [context] the test context
  * @param {Function} [callback] The callback that when executed will have its DeprecationFailure recorded
- * @return {Array<DeprecationFailure>} The Deprecation Failures associated with the corresponding baseContext which occured while the CallbackFunction was executed
+ * @return {Array<DeprecationFailure>} The Deprecation Failures associated with the corresponding baseContext which occurred while the CallbackFunction was executed
  */
 export function getDeprecationsDuringCallbackForContext(
   context: BaseContext,
