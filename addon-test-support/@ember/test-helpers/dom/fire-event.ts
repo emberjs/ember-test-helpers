@@ -1,4 +1,5 @@
-import { isDocument, isElement } from './-target';
+import { FilterKeysByType } from '../-filter-keys-by-type';
+import { isDocument, isElement, isWindow } from './-target';
 import tuple from '../-tuple';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
@@ -24,9 +25,12 @@ export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isKeyboardEventType(
-  eventType: any
+  eventType: unknown
 ): eventType is KeyboardEventType {
-  return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
+  return (
+    typeof eventType === 'string' &&
+    KEYBOARD_EVENT_TYPES.includes(eventType as KeyboardEventType)
+  );
 }
 
 const MOUSE_EVENT_TYPES = tuple(
@@ -43,8 +47,13 @@ const MOUSE_EVENT_TYPES = tuple(
 export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
 
 // eslint-disable-next-line require-jsdoc
-export function isMouseEventType(eventType: any): eventType is MouseEventType {
-  return MOUSE_EVENT_TYPES.indexOf(eventType) > -1;
+export function isMouseEventType(
+  eventType: unknown
+): eventType is MouseEventType {
+  return (
+    typeof eventType === 'string' &&
+    MOUSE_EVENT_TYPES.includes(eventType as MouseEventType)
+  );
 }
 
 const FILE_SELECTION_EVENT_TYPES = tuple('change');
@@ -52,34 +61,214 @@ export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isFileSelectionEventType(
-  eventType: any
+  eventType: unknown
 ): eventType is FileSelectionEventType {
-  return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
+  return (
+    typeof eventType === 'string' &&
+    FILE_SELECTION_EVENT_TYPES.includes(eventType as FileSelectionEventType)
+  );
+}
+
+export interface HTMLFileInputElement extends HTMLInputElement {
+  files: FileList;
 }
 
 // eslint-disable-next-line require-jsdoc
 export function isFileSelectionInput(
-  element: any
-): element is HTMLInputElement {
-  return element.files;
+  element: unknown
+): element is HTMLFileInputElement {
+  return element instanceof HTMLInputElement && element.files !== null;
 }
 
+export interface FileSelectionEventOptions extends EventInit {
+  files?: File[] | null | undefined;
+}
+
+// Global Event overloads
 function fireEvent(
   element: Element | Document | Window,
-  eventType: KeyboardEventType,
-  options?: any
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, Event>,
+  options?: EventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, AnimationEvent>,
+  options?: AnimationEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, FocusEvent>,
+  options?: FocusEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, CompositionEvent>,
+  options?: CompositionEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, DragEvent>,
+  options?: DragEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, ErrorEvent>,
+  options?: ErrorEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, FocusEvent>,
+  options?: FocusEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, FormDataEvent>,
+  options?: FormDataEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, InputEvent>,
+  options?: InputEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, KeyboardEvent>,
+  options?: KeyboardEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, MouseEvent>,
+  options?: MouseEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, PointerEvent>,
+  options?: PointerEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, ProgressEvent>,
+  options?: ProgressEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<
+    GlobalEventHandlersEventMap,
+    SecurityPolicyViolationEvent
+  >,
+  options?: SecurityPolicyViolationEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, SubmitEvent>,
+  options?: SubmitEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, TouchEvent>,
+  options?: TouchEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, TransitionEvent>,
+  options?: TransitionEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, UIEvent>,
+  options?: UIEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Element | Document | Window,
+  eventType: FilterKeysByType<GlobalEventHandlersEventMap, WheelEvent>,
+  options?: WheelEventInit
 ): Promise<Event>;
 
+// Window Event overloads
 function fireEvent(
-  element: Element | Document | Window,
-  eventType: MouseEventType,
-  options?: any
-): Promise<Event | void>;
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, Event>,
+  options?: EventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, BeforeUnloadEvent>
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, GamepadEvent>,
+  options?: GamepadEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, HashChangeEvent>,
+  options?: HashChangeEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, MessageEvent>,
+  options?: MessageEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, PageTransitionEvent>,
+  options?: PageTransitionEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, PopStateEvent>,
+  options?: PopStateEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<
+    WindowEventHandlersEventMap,
+    PromiseRejectionEvent
+  >,
+  options?: PromiseRejectionEventInit
+): Promise<Event>;
+function fireEvent(
+  element: Window,
+  eventType: FilterKeysByType<WindowEventHandlersEventMap, StorageEvent>,
+  options?: StorageEventInit
+): Promise<Event>;
 
+// Document or Element overloads
+function fireEvent(
+  element: Document | Element,
+  eventType: FilterKeysByType<
+    DocumentAndElementEventHandlersEventMap,
+    ClipboardEvent
+  >,
+  options?: ClipboardEventInit
+): Promise<Event>;
+
+// Document event overloads
+function fireEvent(
+  element: Document,
+  eventType: FilterKeysByType<DocumentEventMap, Event>,
+  options?: EventInit
+): Promise<Event>;
+
+// Element event overloads
+function fireEvent(
+  element: Element,
+  eventType: FilterKeysByType<ElementEventMap, Event>,
+  options?: EventInit
+): Promise<Event>;
+
+// Special casing for File Input change events
+function fireEvent(
+  element: HTMLFileInputElement,
+  eventType: FileSelectionEventType,
+  options?: FileSelectionEventOptions
+): Promise<Event>;
+
+// Custom event overloads
 function fireEvent(
   element: Element | Document | Window,
   eventType: string,
-  options?: any
+  options?: CustomEventInit<unknown>
 ): Promise<Event>;
 
 /**
@@ -94,8 +283,8 @@ function fireEvent(
 function fireEvent(
   element: Element | Document | Window,
   eventType: string,
-  options = {}
-): Promise<Event | void> {
+  options: EventInit = {}
+): Promise<Event> {
   return Promise.resolve()
     .then(() => runHooks('fireEvent', 'start', element))
     .then(() => runHooks(`fireEvent:${eventType}`, 'start', element))
@@ -104,24 +293,24 @@ function fireEvent(
         throw new Error('Must pass an element to `fireEvent`');
       }
 
-      let event;
+      let event: Event;
       if (isKeyboardEventType(eventType)) {
         event = _buildKeyboardEvent(eventType, options);
       } else if (isMouseEventType(eventType)) {
         let rect;
-        if (element instanceof Window && element.document.documentElement) {
+        if (isWindow(element) && element.document.documentElement) {
           rect = element.document.documentElement.getBoundingClientRect();
         } else if (isDocument(element)) {
-          rect = element.documentElement!.getBoundingClientRect();
+          rect = element.documentElement.getBoundingClientRect();
         } else if (isElement(element)) {
           rect = element.getBoundingClientRect();
         } else {
-          return;
+          throw new Error('Could not determine coordinates for MouseEventInit');
         }
 
         let x = rect.left + 1;
         let y = rect.top + 1;
-        let simulatedCoordinates = {
+        let simulatedCoordinates: MouseEventInit = {
           screenX: x + 5, // Those numbers don't really mean anything.
           screenY: y + 95, // They're just to make the screenX/Y be different of clientX/Y..
           clientX: x,
@@ -151,28 +340,40 @@ function fireEvent(
 export default fireEvent;
 
 // eslint-disable-next-line require-jsdoc
-function buildBasicEvent(type: string, options: any = {}): Event {
-  let event = document.createEvent('Events');
+function buildBasicEvent(type: string, _options: EventInit = {}): Event {
+  let options: EventInit = {
+    ...DEFAULT_EVENT_OPTIONS,
+    ..._options,
+  };
 
-  let bubbles = options.bubbles !== undefined ? options.bubbles : true;
-  let cancelable = options.cancelable !== undefined ? options.cancelable : true;
+  try {
+    return new Event(type, options);
+  } catch {
+    let event = document.createEvent('Events');
 
-  delete options.bubbles;
-  delete options.cancelable;
+    let { bubbles, cancelable } = options;
 
-  // bubbles and cancelable are readonly, so they can be
-  // set when initializing event
-  event.initEvent(type, bubbles, cancelable);
-  for (let prop in options) {
-    (event as any)[prop] = options[prop];
+    delete options.bubbles;
+    delete options.cancelable;
+
+    // bubbles and cancelable are readonly, so they can be
+    // set when initializing event
+    event.initEvent(type, bubbles, cancelable);
+    for (let prop in options) {
+      (event as any)[prop] = (options as Record<string, unknown>)[prop];
+    }
+    return event;
   }
-  return event;
 }
 
 // eslint-disable-next-line require-jsdoc
-function buildMouseEvent(type: MouseEventType, options: any = {}) {
+function buildMouseEvent(type: MouseEventType, options: MouseEventInit = {}) {
   let event;
-  let eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
+  let eventOpts = {
+    view: window,
+    ...DEFAULT_EVENT_OPTIONS,
+    ...options,
+  };
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
@@ -182,18 +383,18 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
         type,
         eventOpts.bubbles,
         eventOpts.cancelable,
-        window,
-        eventOpts.detail,
-        eventOpts.screenX,
-        eventOpts.screenY,
-        eventOpts.clientX,
-        eventOpts.clientY,
-        eventOpts.ctrlKey,
-        eventOpts.altKey,
-        eventOpts.shiftKey,
-        eventOpts.metaKey,
-        eventOpts.button,
-        eventOpts.relatedTarget
+        eventOpts.view ?? window,
+        eventOpts.detail ?? 0,
+        eventOpts.screenX ?? 0,
+        eventOpts.screenY ?? 0,
+        eventOpts.clientX ?? 0,
+        eventOpts.clientY ?? 0,
+        eventOpts.ctrlKey ?? false,
+        eventOpts.altKey ?? false,
+        eventOpts.shiftKey ?? false,
+        eventOpts.metaKey ?? false,
+        eventOpts.button ?? 0,
+        eventOpts.relatedTarget ?? null
       );
     } catch (e) {
       event = buildBasicEvent(type, options);
@@ -207,32 +408,26 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 // eslint-disable-next-line require-jsdoc
 export function _buildKeyboardEvent(
   type: KeyboardEventType,
-  options: any = {}
+  options: KeyboardEventInit = {}
 ) {
-  let eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
-  let event: Event | undefined;
-  let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
+  let eventOpts: KeyboardEventInit = {
+    ...DEFAULT_EVENT_OPTIONS,
+    ...options,
+  };
+  let event: KeyboardEvent | Event | undefined;
 
   try {
     event = new KeyboardEvent(type, eventOpts);
 
-    // Property definitions are required for B/C for keyboard event usage
-    // If this properties are not defined, when listening for key events
-    // keyCode/which will be 0. Also, keyCode and which now are string
-    // and if app compare it with === with integer key definitions,
-    // there will be a fail.
-    //
-    // https://w3c.github.io/uievents/#interface-keyboardevent
-    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
     Object.defineProperty(event, 'keyCode', {
       get() {
-        return parseInt(eventOpts.keyCode);
+        return extractKeyInfo('keyCode', eventOpts);
       },
     });
 
     Object.defineProperty(event, 'which', {
       get() {
-        return parseInt(eventOpts.which);
+        return extractKeyInfo('which', eventOpts);
       },
     });
 
@@ -243,7 +438,19 @@ export function _buildKeyboardEvent(
 
   try {
     event = document.createEvent('KeyboardEvents');
-    eventMethodName = 'initKeyboardEvent';
+    (event as KeyboardEvent).initKeyboardEvent(
+      type,
+      eventOpts.bubbles,
+      eventOpts.cancelable,
+      window,
+      eventOpts.key,
+      eventOpts.location,
+      eventOpts.ctrlKey,
+      eventOpts.altKey,
+      eventOpts.shiftKey,
+      eventOpts.metaKey
+    );
+    return event;
   } catch (e) {
     // left intentionally blank
   }
@@ -251,37 +458,65 @@ export function _buildKeyboardEvent(
   if (!event) {
     try {
       event = document.createEvent('KeyEvents');
-      eventMethodName = 'initKeyEvent';
+      // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/initKeyEvent
+      // @ts-expect-error This method is so long deprecated that TS doesn't know about it
+      (event as KeyboardEvent).initKeyEvent(
+        type,
+        eventOpts.bubbles,
+        eventOpts.cancelable,
+        window,
+        eventOpts.ctrlKey,
+        eventOpts.altKey,
+        eventOpts.shiftKey,
+        eventOpts.metaKey,
+        eventOpts.keyCode
+      );
+      return event;
     } catch (e) {
       // left intentionally blank
     }
   }
 
-  if (event && eventMethodName) {
-    (event as any)[eventMethodName](
-      type,
-      eventOpts.bubbles,
-      eventOpts.cancelable,
-      window,
-      eventOpts.ctrlKey,
-      eventOpts.altKey,
-      eventOpts.shiftKey,
-      eventOpts.metaKey,
-      eventOpts.keyCode,
-      eventOpts.charCode
-    );
-  } else {
+  if (!event) {
     event = buildBasicEvent(type, options);
   }
 
   return event;
 }
 
+// Property definitions are required for B/C for keyboard event usage
+// If this properties are not defined, when listening for key events
+// keyCode/which will be 0. Also, keyCode and which now are string
+// and if app compare it with === with integer key definitions,
+// there will be a fail.
+//
+// https://w3c.github.io/uievents/#interface-keyboardevent
+// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+// eslint-disable-next-line require-jsdoc
+function extractKeyInfo(prop: 'keyCode' | 'which', options: KeyboardEventInit) {
+  let value = options[prop];
+  if (typeof value === 'number') {
+    return value;
+  } else if (value === null || value === undefined) {
+    return undefined;
+  } else if (typeof value === 'string') {
+    let int = parseInt(value);
+    if (Number.isNaN(int)) {
+      throw new Error(`event.${prop} parsed to NaN`);
+    }
+    return int;
+  } else {
+    throw new Error(
+      `event.${prop} type not supported, value was ${options[prop]}`
+    );
+  }
+}
+
 // eslint-disable-next-line require-jsdoc
 function buildFileEvent(
   type: FileSelectionEventType,
-  element: HTMLInputElement,
-  options: any = {}
+  element: HTMLFileInputElement,
+  options: FileSelectionEventOptions = {}
 ): Event {
   let event = buildBasicEvent(type);
   let files = options.files;
@@ -304,7 +539,7 @@ function buildFileEvent(
       configurable: true,
     });
 
-    let elementProto = Object.getPrototypeOf(element);
+    let elementProto: unknown = Object.getPrototypeOf(element);
     let valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
     Object.defineProperty(element, 'value', {
       configurable: true,

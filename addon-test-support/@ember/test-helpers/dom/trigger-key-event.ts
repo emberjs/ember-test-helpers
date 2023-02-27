@@ -133,7 +133,7 @@ const keyFromKeyCodeWithShift: { [key: number]: string } = {
 function keyFromKeyCodeAndModifiers(
   keycode: number,
   modifiers: KeyModifiers
-): string | void {
+): string | undefined {
   if (keycode > 64 && keycode < 91) {
     if (modifiers.shiftKey) {
       return String.fromCharCode(keycode);
@@ -166,20 +166,20 @@ function keyCodeFromKey(key: string) {
 
 /**
   @private
-  @param {Element | Document} element the element to trigger the key event on
+  @param {Element | Document | Window} element the element to trigger the key event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
   @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
   @return {Promise<Event>} resolves when settled
  */
 export function __triggerKeyEvent__(
-  element: Element | Document,
-  eventType: KeyboardEventType,
+  element: Element | Document | Window,
+  eventType: KeyboardEventType, // NOTE: This is not exhaustive of all KeyboardEventTypes
   key: number | string,
   modifiers: KeyModifiers = DEFAULT_MODIFIERS
 ): Promise<Event> {
   return Promise.resolve().then(() => {
-    let props;
+    let props: KeyboardEventInit;
     if (typeof key === 'number') {
       props = {
         keyCode: key,
@@ -220,7 +220,7 @@ export function __triggerKeyEvent__(
   Optionally the user can also provide a POJO with extra modifiers for the event.
 
   @public
-  @param {string|Element} target the element or selector to trigger the event on
+  @param {Target} target the element or selector to trigger the event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
   @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
