@@ -67,6 +67,11 @@ import {
   DeprecationFailure,
   Warning,
   Target,
+  // Hooks
+  _registerHook,
+  _runHooks,
+  Hook,
+  HookUnregister,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
@@ -264,4 +269,15 @@ expectTypeOf(getDeprecationsDuringCallback).toEqualTypeOf<
 expectTypeOf(getWarnings).toEqualTypeOf<() => Array<Warning>>();
 expectTypeOf(getWarningsDuringCallback).toEqualTypeOf<
   (callback: () => void) => Array<Warning> | Promise<Array<Warning>>
+>();
+
+// Hooks
+expectTypeOf(_registerHook).toEqualTypeOf<
+  (helperName: string, label: string, hook: Hook) => HookUnregister
+>();
+expectTypeOf<{ unregister: () => void }>().toEqualTypeOf<HookUnregister>();
+expectTypeOf<(...args: unknown[]) => void>().toMatchTypeOf<Hook>();
+expectTypeOf<(...args: unknown[]) => Promise<void>>().toMatchTypeOf<Hook>();
+expectTypeOf(_runHooks).toEqualTypeOf<
+  (helperName: string, label: string, ...args: unknown[]) => Promise<void>
 >();

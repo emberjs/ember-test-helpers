@@ -53,6 +53,7 @@ export {
   registerHook as _registerHook,
   runHooks as _runHooks,
 } from './-internal/helper-hooks';
+export type { Hook, HookUnregister } from './-internal/helper-hooks';
 
 // DOM Helpers
 export { default as click } from './dom/click';

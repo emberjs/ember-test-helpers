@@ -1,6 +1,6 @@
-type Hook = (...args: any[]) => void | Promise<void>;
+export type Hook = (...args: unknown[]) => void | Promise<void>;
 type HookLabel = 'start' | 'end' | string;
-type HookUnregister = {
+export type HookUnregister = {
   unregister: () => void;
 };
 
@@ -56,13 +56,13 @@ export function registerHook(
  * @param {string} helperName  The name of the test helper.
  * @param {string} label A label to help identify the hook. Built-in labels are `start` and `end`,
  *                       designating the start of the helper invocation and the end.
- * @param {any[]} args Any arguments originally passed to the test helper.
+ * @param {unknown[]} args Any arguments originally passed to the test helper.
  * @returns {Promise<void>} A promise representing the serial invocation of the hooks.
  */
 export function runHooks(
   helperName: string,
   label: HookLabel,
-  ...args: any[]
+  ...args: unknown[]
 ): Promise<void> {
   let hooks =
     registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
