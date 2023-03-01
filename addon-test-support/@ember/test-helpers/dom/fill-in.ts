@@ -6,7 +6,7 @@ import settled from '../settled';
 import fireEvent from './fire-event';
 import Target, { isContentEditable } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
-import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { runHooks, registerHook } from '../helper-hooks';
 
 registerHook('fillIn', 'start', (target: Target, text: string) => {
   log('fillIn', target, text);

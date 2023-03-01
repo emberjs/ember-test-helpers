@@ -1,6 +1,6 @@
-type Hook = (...args: any[]) => void | Promise<void>;
-type HookLabel = 'start' | 'end' | string;
-type HookUnregister = {
+export type Hook = (...args: any[]) => void | Promise<void>;
+export type HookLabel = 'start' | 'end' | string;
+export type HookUnregister = {
   unregister: () => void;
 };
 
@@ -62,7 +62,7 @@ export function registerHook(
 export function runHooks(
   helperName: string,
   label: HookLabel,
-  ...args: any[]
+  ...args: unknown[]
 ): Promise<void> {
   let hooks =
     registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();

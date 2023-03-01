@@ -9,7 +9,7 @@ import {
   setupContext,
   setupRenderingContext,
   teardownContext,
-  _registerHook,
+  registerHook,
   getTestMetadata,
   render,
   clearRender,
@@ -180,10 +180,10 @@ module('setupRenderingContext', function (hooks) {
     test('it executes registered render hooks for start and end at the right time', async function (assert) {
       assert.expect(3);
 
-      let hookStart = _registerHook('render', 'start', () => {
+      let hookStart = registerHook('render', 'start', () => {
         assert.step('render:start');
       });
-      let hookEnd = _registerHook('render', 'end', () => {
+      let hookEnd = registerHook('render', 'end', () => {
         assert.step('render:end');
       });
 

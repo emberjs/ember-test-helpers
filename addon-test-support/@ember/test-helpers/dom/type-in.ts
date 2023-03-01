@@ -11,7 +11,7 @@ import Target, {
 } from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from '@ember/test-helpers/dom/-logging';
-import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { runHooks, registerHook } from '../helper-hooks';
 
 export interface Options {
   delay?: number;

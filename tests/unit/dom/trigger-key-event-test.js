@@ -3,7 +3,7 @@ import {
   triggerKeyEvent,
   setupContext,
   teardownContext,
-  _registerHook,
+  registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
@@ -44,10 +44,10 @@ module('DOM Helper: triggerKeyEvent', function (hooks) {
     element = document.createElement('div');
     insertElement(element);
 
-    let startHook = _registerHook('triggerKeyEvent', 'start', () => {
+    let startHook = registerHook('triggerKeyEvent', 'start', () => {
       assert.step('triggerKeyEvent:start');
     });
-    let endHook = _registerHook('triggerKeyEvent', 'end', () => {
+    let endHook = registerHook('triggerKeyEvent', 'end', () => {
       assert.step('triggerKeyEvent:end');
     });
 

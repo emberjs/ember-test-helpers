@@ -4,7 +4,7 @@ import {
   blur,
   setupContext,
   teardownContext,
-  _registerHook,
+  registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
@@ -59,10 +59,10 @@ module('DOM Helper: blur', function (hooks) {
 
     await focus(element);
 
-    let startHook = _registerHook('blur', 'start', () => {
+    let startHook = registerHook('blur', 'start', () => {
       assert.step('blur:start');
     });
-    let endHook = _registerHook('blur', 'end', () => {
+    let endHook = registerHook('blur', 'end', () => {
       assert.step('blur:end');
     });
 

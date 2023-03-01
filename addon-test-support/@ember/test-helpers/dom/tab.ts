@@ -5,7 +5,7 @@ import Target, { isDocument } from './-target';
 import { __blur__ } from './blur';
 import { __focus__ } from './focus';
 import { isVisible, isDisabled } from '../-utils';
-import { registerHook, runHooks } from '../-internal/helper-hooks';
+import { registerHook, runHooks } from '../helper-hooks';
 import { log } from './-logging';
 
 const SUPPORTS_INERT = 'inert' in Element.prototype;

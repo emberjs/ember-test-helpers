@@ -4,7 +4,7 @@ import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
 import Target from './-target';
-import { runHooks } from '../-internal/helper-hooks';
+import { runHooks } from '../helper-hooks';
 
 /**
   Set the `selected` property true for the provided option the target is a

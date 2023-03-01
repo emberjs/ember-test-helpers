@@ -49,10 +49,8 @@ export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
 export type { TestMetadata } from './test-metadata';
 export { default as getTestMetadata } from './test-metadata';
-export {
-  registerHook as _registerHook,
-  runHooks as _runHooks,
-} from './-internal/helper-hooks';
+export { registerHook, runHooks } from './helper-hooks';
+export type { Hook, HookLabel, HookUnregister } from './helper-hooks';
 
 // DOM Helpers
 export { default as click } from './dom/click';

@@ -1,4 +1,4 @@
-import { _registerHook } from '@ember/test-helpers';
+import { registerHook } from '@ember/test-helpers';
 
 /**
  * Register mock hooks for a helper and optional list of expected events performed while the helper is executed.
@@ -11,10 +11,10 @@ import { _registerHook } from '@ember/test-helpers';
  */
 export const registerHooks = (assert, helperName, { expectedEvents } = {}) => {
   const mockHooks = [
-    _registerHook(helperName, 'start', () => {
+    registerHook(helperName, 'start', () => {
       assert.step(`${helperName}:start`);
     }),
-    _registerHook(helperName, 'end', () => {
+    registerHook(helperName, 'end', () => {
       assert.step(`${helperName}:end`);
     }),
   ];
@@ -35,19 +35,19 @@ export const registerHooks = (assert, helperName, { expectedEvents } = {}) => {
  * @returns {HookUnregister[]} Unregisterable hooks
  */
 export const registerFireEventHooks = (assert, expectedEvents) => {
-  const startHook = _registerHook('fireEvent', 'start', () => {
+  const startHook = registerHook('fireEvent', 'start', () => {
     assert.step(`fireEvent:start`);
   });
-  const endHook = _registerHook('fireEvent', 'end', () => {
+  const endHook = registerHook('fireEvent', 'end', () => {
     assert.step(`fireEvent:end`);
   });
 
   const eventTypes = [...new Set(expectedEvents)];
   const eventSpecificHooks = eventTypes.flatMap((eventType) => [
-    _registerHook(`fireEvent:${eventType}`, 'start', () => {
+    registerHook(`fireEvent:${eventType}`, 'start', () => {
       assert.step(`fireEvent:${eventType}:start`);
     }),
-    _registerHook(`fireEvent:${eventType}`, 'end', () => {
+    registerHook(`fireEvent:${eventType}`, 'end', () => {
       assert.step(`fireEvent:${eventType}:end`);
     }),
   ]);
