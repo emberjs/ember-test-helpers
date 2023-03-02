@@ -70,8 +70,9 @@ import {
   // Helper hooks
   registerHook,
   runHooks,
-  HookLabel,
   Hook,
+  HookHelperName,
+  HookLabel,
   HookUnregister,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
@@ -274,8 +275,12 @@ expectTypeOf(getWarningsDuringCallback).toEqualTypeOf<
 
 // Helper hooks
 expectTypeOf(registerHook).toEqualTypeOf<
-  (helperName: string, label: HookLabel, hook: Hook) => HookUnregister
+  (helperName: HookHelperName, label: HookLabel, hook: Hook) => HookUnregister
 >();
 expectTypeOf(runHooks).toEqualTypeOf<
-  (helperName: string, label: HookLabel, ...args: unknown[]) => Promise<void>
+  (
+    helperName: HookHelperName,
+    label: HookLabel,
+    ...args: unknown[]
+  ) => Promise<void>
 >();

@@ -1181,6 +1181,7 @@ Registers a function to be run during the invocation of a test helper.
     *   `click`
     *   `doubleClick`
     *   `fillIn`
+    *   `fireEvent`
     *   `focus`
     *   `render`
     *   `scrollTo`

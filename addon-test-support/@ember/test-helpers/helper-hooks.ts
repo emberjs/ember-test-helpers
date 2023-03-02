@@ -1,4 +1,21 @@
 export type Hook = (...args: any[]) => void | Promise<void>;
+export type HookHelperName =
+  | 'blur'
+  | 'click'
+  | 'doubleClick'
+  | 'fillIn'
+  | 'fireEvent'
+  | 'focus'
+  | 'render'
+  | 'scrollTo'
+  | 'select'
+  | 'tab'
+  | 'tap'
+  | 'triggerEvent'
+  | 'triggerKeyEvent'
+  | 'typeIn'
+  | 'visit'
+  | string;
 export type HookLabel = 'start' | 'end' | string;
 export type HookUnregister = {
   unregister: () => void;
@@ -12,7 +29,7 @@ const registeredHooks = new Map<string, Set<Hook>>();
  * @param {string} label A label to help identify the hook.
  * @returns {string} The compound key for the helper.
  */
-function getHelperKey(helperName: string, label: string): string {
+function getHelperKey(helperName: HookHelperName, label: string): string {
   return `${helperName}:${label}`;
 }
 
@@ -28,7 +45,7 @@ function getHelperKey(helperName: string, label: string): string {
  *                           the specific hook initially registered to the helper.
  */
 export function registerHook(
-  helperName: string,
+  helperName: HookHelperName,
   label: HookLabel,
   hook: Hook
 ): HookUnregister {
@@ -59,7 +76,7 @@ export function registerHook(
  * @returns {Promise<void>} A promise representing the serial invocation of the hooks.
  */
 export function runHooks(
-  helperName: string,
+  helperName: HookHelperName,
   label: HookLabel,
   ...args: unknown[]
 ): Promise<void> {
