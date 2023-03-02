@@ -65,6 +65,9 @@
 *   [getWarningsDuringCallback][61]
     *   [Parameters][62]
     *   [Examples][63]
+*   [registerHook][79]
+    *   [Parameters][80]
+    *   [Examples][81]
 
 ## DOM Interaction Helpers
 
@@ -1166,6 +1169,49 @@ module('awesome-sauce', function(hooks) {
 
 Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An array of warnings information
 
+## registerHook
+
+Registers a function to be run during the invocation of a test helper.
+
+### Parameters
+
+*   `helperName` **[string][64]** The name of the test helper in which to run the hook.
+                 Current test helpers include:
+    *   `blur`
+    *   `click`
+    *   `doubleClick`
+    *   `fillIn`
+    *   `focus`
+    *   `render`
+    *   `scrollTo`
+    *   `select`
+    *   `tab`
+    *   `tap`
+    *   `triggerEvent`
+    *   `triggerKeyEvent`
+    *   `typeIn`
+    *   `visit`
+*   `label` **[string][64]** A label to help indentify the hook. Built-in labels are
+            `start` and `end`, designating either the start or the end of the helper invocation.
+*   `hook` **[Function][78]** The hook function to run when the test helper is invoked.
+
+### Examples
+
+Registering a hook for the `end` point of the `click` test helper invocation
+
+```javascript
+const hook = registerHook('click', 'end', () => {
+  console.log('Running `click:end` test helper hook');
+});
+
+// Unregister the hook at some later point in time
+hook.unregister();
+```
+
+Returns **[Object][72]** containing an `unregister` function that unregisters
+the specific hook initially registered to the helper.
+
+
 [1]: #dom-interaction-helpers
 
 [2]: #blur
@@ -1321,3 +1367,9 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 [77]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
 
 [78]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[79]: #registerhook
+
+[80]: #parameters-31
+
+[81]: #examples-29
