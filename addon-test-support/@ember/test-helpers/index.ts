@@ -49,12 +49,12 @@ export { getDebugInfo } from './-internal/debug-info';
 export { default as registerDebugInfoHelper } from './-internal/debug-info-helpers';
 export type { TestMetadata } from './test-metadata';
 export { default as getTestMetadata } from './test-metadata';
-export { registerHook, runHooks } from './helper-hooks';
-export type {
-  Hook,
-  HookHelperName,
-  HookLabel,
-  HookUnregister,
+export {
+  registerHook,
+  runHooks,
+  type Hook,
+  type HookLabel,
+  type HookUnregister,
 } from './helper-hooks';
 
 // DOM Helpers
