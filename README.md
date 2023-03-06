@@ -20,6 +20,11 @@ Installation
 
 #### yarn
 ```bash
+pnpm install --save-dev @ember/test-helpers
+```
+
+#### yarn
+```bash
 yarn add --dev @ember/test-helpers
 ```
 

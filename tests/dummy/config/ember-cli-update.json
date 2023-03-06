@@ -11,8 +11,7 @@
           "codemodsSource": "ember-addon-codemods-manifest@1",
           "isBaseBlueprint": true,
           "options": [
-            "--welcome",
-            "--yarn"
+            "--welcome"
           ]
         }
       ]

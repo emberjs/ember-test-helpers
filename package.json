@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build:types": "tsc --project types.tsconfig.json",
-    "build:js": "yarn babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
+    "build:js": "pnpm babel --extensions '.ts' --presets @babel/preset-typescript addon-test-support --out-dir addon-test-support/ --ignore '**/*.d.ts'",
     "build": "concurrently \"npm:build:*\" --names \"build:\"",
     "prepack": "pnpm build",
     "postpack": "rimraf addon-test-support/**/*.js public-types",
@@ -124,7 +124,7 @@
   },
   "release-it": {
     "scripts": {
-      "after:bump": "yarn docs"
+      "after:bump": "pnpm docs"
     },
     "plugins": {
       "release-it-lerna-changelog": {
@@ -141,8 +141,7 @@
     }
   },
   "volta": {
-    "node": "16.19.0",
-    "yarn": "1.22.19"
+    "node": "16.19.0"
   },
   "typesVersions": {
     "*": {
