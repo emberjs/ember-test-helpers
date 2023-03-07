@@ -18,9 +18,9 @@ Installation
 ------------------------------------------------------------------------------
 ### For ember-qunit v5 and above
 
-#### yarn
+#### pnpm
 ```bash
-pnpm install --save-dev @ember/test-helpers
+pnpm add --save-dev @ember/test-helpers
 ```
 
 #### yarn
@@ -64,11 +64,11 @@ Contributing
 
 * `git clone <repository-url>`
 * `cd ember-test-helpers`
-* `yarn install`
+* `pnpm install`
 
 ### Running tests
 
-* `yarn test` (Runs `ember try:each` to test your addon against multiple Ember versions)
+* `pnpm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
 
