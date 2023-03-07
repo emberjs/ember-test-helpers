@@ -1,0 +1,19 @@
+{
+  "name": "@ember/test-helpers-root",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+      "build": "pnpm --filter @ember/test-helpers build",
+      "lint": "pnpm --filter '*' lint",
+      "lint:fix": "pnpm --filter '*' lint:fix",
+      "prepare": "pnpm build",
+      "start": "concurrently 'npm:start:*' --restart-after 5000 --prefix-colors cyan,white,yellow",
+      "start:addon": "pnpm --filter @ember/test-helpers start --no-watch.clearScreen",
+      "start:test-app": "pnpm --filter test-app start",
+      "test": "pnpm --filter '*' test"
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.1",
+    "prettier": "^2.5.1"
+  }
+}

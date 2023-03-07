@@ -1,0 +1,83 @@
+name: CI Build
+
+on:
+  push:
+    branches:
+      - master
+      - 'v*'
+  pull_request:
+  schedule:
+    - cron: '0 3 * * *' # daily, at 3am
+
+jobs:
+  test:
+    timeout-minutes: 10
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: NullVoxPopuli/action-setup-pnpm@v1
+      - run: pnpm lint
+      - run: pnpm test
+
+  floating-dependencies:
+    timeout-minutes: 10
+    name: 'Floating Dependencies'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: NullVoxPopuli/action-setup-pnpm@v1
+        with:
+          no-lockfile: true
+      - run: pnpm test
+
+  try-scenarios:
+    timeout-minutes: 10
+    name: 'Try: ${{ matrix.ember-try-scenario }}'
+
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ember-try-scenario:
+          - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - ember-default
+          - embroider-safe
+          # - embroider-optimized # see comments in ember-try.js
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: NullVoxPopuli/action-setup-pnpm@v1
+      - name: test
+        run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
+
+  types:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ts-version:
+          - 4.7
+          - 4.8
+          - 4.9
+          - next
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: NullVoxPopuli/action-setup-pnpm@v1
+      - name: install TS version
+        run: pnpm add --save-dev typescript@${{matrix.ts-version}}
+      - name: test types
+        run: pnpm lint:ts
