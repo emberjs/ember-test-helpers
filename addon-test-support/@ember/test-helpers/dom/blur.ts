@@ -4,7 +4,7 @@ import settled from '../settled';
 import Target from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFocusable from './-is-focusable';
-import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { runHooks, registerHook } from '../helper-hooks';
 
 registerHook('blur', 'start', (target: Target) => {
   log('blur', target);

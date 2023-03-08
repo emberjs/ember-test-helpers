@@ -14,7 +14,7 @@ import getRootElement from './dom/get-root-element';
 import { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
 import { assert } from '@ember/debug';
-import { runHooks } from './-internal/helper-hooks';
+import { runHooks } from './helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';

@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import { isElement } from './-target';
-import { runHooks } from '../-internal/helper-hooks';
+import { runHooks } from '../helper-hooks';
 
 /**
   Scrolls DOM element or selector to the given coordinates.

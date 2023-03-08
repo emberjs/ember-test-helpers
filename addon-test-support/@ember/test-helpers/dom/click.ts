@@ -5,7 +5,7 @@ import settled from '../settled';
 import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
-import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { runHooks, registerHook } from '../helper-hooks';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;

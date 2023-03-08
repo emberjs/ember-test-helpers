@@ -3,7 +3,7 @@ import {
   focus,
   setupContext,
   teardownContext,
-  _registerHook,
+  registerHook,
 } from '@ember/test-helpers';
 import {
   buildInstrumentedElement,
@@ -51,10 +51,10 @@ module('DOM Helper: focus', function (hooks) {
     element = document.createElement('input');
     insertElement(element);
 
-    let startHook = _registerHook('focus', 'start', () => {
+    let startHook = registerHook('focus', 'start', () => {
       assert.step('focus:start');
     });
-    let endHook = _registerHook('focus', 'end', () => {
+    let endHook = registerHook('focus', 'end', () => {
       assert.step('focus:end');
     });
 

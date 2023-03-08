@@ -50,9 +50,12 @@ export { default as registerDebugInfoHelper } from './-internal/debug-info-helpe
 export type { TestMetadata } from './test-metadata';
 export { default as getTestMetadata } from './test-metadata';
 export {
-  registerHook as _registerHook,
-  runHooks as _runHooks,
-} from './-internal/helper-hooks';
+  registerHook,
+  runHooks,
+  type Hook,
+  type HookLabel,
+  type HookUnregister,
+} from './helper-hooks';
 
 // DOM Helpers
 export { default as click } from './dom/click';

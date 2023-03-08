@@ -6,7 +6,7 @@ import { DEFAULT_CLICK_OPTIONS } from './click';
 import Target, { isWindow } from './-target';
 import { log } from '@ember/test-helpers/dom/-logging';
 import isFormControl from './-is-form-control';
-import { runHooks, registerHook } from '../-internal/helper-hooks';
+import { runHooks, registerHook } from '../helper-hooks';
 
 registerHook('doubleClick', 'start', (target: Target) => {
   log('doubleClick', target);
