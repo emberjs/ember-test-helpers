@@ -57,7 +57,19 @@ export function backburnerDebugInfoAvailable() {
 
 /**
  * Retrieves debug information from backburner's current deferred actions queue (runloop instance).
+ * The debug info returned includes details about anything that is currently unsettled (e.g. timers,
+ * pending test waiters, etc).
+ *
  * If the `getDebugInfo` method isn't available, it returns `null`.
+ *
+ * @example
+ *
+ * ```js
+ * import { getDebugInfo } from '@ember/test-helpers';
+ *
+ * // ...snip...
+ * getDebugInfo().toConsole();
+ * ```
  *
  * @public
  * @returns {MaybeDebugInfo | null} Backburner debugInfo or, if the getDebugInfo method is not present, null
