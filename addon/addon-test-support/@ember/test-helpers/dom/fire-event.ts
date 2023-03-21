@@ -20,7 +20,7 @@ const MOUSE_EVENT_CONSTRUCTOR = (() => {
 const DEFAULT_EVENT_OPTIONS = { bubbles: true, cancelable: true };
 
 export const KEYBOARD_EVENT_TYPES = tuple('keydown', 'keypress', 'keyup');
-export type KeyboardEventType = typeof KEYBOARD_EVENT_TYPES[number];
+export type KeyboardEventType = (typeof KEYBOARD_EVENT_TYPES)[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isKeyboardEventType(
@@ -40,7 +40,7 @@ const MOUSE_EVENT_TYPES = tuple(
   'mouseout',
   'mouseover'
 );
-export type MouseEventType = typeof MOUSE_EVENT_TYPES[number];
+export type MouseEventType = (typeof MOUSE_EVENT_TYPES)[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isMouseEventType(eventType: any): eventType is MouseEventType {
@@ -48,7 +48,8 @@ export function isMouseEventType(eventType: any): eventType is MouseEventType {
 }
 
 const FILE_SELECTION_EVENT_TYPES = tuple('change');
-export type FileSelectionEventType = typeof FILE_SELECTION_EVENT_TYPES[number];
+export type FileSelectionEventType =
+  (typeof FILE_SELECTION_EVENT_TYPES)[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isFileSelectionEventType(
