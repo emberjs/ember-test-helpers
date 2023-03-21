@@ -48,9 +48,9 @@
     "@ember/test-waiters": "^3.0.2",
     "@embroider/macros": "^1.10.0",
     "@embroider/util": "^1.9.0",
-    "ember-auto-import": "^2.6.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.8",
+    "ember-auto-import": "^2.6.0",
     "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^6.2.0"
   },
@@ -62,6 +62,7 @@
     "@glimmer/component": "^1.1.2",
     "@glimmer/interfaces": "^0.84.1",
     "@glimmer/reference": "^0.84.2",
+    "@glint/template": "^0.9.7",
     "@tsconfig/ember": "^1.0.1",
     "@types/jquery": "^3.5.16",
     "@types/rsvp": "^4.0.4",
