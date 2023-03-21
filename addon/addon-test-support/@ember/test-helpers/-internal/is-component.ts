@@ -1,4 +1,5 @@
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
+import type { ComponentLike } from '@glint/template';
 
 import getComponentManager from './get-component-manager';
 
@@ -10,7 +11,10 @@ import getComponentManager from './get-component-manager';
  * @param {Object} owner Owner, we need this for old versions of getComponentManager
  * @returns {boolean} True if it's a component, false if not
  */
-function isComponent(maybeComponent: object, owner: object): boolean {
+function isComponent(
+  maybeComponent: object,
+  owner: object
+): maybeComponent is ComponentLike {
   if (macroCondition(dependencySatisfies('ember-source', '>=3.25.0-beta.1'))) {
     return !!getComponentManager(maybeComponent, owner);
   } else {
