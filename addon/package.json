@@ -59,6 +59,7 @@
     "@babel/core": "^7.21.0",
     "@babel/preset-typescript": "^7.21.0",
     "@ember/optional-features": "^2.0.0",
+    "@ember/string": "^3.0.1",
     "@glimmer/component": "^1.1.2",
     "@glimmer/interfaces": "^0.84.1",
     "@glimmer/reference": "^0.84.2",
