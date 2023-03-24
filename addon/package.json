@@ -92,7 +92,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "expect-type": "^0.15.0",
     "fs-extra": "^11.1.0",
-    "latest-version": "^5.0.0",
+    "latest-version": "^7.0.0",
     "loader.js": "^4.7.0",
     "pretender": "^3.4.7",
     "prettier": "^2.8.1",
