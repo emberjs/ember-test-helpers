@@ -60,7 +60,7 @@ jobs:
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: test
-        working-directory: addon
+        working-directory: test-app
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
 
   types:
