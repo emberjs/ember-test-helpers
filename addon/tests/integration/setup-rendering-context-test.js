@@ -20,6 +20,8 @@ import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { precompileTemplate } from '@ember/template-compilation';
 import { defer } from 'rsvp';
+// Eslint 7 / babel-parser stopped supporting decorators
+// eslint-disable-next-line no-unused-vars
 import { tracked } from '@glimmer/tracking';
 
 const PromiseWrapperTemplate = hbs`

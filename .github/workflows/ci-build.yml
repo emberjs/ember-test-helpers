@@ -60,6 +60,7 @@ jobs:
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: test
+        working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
 
   types:
@@ -82,6 +83,8 @@ jobs:
       - name: install dependencies
         run: yarn install --frozen-lockfile
       - name: install TS version
+        working-directory: addon
         run: yarn install --dev typescript@${{matrix.ts-version}}
       - name: test types
+        working-directory: addon
         run: yarn lint:ts
