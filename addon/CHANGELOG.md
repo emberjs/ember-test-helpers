@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v2.9.2 (2022-12-21)
+
+#### :bug: Bug Fix
+* [#1302](https://github.com/emberjs/ember-test-helpers/pull/1302) [backport] Remove the index signature from `TestContext` ([@chriskrycho](https://github.com/chriskrycho))
+    * Backporting [#1301](https://github.com/emberjs/ember-test-helpers/pull/1301) Remove the index signature from `TestContext` ([@dfreeman](https://github.com/dfreeman))
+* [#1303](https://github.com/emberjs/ember-test-helpers/pull/1303) `TestContext.resumeTest()` returns `void`, not `Promise<void>` ([@chriskrycho](https://github.com/chriskrycho))
+
+#### Committers: 1
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Dan Freeman ([@dfreeman](https://github.com/dfreeman))
+
 ## v2.9.1 (2022-12-16)
 
 ***Note:** these were all back-ported from master since they could go out on 2.9. This will be the last 2.9 release unless there are critical bug fixes here!*
