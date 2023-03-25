@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v2.9.3 (2022-12-21)
+
+#### :bug: Bug Fix
+* [#1305](https://github.com/emberjs/ember-test-helpers/pull/1305) [backport] Avoid unnecessary dependencies on `@glimmer` types ([@dfreeman](https://github.com/dfreeman))
+
+#### Committers: 1
+- Dan Freeman ([@dfreeman](https://github.com/dfreeman))
+
 ## v2.9.2 (2022-12-21)
 
 #### :bug: Bug Fix
