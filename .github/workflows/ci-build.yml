@@ -20,6 +20,7 @@ jobs:
       - uses: volta-cli/action@v4
       - run: yarn install --frozen-lockfile --ignore-engines
       - run: yarn build:types
+        working-directory: addon
       - run: yarn lint
       - run: yarn test
 
