@@ -95,6 +95,6 @@
     "edition": "octane"
   },
   "dependencies": {
-    "@ember/test-helpers": "*"
+    "@ember/test-helpers": "file:../addon"
   }
 }
