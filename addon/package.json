@@ -37,9 +37,8 @@
     "lint:ts": "tsc --noEmit && tsc --noEmit --project type-tests",
     "postpublish": "yarn clean",
     "release": "release-it",
-    "start": "ember serve",
-    "test": "ember test",
-    "test:all": "ember try:each"
+    "test": "echo 'no tests'",
+    "start": "ember serve"
   },
   "peerDependencies": {
     "ember-source": "^4.0.0"
