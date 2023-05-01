@@ -19,7 +19,6 @@ import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
-import { ensureSafeComponent } from '@embroider/util';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -166,13 +165,8 @@ export function render(
             );
           }
 
-          let ProvidedComponent = ensureSafeComponent(
-            templateOrComponent,
-            context
-          );
-
           context = {
-            ProvidedComponent,
+            ProvidedComponent: templateOrComponent,
           };
           templateOrComponent = INVOKE_PROVIDED_COMPONENT;
         } else {
