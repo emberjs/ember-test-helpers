@@ -359,7 +359,7 @@ module('settled', function (hooks) {
             hasPendingTimers: false,
             hasRunLoop: false,
             hasPendingLegacyWaiters: true,
-            hasPendingTestWaiters: false,
+            hasPendingTestWaiters: true,
             hasPendingRequests: false,
             isRenderPending: false,
           }),
