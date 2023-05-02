@@ -39,11 +39,18 @@
     "start": "yarn build:js -w"
   },
   "peerDependencies": {
+    "ember-data": ">= 3.2",
     "ember-source": "^4.0.0 || >= 5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ember-data": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@ember/test-waiters": "^3.0.2",
+    "@embroider/addon-shim": "^1.8.4",
     "@embroider/macros": "^1.10.0",
     "@embroider/util": "^1.9.0"
   },
@@ -63,6 +70,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "concurrently": "^7.6.0",
     "documentation": "^14.0.1",
+    "ember-data": "^4.12.0",
     "ember-source": "~4.9.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.6.0",
