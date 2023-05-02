@@ -1,10 +1,9 @@
-/* eslint-env node */
 'use strict';
 
-const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
-  let app = new EmberAddon({ ...defaults, name: 'test-app' });
+  let app = new EmberApp({ ...defaults, name: 'test-app' });
 
   /*
     This build file specifies the options for the dummy test app of this
@@ -17,7 +16,8 @@ module.exports = function (defaults) {
     type: 'test',
   });
 
-  const { maybeEmbroider } = require('@embroider/test-setup'); // eslint-disable-line node/no-missing-require
+  const { maybeEmbroider } = require('@embroider/test-setup');
+
   return maybeEmbroider(app, {
     skipBabel: [
       {
