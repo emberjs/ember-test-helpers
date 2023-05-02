@@ -43,7 +43,7 @@
     "broccoli-merge-trees": "^4.2.0",
     "concurrently": "^7.6.0",
     "documentation": "^14.0.1",
-    "ember-cli": "~4.9.2",
+    "ember-cli": "~4.12.1",
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-inject-live-reload": "^2.1.0",
     "ember-cli-test-loader": "^3.0.0",
@@ -51,8 +51,8 @@
     "ember-in-element-polyfill": "^1.0.1",
     "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
-    "ember-resolver": "^9.0.1",
-    "ember-source": "~4.9.2",
+    "ember-resolver": "^10.0.0",
+    "ember-source": "~4.12.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^2.0.0",
     "eslint": "^7.32.0",
@@ -69,7 +69,7 @@
     "qunit": "^2.19.4",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.4",
-    "webpack": "^5.75.0"
+    "webpack": "^5.81.0"
   },
   "engines": {
     "node": "16.* || >= 18"

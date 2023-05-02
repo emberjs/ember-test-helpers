@@ -23,10 +23,13 @@
   "dependencies": {
     "patch-package": "^7.0.0"
   },
-  "devDependencies": {
-    "@embroider/shared-internals": "^2.0.0"
-  },
   "overrides": {
-    "@embroider/shared-internals": "^2.0.0"
+    "@embroider/webpack": "2.1.2-unstable.e35628d",
+    "@embroider/core": "2.1.2-unstable.e35628d",
+    "@embroider/compat": "2.1.2-unstable.e35628d",
+    "@embroider/macros": "1.10.1-unstable.e35628d",
+    "@embroider/addon-dev": "3.0.1-unstable.e35628d",
+    "@embroider/addon-shim": "1.8.5-unstable.e35628d",
+    "@embroider/shared-internals": "2.0.1-unstable.e35628d"
   }
 }
