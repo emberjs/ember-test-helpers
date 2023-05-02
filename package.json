@@ -5,6 +5,7 @@
   "license": "(MIT OR Apache-2.0)",
   "repository": "https://github.com/emberjs/ember-test-helpers",
   "scripts": {
+    "postinstall": "patch-package",
     "prepare": "yarn build",
     "build": "yarn workspace @ember/test-helpers run build",
     "lint": "yarn workspaces run lint",
@@ -18,5 +19,14 @@
   "workspaces": [
     "addon",
     "test-app"
-  ]
+  ],
+  "dependencies": {
+    "patch-package": "^7.0.0"
+  },
+  "devDependencies": {
+    "@embroider/shared-internals": "^2.0.0"
+  },
+  "overrides": {
+    "@embroider/shared-internals": "^2.0.0"
+  }
 }

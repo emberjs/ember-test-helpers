@@ -33,8 +33,6 @@
     "@embroider/test-setup": "^2.1.1",
     "@embroider/webpack": "^2.1.1",
     "@glimmer/component": "^1.1.2",
-    "@glimmer/interfaces": "^0.84.3",
-    "@glimmer/reference": "^0.84.3",
     "@glint/template": "^1.0.2",
     "@tsconfig/ember": "^1.0.1",
     "@types/jquery": "^3.5.16",
