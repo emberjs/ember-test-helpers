@@ -5,6 +5,8 @@
   "license": "(MIT OR Apache-2.0)",
   "repository": "https://github.com/emberjs/ember-test-helpers",
   "scripts": {
+    "prepare": "yarn build",
+    "build": "yarn workspace @ember/test-helpers run build",
     "lint": "yarn workspaces run lint",
     "lint:fix": "yarn workspaces run lint:fix",
     "test": "yarn workspaces run test"
