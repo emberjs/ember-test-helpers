@@ -12,7 +12,6 @@ import {
   registerDeprecationHandler,
   registerWarnHandler,
 } from '@ember/debug';
-import global from './global';
 import { getResolver } from './resolver';
 import { getApplication } from './application';
 import getTestMetadata from './test-metadata';
@@ -34,6 +33,9 @@ import {
 export interface SetupContextOptions {
   resolver?: Resolver | undefined;
 }
+
+// We assign new properties to this value
+const global: any = globalThis;
 
 // This handler exists to provide the underlying data to enable the following methods:
 // * getDeprecations()

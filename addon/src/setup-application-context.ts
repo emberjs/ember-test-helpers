@@ -5,7 +5,6 @@ import {
   isTestContext,
   TestContext,
 } from './setup-context';
-import global from './global';
 import hasEmberVersion from './has-ember-version';
 import settled from './settled';
 import getTestMetadata from './test-metadata';
@@ -13,6 +12,9 @@ import { runHooks } from './helper-hooks';
 import type Router from '@ember/routing/router';
 import type RouterService from '@ember/routing/router-service';
 import { assert } from '@ember/debug';
+
+// This has private data on it, which we don't want to type
+const global: any = globalThis;
 
 export interface ApplicationTestContext extends TestContext {
   element?: Element | null;

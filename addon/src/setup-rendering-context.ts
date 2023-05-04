@@ -1,7 +1,6 @@
 /* globals EmberENV */
 import { run } from '@ember/runloop';
 import Ember from 'ember';
-import global from './global';
 import {
   BaseContext,
   TestContext,
@@ -21,6 +20,8 @@ import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
 import { ensureSafeComponent } from '@embroider/util';
 
+// global has private information on it
+const global: any = globalThis;
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
 const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
