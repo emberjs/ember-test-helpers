@@ -16,11 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - run: yarn install --frozen-lockfile --ignore-engines
-      - run: yarn lint
-      - run: yarn test
+      - uses: wyvox/action@v1
+      - run: pnpm lint
+      - run: pnpm test
 
   floating-dependencies:
     timeout-minutes: 10
@@ -28,9 +26,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - run: yarn install --no-lockfile
+      - uses: wyvox/action@v1
+        with:
+          pnpm-args: --no-lockfile
       - run: yarn test
 
   try-scenarios:
@@ -55,10 +53,7 @@ jobs:
           # - embroider-optimized # see comments in ember-try.js
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - name: install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: wyvox/action@v1
       - name: test
         working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
@@ -78,13 +73,10 @@ jobs:
           - next
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: volta-cli/action@v4
-      - name: install dependencies
-        run: yarn install --frozen-lockfile
+      - uses: wyvox/action@v1
       - name: install TS version
         working-directory: addon
-        run: yarn install --dev typescript@${{matrix.ts-version}}
+        run: pnpm install --save-dev typescript@${{matrix.ts-version}}
       - name: test types
         working-directory: addon
-        run: yarn lint:ts
+        run: pnpm lint:ts

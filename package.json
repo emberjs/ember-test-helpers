@@ -5,31 +5,14 @@
   "license": "(MIT OR Apache-2.0)",
   "repository": "https://github.com/emberjs/ember-test-helpers",
   "scripts": {
-    "postinstall": "patch-package",
-    "prepare": "yarn build",
-    "build": "yarn workspace @ember/test-helpers run build",
-    "lint": "yarn workspaces run lint",
-    "lint:fix": "yarn workspaces run lint:fix",
-    "test": "yarn workspaces run test"
+    "prepare": "pnpm build",
+    "build": "pnpm --filter @ember/test-helpers run build",
+    "lint": "pnpm --filter '*' run lint",
+    "lint:fix": "pnpm --filter '*' run lint:fix",
+    "test": "pnpm --filter '*' run test"
   },
   "volta": {
     "node": "16.19.1",
-    "yarn": "1.22.19"
-  },
-  "workspaces": [
-    "addon",
-    "test-app"
-  ],
-  "dependencies": {
-    "patch-package": "^7.0.0"
-  },
-  "overrides": {
-    "@embroider/webpack": "2.1.2-unstable.e35628d",
-    "@embroider/core": "2.1.2-unstable.e35628d",
-    "@embroider/compat": "2.1.2-unstable.e35628d",
-    "@embroider/macros": "1.10.1-unstable.e35628d",
-    "@embroider/addon-dev": "3.0.1-unstable.e35628d",
-    "@embroider/addon-shim": "1.8.5-unstable.e35628d",
-    "@embroider/shared-internals": "2.0.1-unstable.e35628d"
+    "pnpm": "8.4.0"
   }
 }
