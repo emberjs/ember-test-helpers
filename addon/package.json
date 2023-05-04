@@ -70,6 +70,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "concurrently": "^7.6.0",
     "documentation": "^14.0.1",
+    "ember-cli-htmlbars": "^6.2.0",
     "ember-source": "~4.12.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.6.0",

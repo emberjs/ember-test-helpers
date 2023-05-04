@@ -70,6 +70,9 @@ importers:
       documentation:
         specifier: ^14.0.1
         version: 14.0.1
+      ember-cli-htmlbars:
+        specifier: ^6.2.0
+        version: 6.2.0
       ember-source:
         specifier: ~4.12.0
         version: 4.12.0(@babel/core@7.21.3)(@glimmer/component@1.1.2)(webpack@5.81.0)
@@ -6054,7 +6057,6 @@ packages:
       walk-sync: 2.2.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /ember-cli-inject-live-reload@2.1.0:
     resolution: {integrity: sha512-YV5wYRD5PJHmxaxaJt18u6LE6Y+wo455BnmcpN+hGNlChy2piM9/GMvYgTAz/8Vin8RJ5KekqP/w/NEaRndc/A==}
