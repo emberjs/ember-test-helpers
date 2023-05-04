@@ -33,7 +33,6 @@
     "lint:fix": "concurrently 'npm:lint:*:fix' --names 'fix:'",
     "lint:js": "eslint --cache .",
     "lint:js:fix": "eslint . --fix",
-    "lint:ts": "tsc --noEmit && tsc --noEmit --project type-tests",
     "postpublish": "yarn clean",
     "release": "release-it",
     "start": "yarn build:js -w"

@@ -78,5 +78,5 @@ jobs:
         working-directory: addon
         run: pnpm install --save-dev typescript@${{matrix.ts-version}}
       - name: test types
-        working-directory: addon
+        working-directory: test-app
         run: pnpm lint:ts
