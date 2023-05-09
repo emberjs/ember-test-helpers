@@ -42,7 +42,13 @@
     "test:all": "ember try:each"
   },
   "peerDependencies": {
-    "ember-source": "^4.0.0"
+    "ember-source": "^4.0.0",
+    "ember-data": ">= 2.3.0"
+  },
+  "peerDependenciesMeta": {
+    "ember-data": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.2",
