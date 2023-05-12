@@ -105,13 +105,11 @@ export default function (resolver: Resolver) {
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
-    // @ts-expect-error
     __registry__: registry,
     __container__: null,
   });
 
   container = registry.container({ owner: owner });
-  // @ts-expect-error
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);

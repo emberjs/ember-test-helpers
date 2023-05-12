@@ -111,12 +111,14 @@ export class TestDebugInfo implements DebugInfo {
           this._debugInfo.instanceStack
             .filter((q) => q)
             .reduce((total, item) => {
-              Object.keys(item).forEach((queueName) => {
-                // SAFETY: this cast is *not* safe, but the underlying type is
-                // not currently able to be safer than this because it was
-                // built as a bag-of-queues *and* a structured item originally.
-                total += (item[queueName] as QueueItem[]).length;
-              });
+              if (item) {
+                Object.keys(item).forEach((queueName) => {
+                  // SAFETY: this cast is *not* safe, but the underlying type is
+                  // not currently able to be safer than this because it was
+                  // built as a bag-of-queues *and* a structured item originally.
+                  total += (item[queueName] as QueueItem[]).length;
+                });
+              }
 
               return total;
             }, 0);
@@ -124,14 +126,17 @@ export class TestDebugInfo implements DebugInfo {
           this._debugInfo.instanceStack
             .filter((q) => q)
             .reduce((stacks, deferredActionQueues) => {
-              Object.keys(deferredActionQueues).forEach((queue) => {
-                // SAFETY: this cast is *not* safe, but the underlying type is
-                // not currently able to be safer than this because it was
-                // built as a bag-of-queues *and* a structured item originally.
-                (deferredActionQueues[queue] as QueueItem[]).forEach(
-                  (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
-                );
-              });
+              if (deferredActionQueues) {
+                Object.keys(deferredActionQueues).forEach((queue) => {
+                  // SAFETY: this cast is *not* safe, but the underlying type is
+                  // not currently able to be safer than this because it was
+                  // built as a bag-of-queues *and* a structured item originally.
+                  (deferredActionQueues[queue] as QueueItem[]).forEach(
+                    (queueItem) =>
+                      queueItem.stack && stacks.push(queueItem.stack)
+                  );
+                });
+              }
               return stacks;
             }, [] as string[]);
       }
