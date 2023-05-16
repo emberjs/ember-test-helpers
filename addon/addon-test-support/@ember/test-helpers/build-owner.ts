@@ -2,14 +2,16 @@ import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
 import legacyBuildRegistry from './-internal/build-registry';
-import ContainerProxyMixin from '@ember/-internals/runtime';
-import RegistryProxyMixin from '@ember/-internals/runtime';
+import {
+  ContainerProxyMixin,
+  RegistryProxyMixin,
+} from '@ember/-internals/runtime';
 import CoreObject from '@ember/object/core';
 
 export interface Owner
   extends CoreObject,
-    ContainerProxyMixin.ContainerProxyMixin,
-    RegistryProxyMixin.RegistryProxyMixin {
+    ContainerProxyMixin,
+    RegistryProxyMixin {
   _emberTestHelpersMockOwner?: boolean;
   rootElement?: string | Element;
 
