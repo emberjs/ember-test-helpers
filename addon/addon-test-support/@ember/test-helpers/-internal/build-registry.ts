@@ -5,6 +5,10 @@ import EmberObject from '@ember/object';
 
 import require, { has } from 'require';
 import Ember from 'ember';
+import { InternalOwner } from '@ember/-internals/owner';
+import ContainerProxyMixin from '@ember/-internals/runtime/lib/mixins/container_proxy';
+import RegistryProxyMixin from '@ember/-internals/runtime/lib/mixins/registry_proxy';
+import { FullName } from '@ember/owner';
 
 /**
  * Adds methods that are normally only on registry to the container. This is largely to support the legacy APIs
@@ -40,12 +44,15 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
   }
 }
 
-const RegistryProxyMixin = (Ember as any)._RegistryProxyMixin;
-const ContainerProxyMixin = (Ember as any)._ContainerProxyMixin;
+interface Owner
+  extends InternalOwner,
+    RegistryProxyMixin,
+    ContainerProxyMixin {}
 
 const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
   _emberTestHelpersMockOwner: true,
 
+  /* eslint-disable valid-jsdoc */
   /**
    * Unregister a factory and its instance.
    *
@@ -57,12 +64,11 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    * @see {@link https://github.com/emberjs/ember.js/pull/12680}
    * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
    */
-  unregister(fullName: string) {
-    // @ts-expect-error
+  /* eslint-enable valid-jsdoc */
+  unregister(this: Owner, fullName: FullName) {
     this['__container__'].reset(fullName);
 
     // We overwrote this method from RegistryProxyMixin.
-    // @ts-expect-error
     this['__registry__'].unregister(fullName);
   },
 });
@@ -72,10 +78,8 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
  * @param {Object} resolver the resolver to use with the registry
  * @returns {Object} owner, container, registry
  */
-export default function (resolver: Resolver) {
-  let fallbackRegistry, registry, container;
-  let namespace = EmberObject.create({
-    // @ts-expect-error
+export default function buildRegistry(resolver: Resolver) {
+  let namespace = Application.create({
     Resolver: {
       create() {
         return resolver;
@@ -83,18 +87,15 @@ export default function (resolver: Resolver) {
     },
   });
 
-  fallbackRegistry = (Application as any).buildRegistry(namespace);
+  let fallbackRegistry = Application.buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
-  fallbackRegistry.register(
-    'component-lookup:main',
-    (Ember as any).ComponentLookup
-  );
+  fallbackRegistry.register('component-lookup:main', Ember.ComponentLookup);
 
-  registry = new (Ember as any).Registry({
+  let registry = new Ember.Registry({
     fallback: fallbackRegistry,
   });
 
-  (ApplicationInstance as any).setupRegistry(registry);
+  ApplicationInstance.setupRegistry(registry);
 
   // these properties are set on the fallback registry by `buildRegistry`
   // and on the primary registry within the ApplicationInstance constructor
@@ -105,11 +106,17 @@ export default function (resolver: Resolver) {
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
+    // @ts-expect-error -- we do not have type safety for `Object.extend` so the
+    // type of `Owner` here is just `EmberObject`, but we *do* constrain it to
+    // allow only types from the actual class, so these fields are not accepted.
+    // However, we can see that they are valid, based on the definition of
+    // `Owner` above given that it fulfills the `InternalOwner` contract and
+    // also extends it just as `EngineInstance` does internally.
     __registry__: registry,
     __container__: null,
-  });
+  }) as unknown as Owner;
 
-  container = registry.container({ owner: owner });
+  let container = registry.container({ owner: owner });
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);

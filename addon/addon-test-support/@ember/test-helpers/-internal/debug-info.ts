@@ -1,8 +1,5 @@
 import { _backburner } from '@ember/runloop';
-import {
-  DebugInfo as BackburnerDebugInfo,
-  QueueItem,
-} from '@ember/runloop/-private/backburner';
+import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { getPendingWaiterState, PendingWaiterState } from '@ember/test-waiters';
 
@@ -109,34 +106,23 @@ export class TestDebugInfo implements DebugInfo {
 
         this._summaryInfo.pendingScheduledQueueItemCount =
           this._debugInfo.instanceStack
-            .filter((q) => q)
+            .filter(isNotNullable)
             .reduce((total, item) => {
-              if (item) {
-                Object.keys(item).forEach((queueName) => {
-                  // SAFETY: this cast is *not* safe, but the underlying type is
-                  // not currently able to be safer than this because it was
-                  // built as a bag-of-queues *and* a structured item originally.
-                  total += (item[queueName] as QueueItem[]).length;
-                });
-              }
+              Object.values(item).forEach((queueItems) => {
+                total += queueItems?.length ?? 0;
+              });
 
               return total;
             }, 0);
         this._summaryInfo.pendingScheduledQueueItemStackTraces =
           this._debugInfo.instanceStack
-            .filter((q) => q)
+            .filter(isNotNullable)
             .reduce((stacks, deferredActionQueues) => {
-              if (deferredActionQueues) {
-                Object.keys(deferredActionQueues).forEach((queue) => {
-                  // SAFETY: this cast is *not* safe, but the underlying type is
-                  // not currently able to be safer than this because it was
-                  // built as a bag-of-queues *and* a structured item originally.
-                  (deferredActionQueues[queue] as QueueItem[]).forEach(
-                    (queueItem) =>
-                      queueItem.stack && stacks.push(queueItem.stack)
-                  );
-                });
-              }
+              Object.values(deferredActionQueues).forEach((queueItems) => {
+                queueItems?.forEach(
+                  (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
+                );
+              });
               return stacks;
             }, [] as string[]);
       }
@@ -226,4 +212,9 @@ export class TestDebugInfo implements DebugInfo {
   _formatCount(title: string, count: number): string {
     return `${title}: ${count}`;
   }
+}
+
+// eslint-disable-next-line require-jsdoc
+function isNotNullable<T extends {}>(value: T | null | undefined): value is T {
+  return value != null;
 }

@@ -2,18 +2,12 @@ import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
 import legacyBuildRegistry from './-internal/build-registry';
-import {
-  ContainerProxyMixin,
-  RegistryProxyMixin,
-} from '@ember/-internals/runtime';
-import CoreObject from '@ember/object/core';
+import EmberOwner from '@ember/owner';
+import { SimpleElement } from '@simple-dom/interface';
 
-export interface Owner
-  extends CoreObject,
-    ContainerProxyMixin,
-    RegistryProxyMixin {
+export interface Owner extends EmberOwner {
   _emberTestHelpersMockOwner?: boolean;
-  rootElement?: string | Element;
+  rootElement?: string | Element | SimpleElement | null;
 
   _lookupFactory?(key: string): any;
 
@@ -44,9 +38,7 @@ export default function buildOwner(
   resolver: Resolver | undefined | null
 ): Promise<Owner> {
   if (application) {
-    return application
-      .boot()
-      .then((app) => app.buildInstance().boot()) as unknown as Promise<Owner>;
+    return application.boot().then((app) => app.buildInstance().boot());
   }
 
   if (!resolver) {
