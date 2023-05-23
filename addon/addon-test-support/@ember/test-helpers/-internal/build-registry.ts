@@ -5,7 +5,6 @@ import EmberObject from '@ember/object';
 
 import require, { has } from 'require';
 import Ember from 'ember';
-import { InternalOwner } from '@ember/-internals/owner';
 import ContainerProxyMixin from '@ember/-internals/runtime/lib/mixins/container_proxy';
 import RegistryProxyMixin from '@ember/-internals/runtime/lib/mixins/registry_proxy';
 import { FullName } from '@ember/owner';
@@ -44,11 +43,10 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
   }
 }
 
-interface Owner
-  extends InternalOwner,
-    RegistryProxyMixin,
-    ContainerProxyMixin {}
-
+// NOTE: this is the same as what `EngineInstance`/`ApplicationInstance`
+// implement, and is thus a superset of the `InternalOwner` contract from Ember
+// itself.
+interface Owner extends RegistryProxyMixin, ContainerProxyMixin {}
 const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
   _emberTestHelpersMockOwner: true,
 
