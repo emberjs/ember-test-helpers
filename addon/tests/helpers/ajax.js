@@ -1,8 +1,8 @@
 /* globals jQuery */
 import { Promise } from 'rsvp';
 import hasjQuery from '../helpers/has-jquery';
-import require from 'require';
 import { join } from '@ember/runloop';
+import { waitForPromise } from '@ember/test-waiters';
 
 export default function ajax(url) {
   if (hasjQuery()) {
@@ -16,7 +16,6 @@ export default function ajax(url) {
       });
     });
   } else {
-    let fetch = require('fetch').default;
-    return fetch(url).then((response) => response.text());
+    return waitForPromise(fetch(url).then((response) => response.text()));
   }
 }
