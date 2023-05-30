@@ -5082,7 +5082,7 @@ ember-cli-babel@^6.6.0:
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.1, ember-cli-babel@^7.26.11, ember-cli-babel@^7.26.6, ember-cli-babel@^7.7.3:
+ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.23.1, ember-cli-babel@^7.26.11, ember-cli-babel@^7.26.6, ember-cli-babel@^7.7.3:
   version "7.26.11"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.26.11.tgz#50da0fe4dcd99aada499843940fec75076249a9f"
   integrity sha512-JJYeYjiz/JTn34q7F5DSOjkkZqy8qwFOOxXfE6pe9yEJqWGu4qErKxlz8I22JoVEQ/aBUO+OcKTpmctvykM9YA==
@@ -5421,7 +5421,7 @@ ember-cli@~4.9.2:
     workerpool "^6.2.1"
     yam "^1.0.0"
 
-ember-compatibility-helpers@^1.1.2, ember-compatibility-helpers@^1.2.1:
+ember-compatibility-helpers@^1.1.2:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.2.6.tgz#603579ab2fb14be567ef944da3fc2d355f779cd8"
   integrity sha512-2UBUa5SAuPg8/kRVaiOfTwlXdeVweal1zdNPibwItrhR0IvPrXpaqwJDlEZnWKEoB+h33V0JIfiWleSG6hGkkA==
@@ -5431,15 +5431,6 @@ ember-compatibility-helpers@^1.1.2, ember-compatibility-helpers@^1.2.1:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
     semver "^5.4.1"
-
-ember-destroyable-polyfill@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/ember-destroyable-polyfill/-/ember-destroyable-polyfill-2.0.3.tgz#1673ed66609a82268ef270a7d917ebd3647f11e1"
-  integrity sha512-TovtNqCumzyAiW0/OisSkkVK93xnVF4NRU6+FN0ubpfwEOpRrmM2RqDwXI6YAChCgSHON1cz0DfQStpA1Gjuuw==
-  dependencies:
-    ember-cli-babel "^7.22.1"
-    ember-cli-version-checker "^5.1.1"
-    ember-compatibility-helpers "^1.2.1"
 
 ember-disable-prototype-extensions@^1.1.3:
   version "1.1.3"
