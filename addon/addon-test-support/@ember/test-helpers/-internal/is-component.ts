@@ -14,7 +14,10 @@ function isComponent(
   maybeComponent: object,
   owner: object
 ): maybeComponent is ComponentLike {
-  return !!getComponentManager(maybeComponent, owner);
+  // SAFETY: because we're not dropping support for the `@glimmer/manager`
+  //         version that requires the owner, *but* we are using the types from
+  //         the newer `@glimmer/manager`, we have to cast to a more permissive type.
+  return !!(getComponentManager as any)(maybeComponent, owner);
 }
 
 export default isComponent;
