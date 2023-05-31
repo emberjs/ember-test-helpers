@@ -47,7 +47,6 @@
   "dependencies": {
     "@ember/test-waiters": "^3.0.2",
     "@embroider/macros": "^1.10.0",
-    "@embroider/util": "^1.9.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.8",
     "ember-auto-import": "^2.6.0",
