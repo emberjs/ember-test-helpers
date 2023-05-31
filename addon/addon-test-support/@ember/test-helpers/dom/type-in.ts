@@ -10,7 +10,7 @@ import Target, {
   HTMLElementContentEditable,
 } from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 
 export interface Options {

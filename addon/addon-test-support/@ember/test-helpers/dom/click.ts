@@ -4,7 +4,7 @@ import { __focus__ } from './focus';
 import settled from '../settled';
 import isFormControl from './-is-form-control';
 import Target, { isWindow } from './-target';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 
 const PRIMARY_BUTTON = 1;

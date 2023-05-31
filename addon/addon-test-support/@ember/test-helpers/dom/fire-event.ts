@@ -1,7 +1,7 @@
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
 import Target from './-target';
-import { log } from '@ember/test-helpers/dom/-logging';
+import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 
 registerHook('fireEvent', 'start', (target: Target) => {
