@@ -1,5 +1,82 @@
 # CHANGELOG
 
+
+## v3.0.0 (2023-05-31)
+
+#### :boom: Breaking Change
+* [#1379](https://github.com/emberjs/ember-test-helpers/pull/1379) remove has-ember-version ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1384](https://github.com/emberjs/ember-test-helpers/pull/1384) Remove extraneous event-dispatcher wiring and a amd/require ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1299](https://github.com/emberjs/ember-test-helpers/pull/1299) Remove IE11 support code ([@rwjblue](https://github.com/rwjblue))
+* [#1167](https://github.com/emberjs/ember-test-helpers/pull/1167) Remove ember-test-helpers.setup-rendering-context.render && clearRender deprecation ([@snewcomer](https://github.com/snewcomer))
+* [#1293](https://github.com/emberjs/ember-test-helpers/pull/1293) Drop support for Ember 3.x ([@rwjblue](https://github.com/rwjblue))
+* [#1295](https://github.com/emberjs/ember-test-helpers/pull/1295) Drop support for IE11 (require native Promise) ([@rwjblue](https://github.com/rwjblue))
+* [#1292](https://github.com/emberjs/ember-test-helpers/pull/1292) Make ember-auto-import@2 a dependency ([@SergeAstapov](https://github.com/SergeAstapov))
+* [#1291](https://github.com/emberjs/ember-test-helpers/pull/1291) Remove deprecations targeting v3.0.0 ([@chriskrycho](https://github.com/chriskrycho))
+* [#1271](https://github.com/emberjs/ember-test-helpers/pull/1271) Upgrade ember v3.27.0...v4.9.2 (in development) ([@gitKrystan](https://github.com/gitKrystan))
+
+#### :rocket: Enhancement
+* [#1344](https://github.com/emberjs/ember-test-helpers/pull/1344) Expose registerHook and runHooks as official public APIs ([@drewlee](https://github.com/drewlee))
+* [#1319](https://github.com/emberjs/ember-test-helpers/pull/1319) Expose options types for setupContext and teardownContext ([@gitKrystan](https://github.com/gitKrystan))
+* [#1297](https://github.com/emberjs/ember-test-helpers/pull/1297) Add support for TS 4.8 and 4.9 ([@chriskrycho](https://github.com/chriskrycho))
+* [#1272](https://github.com/emberjs/ember-test-helpers/pull/1272) Use ember preview types ([@gitKrystan](https://github.com/gitKrystan))
+* [#1271](https://github.com/emberjs/ember-test-helpers/pull/1271) Upgrade ember v3.27.0...v4.9.2 (in development) ([@gitKrystan](https://github.com/gitKrystan))
+* [#1269](https://github.com/emberjs/ember-test-helpers/pull/1269) Re-export hasEmberVersion (and its type) from @ember/test-helpers ([@gitKrystan](https://github.com/gitKrystan))
+* [#1278](https://github.com/emberjs/ember-test-helpers/pull/1278) perf: Remove excessive destroy call ([@runspired](https://github.com/runspired))
+* [#1234](https://github.com/emberjs/ember-test-helpers/pull/1234) Introduce public TypeScript support ([@chriskrycho](https://github.com/chriskrycho))
+
+#### :bug: Bug Fix
+* [#1387](https://github.com/emberjs/ember-test-helpers/pull/1387) Pass owner instead of registry to ember-data's setupContainer ([@anehx](https://github.com/anehx))
+* [#1320](https://github.com/emberjs/ember-test-helpers/pull/1320) Don't swallow deprecations and warnings when there is no test context ([@kategengler](https://github.com/kategengler))
+* [#1304](https://github.com/emberjs/ember-test-helpers/pull/1304) Avoid unnecessary dependencies on `@glimmer` types ([@dfreeman](https://github.com/dfreeman))
+* [#1301](https://github.com/emberjs/ember-test-helpers/pull/1301) Remove the index signature from `TestContext` ([@dfreeman](https://github.com/dfreeman))
+* [#1287](https://github.com/emberjs/ember-test-helpers/pull/1287) Port some conveniences from @types/ember__test-helpers package ([@gitKrystan](https://github.com/gitKrystan))
+* [#1285](https://github.com/emberjs/ember-test-helpers/pull/1285) Export type for Target ([@gitKrystan](https://github.com/gitKrystan))
+* [#1286](https://github.com/emberjs/ember-test-helpers/pull/1286) Upgrade expect-type; fix issues it reveals; add RenderingTestContext ([@gitKrystan](https://github.com/gitKrystan))
+* [#1288](https://github.com/emberjs/ember-test-helpers/pull/1288) Correctly handle special char keyCodes with Shift ([@CvX](https://github.com/CvX))
+* [#1284](https://github.com/emberjs/ember-test-helpers/pull/1284) Ensure types reflect optional-ness of tab options ([@gitKrystan](https://github.com/gitKrystan))
+* [#1283](https://github.com/emberjs/ember-test-helpers/pull/1283) Fix types versions ([@gitKrystan](https://github.com/gitKrystan))
+* [#1277](https://github.com/emberjs/ember-test-helpers/pull/1277) Actually publish .d.ts ([@gitKrystan](https://github.com/gitKrystan))
+* [#1270](https://github.com/emberjs/ember-test-helpers/pull/1270) Fix typesVersions path ([@gitKrystan](https://github.com/gitKrystan))
+* [#1233](https://github.com/emberjs/ember-test-helpers/pull/1233) Add more keyCode mappings ([@CvX](https://github.com/CvX))
+
+#### :memo: Documentation
+* [#1340](https://github.com/emberjs/ember-test-helpers/pull/1340) doc: fix various typos in the repo ([@camerondubas](https://github.com/camerondubas))
+* [#1318](https://github.com/emberjs/ember-test-helpers/pull/1318) [DOC] Swap `find` and `findAll` examples ([@geneukum](https://github.com/geneukum))
+* [#1289](https://github.com/emberjs/ember-test-helpers/pull/1289) Add docs for routing and render helper examples ([@chriskrycho](https://github.com/chriskrycho))
+* [#1255](https://github.com/emberjs/ember-test-helpers/pull/1255) DOC: API: add DOM query helper examples ([@geneukum](https://github.com/geneukum))
+* [#1259](https://github.com/emberjs/ember-test-helpers/pull/1259) DOCS: API: publish docs for tab ([@geneukum](https://github.com/geneukum))
+
+#### :house: Internal
+* [#1382](https://github.com/emberjs/ember-test-helpers/pull/1382) Remove code for pre-ember-v4 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1396](https://github.com/emberjs/ember-test-helpers/pull/1396) Update .npmignore ([@MelSumner](https://github.com/MelSumner))
+* [#1378](https://github.com/emberjs/ember-test-helpers/pull/1378) ensureSafeComponent is not needed on Ember > 3.25 ([@ef4](https://github.com/ef4))
+* [#1380](https://github.com/emberjs/ember-test-helpers/pull/1380) Use sibling import for logging so that these files are rollup compatible ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1361](https://github.com/emberjs/ember-test-helpers/pull/1361) Sync with the v2.x branch ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1360](https://github.com/emberjs/ember-test-helpers/pull/1360) Get ember-canary passing ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1356](https://github.com/emberjs/ember-test-helpers/pull/1356) Convert to single-workspace monorepo ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1324](https://github.com/emberjs/ember-test-helpers/pull/1324) Use node 16 for development instead of node 14 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1299](https://github.com/emberjs/ember-test-helpers/pull/1299) Remove IE11 support code ([@rwjblue](https://github.com/rwjblue))
+* [#1294](https://github.com/emberjs/ember-test-helpers/pull/1294) Update volta-cli/action to v4 ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 16
+- Andrew A Lee ([@drewlee](https://github.com/drewlee))
+- Cameron Dubas ([@camerondubas](https://github.com/camerondubas))
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Chris Thoburn ([@runspired](https://github.com/runspired))
+- Dan Freeman ([@dfreeman](https://github.com/dfreeman))
+- Edward Faulkner ([@ef4](https://github.com/ef4))
+- Geordan Neukum ([@geneukum](https://github.com/geneukum))
+- Jarek Radosz ([@CvX](https://github.com/CvX))
+- Jonas Metzener ([@anehx](https://github.com/anehx))
+- Katie Gengler ([@kategengler](https://github.com/kategengler))
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+- Melanie Sumner ([@MelSumner](https://github.com/MelSumner))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+
 ## v2.9.3 (2022-12-21)
 
 #### :bug: Bug Fix
