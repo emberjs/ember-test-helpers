@@ -143,13 +143,8 @@ export function render(
           );
         }
 
-        let ProvidedComponent = ensureSafeComponent(
-          templateOrComponent,
-          context
-        );
-
         context = {
-          ProvidedComponent,
+          ProvidedComponent: templateOrComponent,
         };
         templateOrComponent = INVOKE_PROVIDED_COMPONENT;
       } else {
