@@ -14,7 +14,22 @@ function isComponent(
   maybeComponent: object,
   owner: object
 ): maybeComponent is ComponentLike {
-  return !!getComponentManager(maybeComponent, owner);
+  // SAFETY: in more recent versions of @glimmer/manager,
+  //         this throws an error when maybeComponent does not have
+  //         an associated manager.
+  try {
+    return !!getComponentManager(maybeComponent, owner);
+  } catch (e) {
+    if (
+      `${e}`.includes(
+        `wasn't a component manager associated with the definition`
+      )
+    ) {
+      return false;
+    }
+
+    throw e;
+  }
 }
 
 export default isComponent;
