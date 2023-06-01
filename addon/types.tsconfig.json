@@ -4,6 +4,6 @@
     // Use TS to emit declarations
     "noEmit": false,
     "emitDeclarationOnly": true,
-    "outDir": "public-types"
+    "outDir": "dist-types"
   }
 }
