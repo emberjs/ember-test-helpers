@@ -149,7 +149,7 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./public-types/*"
+        "./dist-types/*"
       ]
     }
   }
