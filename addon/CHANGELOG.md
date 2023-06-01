@@ -1,6 +1,16 @@
 # CHANGELOG
 
 
+
+## v3.0.2 (2023-06-01)
+
+#### :bug: Bug Fix
+* [#1401](https://github.com/emberjs/ember-test-helpers/pull/1401) fixing the release ([@MelSumner](https://github.com/MelSumner))
+
+#### Committers: 1
+- Melanie Sumner ([@MelSumner](https://github.com/MelSumner))
+
+
 ## v3.0.1 (2023-06-01)
 
 
