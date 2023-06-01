@@ -1,6 +1,9 @@
 # CHANGELOG
 
 
+## v3.0.1 (2023-06-01)
+
+
 ## v3.0.0 (2023-05-31)
 
 #### :boom: Breaking Change
