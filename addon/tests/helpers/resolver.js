@@ -1,6 +1,5 @@
 import { setRegistry } from '../../resolver';
 import { setResolver, setApplication } from '@ember/test-helpers';
-import require from 'require';
 import App from '../../app';
 import config from '../../config/environment';
 
@@ -25,15 +24,6 @@ export default {
 };
 
 export function createCustomResolver(registry) {
-  if (require.has('ember-native-dom-event-dispatcher')) {
-    // the raw value looked up by ember and these test helpers
-    registry['event_dispatcher:main'] =
-      require('ember-native-dom-event-dispatcher').default;
-    // the normalized value looked up
-    registry['event-dispatcher:main'] =
-      require('ember-native-dom-event-dispatcher').default;
-  }
-
   return {
     registry,
     resolve(fullName) {

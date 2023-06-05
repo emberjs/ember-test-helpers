@@ -1,4 +1,3 @@
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import type { ComponentLike } from '@glint/template';
 
 import getComponentManager from './get-component-manager';
@@ -15,15 +14,21 @@ function isComponent(
   maybeComponent: object,
   owner: object
 ): maybeComponent is ComponentLike {
-  if (macroCondition(dependencySatisfies('ember-source', '>=3.25.0-beta.1'))) {
+  // SAFETY: in more recent versions of @glimmer/manager,
+  //         this throws an error when maybeComponent does not have
+  //         an associated manager.
+  try {
     return !!getComponentManager(maybeComponent, owner);
-  } else {
-    return (
-      !!getComponentManager(maybeComponent, owner) ||
-      ['@ember/component', '@ember/component/template-only'].includes(
-        maybeComponent.toString()
+  } catch (e) {
+    if (
+      `${e}`.includes(
+        `wasn't a component manager associated with the definition`
       )
-    );
+    ) {
+      return false;
+    }
+
+    throw e;
   }
 }
 

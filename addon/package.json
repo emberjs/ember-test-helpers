@@ -1,6 +1,6 @@
 {
   "name": "@ember/test-helpers",
-  "version": "2.9.0",
+  "version": "3.0.2",
   "description": "Helpers for testing Ember.js applications",
   "keywords": [
     "ember-addon"
@@ -47,7 +47,6 @@
   "dependencies": {
     "@ember/test-waiters": "^3.0.2",
     "@embroider/macros": "^1.10.0",
-    "@embroider/util": "^1.9.0",
     "@simple-dom/interface": "^1.4.0",
     "broccoli-debug": "^0.6.5",
     "broccoli-funnel": "^3.0.8",
@@ -96,7 +95,7 @@
     "latest-version": "^5.0.0",
     "loader.js": "^4.7.0",
     "pretender": "^3.4.7",
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.8",
     "qunit": "^2.19.4",
     "release-it": "~15.6.0",
     "release-it-lerna-changelog": "^5.0.0",
@@ -151,7 +150,7 @@
   "typesVersions": {
     "*": {
       "*": [
-        "public-types/@ember/test-helpers/*"
+        "./dist-types/*"
       ]
     }
   }

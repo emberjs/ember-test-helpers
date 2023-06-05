@@ -17,9 +17,7 @@ import { assert } from '@ember/debug';
 import { runHooks } from './helper-hooks';
 import hasEmberVersion from './has-ember-version';
 import isComponent from './-internal/is-component';
-import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { ComponentRenderMap, SetUsage } from './setup-context';
-import { ensureSafeComponent } from '@embroider/util';
 
 const OUTLET_TEMPLATE = hbs`{{outlet}}`;
 const EMPTY_TEMPLATE = hbs``;
@@ -130,19 +128,26 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (macroCondition(dependencySatisfies('ember-source', '<3.24.0'))) {
-        // Pre 3.24, we just don't support rendering components at all, so we error
-        // if we find anything that isn't a template.
-        const isTemplate =
-          ('__id' in templateOrComponent && '__meta' in templateOrComponent) ||
-          ('id' in templateOrComponent && 'meta' in templateOrComponent);
+      if (isComponent(templateOrComponent, owner)) {
+        // We use this to track when `render` is used with a component so that we can throw an
+        // assertion if `this.{set,setProperty} is used in the same test
+        ComponentRenderMap.set(context, true);
 
-        if (!isTemplate) {
-          throw new Error(
-            `Using \`render\` with something other than a pre-compiled template is not supported until Ember 3.24 (you are on ${Ember.VERSION}).`
+        const setCalls = SetUsage.get(context);
+
+        if (setCalls !== undefined) {
+          assert(
+            `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
+              .map((key) => `  - ${key}`)
+              .join('\n')}`
           );
         }
 
+        context = {
+          ProvidedComponent: templateOrComponent,
+        };
+        templateOrComponent = INVOKE_PROVIDED_COMPONENT;
+      } else {
         templateId += 1;
         let templateFullName = `template:-undertest-${templateId}` as const;
         ownerToRenderFrom.register(templateFullName, templateOrComponent);
@@ -150,40 +155,6 @@ export function render(
           ownerToRenderFrom,
           templateFullName
         );
-      } else {
-        if (isComponent(templateOrComponent, owner)) {
-          // We use this to track when `render` is used with a component so that we can throw an
-          // assertion if `this.{set,setProperty} is used in the same test
-          ComponentRenderMap.set(context, true);
-
-          const setCalls = SetUsage.get(context);
-
-          if (setCalls !== undefined) {
-            assert(
-              `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
-                .map((key) => `  - ${key}`)
-                .join('\n')}`
-            );
-          }
-
-          let ProvidedComponent = ensureSafeComponent(
-            templateOrComponent,
-            context
-          );
-
-          context = {
-            ProvidedComponent,
-          };
-          templateOrComponent = INVOKE_PROVIDED_COMPONENT;
-        } else {
-          templateId += 1;
-          let templateFullName = `template:-undertest-${templateId}` as const;
-          ownerToRenderFrom.register(templateFullName, templateOrComponent);
-          templateOrComponent = lookupTemplate(
-            ownerToRenderFrom,
-            templateFullName
-          );
-        }
       }
 
       let outletState = {
