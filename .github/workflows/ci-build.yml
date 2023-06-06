@@ -93,4 +93,4 @@ jobs:
         run: yarn install --dev typescript@${{matrix.ts-version}}
       - name: test types
         working-directory: addon
-        run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup --command yarn lint:ts
+        run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup --- yarn lint:ts
