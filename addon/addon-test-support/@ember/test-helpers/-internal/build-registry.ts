@@ -77,13 +77,12 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
  * @returns {Object} owner, container, registry
  */
 export default function buildRegistry(resolver: Resolver) {
-  let namespace = Application.create({
-    Resolver: {
-      create() {
-        return resolver;
-      },
+  let namespace = new Application();
+  namespace.Resolver = {
+    create() {
+      return resolver;
     },
-  });
+  };
 
   let fallbackRegistry = Application.buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
