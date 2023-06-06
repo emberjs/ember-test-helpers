@@ -1,46 +1,9 @@
 'use strict';
 
 const getChannelURL = require('ember-source-channel-url');
-const latestVersion = require('latest-version');
+const { embroiderSafe } = require('@embroider/test-setup');
 
 module.exports = async function () {
-  const embroiderCore = await latestVersion('@embroider/core');
-  const embroiderWebpack = await latestVersion('@embroider/webpack');
-  const embroiderCompat = await latestVersion('@embroider/compat');
-  const embroiderTestSetup = await latestVersion('@embroider/test-setup');
-
-  const embroider = {
-    safe: {
-      name: 'embroider-safe',
-      npm: {
-        devDependencies: {
-          '@embroider/core': embroiderCore,
-          '@embroider/webpack': embroiderWebpack,
-          '@embroider/compat': embroiderCompat,
-          '@embroider/test-setup': embroiderTestSetup,
-        },
-      },
-      env: {
-        EMBROIDER_TEST_SETUP_OPTIONS: 'safe',
-      },
-    },
-
-    optimized: {
-      name: 'embroider-optimized',
-      npm: {
-        devDependencies: {
-          '@embroider/core': embroiderCore,
-          '@embroider/webpack': embroiderWebpack,
-          '@embroider/compat': embroiderCompat,
-          '@embroider/test-setup': embroiderTestSetup,
-        },
-      },
-      env: {
-        EMBROIDER_TEST_SETUP_OPTIONS: 'optimized',
-      },
-    },
-  };
-
   return {
     useYarn: true,
     scenarios: [
@@ -92,16 +55,16 @@ module.exports = async function () {
           devDependencies: {},
         },
       },
-      embroider.safe,
+      embroiderSafe(),
       // disable embroider optimized test scenarios, as the dynamism these
       // tests use is not compatible with embroider we are still exploring
       // appropriate paths forward.
       //
       // Steps to re-enable:
       //
-      // 1. have a strategy to make this work
+      // 1. have a strategy to make this work, import from '@embroider/test-setup'
       // 2. uncomment the next line
-      // embroider.optimized,
+      // embroiderOptimized();
       //
       // 3. add "embroider-optimized" to .github/workflows/ci-build.yml's
       //    ember-try-scenario list.
