@@ -128,7 +128,7 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (isComponent(templateOrComponent, owner)) {
+      if (isComponent(templateOrComponent)) {
         // We use this to track when `render` is used with a component so that we can throw an
         // assertion if `this.{set,setProperty} is used in the same test
         ComponentRenderMap.set(context, true);
