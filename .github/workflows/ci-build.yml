@@ -63,6 +63,9 @@ jobs:
       - name: test
         working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
+      - name: types compatibility
+        working-directory: addon
+        run: yarn lint:ts
 
   types:
     runs-on: ubuntu-latest
