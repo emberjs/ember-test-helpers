@@ -5,8 +5,10 @@ import EmberObject from '@ember/object';
 
 import require, { has } from 'require';
 import Ember from 'ember';
-import ContainerProxyMixin from '@ember/-internals/runtime/lib/mixins/container_proxy';
-import RegistryProxyMixin from '@ember/-internals/runtime/lib/mixins/registry_proxy';
+import {
+  ContainerProxyMixin,
+  RegistryProxyMixin,
+} from '@ember/-internals/runtime';
 import { FullName } from '@ember/owner';
 
 /**
