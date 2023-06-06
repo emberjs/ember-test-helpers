@@ -4,17 +4,20 @@ const getChannelURL = require('ember-source-channel-url');
 const latestVersion = require('latest-version');
 
 module.exports = async function () {
-  const EMBROIDER_VERSION = await latestVersion('@embroider/core');
+  const embroiderCore = await latestVersion('@embroider/core');
+  const embroiderWebpack = await latestVersion('@embroider/webpack');
+  const embroiderCompat = await latestVersion('@embroider/compat');
+  const embroiderTestSetup = await latestVersion('@embroider/testSetup');
 
   const embroider = {
     safe: {
       name: 'embroider-safe',
       npm: {
         devDependencies: {
-          '@embroider/core': EMBROIDER_VERSION,
-          '@embroider/webpack': EMBROIDER_VERSION,
-          '@embroider/compat': EMBROIDER_VERSION,
-          '@embroider/test-setup': EMBROIDER_VERSION,
+          '@embroider/core': embroiderCore,
+          '@embroider/webpack': embroiderWebpack,
+          '@embroider/compat': embroiderCompat,
+          '@embroider/test-setup': embroiderTestSetup,
         },
       },
       env: {
@@ -26,10 +29,10 @@ module.exports = async function () {
       name: 'embroider-optimized',
       npm: {
         devDependencies: {
-          '@embroider/core': EMBROIDER_VERSION,
-          '@embroider/webpack': EMBROIDER_VERSION,
-          '@embroider/compat': EMBROIDER_VERSION,
-          '@embroider/test-setup': EMBROIDER_VERSION,
+          '@embroider/core': embroiderCore,
+          '@embroider/webpack': embroiderWebpack,
+          '@embroider/compat': embroiderCompat,
+          '@embroider/test-setup': embroiderTestSetup,
         },
       },
       env: {
