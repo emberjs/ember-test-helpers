@@ -7,7 +7,7 @@ module.exports = async function () {
   const embroiderCore = await latestVersion('@embroider/core');
   const embroiderWebpack = await latestVersion('@embroider/webpack');
   const embroiderCompat = await latestVersion('@embroider/compat');
-  const embroiderTestSetup = await latestVersion('@embroider/testSetup');
+  const embroiderTestSetup = await latestVersion('@embroider/test-setup');
 
   const embroider = {
     safe: {
