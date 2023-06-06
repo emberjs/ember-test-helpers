@@ -10,22 +10,7 @@ import { getInternalComponentManager as getComponentManager } from '@glimmer/man
  * @returns {boolean} True if it's a component, false if not
  */
 function isComponent(maybeComponent: object): maybeComponent is ComponentLike {
-  // SAFETY: in more recent versions of @glimmer/manager,
-  //         this throws an error when maybeComponent does not have
-  //         an associated manager.
-  try {
-    return !!getComponentManager(maybeComponent, true);
-  } catch (e) {
-    if (
-      `${e}`.includes(
-        `wasn't a component manager associated with the definition`
-      )
-    ) {
-      return false;
-    }
-
-    throw e;
-  }
+  return !!getComponentManager(maybeComponent, true);
 }
 
 export default isComponent;
