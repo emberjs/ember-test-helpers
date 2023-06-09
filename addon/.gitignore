@@ -1,0 +1,7 @@
+# tyescript related output files
+addon-test-support/**/*.js
+addon-test-support/**/*.d.ts
+public-types
+
+# Other build artifacts
+README.md
