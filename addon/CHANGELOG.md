@@ -2,6 +2,25 @@
 
 
 
+
+## v3.0.3 (2023-06-09)
+
+#### :bug: Bug Fix
+* [#1410](https://github.com/emberjs/ember-test-helpers/pull/1410) Updates that address missing files in published package ([@MelSumner](https://github.com/MelSumner))
+* [#1404](https://github.com/emberjs/ember-test-helpers/pull/1404) Fix `isComponent` types ([@gitKrystan](https://github.com/gitKrystan))
+
+#### :house: Internal
+* [#1413](https://github.com/emberjs/ember-test-helpers/pull/1413) Update addon/.gitignore ([@MelSumner](https://github.com/MelSumner))
+* [#1406](https://github.com/emberjs/ember-test-helpers/pull/1406) fix embroider tests ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1408](https://github.com/emberjs/ember-test-helpers/pull/1408) Fix npm pack to include js files ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* [#1405](https://github.com/emberjs/ember-test-helpers/pull/1405) Add Ember 5.0 to support matrix (Closes [#1403](https://github.com/emberjs/ember-test-helpers/issues/1403)) ([@gitKrystan](https://github.com/gitKrystan))
+
+#### Committers: 3
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+- Melanie Sumner ([@MelSumner](https://github.com/MelSumner))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+
 ## v3.0.2 (2023-06-01)
 
 #### :bug: Bug Fix
