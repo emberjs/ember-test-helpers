@@ -469,14 +469,20 @@ export default function setupContext<T extends object>(
                 'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
               );
             } else {
-              let setCalls = SetUsage.get(context);
+              // While neither the types nor the API documentation indicate that passing `null` or
+              // `undefined` to `setProperties` is allowed, it works and *has worked* for a long
+              // time, so there is considerable real-world code which relies on the fact that it
+              // does in fact work. Checking and no-op-ing here handles that.
+              if (hash != null) {
+                let setCalls = SetUsage.get(context);
 
-              if (SetUsage.get(context) === undefined) {
-                setCalls = [];
-                SetUsage.set(context, setCalls);
+                if (SetUsage.get(context) === undefined) {
+                  setCalls = [];
+                  SetUsage.set(context, setCalls);
+                }
+
+                setCalls?.push(...Object.keys(hash));
               }
-
-              setCalls?.push(...Object.keys(hash));
             }
             return setProperties(context, hash);
           });
