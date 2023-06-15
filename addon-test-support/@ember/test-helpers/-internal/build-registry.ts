@@ -118,7 +118,7 @@ export default function (resolver: Resolver) {
     // correctly for the tests; that's why we import and call setupContainer
     // here; also see https://github.com/emberjs/data/issues/4071 for context
     let setupContainer = require('ember-data/setup-container')['default'];
-    setupContainer(registry || container);
+    setupContainer(owner);
   }
 
   return {
