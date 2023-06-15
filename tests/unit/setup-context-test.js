@@ -116,6 +116,28 @@ module('setupContext', function (hooks) {
         );
       });
 
+      test('this.setProperties handles `null` and `undefined` (back-compat only!)', function (assert) {
+        assert.expect(3);
+
+        context.setProperties();
+        assert.ok(
+          true,
+          'this.setProperties works with no args (for back-compat only)'
+        );
+
+        context.setProperties(null);
+        assert.ok(
+          true,
+          'this.setProperties works with `null` (for back-compat only)'
+        );
+
+        context.setProperties(undefined);
+        assert.ok(
+          true,
+          'this.setProperties works with `undefined` (for back-compat only)'
+        );
+      });
+
       test('it sets up this.get', function (assert) {
         context.set('foo', 'bar');
 
