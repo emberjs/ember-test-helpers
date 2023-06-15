@@ -3,6 +3,26 @@
 
 
 
+
+## v3.1.0 (2023-06-15)
+
+#### :rocket: Enhancement
+* [#1411](https://github.com/emberjs/ember-test-helpers/pull/1411) adds new workflow file to provide release branches ([@MelSumner](https://github.com/MelSumner))
+* [#1416](https://github.com/emberjs/ember-test-helpers/pull/1416) Add support for TS 5.0 and 5.1 ([@chriskrycho](https://github.com/chriskrycho))
+
+#### :bug: Bug Fix
+* [#1417](https://github.com/emberjs/ember-test-helpers/pull/1417) bugfix: handle `null` and `undefined` in `setProperties` ([@chriskrycho](https://github.com/chriskrycho))
+
+#### :memo: Documentation
+* [#1419](https://github.com/emberjs/ember-test-helpers/pull/1419) Update TS version support in README.md ([@chriskrycho](https://github.com/chriskrycho))
+
+#### :house: Internal
+* [#1411](https://github.com/emberjs/ember-test-helpers/pull/1411) adds new workflow file to provide release branches ([@MelSumner](https://github.com/MelSumner))
+
+#### Committers: 2
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+- Melanie Sumner ([@MelSumner](https://github.com/MelSumner))
+
 ## v3.0.3 (2023-06-09)
 
 #### :bug: Bug Fix
