@@ -1,5 +1,14 @@
 
 
+
+## v2.9.4 (2023-06-15)
+
+#### :bug: Bug Fix
+* [#1418](https://github.com/emberjs/ember-test-helpers/pull/1418) (backport) bugfix: handle `null` and `undefined` in `setProperties` ([@chriskrycho](https://github.com/chriskrycho))
+
+#### Committers: 1
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+
 ## v2.9.3 (2022-12-21)
 
 #### :bug: Bug Fix
