@@ -89,6 +89,10 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
  */
 export default function buildRegistry(resolver: Resolver) {
   let namespace = new Application();
+  // @ts-ignore: this is actually the correcct type, but there was a typo in
+  // Ember's docs for many years which meant that there was a matching problem
+  // in the types for Ember's definition of `Engine`. Once we require at least
+  // Ember 5.1 (in some future breaking change), this ts-ignore can be removed.
   namespace.Resolver = {
     create() {
       return resolver;
