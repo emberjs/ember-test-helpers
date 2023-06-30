@@ -4,6 +4,16 @@
 
 
 
+
+## v3.2.0 (2023-06-30)
+
+#### :rocket: Enhancement
+* [#1389](https://github.com/emberjs/ember-test-helpers/pull/1389) Support `@types`, preview types, and stable types for Ember.js ([@gitKrystan](https://github.com/gitKrystan))
+
+#### Committers: 1
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+- Chris Krycho ([@chriskrycho](https://github.com/chriskrycho))
+
 ## v3.1.0 (2023-06-15)
 
 #### :rocket: Enhancement
