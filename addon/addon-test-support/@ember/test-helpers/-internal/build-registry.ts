@@ -114,12 +114,17 @@ export default function buildRegistry(resolver: Resolver) {
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
-    // @ts-expect-error -- we do not have type safety for `Object.extend` so the
-    // type of `Owner` here is just `EmberObject`, but we *do* constrain it to
-    // allow only types from the actual class, so these fields are not accepted.
+    // @ts-ignore -- we do not have type safety for `Object.extend` so the type
+    // of `Owner` here is just `EmberObject`, but we *do* constrain it to allow
+    // only types from the actual class, so these fields are not accepted.
     // However, we can see that they are valid, based on the definition of
     // `Owner` above given that it fulfills the `InternalOwner` contract and
     // also extends it just as `EngineInstance` does internally.
+    //
+    // NOTE: we use an `ignore` directive rather than `expect-error` because in
+    // *some* versions of the types, we *do* have (at least some of) this
+    // safety, and maximal backwards compatibility means we have to account for
+    // that.
     __registry__: registry,
     __container__: null,
   }) as unknown as Owner;
