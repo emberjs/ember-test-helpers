@@ -1,3 +1,6 @@
+// @ts-ignore: this is private API. This import will work Ember 5.1+ since it
+// "provides" this public API, but does not for earlier versions. As a result,
+// this type will be `any`.
 import { _backburner } from '@ember/runloop';
 import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
@@ -109,7 +112,12 @@ export class TestDebugInfo implements DebugInfo {
             .filter(isNotNullable)
             .reduce((total, item) => {
               Object.values(item).forEach((queueItems) => {
-                total += queueItems?.length ?? 0;
+                // SAFETY: this cast is required for versions of Ember which do
+                // not supply a correct definition of these types. It should
+                // also be compatible with the version where Ember *does* supply
+                // the types correctly.
+                total +=
+                  (queueItems as Array<unknown> | undefined)?.length ?? 0;
               });
 
               return total;
@@ -119,7 +127,11 @@ export class TestDebugInfo implements DebugInfo {
             .filter(isNotNullable)
             .reduce((stacks, deferredActionQueues) => {
               Object.values(deferredActionQueues).forEach((queueItems) => {
-                queueItems?.forEach(
+                // SAFETY: this cast is required for versions of Ember which do
+                // not supply a correct definition of these types. It should
+                // also be compatible with the version where Ember *does* supply
+                // the types correctly.
+                (queueItems as Array<{ stack: string }> | undefined)?.forEach(
                   (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
                 );
               });
