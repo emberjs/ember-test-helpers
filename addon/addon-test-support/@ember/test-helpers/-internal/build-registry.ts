@@ -71,10 +71,14 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    */
   /* eslint-enable valid-jsdoc */
   unregister(this: Owner, fullName: FullName) {
-    this['__container__'].reset(fullName);
+    // SAFETY: this is always present, but only the stable type definitions from
+    // Ember actually preserve it, since it is private API.
+    (this as any)['__container__'].reset(fullName);
 
     // We overwrote this method from RegistryProxyMixin.
-    this['__registry__'].unregister(fullName);
+    // SAFETY: this is always present, but only the stable type definitions from
+    // Ember actually preserve it, since it is private API.
+    (this as any)['__registry__'].unregister(fullName);
   },
 });
 
