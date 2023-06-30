@@ -83,7 +83,7 @@
     "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
     "ember-resolver": "^9.0.1",
-    "ember-source": "~4.8",
+    "ember-source": "^5.1.2",
     "ember-source-channel-url": "^3.0.0",
     "ember-try": "^2.0.0",
     "eslint": "^7.32.0",
