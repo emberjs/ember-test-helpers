@@ -6,6 +6,16 @@ import EmberObject from '@ember/object';
 import require, { has } from 'require';
 import Ember from 'ember';
 
+import { FullName } from '@ember/owner';
+
+// These shenanigans work around the fact that the import locations are not
+// public API and are not stable, so we jump through hoops to get the right
+// types and values to use.
+import {
+  ContainerProxyMixin,
+  RegistryProxyMixin,
+} from './-owner-mixin-imports';
+
 /**
  * Adds methods that are normally only on registry to the container. This is largely to support the legacy APIs
  * that are not using `owner` (but are still using `this.container`).
@@ -40,12 +50,14 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
   }
 }
 
-const RegistryProxyMixin = (Ember as any)._RegistryProxyMixin;
-const ContainerProxyMixin = (Ember as any)._ContainerProxyMixin;
-
+// NOTE: this is the same as what `EngineInstance`/`ApplicationInstance`
+// implement, and is thus a superset of the `InternalOwner` contract from Ember
+// itself.
+interface Owner extends RegistryProxyMixin, ContainerProxyMixin {}
 const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
   _emberTestHelpersMockOwner: true,
 
+  /* eslint-disable valid-jsdoc */
   /**
    * Unregister a factory and its instance.
    *
@@ -57,13 +69,16 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    * @see {@link https://github.com/emberjs/ember.js/pull/12680}
    * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
    */
-  unregister(fullName: string) {
-    // @ts-expect-error
-    this['__container__'].reset(fullName);
+  /* eslint-enable valid-jsdoc */
+  unregister(this: Owner, fullName: FullName) {
+    // SAFETY: this is always present, but only the stable type definitions from
+    // Ember actually preserve it, since it is private API.
+    (this as any)['__container__'].reset(fullName);
 
     // We overwrote this method from RegistryProxyMixin.
-    // @ts-expect-error
-    this['__registry__'].unregister(fullName);
+    // SAFETY: this is always present, but only the stable type definitions from
+    // Ember actually preserve it, since it is private API.
+    (this as any)['__registry__'].unregister(fullName);
   },
 });
 
@@ -72,46 +87,62 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
  * @param {Object} resolver the resolver to use with the registry
  * @returns {Object} owner, container, registry
  */
-export default function (resolver: Resolver) {
-  let fallbackRegistry, registry, container;
-  let namespace = EmberObject.create({
-    // @ts-expect-error
-    Resolver: {
-      create() {
-        return resolver;
-      },
+export default function buildRegistry(resolver: Resolver) {
+  let namespace = new Application();
+  // @ts-ignore: this is actually the correcct type, but there was a typo in
+  // Ember's docs for many years which meant that there was a matching problem
+  // in the types for Ember's definition of `Engine`. Once we require at least
+  // Ember 5.1 (in some future breaking change), this ts-ignore can be removed.
+  namespace.Resolver = {
+    create() {
+      return resolver;
     },
-  });
+  };
 
-  fallbackRegistry = (Application as any).buildRegistry(namespace);
+  // @ts-ignore: this is private API.
+  let fallbackRegistry = Application.buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
-  fallbackRegistry.register(
-    'component-lookup:main',
-    (Ember as any).ComponentLookup
-  );
+  // @ts-ignore: this is private API.
+  fallbackRegistry.register('component-lookup:main', Ember.ComponentLookup);
 
-  registry = new (Ember as any).Registry({
+  // @ts-ignore: this is private API.
+  let registry = new Ember.Registry({
     fallback: fallbackRegistry,
   });
 
-  (ApplicationInstance as any).setupRegistry(registry);
+  // @ts-ignore: this is private API.
+  ApplicationInstance.setupRegistry(registry);
 
   // these properties are set on the fallback registry by `buildRegistry`
   // and on the primary registry within the ApplicationInstance constructor
   // but we need to manually recreate them since ApplicationInstance's are not
   // exposed externally
+  // @ts-ignore: this is private API.
   registry.normalizeFullName = fallbackRegistry.normalizeFullName;
+  // @ts-ignore: this is private API.
   registry.makeToString = fallbackRegistry.makeToString;
+  // @ts-ignore: this is private API.
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
-    // @ts-expect-error
+    // @ts-ignore -- we do not have type safety for `Object.extend` so the type
+    // of `Owner` here is just `EmberObject`, but we *do* constrain it to allow
+    // only types from the actual class, so these fields are not accepted.
+    // However, we can see that they are valid, based on the definition of
+    // `Owner` above given that it fulfills the `InternalOwner` contract and
+    // also extends it just as `EngineInstance` does internally.
+    //
+    // NOTE: we use an `ignore` directive rather than `expect-error` because in
+    // *some* versions of the types, we *do* have (at least some of) this
+    // safety, and maximal backwards compatibility means we have to account for
+    // that.
     __registry__: registry,
     __container__: null,
-  });
+  }) as unknown as Owner;
 
-  container = registry.container({ owner: owner });
-  // @ts-expect-error
+  // @ts-ignore: this is private API.
+  let container = registry.container({ owner: owner });
+  // @ts-ignore: this is private API.
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);

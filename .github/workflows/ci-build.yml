@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
-      - 'v*'
+      - "v*"
   pull_request:
   schedule:
-    - cron: '0 3 * * *' # daily, at 3am
+    - cron: "0 3 * * *" # daily, at 3am
 
 jobs:
   test:
@@ -24,7 +24,7 @@ jobs:
 
   floating-dependencies:
     timeout-minutes: 10
-    name: 'Floating Dependencies'
+    name: "Floating Dependencies"
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +35,7 @@ jobs:
 
   try-scenarios:
     timeout-minutes: 10
-    name: 'Try: ${{ matrix.ember-try-scenario }}'
+    name: "Try: ${{ matrix.ember-try-scenario }}"
 
     runs-on: ubuntu-latest
 
@@ -47,7 +47,7 @@ jobs:
         ember-try-scenario:
           - ember-lts-4.4
           - ember-lts-4.8
-          - ember-lts-5.0
+          - ember-lts-4.12
           - ember-release
           - ember-beta
           - ember-canary
@@ -63,6 +63,9 @@ jobs:
       - name: test
         working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
+      - name: types compatibility
+        working-directory: addon
+        run: yarn lint:ts
 
   types:
     runs-on: ubuntu-latest

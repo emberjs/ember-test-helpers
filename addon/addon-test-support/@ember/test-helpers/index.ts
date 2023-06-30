@@ -82,6 +82,4 @@ declare module '@ember/runloop' {
     hasTimers(): boolean;
     currentInstance: DeferredActionQueues | null;
   }
-
-  export const _backburner: PrivateBackburner;
 }

@@ -1,8 +1,8 @@
+// @ts-ignore: this is private API. This import will work Ember 5.1+ since it
+// "provides" this public API, but does not for earlier versions. As a result,
+// this type will be `any`.
 import { _backburner } from '@ember/runloop';
-import {
-  DebugInfo as BackburnerDebugInfo,
-  QueueItem,
-} from '@ember/runloop/-private/backburner';
+import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
 import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
 import { getPendingWaiterState, PendingWaiterState } from '@ember/test-waiters';
 
@@ -109,26 +109,29 @@ export class TestDebugInfo implements DebugInfo {
 
         this._summaryInfo.pendingScheduledQueueItemCount =
           this._debugInfo.instanceStack
-            .filter((q) => q)
+            .filter(isNotNullable)
             .reduce((total, item) => {
-              Object.keys(item).forEach((queueName) => {
-                // SAFETY: this cast is *not* safe, but the underlying type is
-                // not currently able to be safer than this because it was
-                // built as a bag-of-queues *and* a structured item originally.
-                total += (item[queueName] as QueueItem[]).length;
+              Object.values(item).forEach((queueItems) => {
+                // SAFETY: this cast is required for versions of Ember which do
+                // not supply a correct definition of these types. It should
+                // also be compatible with the version where Ember *does* supply
+                // the types correctly.
+                total +=
+                  (queueItems as Array<unknown> | undefined)?.length ?? 0;
               });
 
               return total;
             }, 0);
         this._summaryInfo.pendingScheduledQueueItemStackTraces =
           this._debugInfo.instanceStack
-            .filter((q) => q)
+            .filter(isNotNullable)
             .reduce((stacks, deferredActionQueues) => {
-              Object.keys(deferredActionQueues).forEach((queue) => {
-                // SAFETY: this cast is *not* safe, but the underlying type is
-                // not currently able to be safer than this because it was
-                // built as a bag-of-queues *and* a structured item originally.
-                (deferredActionQueues[queue] as QueueItem[]).forEach(
+              Object.values(deferredActionQueues).forEach((queueItems) => {
+                // SAFETY: this cast is required for versions of Ember which do
+                // not supply a correct definition of these types. It should
+                // also be compatible with the version where Ember *does* supply
+                // the types correctly.
+                (queueItems as Array<{ stack: string }> | undefined)?.forEach(
                   (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
                 );
               });
@@ -221,4 +224,9 @@ export class TestDebugInfo implements DebugInfo {
   _formatCount(title: string, count: number): string {
     return `${title}: ${count}`;
   }
+}
+
+// eslint-disable-next-line require-jsdoc
+function isNotNullable<T extends {}>(value: T | null | undefined): value is T {
+  return value != null;
 }

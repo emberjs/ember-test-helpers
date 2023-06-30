@@ -55,10 +55,6 @@ module.exports = {
     {
       files: ['addon-test-support/**/*.[jt]s'],
       plugins: ['disable-features'],
-      rules: {
-        'disable-features/disable-async-await': 'error',
-        'disable-features/disable-generator-functions': 'error',
-      },
     },
     {
       files: ['addon-test-support/**/*.[jt]s'],

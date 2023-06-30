@@ -1,4 +1,7 @@
 /* globals jQuery */
+// @ts-ignore: this is private API. This import will work Ember 5.1+ since it
+// "provides" this public API, but does not for earlier versions. As a result,
+// this type will be `any`.
 import { _backburner } from '@ember/runloop';
 import Ember from 'ember';
 

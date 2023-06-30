@@ -2,19 +2,19 @@ import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
 import legacyBuildRegistry from './-internal/build-registry';
-import ContainerProxyMixin from '@ember/engine/-private/container-proxy-mixin';
-import RegistryProxyMixin from '@ember/engine/-private/registry-proxy-mixin';
-import CoreObject from '@ember/object/core';
+import EmberOwner from '@ember/owner';
+import { SimpleElement } from '@simple-dom/interface';
 
-export interface Owner
-  extends CoreObject,
-    ContainerProxyMixin,
-    RegistryProxyMixin {
+export interface Owner extends EmberOwner {
   _emberTestHelpersMockOwner?: boolean;
-  rootElement?: string | Element;
+  rootElement?: string | Element | SimpleElement | null;
 
   _lookupFactory?(key: string): any;
 
+  // Note: this should be the same as `Application['visit']`, but that *type* is
+  // only available from Ember 4.12 on. Once we require Ember >= 5.1 and rely on
+  // the stable types, this will not be necessary and the related `@ts-ignore`
+  // below can also be removed.
   visit(url: string, options?: { [key: string]: any }): Promise<any>;
 }
 
@@ -42,9 +42,11 @@ export default function buildOwner(
   resolver: Resolver | undefined | null
 ): Promise<Owner> {
   if (application) {
-    return application
-      .boot()
-      .then((app) => app.buildInstance().boot()) as unknown as Promise<Owner>;
+    // @ts-ignore: this type is correct and will check against Ember 4.12 or 5.1
+    // or later. However, the first round of preview types in Ember 4.8 does not
+    // include the `visit` API (it was missing for many years!) and therefore
+    // there is no way to make this assignable accross all supported versions.
+    return application.boot().then((app) => app.buildInstance().boot());
   }
 
   if (!resolver) {

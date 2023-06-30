@@ -1,3 +1,6 @@
+// @ts-ignore: this is private API. This import will work Ember 5.1+ since it
+// "provides" this public API, but does not for earlier versions. As a result,
+// this type will be `any`.
 import { _backburner, run } from '@ember/runloop';
 import { set, setProperties, get, getProperties } from '@ember/object';
 import type { Resolver } from '@ember/owner';

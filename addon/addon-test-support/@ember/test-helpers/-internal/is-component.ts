@@ -1,5 +1,8 @@
 import type { ComponentLike } from '@glint/template';
 
+// @ts-ignore: types for this API is not consistently available (via transitive
+// deps) and we do not currently want to make it an explicit dependency. It
+// does, however, consistently work at runtime. :sigh:
 import { getInternalComponentManager as getComponentManager } from '@glimmer/manager';
 
 /**
