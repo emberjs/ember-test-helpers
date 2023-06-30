@@ -56,10 +56,13 @@ import type { ContainerProxyMixin as CPM_stable } from '@ember/-internals/runtim
 // @ts-ignore
 import type { RegistryProxyMixin as RPM_stable } from '@ember/-internals/runtime';
 
-// We also resolve the *values* from a "stable" location.
+// We also resolve the *values* from a "stable" location. However, the *types*
+// for the Ember namespace do not consistently include this definition (they do
+// on the stable types, but not in the preview or DT types), so cast as `any` so
+// that it resolves regardless.
 import Ember from 'ember';
-export const ContainerProxyMixin = Ember._ContainerProxyMixin;
+export const ContainerProxyMixin = (Ember as any)._ContainerProxyMixin;
 export type ContainerProxyMixin = NonNever<[CPM_DTS, CPM_4_12, CPM_stable]>;
 
-export const RegistryProxyMixin = Ember._RegistryProxyMixin;
+export const RegistryProxyMixin = (Ember as any)._RegistryProxyMixin;
 export type RegistryProxyMixin = NonNever<[RPM_DTS, RPM_4_12, RPM_stable]>;
