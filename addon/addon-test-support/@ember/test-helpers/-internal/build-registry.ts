@@ -95,22 +95,29 @@ export default function buildRegistry(resolver: Resolver) {
     },
   };
 
+  // @ts-ignore: this is private API.
   let fallbackRegistry = Application.buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
+  // @ts-ignore: this is private API.
   fallbackRegistry.register('component-lookup:main', Ember.ComponentLookup);
 
+  // @ts-ignore: this is private API.
   let registry = new Ember.Registry({
     fallback: fallbackRegistry,
   });
 
+  // @ts-ignore: this is private API.
   ApplicationInstance.setupRegistry(registry);
 
   // these properties are set on the fallback registry by `buildRegistry`
   // and on the primary registry within the ApplicationInstance constructor
   // but we need to manually recreate them since ApplicationInstance's are not
   // exposed externally
+  // @ts-ignore: this is private API.
   registry.normalizeFullName = fallbackRegistry.normalizeFullName;
+  // @ts-ignore: this is private API.
   registry.makeToString = fallbackRegistry.makeToString;
+  // @ts-ignore: this is private API.
   registry.describe = fallbackRegistry.describe;
 
   let owner = Owner.create({
@@ -129,7 +136,9 @@ export default function buildRegistry(resolver: Resolver) {
     __container__: null,
   }) as unknown as Owner;
 
+  // @ts-ignore: this is private API.
   let container = registry.container({ owner: owner });
+  // @ts-ignore: this is private API.
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);
