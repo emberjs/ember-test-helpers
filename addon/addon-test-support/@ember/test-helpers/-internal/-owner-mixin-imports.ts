@@ -44,7 +44,13 @@ import type CPM_DTS from '@ember/engine/-private/container-proxy-mixin.d.ts';
 // @ts-ignore
 import type RPM_DTS from '@ember/engine/-private/registry-proxy-mixin.d.ts';
 
-// Imports from the preview types
+// Imports from the preview types on 4.8
+// @ts-ignore
+import type CPM_4_8 from '@ember/engine/-private/container-proxy-mixin';
+// @ts-ignore
+import type RPM_4_8 from '@ember/engine/-private/registry-proxy-mixin';
+
+// Imports from the preview types on 4.12
 // @ts-ignore
 import type CPM_4_12 from '@ember/-internals/runtime/lib/mixins/container_proxy';
 // @ts-ignore
@@ -62,7 +68,11 @@ import type { RegistryProxyMixin as RPM_stable } from '@ember/-internals/runtime
 // that it resolves regardless.
 import Ember from 'ember';
 export const ContainerProxyMixin = (Ember as any)._ContainerProxyMixin;
-export type ContainerProxyMixin = NonNever<[CPM_DTS, CPM_4_12, CPM_stable]>;
+export type ContainerProxyMixin = NonNever<
+  [CPM_DTS, CPM_4_8, CPM_4_12, CPM_stable]
+>;
 
 export const RegistryProxyMixin = (Ember as any)._RegistryProxyMixin;
-export type RegistryProxyMixin = NonNever<[RPM_DTS, RPM_4_12, RPM_stable]>;
+export type RegistryProxyMixin = NonNever<
+  [RPM_DTS, RPM_4_8, RPM_4_12, RPM_stable]
+>;
