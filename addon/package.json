@@ -57,7 +57,7 @@
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.21.0",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/preset-typescript": "^7.22.5",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@embroider/test-setup": "^3.0.1",
