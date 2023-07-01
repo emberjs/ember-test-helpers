@@ -65,7 +65,7 @@
     "@glimmer/interfaces": "^0.84.1",
     "@glimmer/reference": "^0.84.2",
     "@glint/template": "^0.9.7",
-    "@tsconfig/ember": "^1.0.1",
+    "@tsconfig/ember": "^3.0.0",
     "@types/jquery": "^3.5.16",
     "@types/rsvp": "^4.0.4",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
