@@ -73,6 +73,7 @@ import {
   type Hook,
   type HookLabel,
   type HookUnregister,
+  renderSettled,
 } from '@ember/test-helpers';
 import { ComponentInstance } from '@glimmer/interfaces';
 import { Owner } from '@ember/test-helpers/build-owner';
@@ -192,6 +193,7 @@ expectTypeOf(waitUntil).toEqualTypeOf<
     }
   ) => Promise<T>
 >();
+expectTypeOf(renderSettled).toEqualTypeOf<() => Promise<void>>();
 expectTypeOf(settled).toEqualTypeOf<() => Promise<void>>();
 expectTypeOf(isSettled).toEqualTypeOf<() => boolean>();
 expectTypeOf(getSettledState).toEqualTypeOf<

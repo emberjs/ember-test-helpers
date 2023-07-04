@@ -41,6 +41,7 @@ export {
   currentURL,
 } from './setup-application-context';
 export { default as settled, isSettled, getSettledState } from './settled';
+export { default as renderSettled } from './-internal/render-settled';
 export { default as waitUntil } from './wait-until';
 export { default as validateErrorHandler } from './validate-error-handler';
 export { default as setupOnerror, resetOnerror } from './setup-onerror';
