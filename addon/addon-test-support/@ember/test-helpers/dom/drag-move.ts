@@ -1,5 +1,5 @@
 import { settled } from '..';
-import { registerHook, runHooks } from '../-internal/helper-hooks';
+import { registerHook, runHooks } from '../helper-hooks';
 import getElement from './-get-element';
 import { log } from './-logging';
 import Target from './-target';
@@ -48,28 +48,32 @@ export default function dragMove(
     .then(() =>
       runHooks('dragMove', 'start', draggableStartElement, dropTargetElement)
     )
-    .then(() => {
+    .then(async () => {
       fireEvent(dragEl, 'dragstart', {
         dataTransfer: {
           setData(someKey: string, value: string) {
             context[someKey] = value;
           },
         },
-      });
-
-      fireEvent(targetEl, 'dragenter');
-
-      fireEvent(targetEl, 'dragover');
-
-      fireEvent(targetEl, 'drop', {
-        dataTransfer: {
-          getData(someKey: string) {
-            return context[someKey];
-          },
-        },
-      });
-
-      return settled();
+      })
+        .then(() => {
+          fireEvent(targetEl, 'dragenter');
+        })
+        .then(() => {
+          fireEvent(targetEl, 'dragover');
+        })
+        .then(() => {
+          fireEvent(targetEl, 'drop', {
+            dataTransfer: {
+              getData(someKey: string) {
+                return context[someKey];
+              },
+            },
+          });
+        })
+        .then(() => {
+          return settled();
+        });
     })
     .then(() =>
       runHooks('dragMove', 'end', draggableStartElement, dropTargetElement)
