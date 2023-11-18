@@ -88,7 +88,7 @@ export interface RenderOptions {
   Renders the provided template and appends it to the DOM.
 
   @public
-  @param {Template|Component} templateOrComponent the component (or template) to render
+  @param {Template|Component} templateFactoryOrComponent the component (or template) to render
   @param {RenderOptions} options options hash containing engine owner ({ owner: engineOwner })
   @returns {Promise<void>} resolves when settled
 
@@ -99,12 +99,12 @@ export interface RenderOptions {
   await render(hbs`<div class="container"></div>`);
 */
 export function render(
-  templateOrComponent: object,
+  templateFactoryOrComponent: object,
   options?: RenderOptions
 ): Promise<void> {
   let context = getContext();
 
-  if (!templateOrComponent) {
+  if (!templateFactoryOrComponent) {
     throw new Error('you must pass a template to `render()`');
   }
 
@@ -128,7 +128,7 @@ export function render(
       let OutletTemplate = lookupOutletTemplate(owner);
       let ownerToRenderFrom = options?.owner || owner;
 
-      if (isComponent(templateOrComponent)) {
+      if (isComponent(templateFactoryOrComponent)) {
         // We use this to track when `render` is used with a component so that we can throw an
         // assertion if `this.{set,setProperty} is used in the same test
         ComponentRenderMap.set(context, true);
@@ -144,18 +144,15 @@ export function render(
         }
 
         context = {
-          ProvidedComponent: templateOrComponent,
+          ProvidedComponent: templateFactoryOrComponent,
         };
-        templateOrComponent = INVOKE_PROVIDED_COMPONENT;
-      } else {
-        templateId += 1;
-        let templateFullName = `template:-undertest-${templateId}` as const;
-        ownerToRenderFrom.register(templateFullName, templateOrComponent);
-        templateOrComponent = lookupTemplate(
-          ownerToRenderFrom,
-          templateFullName
-        );
+        templateFactoryOrComponent = INVOKE_PROVIDED_COMPONENT;
       }
+
+      templateId += 1;
+      let templateFullName = `template:-undertest-${templateId}` as const;
+      ownerToRenderFrom.register(templateFullName, templateFactoryOrComponent);
+      let template = lookupTemplate(ownerToRenderFrom, templateFullName);
 
       let outletState = {
         render: {
@@ -177,7 +174,7 @@ export function render(
               name: 'index',
               controller: context,
               ViewClass: undefined,
-              template: templateOrComponent,
+              template,
               outlets: {},
             },
             outlets: {},
