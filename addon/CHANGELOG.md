@@ -5,6 +5,15 @@
 
 
 
+
+## v3.2.1 (2023-11-19)
+
+#### :bug: Bug Fix
+* [#1445](https://github.com/emberjs/ember-test-helpers/pull/1445) Fix ember-canary error/deprecation ([@chancancode](https://github.com/chancancode))
+
+#### Committers: 1
+- Godfrey Chan ([@chancancode](https://github.com/chancancode))
+
 ## v3.2.0 (2023-06-30)
 
 #### :rocket: Enhancement
