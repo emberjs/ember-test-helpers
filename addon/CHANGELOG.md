@@ -6,6 +6,15 @@
 
 
 
+
+## v3.3.0 (2024-02-12)
+
+#### :rocket: Enhancement
+* [#1446](https://github.com/emberjs/ember-test-helpers/pull/1446) Support passing IDOMElementDescriptors as targets ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v3.2.1 (2023-11-19)
 
 #### :bug: Bug Fix
