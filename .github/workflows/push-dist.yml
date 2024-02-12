@@ -1,0 +1,22 @@
+# .github/workflows/push-dist.yml
+
+name: Push dist
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  push-dist:
+    name: Push dist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v4
+      - run: yarn install --frozen-lockfile --ignore-engines
+      - uses: kategengler/put-built-npm-package-contents-on-branch@v1.0.0
+        with:
+          branch: ${{ github.head_ref || github.ref_name }}-dist
+          token: ${{ secrets.GITHUB_TOKEN }}

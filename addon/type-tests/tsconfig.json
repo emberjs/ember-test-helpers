@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/ember",
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "@ember/test-helpers": [
+        "./addon-test-support/@ember/test-helpers"
+      ],
+      "@ember/test-helpers/*": [
+        "./addon-test-support/@ember/test-helpers/*"
+      ],
+      "*": [
+        "types/*"
+      ]
+    }
+  },
+  "include": ["api.ts", "../types/**/*"]
+}

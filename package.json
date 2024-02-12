@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "version": "0.0.0",
+  "private": true,
+  "license": "(MIT OR Apache-2.0)",
+  "repository": "https://github.com/emberjs/ember-test-helpers",
+  "scripts": {
+    "lint": "yarn workspaces run lint",
+    "lint:fix": "yarn workspaces run lint:fix",
+    "test": "yarn workspaces run test"
+  },
+  "volta": {
+    "node": "16.19.1",
+    "yarn": "1.22.19"
+  },
+  "workspaces": [
+    "addon"
+  ]
+}
