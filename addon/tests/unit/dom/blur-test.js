@@ -9,6 +9,7 @@ import {
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { createDescriptor } from 'dom-element-descriptors';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
@@ -132,6 +133,30 @@ module('DOM Helper: blur', function (hooks) {
 
   test('blurring via element without context set', async function (assert) {
     await blur(elementWithFocus);
+
+    assert.verifySteps(blurSteps);
+    assert.notEqual(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
+  });
+
+  test('bluring via descriptor with context set', async function (assert) {
+    await setupContext(context);
+    await blur(createDescriptor({ element: elementWithFocus }));
+
+    assert.verifySteps(blurSteps);
+    assert.notEqual(
+      document.activeElement,
+      elementWithFocus,
+      'activeElement updated'
+    );
+  });
+
+  test('bluring via descriptor without context set', async function (assert) {
+    await blur(elementWithFocus);
+    await blur(createDescriptor({ element: elementWithFocus }));
 
     assert.verifySteps(blurSteps);
     assert.notEqual(

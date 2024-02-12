@@ -1,4 +1,6 @@
-type Target = string | Element | Document | Window;
+import type { IDOMElementDescriptor } from 'dom-element-descriptors';
+
+type Target = string | Element | IDOMElementDescriptor | Document | Window;
 
 export default Target;
 

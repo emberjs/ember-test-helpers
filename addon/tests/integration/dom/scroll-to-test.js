@@ -121,7 +121,7 @@ module('DOM Helper: scroll-to', function (hooks) {
   test('It throws an error if a target is not supplied', async function (assert) {
     assert.rejects(
       scrollTo('', 0, 0),
-      new Error('Must pass an element or selector to `scrollTo`.')
+      new Error('Must pass an element, selector, or descriptor to `scrollTo`.')
     );
   });
 

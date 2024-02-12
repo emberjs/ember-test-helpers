@@ -5,6 +5,13 @@ import settled from '../settled';
 import fireEvent from './fire-event';
 import Target from './-target';
 import { runHooks } from '../helper-hooks';
+import getDescription from './-get-description';
+
+// eslint-disable-next-line require-jsdoc
+function errorMessage(message: string, target: Target) {
+  let description = getDescription(target);
+  return `${message} when calling \`select('${description}')\`.`;
+}
 
 /**
   Set the `selected` property true for the provided option the target is a
@@ -13,7 +20,7 @@ import { runHooks } from '../helper-hooks';
   `change` and `input` events on the specified target.
 
   @public
-  @param {string|Element} target the element or selector for the select element
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor for the select element
   @param {string|string[]} options the value/values of the items to select
   @param {boolean} keepPreviouslySelected a flag keep any existing selections
   @return {Promise<void>} resolves when the application is settled
@@ -40,7 +47,9 @@ export default function select(
     )
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `select`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `select`.'
+        );
       }
 
       if (typeof options === 'undefined' || options === null) {
@@ -51,28 +60,27 @@ export default function select(
 
       const element = getElement(target);
       if (!element) {
-        throw new Error(
-          `Element not found when calling \`select('${target}')\`.`
-        );
+        throw new Error(errorMessage('Element not found', target));
       }
 
       if (!isSelectElement(element)) {
         throw new Error(
-          `Element is not a HTMLSelectElement when calling \`select('${target}')\`.`
+          errorMessage('Element is not a HTMLSelectElement', target)
         );
       }
 
       if (element.disabled) {
-        throw new Error(
-          `Element is disabled when calling \`select('${target}')\`.`
-        );
+        throw new Error(errorMessage('Element is disabled', target));
       }
 
       options = Array.isArray(options) ? options : [options];
 
       if (!element.multiple && options.length > 1) {
         throw new Error(
-          `HTMLSelectElement \`multiple\` attribute is set to \`false\` but multiple options were passed when calling \`select('${target}')\`.`
+          errorMessage(
+            'HTMLSelectElement `multiple` attribute is set to `false` but multiple options were passed',
+            target
+          )
         );
       }
 

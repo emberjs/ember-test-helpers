@@ -7,6 +7,7 @@ import fireEvent from './fire-event';
 import Target, { isContentEditable } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 registerHook('fillIn', 'start', (target: Target, text: string) => {
   log('fillIn', target, text);
@@ -18,7 +19,7 @@ registerHook('fillIn', 'start', (target: Target, text: string) => {
   events on the specified target.
 
   @public
-  @param {string|Element} target the element or selector to enter text into
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to enter text into
   @param {string} text the text to fill into the target element
   @return {Promise<void>} resolves when the application is settled
 
@@ -34,13 +35,16 @@ export default function fillIn(target: Target, text: string): Promise<void> {
     .then(() => runHooks('fillIn', 'start', target, text))
     .then(() => {
       if (!target) {
-        throw new Error('Must pass an element or selector to `fillIn`.');
+        throw new Error(
+          'Must pass an element, selector, or descriptor to `fillIn`.'
+        );
       }
 
       let element = getElement(target) as Element | HTMLElement;
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`fillIn('${target}')\`.`
+          `Element not found when calling \`fillIn('${description}')\`.`
         );
       }
 
@@ -50,11 +54,15 @@ export default function fillIn(target: Target, text: string): Promise<void> {
 
       if (isFormControl(element)) {
         if (element.disabled) {
-          throw new Error(`Can not \`fillIn\` disabled '${target}'.`);
+          throw new Error(
+            `Can not \`fillIn\` disabled '${getDescription(target)}'.`
+          );
         }
 
         if ('readOnly' in element && element.readOnly) {
-          throw new Error(`Can not \`fillIn\` readonly '${target}'.`);
+          throw new Error(
+            `Can not \`fillIn\` readonly '${getDescription(target)}'.`
+          );
         }
 
         guardForMaxlength(element, text, 'fillIn');

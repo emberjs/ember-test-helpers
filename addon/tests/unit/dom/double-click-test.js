@@ -15,6 +15,7 @@ import {
   unregisterHooks,
   buildExpectedSteps,
 } from '../../helpers/register-hooks';
+import { createDescriptor } from 'dom-element-descriptors';
 
 const expectedEvents = [
   'mousedown',
@@ -110,6 +111,39 @@ module('DOM Helper: doubleClick', function (hooks) {
       element = buildInstrumentedElement('div');
 
       await doubleClick(element);
+
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
+    });
+
+    test('double-clicking a div via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await setupContext(context);
+      await doubleClick(createDescriptor({ element }));
+
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
+    });
+
+    test('double-clicking a div via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('div');
+
+      await doubleClick(createDescriptor({ element }));
 
       assert.verifySteps([
         'mousedown',
@@ -256,6 +290,33 @@ module('DOM Helper: doubleClick', function (hooks) {
       element = buildInstrumentedElement('input');
 
       await doubleClick(element);
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
+    test('double-clicking a input via descriptor with context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await setupContext(context);
+      await doubleClick(createDescriptor({ element }));
+
+      assert.verifySteps(clickSteps);
+      assert.strictEqual(
+        document.activeElement,
+        element,
+        'activeElement updated'
+      );
+    });
+
+    test('double-clicking a input via descriptor without context set', async function (assert) {
+      element = buildInstrumentedElement('input');
+
+      await doubleClick(createDescriptor({ element }));
 
       assert.verifySteps(clickSteps);
       assert.strictEqual(

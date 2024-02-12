@@ -7,6 +7,7 @@ import {
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { createDescriptor } from 'dom-element-descriptors';
 
 module('DOM Helper: triggerEvent', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -95,10 +96,27 @@ module('DOM Helper: triggerEvent', function (hooks) {
     assert.verifySteps(['mouseenter']);
   });
 
+  test('triggering event via descriptor with context set fires the given event type', async function (assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+    await triggerEvent(createDescriptor({ element }), 'mouseenter');
+
+    assert.verifySteps(['mouseenter']);
+  });
+
   test('triggering event via element without context set fires the given event type', async function (assert) {
     element = buildInstrumentedElement('div');
 
     await triggerEvent(element, 'mouseenter');
+
+    assert.verifySteps(['mouseenter']);
+  });
+
+  test('triggering event via descriptor without context set fires the given event type', async function (assert) {
+    element = buildInstrumentedElement('div');
+
+    await triggerEvent(createDescriptor({ element }), 'mouseenter');
 
     assert.verifySteps(['mouseenter']);
   });

@@ -11,6 +11,7 @@ import Target from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';
+import getDescription from './-get-description';
 
 registerHook(
   'triggerKeyEvent',
@@ -213,6 +214,12 @@ export function __triggerKeyEvent__(
   });
 }
 
+// eslint-disable-next-line require-jsdoc
+function errorMessage(message: string, target: Target) {
+  let description = getDescription(target);
+  return `${message} when calling \`triggerKeyEvent('${description}')\`.`;
+}
+
 /**
   Triggers a keyboard event of given type in the target element.
   It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
@@ -220,7 +227,7 @@ export function __triggerKeyEvent__(
   Optionally the user can also provide a POJO with extra modifiers for the event.
 
   @public
-  @param {string|Element} target the element or selector to trigger the event on
+  @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to trigger the event on
   @param {'keydown' | 'keyup' | 'keypress'} eventType the type of event to trigger
   @param {number|string} key the `keyCode`(number) or `key`(string) of the event being triggered
   @param {Object} [modifiers] the state of various modifier keys
@@ -249,14 +256,15 @@ export default function triggerKeyEvent(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element or selector to `triggerKeyEvent`.'
+          'Must pass an element, selector, or descriptor to `triggerKeyEvent`.'
         );
       }
 
       let element = getElement(target);
       if (!element) {
+        let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`triggerKeyEvent('${target}', ...)\`.`
+          `Element not found when calling \`triggerKeyEvent('${description}')\`.`
         );
       }
 

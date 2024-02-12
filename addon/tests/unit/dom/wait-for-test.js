@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { waitFor, setupContext, teardownContext } from '@ember/test-helpers';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { registerDescriptorData } from 'dom-element-descriptors';
 
 module('DOM Helper: waitFor', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -22,11 +23,39 @@ module('DOM Helper: waitFor', function (hooks) {
     document.getElementById('ember-testing').innerHTML = '';
   });
 
+  class SelectorData {
+    constructor(selector) {
+      this.selector = selector;
+    }
+
+    get elements() {
+      return rootElement.querySelectorAll(this.selector);
+    }
+  }
+
+  class SelectorDescriptor {
+    constructor(selector) {
+      registerDescriptorData(this, new SelectorData(selector));
+    }
+  }
+
   test('wait for selector without context set', async function (assert) {
     assert.rejects(
       waitFor('.something'),
       /Must setup rendering context before attempting to interact with elements/
     );
+  });
+
+  test('wait for descriptor without context set', async function (assert) {
+    let waitPromise = waitFor(new SelectorDescriptor('.something'));
+
+    setTimeout(() => {
+      rootElement.innerHTML = `<div class="something">Hi!</div>`;
+    }, 10);
+
+    let element = await waitPromise;
+
+    assert.equal(element.textContent, 'Hi!');
   });
 
   test('wait for selector', async function (assert) {
@@ -43,10 +72,50 @@ module('DOM Helper: waitFor', function (hooks) {
     assert.equal(element.textContent, 'Hi!');
   });
 
+  test('wait for descriptor without context set', async function (assert) {
+    await setupContext(context);
+
+    let waitPromise = waitFor(new SelectorDescriptor('.something'));
+
+    setTimeout(() => {
+      rootElement.innerHTML = `<div class="something">Hi!</div>`;
+    }, 10);
+
+    let element = await waitPromise;
+
+    assert.equal(element.textContent, 'Hi!');
+  });
+
   test('wait for count of selector', async function (assert) {
     await setupContext(context);
 
     let waitPromise = waitFor('.something', { count: 2 });
+
+    setTimeout(() => {
+      rootElement.innerHTML = `<div class="something">No!</div>`;
+    }, 10);
+
+    setTimeout(() => {
+      rootElement.innerHTML = `
+        <div class="something">Hi!</div>
+        <div class="something">Bye!</div>
+      `;
+    }, 20);
+
+    let elements = await waitPromise;
+
+    assert.deepEqual(
+      elements.map((e) => e.textContent),
+      ['Hi!', 'Bye!']
+    );
+  });
+
+  test('wait for count of descriptor', async function (assert) {
+    await setupContext(context);
+
+    let waitPromise = waitFor(new SelectorDescriptor('.something'), {
+      count: 2,
+    });
 
     setTimeout(() => {
       rootElement.innerHTML = `<div class="something">No!</div>`;

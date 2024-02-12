@@ -12,6 +12,7 @@ import {
 } from '../../helpers/events';
 import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { createDescriptor } from 'dom-element-descriptors';
 
 let focusSteps = ['focus', 'focusin'];
 let blurSteps = ['blur', 'focusout'];
@@ -80,6 +81,13 @@ module('DOM Helper: focus', function (hooks) {
 
     await setupContext(context);
     assert.rejects(focus(element), /is not focusable/);
+  });
+
+  test('focusing a div via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('div');
+
+    await setupContext(context);
+    assert.rejects(focus(createDescriptor({ element })), /is not focusable/);
   });
 
   test('focusing a disabled form control', async function (assert) {
@@ -181,10 +189,37 @@ module('DOM Helper: focus', function (hooks) {
     );
   });
 
+  test('focusing an input via descriptor with context set', async function (assert) {
+    element = buildInstrumentedElement('input');
+
+    await setupContext(context);
+    await focus(createDescriptor({ element }));
+
+    assert.verifySteps(focusSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+  });
+
   test('focusing an input via element without context set', async function (assert) {
     element = buildInstrumentedElement('input');
 
     await focus(element);
+
+    assert.verifySteps(focusSteps);
+    assert.strictEqual(
+      document.activeElement,
+      element,
+      'activeElement updated'
+    );
+  });
+
+  test('focusing an input via descriptor without context set', async function (assert) {
+    element = buildInstrumentedElement('input');
+
+    await focus(createDescriptor({ element }));
 
     assert.verifySteps(focusSteps);
     assert.strictEqual(
