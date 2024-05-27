@@ -1,4 +1,4 @@
-import renderSettled from './-internal/render-settled';
+import { renderSettled } from '@ember/renderer';
 
 /**
   Returns a promise which will resolve when rendering has completed. In

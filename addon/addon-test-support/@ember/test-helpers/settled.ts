@@ -21,19 +21,7 @@ import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
 //
 // This utilizes a local utility method present in Ember since around 2.8.0 to
 // properly consider pending AJAX requests done within legacy acceptance tests.
-const _internalPendingRequestsModule = (() => {
-  let loader = (Ember as any).__loader;
-
-  if (loader.registry['ember-testing/test/pending_requests']) {
-    // Ember <= 3.1
-    return loader.require('ember-testing/test/pending_requests');
-  } else if (loader.registry['ember-testing/lib/test/pending_requests']) {
-    // Ember >= 3.2
-    return loader.require('ember-testing/lib/test/pending_requests');
-  }
-
-  return null;
-})();
+import _internalPendingRequestsModule from 'ember-testing/lib/test/pending_requests';
 
 const _internalGetPendingRequestsCount = () => {
   if (_internalPendingRequestsModule) {
@@ -152,20 +140,7 @@ export function _setupAJAXHooks() {
   jQuery(document).on('ajaxComplete', decrementAjaxPendingRequests);
 }
 
-let _internalCheckWaiters: Function;
-
-let loader = (Ember as any).__loader;
-if (loader.registry['ember-testing/test/waiters']) {
-  // Ember <= 3.1
-  _internalCheckWaiters = loader.require(
-    'ember-testing/test/waiters'
-  ).checkWaiters;
-} else if (loader.registry['ember-testing/lib/test/waiters']) {
-  // Ember >= 3.2
-  _internalCheckWaiters = loader.require(
-    'ember-testing/lib/test/waiters'
-  ).checkWaiters;
-}
+import { checkWaiters as _internalCheckWaiters } from 'ember-testing/lib/test/waiters';
 
 /**
   @private
