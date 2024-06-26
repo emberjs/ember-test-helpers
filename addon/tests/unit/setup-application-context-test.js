@@ -78,7 +78,7 @@ module('setupApplicationContext', function (hooks) {
             {{outlet}}
           `,
         'template:links-to-slow': hbs`{{#link-to "slow" class="to-slow"}}to slow{{/link-to}}`,
-        'template:posts/post': hbs`<div class="post-id">{{model.post_id}}</div>`,
+        'template:posts/post': hbs`<div class="post-id">{{this.model.post_id}}</div>`,
       };
     }
 
