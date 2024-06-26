@@ -18,5 +18,8 @@
   },
   "workspaces": [
     "addon"
-  ]
+  ],
+  "resolutions": {
+    "isbinaryfile": "^4.0.0"
+  }
 }
