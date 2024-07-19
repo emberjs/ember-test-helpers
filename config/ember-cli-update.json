@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectName": "ember-test-helpers",
+  "packages": [
+    {
+      "name": "@embroider/addon-blueprint",
+      "version": "2.17.0",
+      "blueprints": [
+        {
+          "name": "@embroider/addon-blueprint",
+          "isBaseBlueprint": true,
+          "options": [
+            "--ci-provider=github",
+            "--pnpm"
+          ]
+        }
+      ]
+    }
+  ]
+}
