@@ -34,12 +34,14 @@ module.exports = async function () {
   };
 
   return {
-    useYarn: true,
+    usePnpm: true,
     scenarios: [
       {
         name: 'ember-lts-4.4',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.84.3',
+            '@glimmer/reference': '~0.84.3',
             'ember-source': '~4.4.0',
             ...atTypes,
           },
@@ -49,6 +51,8 @@ module.exports = async function () {
         name: 'ember-lts-4.8', // preview types introduced
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.84.3',
+            '@glimmer/reference': '~0.84.3',
             'ember-source': '~4.8.0',
           },
         },
@@ -57,6 +61,8 @@ module.exports = async function () {
         name: 'ember-lts-4.12', // preview types introduced
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.84.3',
+            '@glimmer/reference': '~0.84.3',
             'ember-source': '~4.12.0',
           },
         },
@@ -65,6 +71,8 @@ module.exports = async function () {
         name: 'ember-lts-5.4',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.84.3',
+            '@glimmer/reference': '~0.84.3',
             'ember-source': '~5.4.0',
           },
         },
@@ -73,6 +81,7 @@ module.exports = async function () {
         name: 'ember-lts-5.8',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.87.1',
             'ember-source': '~5.8.0',
           },
         },
@@ -81,6 +90,7 @@ module.exports = async function () {
         name: 'ember-release',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('release'),
           },
         },
@@ -89,6 +99,7 @@ module.exports = async function () {
         name: 'ember-beta',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('beta'),
           },
         },
@@ -97,6 +108,7 @@ module.exports = async function () {
         name: 'ember-canary',
         npm: {
           devDependencies: {
+            '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('canary'),
             'ember-resolver': '10.0.0',
             '@ember/string': '3.0.1',

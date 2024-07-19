@@ -112,6 +112,7 @@ const globalObject =
   check(typeof globalThis == 'object' && globalThis) ||
   check(typeof window === 'object' && window) ||
   check(typeof self === 'object' && self) ||
+  // @ts-ignore -- global does not exist
   check(typeof global === 'object' && global);
 
 /**

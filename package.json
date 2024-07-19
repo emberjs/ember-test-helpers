@@ -5,19 +5,13 @@
   "license": "(MIT OR Apache-2.0)",
   "repository": "https://github.com/emberjs/ember-test-helpers",
   "scripts": {
-    "lint": "yarn workspaces run lint",
-    "lint:fix": "yarn workspaces run lint:fix",
-    "test": "yarn workspaces run test"
+    "lint": "pnpm --filter '*' lint",
+    "lint:fix": "pnpm --filter '*' lint:fix",
+    "test": "pnpm --filter '*' test"
   },
   "volta": {
-    "node": "16.19.1",
-    "yarn": "1.22.19"
+    "node": "18.20.4",
+    "pnpm": "9.5.0"
   },
-  "resolutions": {
-    "rimraf": "< 5.0.0",
-    "isbinaryfile": "^4.0.0"
-  },
-  "workspaces": [
-    "addon"
-  ]
+  "packageManager": "pnpm@9.5.0"
 }

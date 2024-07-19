@@ -13,10 +13,14 @@ jobs:
     name: Push dist
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: volta-cli/action@v4
-      - run: yarn install --frozen-lockfile --ignore-engines
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+      - run: pnpm install 
       - uses: kategengler/put-built-npm-package-contents-on-branch@v1.0.0
         with:
+          working-directory: addon
           branch: ${{ github.head_ref || github.ref_name }}-dist
           token: ${{ secrets.GITHUB_TOKEN }}
