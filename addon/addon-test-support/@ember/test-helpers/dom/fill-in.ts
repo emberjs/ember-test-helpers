@@ -74,7 +74,7 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       } else if (isContentEditable(element)) {
         return __focus__(element).then(() => {
           element.innerHTML = text;
-          return element;
+          return element as Element;
         });
       } else {
         throw new Error(
