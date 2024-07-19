@@ -14,7 +14,7 @@
     "yarn": "1.22.19"
   },
   "resolutions": {
-    "rimraf": "< 5.0.0",
+    "rimraf": "< 5.0.6",
     "isbinaryfile": "^4.0.0"
   },
   "workspaces": [
