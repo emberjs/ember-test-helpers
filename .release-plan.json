@@ -1,0 +1,21 @@
+{
+  "solution": {
+    "@ember/test-helpers": {
+      "impact": "patch",
+      "oldVersion": "3.3.0",
+      "newVersion": "3.3.1",
+      "constraints": [
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
+        }
+      ],
+      "pkgJSONPath": "./addon/package.json"
+    }
+  },
+  "description": "## Release (2024-07-23)\n\n@ember/test-helpers 3.3.1 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1464](https://github.com/emberjs/ember-test-helpers/pull/1464) Use the right attribute - `maxlength` instead of `maxLength` ([@shubham88fru](https://github.com/shubham88fru))\n  * [#1449](https://github.com/emberjs/ember-test-helpers/pull/1449) this change makes it so strict package managers installing duplicate … ([@void-mAlex](https://github.com/void-mAlex))\n\n#### :memo: Documentation\n* [#1462](https://github.com/emberjs/ember-test-helpers/pull/1462) correct git clone url for the repo ([@shubham88fru](https://github.com/shubham88fru))\n* [#1451](https://github.com/emberjs/ember-test-helpers/pull/1451) Update `git clone` command in README.md under contribution ([@SergeAstapov](https://github.com/SergeAstapov))\n\n#### :house: Internal\n* `@ember/test-helpers`\n  * [#1460](https://github.com/emberjs/ember-test-helpers/pull/1460) Setup release plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1453](https://github.com/emberjs/ember-test-helpers/pull/1453) Switch to pnpm, upgrade ember-cli-babel to 8.2 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1456](https://github.com/emberjs/ember-test-helpers/pull/1456) Fix: You attempted to render a path ({{model.post_id}}), but model was not in scope: ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1454](https://github.com/emberjs/ember-test-helpers/pull/1454) Test against ember LTS 5.4, and, 5.8 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* Other\n  * [#1457](https://github.com/emberjs/ember-test-helpers/pull/1457) Expand TypeScript test matrix to v5.5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1455](https://github.com/emberjs/ember-test-helpers/pull/1455) Pin isbinaryfile (a sub-sub dependency) so we can keep node support ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 4\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n- IAmAPro ([@shubham88fru](https://github.com/shubham88fru))\n- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+}
