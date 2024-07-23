@@ -31,14 +31,21 @@ export function isKeyboardEventType(
 
 const MOUSE_EVENT_TYPES = tuple(
   'click',
-  'mousedown',
-  'mouseup',
   'dblclick',
+  'drag',
+  'dragend',
+  'dragenter',
+  'dragleave',
+  'dragover',
+  'dragstart',
+  'drop',
+  'mousedown',
   'mouseenter',
   'mouseleave',
   'mousemove',
   'mouseout',
-  'mouseover'
+  'mouseover',
+  'mouseup'
 );
 export type MouseEventType = (typeof MOUSE_EVENT_TYPES)[number];
 
@@ -200,7 +207,6 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
       event = buildBasicEvent(type, options);
     }
   }
-
   return event;
 }
 
