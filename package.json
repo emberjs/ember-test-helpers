@@ -2,16 +2,19 @@
   "name": "root",
   "version": "0.0.0",
   "private": true,
-  "license": "(MIT OR Apache-2.0)",
   "repository": "https://github.com/emberjs/ember-test-helpers",
+  "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "lint": "pnpm --filter '*' lint",
     "lint:fix": "pnpm --filter '*' lint:fix",
     "test": "pnpm --filter '*' test"
   },
+  "devDependencies": {
+    "release-plan": "^0.9.0"
+  },
+  "packageManager": "pnpm@9.5.0",
   "volta": {
     "node": "18.20.4",
     "pnpm": "9.5.0"
-  },
-  "packageManager": "pnpm@9.5.0"
+  }
 }
