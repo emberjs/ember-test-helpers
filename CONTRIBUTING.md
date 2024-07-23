@@ -2,7 +2,7 @@
 
 ## Installation
 
-* `git clone <repository-url>`
+* `git clone https://github.com/emberjs/ember-test-helpers.git`
 * `cd ember-test-helpers`
 * `pnpm install`
 
