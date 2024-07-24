@@ -104,7 +104,7 @@ jobs:
         working-directory: addon
         run: pnpm build
       - name: test
-        working-directory: addon
+        working-directory: test-app
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
       - name: types compatibility
         working-directory: addon
