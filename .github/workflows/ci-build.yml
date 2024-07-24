@@ -102,6 +102,9 @@ jobs:
       fail-fast: false
       matrix:
         ts-version:
+          - 4.7
+          - 4.8
+          - 4.9
           - 5.0
           - 5.1
           - 5.2
@@ -121,6 +124,9 @@ jobs:
       - name: install TS version
         working-directory: addon
         run: pnpm add --save-dev typescript@${{matrix.ts-version}}
-      - name: test types
+      - name: own types 
         working-directory: addon
-        run: pnpm lint:ts
+        run: pnpm tsc --noEmit 
+      - name: public types
+        working-directory: addon
+        run: pnpm tsc --noEmit  --project type-tests
