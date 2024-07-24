@@ -38,6 +38,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install 
       - run: pnpm test
+      - name: own types 
+        working-directory: addon
+        run: pnpm tsc --noEmit 
 
   floating:
     name: "Floating Dependencies"
@@ -54,6 +57,9 @@ jobs:
         run: pnpm install --no-lockfile
       - name: Run Tests
         run: pnpm test
+      - name: own types 
+        working-directory: addon
+        run: pnpm tsc --noEmit 
 
   try-scenarios:
     timeout-minutes: 10
@@ -124,9 +130,6 @@ jobs:
       - name: install TS version
         working-directory: addon
         run: pnpm add --save-dev typescript@${{matrix.ts-version}}
-      - name: own types 
-        working-directory: addon
-        run: pnpm tsc --noEmit 
       - name: public types
         working-directory: addon
         run: pnpm tsc --noEmit  --project type-tests
