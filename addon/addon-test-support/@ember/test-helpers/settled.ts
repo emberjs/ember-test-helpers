@@ -11,7 +11,8 @@ import { nextTick } from './-utils';
 import waitUntil from './wait-until';
 import { hasPendingTransitions } from './setup-application-context';
 import { hasPendingWaiters } from '@ember/test-waiters';
-import DebugInfo, { TestDebugInfo } from './-internal/debug-info';
+import type DebugInfo from './-internal/debug-info';
+import { TestDebugInfo } from './-internal/debug-info';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -42,7 +43,10 @@ const _internalGetPendingRequestsCount = () => {
   return 0;
 };
 
-if (typeof jQuery !== 'undefined' && _internalPendingRequestsModule) {
+if (
+  typeof (globalThis as any).jQuery !== 'undefined' &&
+  _internalPendingRequestsModule
+) {
   // This exists to ensure that the AJAX listeners setup by Ember itself
   // (which as of 2.17 are not properly torn down) get cleared and released
   // when the application is destroyed. Without this, any AJAX requests
@@ -52,14 +56,18 @@ if (typeof jQuery !== 'undefined' && _internalPendingRequestsModule) {
   // This can be removed once Ember 4.0.0 is released
   EmberApplicationInstance.reopen({
     willDestroy(this: EmberApplicationInstance, ...args: any[]) {
-      jQuery(document).off(
-        'ajaxSend',
-        _internalPendingRequestsModule.incrementPendingRequests
-      );
-      jQuery(document).off(
-        'ajaxComplete',
-        _internalPendingRequestsModule.decrementPendingRequests
-      );
+      (globalThis as any)
+        .jQuery(document)
+        .off(
+          'ajaxSend',
+          _internalPendingRequestsModule.incrementPendingRequests
+        );
+      (globalThis as any)
+        .jQuery(document)
+        .off(
+          'ajaxComplete',
+          _internalPendingRequestsModule.decrementPendingRequests
+        );
 
       _internalPendingRequestsModule.clearPendingRequests();
 
@@ -128,12 +136,16 @@ export function _teardownAJAXHooks() {
   // We can no longer handle any remaining requests
   requests = [];
 
-  if (typeof jQuery === 'undefined') {
+  if (typeof (globalThis as any).jQuery === 'undefined') {
     return;
   }
 
-  jQuery(document).off('ajaxSend', incrementAjaxPendingRequests);
-  jQuery(document).off('ajaxComplete', decrementAjaxPendingRequests);
+  (globalThis as any)
+    .jQuery(document)
+    .off('ajaxSend', incrementAjaxPendingRequests);
+  (globalThis as any)
+    .jQuery(document)
+    .off('ajaxComplete', decrementAjaxPendingRequests);
 }
 
 /**
@@ -144,12 +156,16 @@ export function _teardownAJAXHooks() {
 export function _setupAJAXHooks() {
   requests = [];
 
-  if (typeof jQuery === 'undefined') {
+  if (typeof (globalThis as any).jQuery === 'undefined') {
     return;
   }
 
-  jQuery(document).on('ajaxSend', incrementAjaxPendingRequests);
-  jQuery(document).on('ajaxComplete', decrementAjaxPendingRequests);
+  (globalThis as any)
+    .jQuery(document)
+    .on('ajaxSend', incrementAjaxPendingRequests);
+  (globalThis as any)
+    .jQuery(document)
+    .on('ajaxComplete', decrementAjaxPendingRequests);
 }
 
 let _internalCheckWaiters: Function;

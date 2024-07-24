@@ -1,2 +1,3 @@
 packages:
 - "addon"
+- "type-tests"

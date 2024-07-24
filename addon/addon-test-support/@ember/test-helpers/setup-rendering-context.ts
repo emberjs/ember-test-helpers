@@ -3,15 +3,15 @@ import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global';
 import {
-  BaseContext,
-  TestContext,
+  type BaseContext,
+  type TestContext,
   isTestContext,
   getContext,
 } from './setup-context';
 import settled from './settled';
 import { hbs } from 'ember-cli-htmlbars';
 import getRootElement from './dom/get-root-element';
-import { Owner } from './build-owner';
+import type { Owner } from './build-owner';
 import getTestMetadata from './test-metadata';
 import { assert } from '@ember/debug';
 import { runHooks } from './helper-hooks';

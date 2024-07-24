@@ -2,9 +2,12 @@
 // "provides" this public API, but does not for earlier versions. As a result,
 // this type will be `any`.
 import { _backburner } from '@ember/runloop';
-import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
-import { DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
-import { getPendingWaiterState, PendingWaiterState } from '@ember/test-waiters';
+import type { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
+import { type DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
+import {
+  getPendingWaiterState,
+  type PendingWaiterState,
+} from '@ember/test-waiters';
 
 const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';

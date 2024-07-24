@@ -1,5 +1,5 @@
 import getRootElement from './get-root-element';
-import Target, { isDocument, isElement } from './-target';
+import { type Target, isDocument, isElement } from './-target';
 import {
   type IDOMElementDescriptor,
   lookupDescriptorData,

@@ -3,7 +3,7 @@ import isSelectElement from './-is-select-element';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
-import Target from './-target';
+import type { Target } from './-target';
 import { runHooks } from '../helper-hooks';
 import getDescription from './-get-description';
 

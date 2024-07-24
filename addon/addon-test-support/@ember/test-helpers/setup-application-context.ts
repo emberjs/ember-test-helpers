@@ -1,9 +1,9 @@
 import { get } from '@ember/object';
 import {
-  BaseContext,
+  type BaseContext,
   getContext,
   isTestContext,
-  TestContext,
+  type TestContext,
 } from './setup-context';
 import global from './global';
 import hasEmberVersion from './has-ember-version';

@@ -1,4 +1,4 @@
-import {
+import type {
   Backburner,
   DeferredActionQueues,
 } from '@ember/runloop/-private/backburner';
@@ -74,7 +74,7 @@ export { default as find } from './dom/find';
 export { default as findAll } from './dom/find-all';
 export { default as typeIn } from './dom/type-in';
 export { default as scrollTo } from './dom/scroll-to';
-export type { default as Target } from './dom/-target';
+export type { Target } from './dom/-target';
 
 // Declaration-merge for our internal purposes.
 declare module '@ember/runloop' {

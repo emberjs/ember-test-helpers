@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { BaseContext, getContext } from './setup-context';
+import { type BaseContext, getContext } from './setup-context';
 
 let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
   new Map();

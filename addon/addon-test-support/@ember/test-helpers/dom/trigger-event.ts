@@ -1,7 +1,7 @@
 import { getWindowOrElement } from './-get-window-or-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import Target from './-target';
+import type { Target } from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';

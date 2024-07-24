@@ -37,7 +37,13 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - run: pnpm test
+      - name: own types 
+        working-directory: addon
+        run: pnpm tsc --noEmit 
 
   floating:
     name: "Floating Dependencies"
@@ -52,8 +58,14 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --no-lockfile
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - name: Run Tests
         run: pnpm test
+      - name: own types 
+        working-directory: addon
+        run: pnpm tsc --noEmit 
 
   try-scenarios:
     timeout-minutes: 10
@@ -88,6 +100,9 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - name: test
         working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
@@ -121,9 +136,12 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
+      - name: Build types for addon
+        working-directory: addon
+        run: pnpm build
       - name: install TS version
-        working-directory: addon
+        working-directory: type-tests
         run: pnpm add --save-dev typescript@${{matrix.ts-version}}
-      - name: test types
-        working-directory: addon
-        run: pnpm lint:ts
+      - name: public types
+        working-directory: type-tests
+        run: pnpm test 

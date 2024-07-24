@@ -6,7 +6,7 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import type { Resolver } from '@ember/owner';
 import { setOwner } from '@ember/application';
 
-import buildOwner, { Owner } from './build-owner';
+import buildOwner, { type Owner } from './build-owner';
 import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
 import { _prepareOnerror } from './setup-onerror';
 import Ember from 'ember';
@@ -26,12 +26,12 @@ import {
 import {
   getDeprecationsForContext,
   getDeprecationsDuringCallbackForContext,
-  DeprecationFailure,
+  type DeprecationFailure,
 } from './-internal/deprecations';
 import {
   getWarningsForContext,
   getWarningsDuringCallbackForContext,
-  Warning,
+  type Warning,
 } from './-internal/warnings';
 
 export interface SetupContextOptions {

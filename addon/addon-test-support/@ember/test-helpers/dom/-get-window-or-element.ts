@@ -1,5 +1,5 @@
 import getElement from './-get-element';
-import Target, { isWindow } from './-target';
+import { type Target, isWindow } from './-target';
 
 /**
   Used internally by the DOM interaction helpers to find either window or an element.

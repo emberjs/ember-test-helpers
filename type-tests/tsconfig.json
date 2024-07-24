@@ -1,0 +1,14 @@
+{
+    // Required to Support TS < v5
+    // We can't upgrade @tsconfig ember until we only support TS v5+
+  "extends": "@tsconfig/ember",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    }
+  },
+  "include": ["api.ts", "./types/**/*"]
+}

@@ -1,6 +1,6 @@
 import { isDocument, isElement } from './-target';
 import tuple from '../-tuple';
-import Target from './-target';
+import type { Target } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 

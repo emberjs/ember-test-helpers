@@ -3,11 +3,11 @@ import fireEvent from './fire-event';
 import settled from '../settled';
 import {
   KEYBOARD_EVENT_TYPES,
-  KeyboardEventType,
+  type KeyboardEventType,
   isKeyboardEventType,
 } from './fire-event';
 import { isNumeric } from '../-utils';
-import Target from './-target';
+import type { Target } from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';

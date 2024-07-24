@@ -2,8 +2,8 @@ import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
 import legacyBuildRegistry from './-internal/build-registry';
-import EmberOwner from '@ember/owner';
-import { SimpleElement } from '@simple-dom/interface';
+import type EmberOwner from '@ember/owner';
+import type { SimpleElement } from '@simple-dom/interface';
 
 export interface Owner extends EmberOwner {
   _emberTestHelpersMockOwner?: boolean;

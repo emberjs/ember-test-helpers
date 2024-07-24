@@ -3,7 +3,7 @@ import fireEvent from './fire-event';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import isFormControl from './-is-form-control';
-import Target, { isWindow } from './-target';
+import { isWindow, type Target } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 import getDescription from './-get-description';

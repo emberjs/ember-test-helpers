@@ -6,7 +6,7 @@ import EmberObject from '@ember/object';
 import require, { has } from 'require';
 import Ember from 'ember';
 
-import { FullName } from '@ember/owner';
+import type { FullName } from '@ember/owner';
 
 // These shenanigans work around the fact that the import locations are not
 // public API and are not stable, so we jump through hoops to get the right

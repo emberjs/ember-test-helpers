@@ -1,7 +1,7 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import Target from './-target';
+import type { Target } from './-target';
 import { log } from './-logging';
 import isFocusable from './-is-focusable';
 import { runHooks, registerHook } from '../helper-hooks';
