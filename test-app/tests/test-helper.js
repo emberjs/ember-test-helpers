@@ -1,5 +1,4 @@
 /* globals Testem */
-import config from 'test-app/config/environment';
 import * as QUnit from 'qunit';
 import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
@@ -7,7 +6,6 @@ import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 import { setup } from 'qunit-dom';
-import { setApplication } from '@ember/test-helpers';
 import { start } from 'ember-qunit';
 
 import {
