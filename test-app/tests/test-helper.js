@@ -1,6 +1,5 @@
 /* globals Testem */
 import * as QUnit from 'qunit';
-import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
@@ -38,19 +37,6 @@ QUnit.done(function () {
     throw new Error('\n' + asyncLeakageFailures.join('\n'));
   }
 });
-
-class TestLoader extends AbstractTestLoader {
-  moduleLoadFailure(moduleName, error) {
-    moduleLoadFailures.push(error);
-
-    QUnit.module('TestLoader Failures');
-    QUnit.test(moduleName + ': could not be loaded', function () {
-      throw error;
-    });
-  }
-}
-
-new TestLoader().loadModules();
 
 QUnit.testDone(function ({ module, name }) {
   // ensure no test accidentally change state of backburner.DEBUG

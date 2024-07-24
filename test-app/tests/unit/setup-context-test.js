@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { setupEmberTesting } from 'ember-qunit';
 import Service, { inject as injectService } from '@ember/service';
 import {
   setupContext,
@@ -29,7 +30,10 @@ import config from '../../config/environment';
 import Ember from 'ember';
 import { deprecate, warn } from '@ember/debug';
 
+console.log(Ember.testing);
 module('setupContext', function (hooks) {
+  setupEmberTesting(hooks);
+
   if (!hasEmberVersion(2, 4)) {
     return;
   }
