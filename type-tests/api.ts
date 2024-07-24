@@ -74,12 +74,10 @@ import {
   type HookLabel,
   type HookUnregister,
 } from '@ember/test-helpers';
-import type { ComponentInstance } from '@glimmer/interfaces';
 import type { Owner } from '@ember/test-helpers/build-owner';
 import type { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
 import type { Resolver as EmberResolver } from '@ember/owner';
 import Application from '@ember/application';
-import type { TemplateFactory } from 'ember-cli-htmlbars';
 import type { IDOMElementDescriptor } from 'dom-element-descriptors';
 
 // DOM Interaction Helpers
