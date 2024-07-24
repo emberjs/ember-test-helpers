@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/ember",
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    }
+  },
+  "include": ["api.ts", "./types/**/*"]
+}

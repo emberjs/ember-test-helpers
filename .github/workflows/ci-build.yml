@@ -127,9 +127,12 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
-      - name: install TS version
+      - name: Build types for addon
         working-directory: addon
+        run: pnpm build
+      - name: install TS version
+        working-directory: type-tests
         run: pnpm add --save-dev typescript@${{matrix.ts-version}}
       - name: public types
-        working-directory: addon
-        run: pnpm tsc --noEmit  --project type-tests
+        working-directory: type-tests
+        run: pnpm test 
