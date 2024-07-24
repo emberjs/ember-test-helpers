@@ -47,7 +47,7 @@ import {
   unsetContext,
   teardownContext,
   setupRenderingContext,
-  RenderingTestContext,
+  type RenderingTestContext,
   getApplication,
   setApplication,
   setupApplicationContext,
@@ -60,13 +60,13 @@ import {
   getDeprecationsDuringCallback,
   getWarnings,
   getWarningsDuringCallback,
-  BaseContext,
-  TestContext,
-  TestMetadata,
-  DebugInfo as InternalDebugInfo,
-  DeprecationFailure,
-  Warning,
-  Target,
+  type BaseContext,
+  type TestContext,
+  type TestMetadata,
+  type DebugInfo as InternalDebugInfo,
+  type DeprecationFailure,
+  type Warning,
+  type Target,
   // Helper hooks
   registerHook,
   runHooks,
@@ -74,12 +74,12 @@ import {
   type HookLabel,
   type HookUnregister,
 } from '@ember/test-helpers';
-import { ComponentInstance } from '@glimmer/interfaces';
-import { Owner } from '@ember/test-helpers/build-owner';
-import { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
+import type { ComponentInstance } from '@glimmer/interfaces';
+import type { Owner } from '@ember/test-helpers/build-owner';
+import type { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
 import type { Resolver as EmberResolver } from '@ember/owner';
 import Application from '@ember/application';
-import { TemplateFactory } from 'ember-cli-htmlbars';
+import type { TemplateFactory } from 'ember-cli-htmlbars';
 import type { IDOMElementDescriptor } from 'dom-element-descriptors';
 
 // DOM Interaction Helpers
