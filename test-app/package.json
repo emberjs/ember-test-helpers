@@ -13,8 +13,6 @@
   "scripts": {
     "build": "ember build --environment=production",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
-    "lint:css": "stylelint \"**/*.css\"",
-    "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
     "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
     "lint:hbs": "ember-template-lint .",
     "lint:hbs:fix": "ember-template-lint . --fix",
@@ -57,7 +55,6 @@
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^5.7.2",
     "ember-try": "^3.0.0",
-    "ember-welcome-page": "^7.0.1",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-ember": "^11.5.0",
@@ -69,9 +66,6 @@
     "prettier": "^2.8.7",
     "qunit": "^2.21.1",
     "qunit-dom": "^3.2.0",
-    "stylelint": "^15.4.0",
-    "stylelint-config-standard": "^32.0.0",
-    "stylelint-prettier": "^3.0.0",
     "tracked-built-ins": "^3.1.1",
     "webpack": "^5.78.0"
   },
