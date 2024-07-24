@@ -35,11 +35,7 @@
     "lint:js": "eslint --cache .",
     "lint:js:fix": "eslint . --fix",
     "lint:ts": "tsc --noEmit",
-    "postpublish": "pnpm clean",
-    "release": "release-it",
-    "start": "ember serve",
-    "test": "ember test",
-    "test:all": "ember try:each"
+    "postpublish": "pnpm clean"
   },
   "peerDependencies": {
     "ember-source": "^4.0.0 || ^5.0.0"
