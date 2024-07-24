@@ -58,6 +58,9 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install --no-lockfile
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - name: Run Tests
         run: pnpm test
       - name: own types 
