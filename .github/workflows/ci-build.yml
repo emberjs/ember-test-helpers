@@ -37,6 +37,9 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - run: pnpm test
       - name: own types 
         working-directory: addon
@@ -94,6 +97,9 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
+      - name: Build addon
+        working-directory: addon
+        run: pnpm build
       - name: test
         working-directory: addon
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
