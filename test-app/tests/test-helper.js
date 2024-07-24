@@ -99,7 +99,11 @@ QUnit.assert.deprecationsInclude = function (expected) {
   });
 };
 
-start();
+start({
+  // We manage Ember.testing manually in this test-app
+  // (we probably don't need to anymore since ember-qunit handles it)
+  setupEmberTesting: false,
+});
 
 if (typeof Testem !== 'undefined') {
   Testem.hookIntoTestFramework();
