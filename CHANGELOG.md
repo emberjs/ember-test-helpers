@@ -1,5 +1,34 @@
 # Changelog
 
+## Release (2024-07-23)
+
+@ember/test-helpers 3.3.1 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1464](https://github.com/emberjs/ember-test-helpers/pull/1464) Use the right attribute - `maxlength` instead of `maxLength` ([@shubham88fru](https://github.com/shubham88fru))
+  * [#1449](https://github.com/emberjs/ember-test-helpers/pull/1449) this change makes it so strict package managers installing duplicate … ([@void-mAlex](https://github.com/void-mAlex))
+
+#### :memo: Documentation
+* [#1462](https://github.com/emberjs/ember-test-helpers/pull/1462) correct git clone url for the repo ([@shubham88fru](https://github.com/shubham88fru))
+* [#1451](https://github.com/emberjs/ember-test-helpers/pull/1451) Update `git clone` command in README.md under contribution ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### :house: Internal
+* `@ember/test-helpers`
+  * [#1460](https://github.com/emberjs/ember-test-helpers/pull/1460) Setup release plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1453](https://github.com/emberjs/ember-test-helpers/pull/1453) Switch to pnpm, upgrade ember-cli-babel to 8.2 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1456](https://github.com/emberjs/ember-test-helpers/pull/1456) Fix: You attempted to render a path ({{model.post_id}}), but model was not in scope: ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1454](https://github.com/emberjs/ember-test-helpers/pull/1454) Test against ember LTS 5.4, and, 5.8 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* Other
+  * [#1457](https://github.com/emberjs/ember-test-helpers/pull/1457) Expand TypeScript test matrix to v5.5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1455](https://github.com/emberjs/ember-test-helpers/pull/1455) Pin isbinaryfile (a sub-sub dependency) so we can keep node support ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 4
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+- IAmAPro ([@shubham88fru](https://github.com/shubham88fru))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 
 ## v3.3.0 (2024-02-12)
 
