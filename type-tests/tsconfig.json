@@ -1,7 +1,10 @@
 {
   "extends": "@tsconfig/ember",
   "compilerOptions": {
-    "baseUrl": "..",
+    // Required to Support TS < v5
+    // We can remove this setting when We only support TS v5+
+    "moduleResolution": "node",
+    "baseUrl": ".",
     "paths": {
       "*": [
         "types/*"
