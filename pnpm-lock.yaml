@@ -205,7 +205,7 @@ importers:
         specifier: ^2.6.3
         version: 2.7.4(@glint/template@1.4.0)(webpack@5.93.0)
       ember-cli:
-        specifier: ~4.12.1
+        specifier: ~4.12.2
         version: 4.12.3(babel-core@6.26.3)(handlebars@4.7.8)(underscore@1.13.6)
       ember-cli-app-version:
         specifier: ^6.0.0

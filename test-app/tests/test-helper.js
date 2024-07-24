@@ -1,4 +1,3 @@
-/* globals Testem */
 import * as QUnit from 'qunit';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
@@ -104,7 +103,3 @@ start({
   // (we probably don't need to anymore since ember-qunit handles it)
   setupEmberTesting: false,
 });
-
-if (typeof Testem !== 'undefined') {
-  Testem.hookIntoTestFramework();
-}
