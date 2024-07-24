@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@ember/test-helpers": "workspace:*",
-    "@tsconfig/ember": "^3.0.8",
+    "@tsconfig/ember": "^2.0.0",
     "dom-element-descriptors": "^0.5.0",
     "ember-source": "~5.9.0",
     "expect-type": "^0.15.0",

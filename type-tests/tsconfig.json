@@ -1,9 +1,8 @@
 {
+    // Required to Support TS < v5
+    // We can't upgrade @tsconfig ember until we only support TS v5+
   "extends": "@tsconfig/ember",
   "compilerOptions": {
-    // Required to Support TS < v5
-    // We can remove this setting when We only support TS v5+
-    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "*": [

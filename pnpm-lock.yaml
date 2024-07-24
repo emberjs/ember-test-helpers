@@ -190,8 +190,8 @@ importers:
         specifier: workspace:*
         version: link:../addon
       '@tsconfig/ember':
-        specifier: ^3.0.8
-        version: 3.0.8
+        specifier: ^2.0.0
+        version: 2.0.0
       dom-element-descriptors:
         specifier: ^0.5.0
         version: 0.5.1
@@ -1225,6 +1225,9 @@ packages:
   '@tootallnate/once@1.1.2':
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
     engines: {node: '>= 6'}
+
+  '@tsconfig/ember@2.0.0':
+    resolution: {integrity: sha512-RzbDYYcjxVdG8Ki0xe99HN3+nHTZe6EBgw6N7B3yup7QogVFQQxA9nY7X80j1XzF15xqetwWiYfAjv5lkkp0/A==}
 
   '@tsconfig/ember@3.0.8':
     resolution: {integrity: sha512-OVnIsZIt/8q0VEtcdz3rRryNrm6gdJTxXlxefkGIrkZnME0wqslmwHlUEZ7mvh377df9FqBhNKrYNarhCW8zJA==}
@@ -8797,6 +8800,8 @@ snapshots:
       defer-to-connect: 2.0.1
 
   '@tootallnate/once@1.1.2': {}
+
+  '@tsconfig/ember@2.0.0': {}
 
   '@tsconfig/ember@3.0.8': {}
 
