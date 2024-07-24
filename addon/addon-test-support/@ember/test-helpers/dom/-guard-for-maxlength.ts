@@ -1,4 +1,4 @@
-import { FormControl } from './-is-form-control';
+import type { FormControl } from './-is-form-control';
 
 // ref: https://html.spec.whatwg.org/multipage/input.html#concept-input-apply
 const constrainedInputTypes = [

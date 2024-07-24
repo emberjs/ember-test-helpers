@@ -1,5 +1,5 @@
 import { isDescriptor, lookupDescriptorData } from 'dom-element-descriptors';
-import type Target from './-target';
+import type { Target } from './-target';
 
 /**
   Used internally by the DOM interaction helpers to get a description of a

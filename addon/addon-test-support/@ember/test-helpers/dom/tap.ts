@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import { __click__ } from './click';
 import settled from '../settled';
-import Target from './-target';
+import type { Target } from './-target';
 import { log } from './-logging';
 import isFormControl from './-is-form-control';
 import { runHooks, registerHook } from '../helper-hooks';

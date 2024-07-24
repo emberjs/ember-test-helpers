@@ -1,7 +1,8 @@
 import getRootElement from './get-root-element';
 import settled from '../settled';
 import fireEvent, { _buildKeyboardEvent } from './fire-event';
-import Target, { isDocument } from './-target';
+import type { Target } from './-target';
+import { isDocument } from './-target';
 import { __blur__ } from './blur';
 import { __focus__ } from './focus';
 import { isVisible, isDisabled } from '../-utils';

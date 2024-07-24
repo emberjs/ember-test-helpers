@@ -1,13 +1,14 @@
 import settled from '../settled';
 import getElement from './-get-element';
-import isFormControl, { FormControl } from './-is-form-control';
+import isFormControl, { type FormControl } from './-is-form-control';
 import { __focus__ } from './focus';
 import fireEvent from './fire-event';
 import guardForMaxlength from './-guard-for-maxlength';
-import Target, {
+import {
+  type Target,
   isContentEditable,
   isDocument,
-  HTMLElementContentEditable,
+  type HTMLElementContentEditable,
 } from './-target';
 import { __triggerKeyEvent__ } from './trigger-key-event';
 import { log } from './-logging';

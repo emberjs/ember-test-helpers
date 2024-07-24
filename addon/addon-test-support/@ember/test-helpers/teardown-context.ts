@@ -1,4 +1,4 @@
-import { TestContext } from './setup-context';
+import type { TestContext } from './setup-context';
 import settled from './settled';
 import { _cleanupOnerror } from './setup-onerror';
 import { destroy } from '@ember/destroyable';

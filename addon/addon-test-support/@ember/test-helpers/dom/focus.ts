@@ -2,7 +2,7 @@ import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
 import isFocusable from './-is-focusable';
-import Target, { isDocument } from './-target';
+import { isDocument, type Target } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 import { __blur__ } from './blur';

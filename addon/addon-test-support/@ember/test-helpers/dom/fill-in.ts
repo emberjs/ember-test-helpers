@@ -1,10 +1,10 @@
 import getElement from './-get-element';
-import isFormControl, { FormControl } from './-is-form-control';
+import isFormControl, { type FormControl } from './-is-form-control';
 import guardForMaxlength from './-guard-for-maxlength';
 import { __focus__ } from './focus';
 import settled from '../settled';
 import fireEvent from './fire-event';
-import Target, { isContentEditable } from './-target';
+import { isContentEditable, type Target } from './-target';
 import { log } from './-logging';
 import { runHooks, registerHook } from '../helper-hooks';
 import getDescription from './-get-description';

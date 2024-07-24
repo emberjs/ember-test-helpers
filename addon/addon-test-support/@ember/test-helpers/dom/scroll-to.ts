@@ -1,7 +1,8 @@
 import getElement from './-get-element';
 import fireEvent from './fire-event';
 import settled from '../settled';
-import Target, { isDocument, isElement } from './-target';
+import type { Target } from './-target';
+import { isDocument, isElement } from './-target';
 import { runHooks } from '../helper-hooks';
 import type { IDOMElementDescriptor } from 'dom-element-descriptors';
 import getDescription from './-get-description';

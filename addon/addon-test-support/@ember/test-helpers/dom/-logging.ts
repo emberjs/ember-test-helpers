@@ -1,4 +1,4 @@
-import Target from './-target';
+import type { Target } from './-target';
 
 /**
  * Logs a debug message to the console if the `testHelperLogging` query

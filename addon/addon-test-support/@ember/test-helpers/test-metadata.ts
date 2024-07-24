@@ -1,4 +1,4 @@
-import { BaseContext } from './setup-context';
+import type { BaseContext } from './setup-context';
 
 class TestMetadata {
   [key: string]: any;
