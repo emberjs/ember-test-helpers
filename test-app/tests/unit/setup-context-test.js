@@ -29,14 +29,12 @@ import config from '../../config/environment';
 import Ember from 'ember';
 import { deprecate, warn } from '@ember/debug';
 
-console.log('1', Ember.testing);
 module('setupContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
   }
 
   hooks.beforeEach(function () {
-    console.log('2', Ember.testing);
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
@@ -64,7 +62,6 @@ module('setupContext', function (hooks) {
   function setupContextTests() {
     module('without options', function (hooks) {
       hooks.beforeEach(function () {
-        console.log('3', Ember.testing);
         context = {};
         return setupContext(context);
       });
@@ -844,7 +841,6 @@ module('setupContext', function (hooks) {
 
   module('with only application set', function (hooks) {
     hooks.beforeEach(function () {
-      console.log('4', Ember.testing);
       setResolver(null);
       setApplication(application);
     });
@@ -854,7 +850,6 @@ module('setupContext', function (hooks) {
 
   module('with application and resolver set', function (hooks) {
     hooks.beforeEach(function () {
-      console.log('5', Ember.testing);
       setResolver(resolver);
       setApplication(application);
     });
@@ -864,7 +859,6 @@ module('setupContext', function (hooks) {
 
   module('with only resolver set', function (hooks) {
     hooks.beforeEach(function () {
-      console.log('6', Ember.testing);
       setResolver(resolver);
       setApplication(null);
     });
