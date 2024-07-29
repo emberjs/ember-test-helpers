@@ -79,5 +79,8 @@
   },
   "volta": {
     "extends": "../package.json"
+  },
+  "dependencies": {
+    "dom-element-descriptors": "^0.5.0"
   }
 }

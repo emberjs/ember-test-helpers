@@ -1,7 +1,17 @@
-# tyescript related output files
-addon-test-support/**/*.js
-addon-test-support/**/*.d.ts
-dist-types
+# The authoritative copies of these live in the monorepo root (because they're
+# more useful on github that way), but the build copies them into here so they
+# will also appear in published NPM packages.
+/README.md
+/LICENSE.md
 
-# Other build artifacts
-README.md
+# compiled output
+dist/
+declarations/
+
+# npm/pnpm/yarn pack output
+*.tgz
+
+# deps & caches
+node_modules/
+.eslintcache
+.prettiercache

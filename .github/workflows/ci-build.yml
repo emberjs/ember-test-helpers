@@ -43,9 +43,6 @@ jobs:
       - run: pnpm i -f # sync injected dependencies
       - run: pnpm test
         working-directory: test-app
-      - name: own types 
-        working-directory: addon
-        run: pnpm tsc --noEmit 
 
   floating:
     name: "Floating Dependencies"
@@ -67,9 +64,6 @@ jobs:
       - name: Run Tests
         working-directory: test-app
         run: pnpm test
-      - name: own types 
-        working-directory: addon
-        run: pnpm tsc --noEmit 
 
   try-scenarios:
     timeout-minutes: 10
@@ -112,8 +106,8 @@ jobs:
         working-directory: test-app
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
       - name: types compatibility
-        working-directory: addon
-        run: pnpm lint:ts
+        working-directory: type-tests
+        run: pnpm test 
 
   types:
     runs-on: ubuntu-latest
@@ -122,9 +116,6 @@ jobs:
       fail-fast: false
       matrix:
         ts-version:
-          - 4.7
-          - 4.8
-          - 4.9
           - 5.0
           - 5.1
           - 5.2
