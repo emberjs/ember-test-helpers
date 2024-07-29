@@ -63,9 +63,12 @@ Contributing
 
 ### Running tests
 
-* `pnpm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+* `cd test-app`
+* Multiple ways of running the tests
+    * `pnpm test`
+    * `ember serve` + visit `/tests` in the browser
+    * `ember test`
+    * `ember test --server`
 
 ### Running the dummy application
 

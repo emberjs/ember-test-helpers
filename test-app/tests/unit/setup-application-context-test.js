@@ -1,4 +1,4 @@
-import { module, test } from 'qunit';
+import QUnit, { module, test } from 'qunit';
 import EmberRouter from '@ember/routing/router';
 import Route from '@ember/routing/route';
 import Service from '@ember/service';

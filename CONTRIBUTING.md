@@ -17,9 +17,12 @@ When updating the API, you will need to update the type tests (in `tests/api.ts`
 
 ## Running tests
 
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
+* `cd test-app`
+* Multiple ways of running the tests
+    * `pnpm test`
+    * `ember serve` + visit `/tests` in the browser
+    * `ember test`
+    * `ember test --server`
 
 ## Running the dummy application
 

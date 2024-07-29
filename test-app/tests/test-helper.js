@@ -1,15 +1,17 @@
-/* globals Testem */
-import QUnit from 'qunit';
-import AbstractTestLoader from 'ember-cli-test-loader/test-support/index';
+import * as QUnit from 'qunit';
 import Ember from 'ember';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
+import { setup } from 'qunit-dom';
+import { start } from 'ember-qunit';
 
 import {
   getDeprecationsDuringCallback,
   getDeprecations,
 } from '@ember/test-helpers';
+
+setup(QUnit.assert);
 
 if (QUnit.config.seed) {
   QUnit.config.reorder = false;
@@ -34,19 +36,6 @@ QUnit.done(function () {
     throw new Error('\n' + asyncLeakageFailures.join('\n'));
   }
 });
-
-class TestLoader extends AbstractTestLoader {
-  moduleLoadFailure(moduleName, error) {
-    moduleLoadFailures.push(error);
-
-    QUnit.module('TestLoader Failures');
-    QUnit.test(moduleName + ': could not be loaded', function () {
-      throw error;
-    });
-  }
-}
-
-new TestLoader().loadModules();
 
 QUnit.testDone(function ({ module, name }) {
   // ensure no test accidentally change state of backburner.DEBUG
@@ -109,8 +98,8 @@ QUnit.assert.deprecationsInclude = function (expected) {
   });
 };
 
-QUnit.start();
-
-if (typeof Testem !== 'undefined') {
-  Testem.hookIntoTestFramework();
-}
+start({
+  // We manage Ember.testing manually in this test-app
+  // (we probably don't need to anymore since ember-qunit handles it)
+  setupEmberTesting: false,
+});

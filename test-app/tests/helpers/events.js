@@ -1,4 +1,5 @@
 import { get } from '@ember/object';
+import QUnit from 'qunit';
 
 // from https://mdn.mozilla.org/en-US/docs/Web/Events
 export const KNOWN_EVENTS = Object.freeze([
