@@ -44,9 +44,9 @@ function getHelperKey(helperName: string, label: string): string {
 export function registerHook(
   helperName: string,
   label: HookLabel,
-  hook: Hook
+  hook: Hook,
 ): HookUnregister {
-  let helperKey = getHelperKey(helperName, label);
+  const helperKey = getHelperKey(helperName, label);
   let hooksForHelper = registeredHooks.get(helperKey);
 
   if (hooksForHelper === undefined) {
@@ -81,12 +81,12 @@ export function runHooks(
   label: HookLabel,
   ...args: unknown[]
 ): Promise<void> {
-  let hooks =
+  const hooks =
     registeredHooks.get(getHelperKey(helperName, label)) || new Set<Hook>();
-  let promises: Array<void | Promise<void>> = [];
+  const promises: Array<void | Promise<void>> = [];
 
   hooks.forEach((hook) => {
-    let hookResult = hook(...args);
+    const hookResult = hook(...args);
 
     promises.push(hookResult);
   });

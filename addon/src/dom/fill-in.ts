@@ -40,9 +40,9 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         );
       }
 
-      let element = getElement(target) as Element | HTMLElement;
+      const element = getElement(target) as Element | HTMLElement;
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
           `Element not found when calling \`fillIn('${description}')\`.`,
         );

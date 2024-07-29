@@ -36,7 +36,7 @@ export function isDocument(target: unknown): target is Document {
 
 // eslint-disable-next-line require-jsdoc
 export function isContentEditable(
-  element: Element
+  element: Element,
 ): element is HTMLElementContentEditable {
   return (
     'isContentEditable' in element && (element as HTMLElement).isContentEditable

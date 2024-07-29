@@ -51,7 +51,7 @@ export function __focus__(
 ): Promise<FocusRecord | Event | void> {
   return Promise.resolve()
     .then(() => {
-      let focusTarget = getClosestFocusable(element);
+      const focusTarget = getClosestFocusable(element);
 
       const previousFocusedElement =
         document.activeElement &&
@@ -73,7 +73,7 @@ export function __focus__(
         throw new Error('There was a previously focused element');
       }
 
-      let browserIsNotFocused = !document?.hasFocus();
+      const browserIsNotFocused = !document?.hasFocus();
 
       // fire __blur__ manually with the correct relatedTarget when the browser is not
       // already in focus and there was a previously focused element
@@ -90,7 +90,7 @@ export function __focus__(
       // Firefox does not trigger the `focusin` event if the window
       // does not have focus. If the document does not have focus then
       // fire `focusin` event as well.
-      let browserIsFocused = document?.hasFocus();
+      const browserIsFocused = document?.hasFocus();
       return browserIsFocused
         ? Promise.resolve()
         : // if the browser is not focused the previous `el.focus()` didn't fire an event, so we simulate it
@@ -143,9 +143,9 @@ export default function focus(target: Target): Promise<void> {
         );
       }
 
-      let element = getElement(target);
+      const element = getElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
           `Element not found when calling \`focus('${description}')\`.`,
         );

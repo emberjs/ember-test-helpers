@@ -120,9 +120,9 @@ function fireEvent(
           return;
         }
 
-        let x = rect.left + 1;
-        let y = rect.top + 1;
-        let simulatedCoordinates = {
+        const x = rect.left + 1;
+        const y = rect.top + 1;
+        const simulatedCoordinates = {
           screenX: x + 5, // Those numbers don't really mean anything.
           screenY: y + 95, // They're just to make the screenX/Y be different of clientX/Y..
           clientX: x,
@@ -153,10 +153,11 @@ export default fireEvent;
 
 // eslint-disable-next-line require-jsdoc
 function buildBasicEvent(type: string, options: any = {}): Event {
-  let event = document.createEvent('Events');
+  const event = document.createEvent('Events');
 
-  let bubbles = options.bubbles !== undefined ? options.bubbles : true;
-  let cancelable = options.cancelable !== undefined ? options.cancelable : true;
+  const bubbles = options.bubbles !== undefined ? options.bubbles : true;
+  const cancelable =
+    options.cancelable !== undefined ? options.cancelable : true;
 
   delete options.bubbles;
   delete options.cancelable;
@@ -164,7 +165,7 @@ function buildBasicEvent(type: string, options: any = {}): Event {
   // bubbles and cancelable are readonly, so they can be
   // set when initializing event
   event.initEvent(type, bubbles, cancelable);
-  for (let prop in options) {
+  for (const prop in options) {
     (event as any)[prop] = options[prop];
   }
   return event;
@@ -173,7 +174,7 @@ function buildBasicEvent(type: string, options: any = {}): Event {
 // eslint-disable-next-line require-jsdoc
 function buildMouseEvent(type: MouseEventType, options: any = {}) {
   let event;
-  let eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
+  const eventOpts: any = { view: window, ...DEFAULT_EVENT_OPTIONS, ...options };
   if (MOUSE_EVENT_CONSTRUCTOR) {
     event = new MouseEvent(type, eventOpts);
   } else {
@@ -210,7 +211,7 @@ export function _buildKeyboardEvent(
   type: KeyboardEventType,
   options: any = {},
 ) {
-  let eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
+  const eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
   let event: Event | undefined;
   let eventMethodName: 'initKeyboardEvent' | 'initKeyEvent' | undefined;
 
@@ -284,8 +285,8 @@ function buildFileEvent(
   element: HTMLInputElement,
   options: any = {},
 ): Event {
-  let event = buildBasicEvent(type);
-  let files = options.files;
+  const event = buildBasicEvent(type);
+  const files = options.files;
 
   if (Array.isArray(options)) {
     throw new Error(
@@ -305,8 +306,8 @@ function buildFileEvent(
       configurable: true,
     });
 
-    let elementProto = Object.getPrototypeOf(element);
-    let valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
+    const elementProto = Object.getPrototypeOf(element);
+    const valueProp = Object.getOwnPropertyDescriptor(elementProto, 'value');
     Object.defineProperty(element, 'value', {
       configurable: true,
       get() {

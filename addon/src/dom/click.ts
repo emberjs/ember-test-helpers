@@ -94,7 +94,7 @@ export default function click(
   target: Target,
   _options: MouseEventInit = {},
 ): Promise<void> {
-  let options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
+  const options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
 
   return Promise.resolve()
     .then(() => runHooks('click', 'start', target, _options))
@@ -105,9 +105,9 @@ export default function click(
         );
       }
 
-      let element = getWindowOrElement(target);
+      const element = getWindowOrElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
           `Element not found when calling \`click('${description}')\`.`,
         );

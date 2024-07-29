@@ -155,7 +155,7 @@ export class TestDebugInfo implements DebugInfo {
   }
 
   toConsole(_console = console): void {
-    let summary = this.summary;
+    const summary = this.summary;
 
     if (summary.hasPendingRequests) {
       _console.log(PENDING_AJAX_REQUESTS);
@@ -172,7 +172,7 @@ export class TestDebugInfo implements DebugInfo {
 
       Object.keys(summary.pendingTestWaiterInfo.waiters).forEach(
         (waiterName) => {
-          let waiterDebugInfo =
+          const waiterDebugInfo =
             summary.pendingTestWaiterInfo.waiters[waiterName];
 
           if (Array.isArray(waiterDebugInfo)) {

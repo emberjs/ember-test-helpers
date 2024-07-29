@@ -84,7 +84,9 @@ export function getDeprecationsDuringCallbackForContext(
 // * squelch deprecations by name via: `/tests/index.html?disabledDeprecations=this-property-fallback,some-other-thing`
 // * enable a debuggger when a deprecation by a specific name is encountered via: `/tests/index.html?debugDeprecations=some-other-thing` when the
 if (typeof URLSearchParams !== 'undefined') {
-  let queryParams = new URLSearchParams(document.location.search.substring(1));
+  const queryParams = new URLSearchParams(
+    document.location.search.substring(1),
+  );
   const disabledDeprecations = queryParams.get('disabledDeprecations');
   const debugDeprecations = queryParams.get('debugDeprecations');
 

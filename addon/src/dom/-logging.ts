@@ -13,8 +13,8 @@ export function log(helperName: string, target: Target, ...args: any[]) {
     // eslint-disable-next-line no-console
     console.log(
       `${helperName}(${[elementToString(target), ...args.filter(Boolean)].join(
-        ', '
-      )})`
+        ', ',
+      )})`,
     );
   }
 }

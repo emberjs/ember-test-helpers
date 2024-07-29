@@ -55,7 +55,9 @@ export default function buildOwner(
     );
   }
 
-  let { owner } = legacyBuildRegistry(resolver) as unknown as { owner: Owner };
+  const { owner } = legacyBuildRegistry(resolver) as unknown as {
+    owner: Owner;
+  };
 
   return Promise.resolve(owner);
 }

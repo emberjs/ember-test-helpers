@@ -34,15 +34,15 @@ const INVALID = Object.freeze({
  * });
  */
 export default function validateErrorHandler(
-  callback = Ember.onerror
+  callback = Ember.onerror,
 ): ErrorHandlerValidation {
   if (callback === undefined || callback === null) {
     return VALID;
   }
 
-  let error = new Error('Error handler validation error!');
+  const error = new Error('Error handler validation error!');
 
-  let originalEmberTesting = Ember.testing;
+  const originalEmberTesting = Ember.testing;
   (Ember as any).testing = true;
   try {
     callback(error);

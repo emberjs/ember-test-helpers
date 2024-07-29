@@ -10,7 +10,7 @@ import type { Target } from './-target';
   @returns {string} a description of the target
 */
 export default function getDescription(target: Target): string {
-  let data = isDescriptor(target) ? lookupDescriptorData(target) : null;
+  const data = isDescriptor(target) ? lookupDescriptorData(target) : null;
   if (data) {
     return data.description || '<unknown descriptor>';
   } else {

@@ -16,7 +16,7 @@ const constrainedInputTypes = [
   @returns {boolean} `true` when the element should constrain input by the maxlength attribute, `false` otherwise
 */
 function isMaxLengthConstrained(
-  element: Element
+  element: Element,
 ): element is HTMLInputElement | HTMLTextAreaElement {
   return (
     !!Number(element.getAttribute('maxlength')) &&
@@ -36,7 +36,7 @@ function isMaxLengthConstrained(
 export default function guardForMaxlength(
   element: FormControl,
   text: string,
-  testHelper: string
+  testHelper: string,
 ): void {
   const maxlength = element.getAttribute('maxlength');
   if (
@@ -46,7 +46,7 @@ export default function guardForMaxlength(
     text.length > Number(maxlength)
   ) {
     throw new Error(
-      `Can not \`${testHelper}\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`
+      `Can not \`${testHelper}\` with text: '${text}' that exceeds maxlength: '${maxlength}'.`,
     );
   }
 }

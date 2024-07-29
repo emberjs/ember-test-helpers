@@ -10,13 +10,13 @@ import Ember from 'ember';
   @returns {boolean} true if the Ember version is >= MAJOR.MINOR specified, false otherwise
 */
 export default function hasEmberVersion(major: number, minor: number): boolean {
-  let numbers = Ember.VERSION.split('-')[0]?.split('.');
+  const numbers = Ember.VERSION.split('-')[0]?.split('.');
 
   if (!numbers || !numbers[0] || !numbers[1]) {
     throw new Error('`Ember.VERSION` is not set.');
   }
 
-  let actualMajor = parseInt(numbers[0], 10);
-  let actualMinor = parseInt(numbers[1], 10);
+  const actualMajor = parseInt(numbers[0], 10);
+  const actualMinor = parseInt(numbers[1], 10);
   return actualMajor > major || (actualMajor === major && actualMinor >= minor);
 }
