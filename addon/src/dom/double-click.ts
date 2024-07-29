@@ -1,13 +1,13 @@
-import { getWindowOrElement } from './-get-window-or-element';
-import fireEvent from './fire-event';
-import { __focus__ } from './focus';
-import settled from '../settled';
-import { DEFAULT_CLICK_OPTIONS } from './click';
-import { isWindow, type Target } from './-target';
-import { log } from './-logging';
-import isFormControl from './-is-form-control';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import { getWindowOrElement } from './-get-window-or-element.ts';
+import fireEvent from './fire-event.ts';
+import { __focus__ } from './focus.ts';
+import settled from '../settled.ts';
+import { DEFAULT_CLICK_OPTIONS } from './click.ts';
+import { isWindow, type Target } from './-target.ts';
+import { log } from './-logging.ts';
+import isFormControl from './-is-form-control.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('doubleClick', 'start', (target: Target) => {
   log('doubleClick', target);
@@ -21,7 +21,7 @@ registerHook('doubleClick', 'start', (target: Target) => {
 */
 export function __doubleClick__(
   element: Element | Document | Window,
-  options: MouseEventInit
+  options: MouseEventInit,
 ): Promise<Event | void> {
   return Promise.resolve()
     .then(() => fireEvent(element, 'mousedown', options))
@@ -93,24 +93,24 @@ export function __doubleClick__(
 */
 export default function doubleClick(
   target: Target,
-  _options: MouseEventInit = {}
+  _options: MouseEventInit = {},
 ): Promise<void> {
-  let options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
+  const options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
 
   return Promise.resolve()
     .then(() => runHooks('doubleClick', 'start', target, _options))
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `doubleClick`.'
+          'Must pass an element, selector, or descriptor to `doubleClick`.',
         );
       }
 
-      let element = getWindowOrElement(target);
+      const element = getWindowOrElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`doubleClick('${description}')\`.`
+          `Element not found when calling \`doubleClick('${description}')\`.`,
         );
       }
 

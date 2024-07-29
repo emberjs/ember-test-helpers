@@ -3,7 +3,10 @@
 // this type will be `any`.
 import { _backburner } from '@ember/runloop';
 import type { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
-import { type DebugInfoHelper, debugInfoHelpers } from './debug-info-helpers';
+import {
+  type DebugInfoHelper,
+  debugInfoHelpers,
+} from './debug-info-helpers.ts';
 import {
   getPendingWaiterState,
   type PendingWaiterState,
@@ -89,7 +92,7 @@ export class TestDebugInfo implements DebugInfo {
 
   constructor(
     settledState: SettledState,
-    debugInfo: MaybeDebugInfo = getDebugInfo()
+    debugInfo: MaybeDebugInfo = getDebugInfo(),
   ) {
     this._settledState = settledState;
     this._debugInfo = debugInfo;
@@ -107,7 +110,7 @@ export class TestDebugInfo implements DebugInfo {
           this._settledState.hasPendingTimers &&
           this._summaryInfo.pendingTimersCount > 0;
         this._summaryInfo.pendingTimersStackTraces = this._debugInfo.timers.map(
-          (timer) => timer.stack
+          (timer) => timer.stack,
         );
 
         this._summaryInfo.pendingScheduledQueueItemCount =
@@ -135,7 +138,8 @@ export class TestDebugInfo implements DebugInfo {
                 // also be compatible with the version where Ember *does* supply
                 // the types correctly.
                 (queueItems as Array<{ stack: string }> | undefined)?.forEach(
-                  (queueItem) => queueItem.stack && stacks.push(queueItem.stack)
+                  (queueItem) =>
+                    queueItem.stack && stacks.push(queueItem.stack),
                 );
               });
               return stacks;
@@ -177,14 +181,14 @@ export class TestDebugInfo implements DebugInfo {
               _console.log(
                 `${debugInfo.label ? debugInfo.label : 'stack'}: ${
                   debugInfo.stack
-                }`
+                }`,
               );
             });
             _console.groupEnd();
           } else {
             _console.log(waiterName);
           }
-        }
+        },
       );
     }
 
@@ -201,7 +205,7 @@ export class TestDebugInfo implements DebugInfo {
       summary.pendingScheduledQueueItemStackTraces.forEach(
         (scheduleQueueItemStack) => {
           _console.log(scheduleQueueItemStack);
-        }
+        },
       );
 
       _console.groupEnd();

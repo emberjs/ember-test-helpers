@@ -37,7 +37,13 @@ module.exports = {
       rules: {
         // require relative imports use full extensions
         'import/extensions': ['error', 'always', { ignorePackages: true }],
-        // Add any custom rules here
+        // We break a lot of rules with types
+        // (public types do not always exist for the things we need to import)
+        '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        // We access the _routerMicrolib
+        // and router:main
+        'ember/no-private-routing-service': 'off',
       },
     },
     {

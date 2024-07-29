@@ -1,12 +1,12 @@
-import { getWindowOrElement } from './-get-window-or-element';
-import fireEvent from './fire-event';
-import { __focus__ } from './focus';
-import settled from '../settled';
-import isFormControl from './-is-form-control';
-import { isWindow, type Target } from './-target';
-import { log } from './-logging';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import { getWindowOrElement } from './-get-window-or-element.ts';
+import fireEvent from './fire-event.ts';
+import { __focus__ } from './focus.ts';
+import settled from '../settled.ts';
+import isFormControl from './-is-form-control.ts';
+import { isWindow, type Target } from './-target.ts';
+import { log } from './-logging.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 const PRIMARY_BUTTON = 1;
 const MAIN_BUTTON_PRESSED = 0;
@@ -32,14 +32,14 @@ export const DEFAULT_CLICK_OPTIONS = {
 */
 export function __click__(
   element: Element | Document | Window,
-  options: MouseEventInit
+  options: MouseEventInit,
 ): Promise<Event | void> {
   return Promise.resolve()
     .then(() => fireEvent(element, 'mousedown', options))
     .then((mouseDownEvent) =>
       !isWindow(element) && !mouseDownEvent?.defaultPrevented
         ? __focus__(element)
-        : Promise.resolve()
+        : Promise.resolve(),
     )
     .then(() => fireEvent(element, 'mouseup', options))
     .then(() => fireEvent(element, 'click', options));
@@ -92,7 +92,7 @@ export function __click__(
 */
 export default function click(
   target: Target,
-  _options: MouseEventInit = {}
+  _options: MouseEventInit = {},
 ): Promise<void> {
   let options = { ...DEFAULT_CLICK_OPTIONS, ..._options };
 
@@ -101,7 +101,7 @@ export default function click(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `click`.'
+          'Must pass an element, selector, or descriptor to `click`.',
         );
       }
 
@@ -109,7 +109,7 @@ export default function click(
       if (!element) {
         let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`click('${description}')\`.`
+          `Element not found when calling \`click('${description}')\`.`,
         );
       }
 

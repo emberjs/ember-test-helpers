@@ -1,5 +1,5 @@
-import getElement from './-get-element';
-import { type Target, isWindow } from './-target';
+import getElement from './-get-element.ts';
+import { type Target, isWindow } from './-target.ts';
 
 /**
   Used internally by the DOM interaction helpers to find either window or an element.
@@ -9,7 +9,7 @@ import { type Target, isWindow } from './-target';
   @returns {Element|Window} the target or selector
 */
 export function getWindowOrElement(
-  target: Target
+  target: Target,
 ): Element | Document | Window | null {
   if (isWindow(target)) {
     return target as Window;

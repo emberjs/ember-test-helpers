@@ -1,8 +1,8 @@
-import { isDocument, isElement } from './-target';
-import tuple from '../-tuple';
-import type { Target } from './-target';
-import { log } from './-logging';
-import { runHooks, registerHook } from '../helper-hooks';
+import { isDocument, isElement } from './-target.ts';
+import tuple from '../-tuple.ts';
+import type { Target } from './-target.ts';
+import { log } from './-logging.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
 
 registerHook('fireEvent', 'start', (target: Target) => {
   log('fireEvent', target);
@@ -24,7 +24,7 @@ export type KeyboardEventType = (typeof KEYBOARD_EVENT_TYPES)[number];
 
 // eslint-disable-next-line require-jsdoc
 export function isKeyboardEventType(
-  eventType: any
+  eventType: any,
 ): eventType is KeyboardEventType {
   return KEYBOARD_EVENT_TYPES.indexOf(eventType) > -1;
 }
@@ -38,7 +38,7 @@ const MOUSE_EVENT_TYPES = tuple(
   'mouseleave',
   'mousemove',
   'mouseout',
-  'mouseover'
+  'mouseover',
 );
 export type MouseEventType = (typeof MOUSE_EVENT_TYPES)[number];
 
@@ -53,14 +53,14 @@ export type FileSelectionEventType =
 
 // eslint-disable-next-line require-jsdoc
 export function isFileSelectionEventType(
-  eventType: any
+  eventType: any,
 ): eventType is FileSelectionEventType {
   return FILE_SELECTION_EVENT_TYPES.indexOf(eventType) > -1;
 }
 
 // eslint-disable-next-line require-jsdoc
 export function isFileSelectionInput(
-  element: any
+  element: any,
 ): element is HTMLInputElement {
   return element.files;
 }
@@ -68,19 +68,19 @@ export function isFileSelectionInput(
 function fireEvent(
   element: Element | Document | Window,
   eventType: KeyboardEventType,
-  options?: any
+  options?: any,
 ): Promise<Event>;
 
 function fireEvent(
   element: Element | Document | Window,
   eventType: MouseEventType,
-  options?: any
+  options?: any,
 ): Promise<Event | void>;
 
 function fireEvent(
   element: Element | Document | Window,
   eventType: string,
-  options?: any
+  options?: any,
 ): Promise<Event>;
 
 /**
@@ -95,7 +95,7 @@ function fireEvent(
 function fireEvent(
   element: Element | Document | Window,
   eventType: string,
-  options = {}
+  options = {},
 ): Promise<Event | void> {
   return Promise.resolve()
     .then(() => runHooks('fireEvent', 'start', element))
@@ -144,7 +144,7 @@ function fireEvent(
       return event;
     })
     .then((event) =>
-      runHooks(`fireEvent:${eventType}`, 'end', element).then(() => event)
+      runHooks(`fireEvent:${eventType}`, 'end', element).then(() => event),
     )
     .then((event) => runHooks('fireEvent', 'end', element).then(() => event));
 }
@@ -194,7 +194,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
         eventOpts.shiftKey,
         eventOpts.metaKey,
         eventOpts.button,
-        eventOpts.relatedTarget
+        eventOpts.relatedTarget,
       );
     } catch (e) {
       event = buildBasicEvent(type, options);
@@ -208,7 +208,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
 // eslint-disable-next-line require-jsdoc
 export function _buildKeyboardEvent(
   type: KeyboardEventType,
-  options: any = {}
+  options: any = {},
 ) {
   let eventOpts: any = { ...DEFAULT_EVENT_OPTIONS, ...options };
   let event: Event | undefined;
@@ -269,7 +269,7 @@ export function _buildKeyboardEvent(
       eventOpts.shiftKey,
       eventOpts.metaKey,
       eventOpts.keyCode,
-      eventOpts.charCode
+      eventOpts.charCode,
     );
   } else {
     event = buildBasicEvent(type, options);
@@ -282,14 +282,14 @@ export function _buildKeyboardEvent(
 function buildFileEvent(
   type: FileSelectionEventType,
   element: HTMLInputElement,
-  options: any = {}
+  options: any = {},
 ): Event {
   let event = buildBasicEvent(type);
   let files = options.files;
 
   if (Array.isArray(options)) {
     throw new Error(
-      'Please pass an object with a files array to `triggerEvent` instead of passing the `options` param as an array to.'
+      'Please pass an object with a files array to `triggerEvent` instead of passing the `options` param as an array to.',
     );
   }
 

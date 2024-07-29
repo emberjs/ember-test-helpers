@@ -1,6 +1,6 @@
 import type { BaseContext } from '../setup-context';
 import { registerDeprecationHandler } from '@ember/debug';
-import isPromise from './is-promise';
+import isPromise from './is-promise.ts';
 
 export interface DeprecationOptions {
   id: string;
@@ -27,11 +27,11 @@ const DEPRECATIONS = new WeakMap<BaseContext, Array<DeprecationFailure>>();
  * @return {Array<DeprecationFailure>} the Deprecation Failures associated with the corresponding BaseContext;
  */
 export function getDeprecationsForContext(
-  context: BaseContext
+  context: BaseContext,
 ): Array<DeprecationFailure> {
   if (!context) {
     throw new TypeError(
-      `[@ember/test-helpers] could not get deprecations for an invalid test context: '${context}'`
+      `[@ember/test-helpers] could not get deprecations for an invalid test context: '${context}'`,
     );
   }
 
@@ -58,11 +58,11 @@ export function getDeprecationsForContext(
  */
 export function getDeprecationsDuringCallbackForContext(
   context: BaseContext,
-  callback: () => void
+  callback: () => void,
 ): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
   if (!context) {
     throw new TypeError(
-      `[@ember/test-helpers] could not get deprecations for an invalid test context: '${context}'`
+      `[@ember/test-helpers] could not get deprecations for an invalid test context: '${context}'`,
     );
   }
 

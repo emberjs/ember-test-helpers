@@ -1,6 +1,6 @@
 import Application from '@ember/application';
 
-import { getResolver, setResolver } from './resolver';
+import { getResolver, setResolver } from './resolver.ts';
 
 let __application__: Application | undefined;
 
@@ -17,8 +17,8 @@ export function setApplication(application: Application): void {
   __application__ = application;
 
   if (!getResolver()) {
-    let Resolver = (application as any).Resolver;
-    let resolver = Resolver.create({ namespace: application });
+    const Resolver = (application as any).Resolver;
+    const resolver = Resolver.create({ namespace: application });
 
     setResolver(resolver);
   }

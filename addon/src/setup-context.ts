@@ -6,19 +6,19 @@ import { set, setProperties, get, getProperties } from '@ember/object';
 import type { Resolver } from '@ember/owner';
 import { setOwner } from '@ember/application';
 
-import buildOwner, { type Owner } from './build-owner';
-import { _setupAJAXHooks, _teardownAJAXHooks } from './settled';
-import { _prepareOnerror } from './setup-onerror';
+import buildOwner, { type Owner } from './build-owner.ts';
+import { _setupAJAXHooks, _teardownAJAXHooks } from './settled.ts';
+import { _prepareOnerror } from './setup-onerror.ts';
 import Ember from 'ember';
 import {
   assert,
   registerDeprecationHandler,
   registerWarnHandler,
 } from '@ember/debug';
-import global from './global';
-import { getResolver } from './resolver';
-import { getApplication } from './application';
-import getTestMetadata from './test-metadata';
+import global from './global.ts';
+import { getResolver } from './resolver.ts';
+import { getApplication } from './application.ts';
+import getTestMetadata from './test-metadata.ts';
 import {
   registerDestructor,
   associateDestroyableChild,
@@ -27,12 +27,12 @@ import {
   getDeprecationsForContext,
   getDeprecationsDuringCallbackForContext,
   type DeprecationFailure,
-} from './-internal/deprecations';
+} from './-internal/deprecations.ts';
 import {
   getWarningsForContext,
   getWarningsDuringCallbackForContext,
   type Warning,
-} from './-internal/warnings';
+} from './-internal/warnings.ts';
 
 export interface SetupContextOptions {
   resolver?: Resolver | undefined;
@@ -91,7 +91,7 @@ export interface TestContext extends BaseContext {
 
 // eslint-disable-next-line require-jsdoc
 export function isTestContext(context: BaseContext): context is TestContext {
-  let maybeContext = context as Record<string, unknown>;
+  const maybeContext = context as Record<string, unknown>;
   return (
     typeof maybeContext['pauseTest'] === 'function' &&
     typeof maybeContext['resumeTest'] === 'function'
@@ -183,11 +183,11 @@ export function unsetContext(): void {
  * });
  */
 export function pauseTest(): Promise<void> {
-  let context = getContext();
+  const context = getContext();
 
   if (!context || !isTestContext(context)) {
     throw new Error(
-      'Cannot call `pauseTest` without having first called `setupTest` or `setupRenderingTest`.'
+      'Cannot call `pauseTest` without having first called `setupTest` or `setupRenderingTest`.',
     );
   }
 
@@ -200,11 +200,11 @@ export function pauseTest(): Promise<void> {
   @public
 */
 export function resumeTest(): void {
-  let context = getContext();
+  const context = getContext();
 
   if (!context || !isTestContext(context)) {
     throw new Error(
-      'Cannot call `resumeTest` without having first called `setupTest` or `setupRenderingTest`.'
+      'Cannot call `resumeTest` without having first called `setupTest` or `setupRenderingTest`.',
     );
   }
 
@@ -246,7 +246,7 @@ export function getDeprecations(): Array<DeprecationFailure> {
 
   if (!context) {
     throw new Error(
-      '[@ember/test-helpers] could not get deprecations if no test context is currently active'
+      '[@ember/test-helpers] could not get deprecations if no test context is currently active',
     );
   }
 
@@ -284,13 +284,13 @@ export type { DeprecationFailure };
  * });
  */
 export function getDeprecationsDuringCallback(
-  callback: () => void
+  callback: () => void,
 ): Array<DeprecationFailure> | Promise<Array<DeprecationFailure>> {
   const context = getContext();
 
   if (!context) {
     throw new Error(
-      '[@ember/test-helpers] could not get deprecations if no test context is currently active'
+      '[@ember/test-helpers] could not get deprecations if no test context is currently active',
     );
   }
 
@@ -319,7 +319,7 @@ export function getWarnings(): Array<Warning> {
 
   if (!context) {
     throw new Error(
-      '[@ember/test-helpers] could not get warnings if no test context is currently active'
+      '[@ember/test-helpers] could not get warnings if no test context is currently active',
     );
   }
 
@@ -359,13 +359,13 @@ export type { Warning };
  * });
  */
 export function getWarningsDuringCallback(
-  callback: () => void
+  callback: () => void,
 ): Array<Warning> | Promise<Array<Warning>> {
   const context = getContext();
 
   if (!context) {
     throw new Error(
-      '[@ember/test-helpers] could not get warnings if no test context is currently active'
+      '[@ember/test-helpers] could not get warnings if no test context is currently active',
     );
   }
 
@@ -396,15 +396,15 @@ export const SetUsage = new WeakMap<BaseContext, Array<string>>();
 */
 export default function setupContext<T extends object>(
   base: T,
-  options: SetupContextOptions = {}
+  options: SetupContextOptions = {},
 ): Promise<T & TestContext> {
-  let context = base as T & TestContext;
+  const context = base as T & TestContext;
 
   // SAFETY: this is intimate API *designed* for us to override.
   (Ember as any).testing = true;
   setContext(context);
 
-  let testMetadata = getTestMetadata(context);
+  const testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupContext');
 
   _backburner.DEBUG = true;
@@ -415,14 +415,14 @@ export default function setupContext<T extends object>(
 
   return Promise.resolve()
     .then(() => {
-      let application = getApplication();
+      const application = getApplication();
       if (application) {
         return application.boot().then(() => {});
       }
       return;
     })
     .then(() => {
-      let { resolver } = options;
+      const { resolver } = options;
 
       // This handles precedence, specifying a specific option of
       // resolver always trumps whatever is auto-detected, then we fallback to
@@ -452,10 +452,10 @@ export default function setupContext<T extends object>(
         enumerable: true,
         // SAFETY: in all of these `defineProperty` calls, we can't actually guarantee any safety w.r.t. the corresponding field's type in `TestContext`
         value(key: any, value: any): unknown {
-          let ret = run(function () {
+          const ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).'
+                'You cannot call `this.set` when passing a component to `render()` (the rendered component does not have access to the test context).',
               );
             } else {
               let setCalls = SetUsage.get(context);
@@ -481,10 +481,10 @@ export default function setupContext<T extends object>(
         enumerable: true,
         // SAFETY: in all of these `defineProperty` calls, we can't actually guarantee any safety w.r.t. the corresponding field's type in `TestContext`
         value(hash: any): unknown {
-          let ret = run(function () {
+          const ret = run(function () {
             if (ComponentRenderMap.has(context)) {
               assert(
-                'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)'
+                'You cannot call `this.setProperties` when passing a component to `render()` (the rendered component does not have access to the test context)',
               );
             } else {
               // While neither the types nor the API documentation indicate that passing `null` or
@@ -533,7 +533,7 @@ export default function setupContext<T extends object>(
       context['resumeTest'] = function resumeTest() {
         assert(
           'Testing has not been paused. There is nothing to resume.',
-          !!resume
+          !!resume,
         );
         resume();
         global.resumeTest = resume = undefined;

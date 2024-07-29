@@ -1,11 +1,11 @@
-import getElement from './-get-element';
-import fireEvent from './fire-event';
-import settled from '../settled';
-import type { Target } from './-target';
-import { log } from './-logging';
-import isFocusable from './-is-focusable';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import getElement from './-get-element.ts';
+import fireEvent from './fire-event.ts';
+import settled from '../settled.ts';
+import type { Target } from './-target.ts';
+import { log } from './-logging.ts';
+import isFocusable from './-is-focusable.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('blur', 'start', (target: Target) => {
   log('blur', target);
@@ -19,14 +19,14 @@ registerHook('blur', 'start', (target: Target) => {
 */
 export function __blur__(
   element: HTMLElement | Element | Document | SVGElement,
-  relatedTarget: HTMLElement | Element | Document | SVGElement | null = null
+  relatedTarget: HTMLElement | Element | Document | SVGElement | null = null,
 ): Promise<Event | void> {
   if (!isFocusable(element)) {
     throw new Error(`${element} is not focusable`);
   }
 
-  let browserIsNotFocused = document.hasFocus && !document.hasFocus();
-  let needsCustomEventOptions = relatedTarget !== null;
+  const browserIsNotFocused = document.hasFocus && !document.hasFocus();
+  const needsCustomEventOptions = relatedTarget !== null;
 
   if (!needsCustomEventOptions) {
     // makes `document.activeElement` be `body`.
@@ -37,7 +37,7 @@ export function __blur__(
   // Chrome/Firefox does not trigger the `blur` event if the window
   // does not have focus. If the document does not have focus then
   // fire `blur` event via native event.
-  let options = { relatedTarget };
+  const options = { relatedTarget };
   return browserIsNotFocused || needsCustomEventOptions
     ? Promise.resolve()
         .then(() => fireEvent(element, 'blur', { bubbles: false, ...options }))
@@ -71,16 +71,16 @@ export function __blur__(
   blur('input');
 */
 export default function blur(
-  target: Target = document.activeElement!
+  target: Target = document.activeElement!,
 ): Promise<void> {
   return Promise.resolve()
     .then(() => runHooks('blur', 'start', target))
     .then(() => {
-      let element = getElement(target);
+      const element = getElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`blur('${description}')\`.`
+          `Element not found when calling \`blur('${description}')\`.`,
         );
       }
 

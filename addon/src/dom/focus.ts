@@ -1,12 +1,12 @@
-import getElement from './-get-element';
-import fireEvent from './fire-event';
-import settled from '../settled';
-import isFocusable from './-is-focusable';
-import { isDocument, type Target } from './-target';
-import { log } from './-logging';
-import { runHooks, registerHook } from '../helper-hooks';
-import { __blur__ } from './blur';
-import getDescription from './-get-description';
+import getElement from './-get-element.ts';
+import fireEvent from './fire-event.ts';
+import settled from '../settled.ts';
+import isFocusable from './-is-focusable.ts';
+import { isDocument, type Target } from './-target.ts';
+import { log } from './-logging.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import { __blur__ } from './blur.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('focus', 'start', (target: Target) => {
   log('focus', target);
@@ -27,7 +27,7 @@ type FocusRecord = {
    if there is none
  */
 function getClosestFocusable(
-  element: HTMLElement | Element | Document | SVGElement
+  element: HTMLElement | Element | Document | SVGElement,
 ): HTMLElement | SVGElement | null {
   if (isDocument(element)) {
     return null;
@@ -47,7 +47,7 @@ function getClosestFocusable(
   @return {Promise<FocusRecord | Event | void>} resolves when settled
 */
 export function __focus__(
-  element: HTMLElement | Element | Document | SVGElement
+  element: HTMLElement | Element | Document | SVGElement,
 ): Promise<FocusRecord | Event | void> {
   return Promise.resolve()
     .then(() => {
@@ -64,7 +64,7 @@ export function __focus__(
       // and there was a previously focused element
       return !focusTarget && previousFocusedElement
         ? __blur__(previousFocusedElement, null).then(() =>
-            Promise.resolve({ focusTarget, previousFocusedElement })
+            Promise.resolve({ focusTarget, previousFocusedElement }),
           )
         : Promise.resolve({ focusTarget, previousFocusedElement });
     })
@@ -79,7 +79,7 @@ export function __focus__(
       // already in focus and there was a previously focused element
       return previousFocusedElement && browserIsNotFocused
         ? __blur__(previousFocusedElement, focusTarget).then(() =>
-            Promise.resolve({ focusTarget })
+            Promise.resolve({ focusTarget }),
           )
         : Promise.resolve({ focusTarget });
     })
@@ -98,10 +98,10 @@ export function __focus__(
             .then(() =>
               fireEvent(focusTarget as HTMLElement | SVGElement, 'focus', {
                 bubbles: false,
-              })
+              }),
             )
             .then(() =>
-              fireEvent(focusTarget as HTMLElement | SVGElement, 'focusin')
+              fireEvent(focusTarget as HTMLElement | SVGElement, 'focusin'),
             )
             .then(() => settled());
     })
@@ -139,7 +139,7 @@ export default function focus(target: Target): Promise<void> {
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `focus`.'
+          'Must pass an element, selector, or descriptor to `focus`.',
         );
       }
 
@@ -147,7 +147,7 @@ export default function focus(target: Target): Promise<void> {
       if (!element) {
         let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`focus('${description}')\`.`
+          `Element not found when calling \`focus('${description}')\`.`,
         );
       }
 

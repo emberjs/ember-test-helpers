@@ -1,17 +1,17 @@
-import getElements from './-get-elements';
+import getElements from './-get-elements.ts';
 
 // Derived, with modification, from the types for `querySelectorAll`. These
 // would simply be defined as a tweaked re-export as `querySelector` is, but it
 // is non-trivial (to say the least!) to preserve overloads like this while also
 // changing the return type (from `NodeListOf` to `Array`).
 export default function findAll<
-  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
+  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap),
 >(selector: K): Array<HTMLElementTagNameMap[K] | SVGElementTagNameMap[K]>;
 export default function findAll<K extends keyof HTMLElementTagNameMap>(
-  selector: K
+  selector: K,
 ): Array<HTMLElementTagNameMap[K]>;
 export default function findAll<K extends keyof SVGElementTagNameMap>(
-  selector: K
+  selector: K,
 ): Array<SVGElementTagNameMap[K]>;
 export default function findAll(selector: string): Element[];
 /**

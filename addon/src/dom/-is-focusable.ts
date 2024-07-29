@@ -1,5 +1,5 @@
-import isFormControl from './-is-form-control';
-import { isDocument, isContentEditable, isWindow } from './-target';
+import isFormControl from './-is-form-control.ts';
+import { isDocument, isContentEditable, isWindow } from './-target.ts';
 
 // For reference:
 // https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute
@@ -18,7 +18,7 @@ function isFocusableElement(element: Element): element is FocusableElement {
   @returns {boolean} `true` when the element is focusable, `false` otherwise
 */
 export default function isFocusable(
-  element: HTMLElement | SVGElement | Element | Document | Window
+  element: HTMLElement | SVGElement | Element | Document | Window,
 ): element is HTMLElement | SVGElement {
   if (isWindow(element)) {
     return false;

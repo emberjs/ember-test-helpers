@@ -1,5 +1,5 @@
-import getRootElement from './get-root-element';
-import { type Target, isDocument, isElement } from './-target';
+import getRootElement from './get-root-element.ts';
+import { type Target, isDocument, isElement } from './-target.ts';
 import {
   type IDOMElementDescriptor,
   lookupDescriptorData,
@@ -7,13 +7,13 @@ import {
 } from 'dom-element-descriptors';
 
 function getElement<
-  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
+  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap),
 >(target: K): (HTMLElementTagNameMap[K] | SVGElementTagNameMap[K]) | null;
 function getElement<K extends keyof HTMLElementTagNameMap>(
-  target: K
+  target: K,
 ): HTMLElementTagNameMap[K] | null;
 function getElement<K extends keyof SVGElementTagNameMap>(
-  target: K
+  target: K,
 ): SVGElementTagNameMap[K] | null;
 function getElement(target: string): Element | null;
 function getElement(target: Element): Element;
@@ -31,7 +31,7 @@ function getElement(target: Target): Element | Document | null;
 */
 function getElement(target: Target): Element | Document | null {
   if (typeof target === 'string') {
-    let rootElement = getRootElement();
+    const rootElement = getRootElement();
 
     return rootElement.querySelector(target);
   } else if (isElement(target) || isDocument(target)) {
@@ -39,12 +39,12 @@ function getElement(target: Target): Element | Document | null {
   } else if (target instanceof Window) {
     return target.document;
   } else {
-    let descriptorData = lookupDescriptorData(target);
+    const descriptorData = lookupDescriptorData(target);
     if (descriptorData) {
       return resolveDOMElement(descriptorData);
     } else {
       throw new Error(
-        'Must use an element, selector string, or DOM element descriptor'
+        'Must use an element, selector string, or DOM element descriptor',
       );
     }
   }

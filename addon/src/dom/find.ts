@@ -1,14 +1,14 @@
-import getElement from './-get-element';
+import getElement from './-get-element.ts';
 
 // Derived from `querySelector` types.
 export default function find<
-  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap)
+  K extends keyof (HTMLElementTagNameMap | SVGElementTagNameMap),
 >(selector: K): HTMLElementTagNameMap[K] | SVGElementTagNameMap[K] | null;
 export default function find<K extends keyof HTMLElementTagNameMap>(
-  selector: K
+  selector: K,
 ): HTMLElementTagNameMap[K] | null;
 export default function find<K extends keyof SVGElementTagNameMap>(
-  selector: K
+  selector: K,
 ): SVGElementTagNameMap[K] | null;
 export default function find(selector: string): Element | null;
 /**

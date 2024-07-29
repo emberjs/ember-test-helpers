@@ -1,5 +1,5 @@
-import { getContext, isTestContext } from '../setup-context';
-import { isDocument, isElement } from './-target';
+import { getContext, isTestContext } from '../setup-context.ts';
+import { isDocument, isElement } from './-target.ts';
 
 /**
   Get the root element of the application under test (usually `#ember-testing`)
@@ -15,15 +15,15 @@ import { isDocument, isElement } from './-target';
   assert.equal(getRootElement(), document.querySelector('#ember-testing'));
 */
 export default function getRootElement(): Element | Document {
-  let context = getContext();
+  const context = getContext();
 
   if (!context || !isTestContext(context) || !context.owner) {
     throw new Error(
-      'Must setup rendering context before attempting to interact with elements.'
+      'Must setup rendering context before attempting to interact with elements.',
     );
   }
 
-  let owner = context.owner;
+  const owner = context.owner;
 
   let rootElement;
   // When the host app uses `setApplication` (instead of `setResolver`) the owner has
@@ -41,7 +41,7 @@ export default function getRootElement(): Element | Document {
   if (isElement(rootElement) || isDocument(rootElement)) {
     return rootElement;
   } else if (typeof rootElement === 'string') {
-    let _rootElement = document.querySelector(rootElement);
+    const _rootElement = document.querySelector(rootElement);
     if (_rootElement) {
       return _rootElement;
     }
@@ -49,7 +49,7 @@ export default function getRootElement(): Element | Document {
     throw new Error(`Application.rootElement (${rootElement}) not found`);
   } else {
     throw new Error(
-      'Application.rootElement must be an element or a selector string'
+      'Application.rootElement must be an element or a selector string',
     );
   }
 }

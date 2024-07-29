@@ -1,4 +1,4 @@
-import { futureTick } from './-utils';
+import { futureTick } from './-utils.ts';
 
 const TIMEOUTS = [0, 1, 2, 5, 7];
 const MAX_TIMEOUT = 10;
@@ -33,24 +33,24 @@ export interface Options {
 */
 export default function waitUntil<T>(
   callback: () => T | void | Falsy,
-  options: Options = {}
+  options: Options = {},
 ): Promise<T> {
-  let timeout = 'timeout' in options ? (options.timeout as number) : 1000;
-  let timeoutMessage =
+  const timeout = 'timeout' in options ? (options.timeout as number) : 1000;
+  const timeoutMessage =
     'timeoutMessage' in options
       ? options.timeoutMessage
       : 'waitUntil timed out';
 
   // creating this error eagerly so it has the proper invocation stack
-  let waitUntilTimedOut = new Error(timeoutMessage);
+  const waitUntilTimedOut = new Error(timeoutMessage);
 
   return new Promise(function (resolve, reject) {
     let time = 0;
 
     // eslint-disable-next-line require-jsdoc
     function scheduleCheck(timeoutsIndex: number) {
-      let knownTimeout = TIMEOUTS[timeoutsIndex];
-      let interval = knownTimeout === undefined ? MAX_TIMEOUT : knownTimeout;
+      const knownTimeout = TIMEOUTS[timeoutsIndex];
+      const interval = knownTimeout === undefined ? MAX_TIMEOUT : knownTimeout;
 
       futureTick(function () {
         time += interval;

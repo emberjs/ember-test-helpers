@@ -1,11 +1,11 @@
-import renderSettled from './-internal/render-settled';
+import renderSettled from './-internal/render-settled.ts';
 
 /**
   Returns a promise which will resolve when rendering has completed. In
   this context, rendering is completed when all auto-tracked state that is
   consumed in the template (including any tracked state in models, services,
   etc.  that are then used in a template) has been updated in the DOM.
-  
+
   For example, in a test you might want to update some tracked state and
   then run some assertions after rendering has completed. You _could_ use
   `await settled()` in that location, but in some contexts you don't want to

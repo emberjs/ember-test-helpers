@@ -1,6 +1,6 @@
 /* globals Promise */
 
-import isFormControl from './dom/-is-form-control';
+import isFormControl from './dom/-is-form-control.ts';
 
 export const nextTick = (cb: () => void) => Promise.resolve().then(cb);
 export const futureTick = setTimeout;
@@ -15,7 +15,7 @@ export const futureTick = setTimeout;
  @param {string} property the property on the object that contains the destroyable array
 */
 export function runDestroyablesFor(object: any, property: string): void {
-  let destroyables = object[property];
+  const destroyables = object[property];
 
   if (!destroyables) {
     return;
@@ -47,7 +47,7 @@ export function isNumeric(n: string): boolean {
   @returns {boolean} `true` when the element is visible, `false` otherwise
 */
 export function isVisible(element: Element): boolean {
-  let styles = window.getComputedStyle(element);
+  const styles = window.getComputedStyle(element);
   return styles.display !== 'none' && styles.visibility !== 'hidden';
 }
 

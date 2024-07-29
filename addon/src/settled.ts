@@ -7,12 +7,12 @@ import Ember from 'ember';
 
 import EmberApplicationInstance from '@ember/application/instance';
 
-import { nextTick } from './-utils';
-import waitUntil from './wait-until';
-import { hasPendingTransitions } from './setup-application-context';
+import { nextTick } from './-utils.ts';
+import waitUntil from './wait-until.ts';
+import { hasPendingTransitions } from './setup-application-context.ts';
 import { hasPendingWaiters } from '@ember/test-waiters';
-import type DebugInfo from './-internal/debug-info';
-import { TestDebugInfo } from './-internal/debug-info';
+import type DebugInfo from './-internal/debug-info.ts';
+import { TestDebugInfo } from './-internal/debug-info.ts';
 
 // Ember internally tracks AJAX requests in the same way that we do here for
 // legacy style "acceptance" tests using the `ember-testing.js` asset provided
@@ -23,7 +23,7 @@ import { TestDebugInfo } from './-internal/debug-info';
 // This utilizes a local utility method present in Ember since around 2.8.0 to
 // properly consider pending AJAX requests done within legacy acceptance tests.
 const _internalPendingRequestsModule = (() => {
-  let loader = (Ember as any).__loader;
+  const loader = (Ember as any).__loader;
 
   if (loader.registry['ember-testing/test/pending_requests']) {
     // Ember <= 3.1
@@ -60,13 +60,13 @@ if (
         .jQuery(document)
         .off(
           'ajaxSend',
-          _internalPendingRequestsModule.incrementPendingRequests
+          _internalPendingRequestsModule.incrementPendingRequests,
         );
       (globalThis as any)
         .jQuery(document)
         .off(
           'ajaxComplete',
-          _internalPendingRequestsModule.decrementPendingRequests
+          _internalPendingRequestsModule.decrementPendingRequests,
         );
 
       _internalPendingRequestsModule.clearPendingRequests();
@@ -83,8 +83,8 @@ let requests: XMLHttpRequest[];
   @returns {number} the count of pending requests
 */
 function pendingRequests() {
-  let localRequestsPending = requests !== undefined ? requests.length : 0;
-  let internalRequestsPending = _internalGetPendingRequestsCount();
+  const localRequestsPending = requests !== undefined ? requests.length : 0;
+  const internalRequestsPending = _internalGetPendingRequestsCount();
 
   return localRequestsPending + internalRequestsPending;
 }
@@ -170,16 +170,16 @@ export function _setupAJAXHooks() {
 
 let _internalCheckWaiters: Function;
 
-let loader = (Ember as any).__loader;
+const loader = (Ember as any).__loader;
 if (loader.registry['ember-testing/test/waiters']) {
   // Ember <= 3.1
   _internalCheckWaiters = loader.require(
-    'ember-testing/test/waiters'
+    'ember-testing/test/waiters',
   ).checkWaiters;
 } else if (loader.registry['ember-testing/lib/test/waiters']) {
   // Ember >= 3.2
   _internalCheckWaiters = loader.require(
-    'ember-testing/lib/test/waiters'
+    'ember-testing/lib/test/waiters',
   ).checkWaiters;
 }
 
@@ -189,7 +189,7 @@ if (loader.registry['ember-testing/test/waiters']) {
 */
 function checkWaiters() {
   type Waiter = [any, Function];
-  let EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
+  const EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
 
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
@@ -242,15 +242,15 @@ export interface SettledState {
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState(): SettledState {
-  let hasPendingTimers = _backburner.hasTimers();
-  let hasRunLoop = Boolean(_backburner.currentInstance);
-  let hasPendingLegacyWaiters = checkWaiters();
-  let hasPendingTestWaiters = hasPendingWaiters();
-  let pendingRequestCount = pendingRequests();
-  let hasPendingRequests = pendingRequestCount > 0;
+  const hasPendingTimers = _backburner.hasTimers();
+  const hasRunLoop = Boolean(_backburner.currentInstance);
+  const hasPendingLegacyWaiters = checkWaiters();
+  const hasPendingTestWaiters = hasPendingWaiters();
+  const pendingRequestCount = pendingRequests();
+  const hasPendingRequests = pendingRequestCount > 0;
   // TODO: Ideally we'd have a function in Ember itself that can synchronously identify whether
   // or not there are any pending render operations, but this will have to suffice for now
-  let isRenderPending = !!hasRunLoop;
+  const isRenderPending = !!hasRunLoop;
 
   return {
     hasPendingTimers,
@@ -282,7 +282,7 @@ export function getSettledState(): SettledState {
   @returns {boolean} `true` if settled, `false` otherwise
 */
 export function isSettled(): boolean {
-  let {
+  const {
     hasPendingTimers,
     hasRunLoop,
     hasPendingRequests,

@@ -1,6 +1,6 @@
 import type { TestContext } from './setup-context';
-import settled from './settled';
-import { _cleanupOnerror } from './setup-onerror';
+import settled from './settled.ts';
+import { _cleanupOnerror } from './setup-onerror.ts';
 import { destroy } from '@ember/destroyable';
 
 export interface TeardownContextOptions {
@@ -24,7 +24,7 @@ export interface TeardownContextOptions {
 */
 export default function teardownContext(
   context: TestContext,
-  { waitForSettled = true }: TeardownContextOptions = {}
+  { waitForSettled = true }: TeardownContextOptions = {},
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {

@@ -1,19 +1,19 @@
-import settled from '../settled';
-import getElement from './-get-element';
-import isFormControl, { type FormControl } from './-is-form-control';
-import { __focus__ } from './focus';
-import fireEvent from './fire-event';
-import guardForMaxlength from './-guard-for-maxlength';
+import settled from '../settled.ts';
+import getElement from './-get-element.ts';
+import isFormControl, { type FormControl } from './-is-form-control.ts';
+import { __focus__ } from './focus.ts';
+import fireEvent from './fire-event.ts';
+import guardForMaxlength from './-guard-for-maxlength.ts';
 import {
   type Target,
   isContentEditable,
   isDocument,
   type HTMLElementContentEditable,
-} from './-target';
-import { __triggerKeyEvent__ } from './trigger-key-event';
-import { log } from './-logging';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+} from './-target.ts';
+import { __triggerKeyEvent__ } from './trigger-key-event.ts';
+import { log } from './-logging.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 export interface Options {
   delay?: number;
@@ -50,7 +50,7 @@ registerHook('typeIn', 'start', (target: Target, text: string) => {
 export default function typeIn(
   target: Target,
   text: string,
-  options: Options = {}
+  options: Options = {},
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {
@@ -59,16 +59,16 @@ export default function typeIn(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `typeIn`.'
+          'Must pass an element, selector, or descriptor to `typeIn`.',
         );
       }
 
       const element = getElement(target);
 
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`typeIn('${description}')\``
+          `Element not found when calling \`typeIn('${description}')\``,
         );
       }
 
@@ -77,7 +77,7 @@ export default function typeIn(
         (!isFormControl(element) && !isContentEditable(element))
       ) {
         throw new Error(
-          '`typeIn` is only usable on form controls or contenteditable elements.'
+          '`typeIn` is only usable on form controls or contenteditable elements.',
         );
       }
 
@@ -88,18 +88,18 @@ export default function typeIn(
       if (isFormControl(element)) {
         if (element.disabled) {
           throw new Error(
-            `Can not \`typeIn\` disabled '${getDescription(target)}'.`
+            `Can not \`typeIn\` disabled '${getDescription(target)}'.`,
           );
         }
 
         if ('readOnly' in element && element.readOnly) {
           throw new Error(
-            `Can not \`typeIn\` readonly '${getDescription(target)}'.`
+            `Can not \`typeIn\` readonly '${getDescription(target)}'.`,
           );
         }
       }
 
-      let { delay = 50 } = options;
+      const { delay = 50 } = options;
 
       return __focus__(element)
         .then(() => fillOut(element, text, delay))
@@ -113,7 +113,7 @@ export default function typeIn(
 function fillOut(
   element: FormControl | HTMLElementContentEditable,
   text: string,
-  delay: number
+  delay: number,
 ) {
   const inputFunctions = text
     .split('')
@@ -126,21 +126,21 @@ function fillOut(
 // eslint-disable-next-line require-jsdoc
 function keyEntry(
   element: FormControl | HTMLElementContentEditable,
-  character: string
+  character: string,
 ): () => void {
-  let shiftKey =
+  const shiftKey =
     character === character.toUpperCase() &&
     character !== character.toLowerCase();
-  let options = { shiftKey };
-  let characterKey = character.toUpperCase();
+  const options = { shiftKey };
+  const characterKey = character.toUpperCase();
 
   return function () {
     return Promise.resolve()
       .then(() =>
-        __triggerKeyEvent__(element, 'keydown', characterKey, options)
+        __triggerKeyEvent__(element, 'keydown', characterKey, options),
       )
       .then(() =>
-        __triggerKeyEvent__(element, 'keypress', characterKey, options)
+        __triggerKeyEvent__(element, 'keypress', characterKey, options),
       )
       .then(() => {
         if (isFormControl(element)) {

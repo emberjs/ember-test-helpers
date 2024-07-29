@@ -1,27 +1,34 @@
 /* globals EmberENV */
 import { run } from '@ember/runloop';
 import Ember from 'ember';
-import global from './global';
+import global from './global.ts';
 import {
   type BaseContext,
   type TestContext,
   isTestContext,
   getContext,
-} from './setup-context';
-import settled from './settled';
-import { hbs } from 'ember-cli-htmlbars';
-import getRootElement from './dom/get-root-element';
-import type { Owner } from './build-owner';
-import getTestMetadata from './test-metadata';
+} from './setup-context.ts';
+import settled from './settled.ts';
+import getRootElement from './dom/get-root-element.ts';
+import type { Owner } from './build-owner.ts';
+import getTestMetadata from './test-metadata.ts';
 import { assert } from '@ember/debug';
-import { runHooks } from './helper-hooks';
-import hasEmberVersion from './has-ember-version';
-import isComponent from './-internal/is-component';
-import { ComponentRenderMap, SetUsage } from './setup-context';
+import { runHooks } from './helper-hooks.ts';
+import hasEmberVersion from './has-ember-version.ts';
+import isComponent from './-internal/is-component.ts';
+import { ComponentRenderMap, SetUsage } from './setup-context.ts';
 
-const OUTLET_TEMPLATE = hbs`{{outlet}}`;
-const EMPTY_TEMPLATE = hbs``;
-const INVOKE_PROVIDED_COMPONENT = hbs`<this.ProvidedComponent />`;
+// the built in types do not provide types for @ember/template-compilation
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { precompileTemplate } from '@ember/template-compilation';
+
+const OUTLET_TEMPLATE = precompileTemplate(`{{outlet}}`, { strictMode: false });
+const EMPTY_TEMPLATE = precompileTemplate(``, { strictMode: false });
+const INVOKE_PROVIDED_COMPONENT = precompileTemplate(
+  `<this.ProvidedComponent />`,
+  { strictMode: false },
+);
 
 const hasCalledSetupRenderingContext = Symbol();
 
@@ -33,14 +40,14 @@ export interface RenderingTestContext extends TestContext {
 //  Isolates the notion of transforming a TextContext into a RenderingTestContext.
 // eslint-disable-next-line require-jsdoc
 function prepare(context: TestContext): RenderingTestContext {
-  let renderingTestContext = context as RenderingTestContext;
+  const renderingTestContext = context as RenderingTestContext;
   (context as RenderingTestContext)[hasCalledSetupRenderingContext] = true;
   return context as RenderingTestContext;
 }
 
 // eslint-disable-next-line require-jsdoc
 export function isRenderingTestContext(
-  context: BaseContext
+  context: BaseContext,
 ): context is RenderingTestContext {
   return isTestContext(context) && hasCalledSetupRenderingContext in context;
 }
@@ -52,7 +59,7 @@ export function isRenderingTestContext(
   @returns {Template} the template representing `templateFullName`
 */
 function lookupTemplate(owner: Owner, templateFullName: `${string}:${string}`) {
-  let template = owner.lookup(templateFullName);
+  const template = owner.lookup(templateFullName);
   if (typeof template === 'function') return template(owner);
   return template;
 }
@@ -100,7 +107,7 @@ export interface RenderOptions {
 */
 export function render(
   templateFactoryOrComponent: object,
-  options?: RenderOptions
+  options?: RenderOptions,
 ): Promise<void> {
   let context = getContext();
 
@@ -113,20 +120,20 @@ export function render(
     .then(() => {
       if (!context || !isRenderingTestContext(context)) {
         throw new Error(
-          'Cannot call `render` without having first called `setupRenderingContext`.'
+          'Cannot call `render` without having first called `setupRenderingContext`.',
         );
       }
 
-      let { owner } = context;
-      let testMetadata = getTestMetadata(context);
+      const { owner } = context;
+      const testMetadata = getTestMetadata(context);
       testMetadata.usedHelpers.push('render');
 
       // SAFETY: this is all wildly unsafe, because it is all using private API.
       // At some point we should define a path forward for this kind of internal
       // API. For now, just flagging it as *NOT* being safe!
-      let toplevelView = owner.lookup('-top-level-view:main') as any;
-      let OutletTemplate = lookupOutletTemplate(owner);
-      let ownerToRenderFrom = options?.owner || owner;
+      const toplevelView = owner.lookup('-top-level-view:main') as any;
+      const OutletTemplate = lookupOutletTemplate(owner);
+      const ownerToRenderFrom = options?.owner || owner;
 
       if (isComponent(templateFactoryOrComponent)) {
         // We use this to track when `render` is used with a component so that we can throw an
@@ -139,7 +146,7 @@ export function render(
           assert(
             `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
               .map((key) => `  - ${key}`)
-              .join('\n')}`
+              .join('\n')}`,
           );
         }
 
@@ -150,11 +157,11 @@ export function render(
       }
 
       templateId += 1;
-      let templateFullName = `template:-undertest-${templateId}` as const;
+      const templateFullName = `template:-undertest-${templateId}` as const;
       ownerToRenderFrom.register(templateFullName, templateFactoryOrComponent);
-      let template = lookupTemplate(ownerToRenderFrom, templateFullName);
+      const template = lookupTemplate(ownerToRenderFrom, templateFullName);
 
-      let outletState = {
+      const outletState = {
         render: {
           owner, // always use the host app owner for application outlet
           into: undefined,
@@ -217,11 +224,11 @@ export function render(
   @returns {Promise<void>} resolves when settled
 */
 export function clearRender(): Promise<void> {
-  let context = getContext();
+  const context = getContext();
 
   if (!context || !isRenderingTestContext(context)) {
     throw new Error(
-      'Cannot call `clearRender` without having first called `setupRenderingContext`.'
+      'Cannot call `clearRender` without having first called `setupRenderingContext`.',
     );
   }
 
@@ -258,16 +265,16 @@ export function clearRender(): Promise<void> {
   assert.equal(this.element.textContent, '', 'has rendered content');
 */
 export default function setupRenderingContext(
-  context: TestContext
+  context: TestContext,
 ): Promise<RenderingTestContext> {
-  let testMetadata = getTestMetadata(context);
+  const testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupRenderingContext');
 
-  let renderingContext = prepare(context);
+  const renderingContext = prepare(context);
 
   return Promise.resolve()
     .then(() => {
-      let { owner } = renderingContext;
+      const { owner } = renderingContext;
 
       // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
       // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
@@ -275,20 +282,20 @@ export default function setupRenderingContext(
       // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
-        let dispatcher =
+        const dispatcher =
           owner.lookup('event_dispatcher:main') ||
           (Ember.EventDispatcher as any).create();
         dispatcher.setup({}, '#ember-testing');
       }
 
-      let OutletView = owner.factoryFor
+      const OutletView = owner.factoryFor
         ? owner.factoryFor('view:-outlet')
         : owner._lookupFactory!('view:-outlet');
 
-      let environment = owner.lookup('-environment:main');
-      let template = owner.lookup('template:-outlet');
+      const environment = owner.lookup('-environment:main');
+      const template = owner.lookup('template:-outlet');
 
-      let toplevelView = OutletView.create({
+      const toplevelView = OutletView.create({
         template,
         environment,
       });

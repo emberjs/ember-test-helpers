@@ -1,7 +1,7 @@
 import Application from '@ember/application';
 import type { Resolver } from '@ember/owner';
 
-import legacyBuildRegistry from './-internal/build-registry';
+import legacyBuildRegistry from './-internal/build-registry.ts';
 import type EmberOwner from '@ember/owner';
 import type { SimpleElement } from '@simple-dom/interface';
 
@@ -39,7 +39,7 @@ export interface Owner extends EmberOwner {
 */
 export default function buildOwner(
   application: Application | undefined | null,
-  resolver: Resolver | undefined | null
+  resolver: Resolver | undefined | null,
 ): Promise<Owner> {
   if (application) {
     // @ts-ignore: this type is correct and will check against Ember 4.12 or 5.1
@@ -51,7 +51,7 @@ export default function buildOwner(
 
   if (!resolver) {
     throw new Error(
-      'You must set up the ember-test-helpers environment with either `setResolver` or `setApplication` before running any tests.'
+      'You must set up the ember-test-helpers environment with either `setResolver` or `setApplication` before running any tests.',
     );
   }
 

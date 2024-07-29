@@ -1,4 +1,4 @@
-import { isDocument } from './-target';
+import { isDocument } from './-target.ts';
 
 /**
   @private
@@ -6,7 +6,7 @@ import { isDocument } from './-target';
   @returns {boolean} `true` when the element is a select element, `false` otherwise
 */
 export default function isSelectElement(
-  element: Element | Document
+  element: Element | Document,
 ): element is HTMLSelectElement {
   return !isDocument(element) && element.tagName === 'SELECT';
 }

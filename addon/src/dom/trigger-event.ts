@@ -1,11 +1,11 @@
-import { getWindowOrElement } from './-get-window-or-element';
-import fireEvent from './fire-event';
-import settled from '../settled';
-import type { Target } from './-target';
-import { log } from './-logging';
-import isFormControl from './-is-form-control';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import { getWindowOrElement } from './-get-window-or-element.ts';
+import fireEvent from './fire-event.ts';
+import settled from '../settled.ts';
+import type { Target } from './-target.ts';
+import { log } from './-logging.ts';
+import isFormControl from './-is-form-control.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
   log('triggerEvent', target, eventType);
@@ -57,7 +57,7 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
 export default function triggerEvent(
   target: Target,
   eventType: string,
-  options?: Record<string, unknown>
+  options?: Record<string, unknown>,
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {
@@ -66,7 +66,7 @@ export default function triggerEvent(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `triggerEvent`.'
+          'Must pass an element, selector, or descriptor to `triggerEvent`.',
         );
       }
 
@@ -74,11 +74,11 @@ export default function triggerEvent(
         throw new Error(`Must provide an \`eventType\` to \`triggerEvent\``);
       }
 
-      let element = getWindowOrElement(target);
+      const element = getWindowOrElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`triggerEvent('${description}', ...)\`.`
+          `Element not found when calling \`triggerEvent('${description}', ...)\`.`,
         );
       }
 

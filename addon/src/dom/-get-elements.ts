@@ -3,7 +3,7 @@ import {
   lookupDescriptorData,
   resolveDOMElements,
 } from 'dom-element-descriptors';
-import getRootElement from './get-root-element';
+import getRootElement from './get-root-element.ts';
 
 function getElements(target: string): NodeListOf<Element>;
 function getElements(target: IDOMElementDescriptor): Iterable<Element>;
@@ -16,14 +16,14 @@ function getElements(target: string | IDOMElementDescriptor): Iterable<Element>;
   @returns {NodeList} the matched elements
 */
 function getElements(
-  target: string | IDOMElementDescriptor
+  target: string | IDOMElementDescriptor,
 ): NodeListOf<Element> | Iterable<Element> {
   if (typeof target === 'string') {
-    let rootElement = getRootElement();
+    const rootElement = getRootElement();
 
     return rootElement.querySelectorAll(target);
   } else {
-    let descriptorData = lookupDescriptorData(target);
+    const descriptorData = lookupDescriptorData(target);
     if (descriptorData) {
       return resolveDOMElements(descriptorData);
     } else {

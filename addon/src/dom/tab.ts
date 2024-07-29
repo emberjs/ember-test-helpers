@@ -1,13 +1,13 @@
-import getRootElement from './get-root-element';
-import settled from '../settled';
-import fireEvent, { _buildKeyboardEvent } from './fire-event';
-import type { Target } from './-target';
-import { isDocument } from './-target';
-import { __blur__ } from './blur';
-import { __focus__ } from './focus';
-import { isVisible, isDisabled } from '../-utils';
-import { registerHook, runHooks } from '../helper-hooks';
-import { log } from './-logging';
+import getRootElement from './get-root-element.ts';
+import settled from '../settled.ts';
+import fireEvent, { _buildKeyboardEvent } from './fire-event.ts';
+import type { Target } from './-target.ts';
+import { isDocument } from './-target.ts';
+import { __blur__ } from './blur.ts';
+import { __focus__ } from './focus.ts';
+import { isVisible, isDisabled } from '../-utils.ts';
+import { registerHook, runHooks } from '../helper-hooks.ts';
+import { log } from './-logging.ts';
 
 const SUPPORTS_INERT = 'inert' in Element.prototype;
 const FALLBACK_ELEMENTS = ['CANVAS', 'VIDEO', 'PICTURE'];
@@ -38,14 +38,14 @@ interface InertHTMLElement extends HTMLElement {
   @returns {Array} list of focusable nodes
 */
 function compileFocusAreas(root: Element = document.body) {
-  let { ownerDocument } = root;
+  const { ownerDocument } = root;
 
   if (!ownerDocument) {
     throw new Error('Element must be in the DOM');
   }
 
-  let activeElement = getActiveElement(ownerDocument);
-  let treeWalker = ownerDocument.createTreeWalker(
+  const activeElement = getActiveElement(ownerDocument);
+  const treeWalker = ownerDocument.createTreeWalker(
     root,
     NodeFilter.SHOW_ELEMENT,
     {
@@ -59,7 +59,7 @@ function compileFocusAreas(root: Element = document.body) {
         // Reject any fallback elements. Fallback elements’s children are only rendered if the UA
         // doesn’t support the element. We make an assumption that they are always supported, we
         // could consider feature detecting every node type, or making it configurable.
-        let parentNode = node.parentNode as HTMLElement | null;
+        const parentNode = node.parentNode as HTMLElement | null;
         if (
           parentNode &&
           FALLBACK_ELEMENTS.indexOf(parentNode.tagName) !== -1
@@ -88,11 +88,11 @@ function compileFocusAreas(root: Element = document.body) {
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_SKIP;
       },
-    }
+    },
   );
 
   let node: Node | null;
-  let elements: HTMLElement[] = [];
+  const elements: HTMLElement[] = [];
 
   while ((node = treeWalker.nextNode())) {
     elements.push(node as HTMLElement);
@@ -132,11 +132,12 @@ function sortElementsByTabIndices(elements: HTMLElement[]): HTMLElement[] {
   @returns {object} The next and previous focus areas of the active element
  */
 function findNextResponders(root: Element, activeElement: HTMLElement) {
-  let focusAreas = compileFocusAreas(root);
-  let sortedFocusAreas = sortElementsByTabIndices(focusAreas);
-  let elements = activeElement.tabIndex === -1 ? focusAreas : sortedFocusAreas;
+  const focusAreas = compileFocusAreas(root);
+  const sortedFocusAreas = sortElementsByTabIndices(focusAreas);
+  const elements =
+    activeElement.tabIndex === -1 ? focusAreas : sortedFocusAreas;
 
-  let index = elements.indexOf(activeElement);
+  const index = elements.indexOf(activeElement);
   if (index === -1) {
     return {
       next: sortedFocusAreas[0],
@@ -195,9 +196,9 @@ export default function triggerTab({
  */
 function triggerResponderChange(
   backwards: boolean,
-  unRestrainTabIndex: boolean
+  unRestrainTabIndex: boolean,
 ): Promise<void> {
-  let root = getRootElement();
+  const root = getRootElement();
   let ownerDocument: Document;
   let rootElement: HTMLElement;
   if (isDocument(root)) {
@@ -208,7 +209,7 @@ function triggerResponderChange(
     ownerDocument = root.ownerDocument as Document;
   }
 
-  let keyboardEventOptions = {
+  const keyboardEventOptions = {
     keyCode: 9,
     which: 9,
     key: 'Tab',
@@ -216,7 +217,7 @@ function triggerResponderChange(
     shiftKey: backwards,
   };
 
-  let debugData = {
+  const debugData = {
     keyboardEventOptions,
     ownerDocument,
     rootElement,
@@ -226,16 +227,16 @@ function triggerResponderChange(
     .then(() => runHooks('tab', 'start', debugData))
     .then(() => getActiveElement(ownerDocument))
     .then((activeElement) =>
-      runHooks('tab', 'targetFound', activeElement).then(() => activeElement)
+      runHooks('tab', 'targetFound', activeElement).then(() => activeElement),
     )
     .then((activeElement) => {
-      let event = _buildKeyboardEvent('keydown', keyboardEventOptions);
-      let defaultNotPrevented = activeElement.dispatchEvent(event);
+      const event = _buildKeyboardEvent('keydown', keyboardEventOptions);
+      const defaultNotPrevented = activeElement.dispatchEvent(event);
 
       if (defaultNotPrevented) {
         // Query the active element again, as it might change during event phase
         activeElement = getActiveElement(ownerDocument);
-        let target = findNextResponders(rootElement, activeElement);
+        const target = findNextResponders(rootElement, activeElement);
         if (target) {
           if (backwards && target.previous) {
             return __focus__(target.previous);
@@ -250,15 +251,15 @@ function triggerResponderChange(
       return Promise.resolve();
     })
     .then(() => {
-      let activeElement = getActiveElement(ownerDocument);
+      const activeElement = getActiveElement(ownerDocument);
       return fireEvent(activeElement, 'keyup', keyboardEventOptions).then(
-        () => activeElement
+        () => activeElement,
       );
     })
     .then((activeElement) => {
       if (!unRestrainTabIndex && activeElement.tabIndex > 0) {
         throw new Error(
-          `tabindex of greater than 0 is not allowed. Found tabindex=${activeElement.tabIndex}`
+          `tabindex of greater than 0 is not allowed. Found tabindex=${activeElement.tabIndex}`,
         );
       }
     })

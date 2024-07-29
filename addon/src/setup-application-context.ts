@@ -1,15 +1,14 @@
-import { get } from '@ember/object';
 import {
   type BaseContext,
   getContext,
   isTestContext,
   type TestContext,
-} from './setup-context';
-import global from './global';
-import hasEmberVersion from './has-ember-version';
-import settled from './settled';
-import getTestMetadata from './test-metadata';
-import { runHooks } from './helper-hooks';
+} from './setup-context.ts';
+import global from './global.ts';
+import hasEmberVersion from './has-ember-version.ts';
+import settled from './settled.ts';
+import getTestMetadata from './test-metadata.ts';
+import { runHooks } from './helper-hooks.ts';
 import type Router from '@ember/routing/router';
 import type RouterService from '@ember/routing/router-service';
 import { assert } from '@ember/debug';
@@ -25,7 +24,7 @@ const HAS_SETUP_ROUTER = new WeakMap();
 
 // eslint-disable-next-line require-jsdoc
 export function isApplicationTestContext(
-  context: BaseContext
+  context: BaseContext,
 ): context is ApplicationTestContext {
   return isTestContext(context);
 }
@@ -41,14 +40,14 @@ export function hasPendingTransitions(): boolean | null {
     return routerTransitionsPending;
   }
 
-  let context = getContext();
+  const context = getContext();
 
   // there is no current context, we cannot check
   if (context === undefined) {
     return null;
   }
 
-  let router = ROUTER.get(context);
+  const router = ROUTER.get(context);
 
   if (router === undefined) {
     // if there is no router (e.g. no `visit` calls made yet), we cannot
@@ -57,7 +56,7 @@ export function hasPendingTransitions(): boolean | null {
     return null;
   }
 
-  let routerMicrolib = router._routerMicrolib || router.router;
+  const routerMicrolib = router._routerMicrolib || router.router;
 
   if (routerMicrolib === undefined) {
     return null;
@@ -78,7 +77,7 @@ export function setupRouterSettlednessTracking() {
   const context = getContext();
   if (context === undefined || !isTestContext(context)) {
     throw new Error(
-      'Cannot setupRouterSettlednessTracking outside of a test context'
+      'Cannot setupRouterSettlednessTracking outside of a test context',
     );
   }
 
@@ -88,14 +87,14 @@ export function setupRouterSettlednessTracking() {
   }
   HAS_SETUP_ROUTER.set(context, true);
 
-  let { owner } = context;
+  const { owner } = context;
   let router: Router | RouterService;
   if (CAN_USE_ROUTER_EVENTS) {
     // SAFETY: unfortunately we cannot `assert` here at present because the
     // class is not exported, only the type, since it is not designed to be
     // sub-classed. The most we can do at present is assert that it at least
     // *exists* and assume that if it does exist, it is bound correctly.
-    let routerService = owner.lookup('service:router');
+    const routerService = owner.lookup('service:router');
     assert('router service is not set up correctly', !!routerService);
     router = routerService as RouterService;
 
@@ -107,14 +106,14 @@ export function setupRouterSettlednessTracking() {
   } else {
     // SAFETY: similarly, this cast cannot be made safer because on the versions
     // where we fall into this path, this is *also* not an exported class.
-    let mainRouter = owner.lookup('router:main');
+    const mainRouter = owner.lookup('router:main');
     assert('router:main is not available', !!mainRouter);
     router = mainRouter as Router;
     ROUTER.set(context, router);
   }
 
   // hook into teardown to reset local settledness state
-  let ORIGINAL_WILL_DESTROY = router.willDestroy;
+  const ORIGINAL_WILL_DESTROY = router.willDestroy;
   router.willDestroy = function () {
     routerTransitionsPending = null;
 
@@ -144,17 +143,17 @@ export function setupRouterSettlednessTracking() {
 */
 export function visit(
   url: string,
-  options?: Record<string, unknown>
+  options?: Record<string, unknown>,
 ): Promise<void> {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
     throw new Error(
-      'Cannot call `visit` without having first called `setupApplicationContext`.'
+      'Cannot call `visit` without having first called `setupApplicationContext`.',
     );
   }
 
-  let { owner } = context;
-  let testMetadata = getTestMetadata(context);
+  const { owner } = context;
+  const testMetadata = getTestMetadata(context);
   testMetadata.usedHelpers.push('visit');
 
   return Promise.resolve()
@@ -162,7 +161,7 @@ export function visit(
       return runHooks('visit', 'start', url, options);
     })
     .then(() => {
-      let visitResult = owner.visit(url, options);
+      const visitResult = owner.visit(url, options);
 
       setupRouterSettlednessTracking();
 
@@ -171,7 +170,7 @@ export function visit(
     .then(() => {
       if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
         context.element = document.querySelector(
-          '#ember-testing > .ember-view'
+          '#ember-testing > .ember-view',
         );
       } else {
         context.element = document.querySelector('#ember-testing');
@@ -191,15 +190,15 @@ export function currentRouteName(): string {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
     throw new Error(
-      'Cannot call `currentRouteName` without having first called `setupApplicationContext`.'
+      'Cannot call `currentRouteName` without having first called `setupApplicationContext`.',
     );
   }
 
-  let router = context.owner.lookup('router:main');
-  let currentRouteName = get(router, 'currentRouteName');
+  const router = context.owner.lookup('router:main') as any;
+  const currentRouteName = router.currentRouteName;
   assert(
     'currentRouteName should be a string',
-    typeof currentRouteName === 'string'
+    typeof currentRouteName === 'string',
   );
   return currentRouteName;
 }
@@ -214,14 +213,14 @@ export function currentURL(): string {
   const context = getContext();
   if (!context || !isApplicationTestContext(context)) {
     throw new Error(
-      'Cannot call `currentURL` without having first called `setupApplicationContext`.'
+      'Cannot call `currentURL` without having first called `setupApplicationContext`.',
     );
   }
 
-  let router = context.owner.lookup('router:main');
+  const router = context.owner.lookup('router:main') as any;
 
   if (HAS_CURRENT_URL_ON_ROUTER) {
-    let routerCurrentURL = get(router, 'currentURL');
+    const routerCurrentURL = router.currentURL;
 
     // SAFETY: this path is a lie for the sake of the public-facing types. The
     // framework itself sees this path, but users never do. A user who calls the
@@ -233,7 +232,7 @@ export function currentURL(): string {
 
     assert(
       `currentUrl should be a string, but was ${typeof routerCurrentURL}`,
-      typeof routerCurrentURL === 'string'
+      typeof routerCurrentURL === 'string',
     );
 
     return routerCurrentURL;
@@ -241,7 +240,7 @@ export function currentURL(): string {
     // SAFETY: this is *positively ancient* and should probably be removed at
     // some point; old routers which don't have `currentURL` *should* have a
     // `location` with `getURL()` per the docs for 2.12.
-    return (get(router, 'location') as any).getURL();
+    return (router.location as any).getURL();
   }
 }
 
@@ -259,9 +258,9 @@ export function currentURL(): string {
   @returns {Promise<void>} resolves when the context is set up
 */
 export default function setupApplicationContext(
-  context: TestContext
+  context: TestContext,
 ): Promise<void> {
-  let testMetadata = getTestMetadata(context);
+  const testMetadata = getTestMetadata(context);
   testMetadata.setupTypes.push('setupApplicationContext');
 
   return Promise.resolve();

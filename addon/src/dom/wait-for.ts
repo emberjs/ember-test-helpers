@@ -1,11 +1,11 @@
-import waitUntil from '../wait-until';
-import getElement from './-get-element';
-import getElements from './-get-elements';
+import waitUntil from '../wait-until.ts';
+import getElement from './-get-element.ts';
+import getElements from './-get-elements.ts';
 import {
   type IDOMElementDescriptor,
   lookupDescriptorData,
 } from 'dom-element-descriptors';
-import getDescription from './-get-description';
+import getDescription from './-get-description.ts';
 
 export interface Options {
   timeout?: number;
@@ -32,25 +32,25 @@ export interface Options {
 */
 export default function waitFor(
   target: string | IDOMElementDescriptor,
-  options: Options = {}
+  options: Options = {},
 ): Promise<Element | Element[]> {
   return Promise.resolve().then(() => {
     if (typeof target !== 'string' && !lookupDescriptorData(target)) {
       throw new Error(
-        'Must pass a selector or DOM element descriptor to `waitFor`.'
+        'Must pass a selector or DOM element descriptor to `waitFor`.',
       );
     }
 
     let { timeout = 1000, count = null, timeoutMessage } = options;
     if (!timeoutMessage) {
-      let description = getDescription(target);
+      const description = getDescription(target);
       timeoutMessage = `waitFor timed out waiting for selector "${description}"`;
     }
 
     let callback: () => Element | Element[] | void | null;
     if (count !== null) {
       callback = () => {
-        let elements = Array.from(getElements(target));
+        const elements = Array.from(getElements(target));
         if (elements.length === count) {
           return elements;
         }

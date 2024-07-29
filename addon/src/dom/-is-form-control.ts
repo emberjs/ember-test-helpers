@@ -1,4 +1,4 @@
-import { isDocument, isWindow } from './-target';
+import { isDocument, isWindow } from './-target.ts';
 
 const FORM_CONTROL_TAGS = ['INPUT', 'BUTTON', 'SELECT', 'TEXTAREA'];
 
@@ -14,7 +14,7 @@ export type FormControl =
   @returns {boolean} `true` when the element is a form control, `false` otherwise
 */
 export default function isFormControl(
-  element: Element | Document | Window
+  element: Element | Document | Window,
 ): element is FormControl {
   return (
     !isWindow(element) &&

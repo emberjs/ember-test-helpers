@@ -1,15 +1,15 @@
-import getElement from './-get-element';
-import isSelectElement from './-is-select-element';
-import { __focus__ } from './focus';
-import settled from '../settled';
-import fireEvent from './fire-event';
-import type { Target } from './-target';
-import { runHooks } from '../helper-hooks';
-import getDescription from './-get-description';
+import getElement from './-get-element.ts';
+import isSelectElement from './-is-select-element.ts';
+import { __focus__ } from './focus.ts';
+import settled from '../settled.ts';
+import fireEvent from './fire-event.ts';
+import type { Target } from './-target.ts';
+import { runHooks } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 // eslint-disable-next-line require-jsdoc
 function errorMessage(message: string, target: Target) {
-  let description = getDescription(target);
+  const description = getDescription(target);
   return `${message} when calling \`select('${description}')\`.`;
 }
 
@@ -39,22 +39,22 @@ function errorMessage(message: string, target: Target) {
 export default function select(
   target: Target,
   options: string | string[],
-  keepPreviouslySelected = false
+  keepPreviouslySelected = false,
 ): Promise<void> {
   return Promise.resolve()
     .then(() =>
-      runHooks('select', 'start', target, options, keepPreviouslySelected)
+      runHooks('select', 'start', target, options, keepPreviouslySelected),
     )
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `select`.'
+          'Must pass an element, selector, or descriptor to `select`.',
         );
       }
 
       if (typeof options === 'undefined' || options === null) {
         throw new Error(
-          'Must provide an `option` or `options` to select when calling `select`.'
+          'Must provide an `option` or `options` to select when calling `select`.',
         );
       }
 
@@ -65,7 +65,7 @@ export default function select(
 
       if (!isSelectElement(element)) {
         throw new Error(
-          errorMessage('Element is not a HTMLSelectElement', target)
+          errorMessage('Element is not a HTMLSelectElement', target),
         );
       }
 
@@ -79,8 +79,8 @@ export default function select(
         throw new Error(
           errorMessage(
             'HTMLSelectElement `multiple` attribute is set to `false` but multiple options were passed',
-            target
-          )
+            target,
+          ),
         );
       }
 
@@ -88,7 +88,7 @@ export default function select(
     })
     .then((element) => {
       for (let i = 0; i < element.options.length; i++) {
-        let elementOption = element.options.item(i);
+        const elementOption = element.options.item(i);
         if (elementOption) {
           if (options.indexOf(elementOption.value) > -1) {
             elementOption.selected = true;
@@ -103,6 +103,6 @@ export default function select(
         .then(settled);
     })
     .then(() =>
-      runHooks('select', 'end', target, options, keepPreviouslySelected)
+      runHooks('select', 'end', target, options, keepPreviouslySelected),
     );
 }

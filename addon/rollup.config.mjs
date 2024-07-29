@@ -1,6 +1,7 @@
 import { babel } from '@rollup/plugin-babel';
 import copy from 'rollup-plugin-copy';
 import { Addon } from '@embroider/addon-dev/rollup';
+import { execaCommand } from "execa";
 
 const addon = new Addon({
   srcDir: 'src',
@@ -68,5 +69,12 @@ export default {
         { src: '../LICENSE.md', dest: '.' },
       ],
     }),
+    {
+      name: 'Build declarations',
+      closeBundle: async () => {
+        console.log("Building types");
+        await execaCommand(`pnpm glint --declaration`, { stdio: "inherit" });
+      }
+    }
   ],
 };

@@ -1,24 +1,24 @@
-import getElement from './-get-element';
-import fireEvent from './fire-event';
-import settled from '../settled';
+import getElement from './-get-element.ts';
+import fireEvent from './fire-event.ts';
+import settled from '../settled.ts';
 import {
   KEYBOARD_EVENT_TYPES,
   type KeyboardEventType,
   isKeyboardEventType,
-} from './fire-event';
-import { isNumeric } from '../-utils';
-import type { Target } from './-target';
-import { log } from './-logging';
-import isFormControl from './-is-form-control';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+} from './fire-event.ts';
+import { isNumeric } from '../-utils.ts';
+import type { Target } from './-target.ts';
+import { log } from './-logging.ts';
+import isFormControl from './-is-form-control.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook(
   'triggerKeyEvent',
   'start',
   (target: Target, eventType: KeyboardEventType, key: number | string) => {
     log('triggerKeyEvent', target, eventType, key);
-  }
+  },
 );
 
 export interface KeyModifiers {
@@ -133,7 +133,7 @@ const keyFromKeyCodeWithShift: { [key: number]: string } = {
  */
 function keyFromKeyCodeAndModifiers(
   keycode: number,
-  modifiers: KeyModifiers
+  modifiers: KeyModifiers,
 ): string | void {
   if (keycode > 64 && keycode < 91) {
     if (modifiers.shiftKey) {
@@ -155,11 +155,12 @@ function keyFromKeyCodeAndModifiers(
  * @returns {number} The keycode for the given key
  */
 function keyCodeFromKey(key: string) {
-  let keys = Object.keys(keyFromKeyCode);
-  let keyCode =
+  const keys = Object.keys(keyFromKeyCode);
+  const keyCode =
     keys.find((keyCode: string) => keyFromKeyCode[Number(keyCode)] === key) ||
     keys.find(
-      (keyCode: string) => keyFromKeyCode[Number(keyCode)] === key.toLowerCase()
+      (keyCode: string) =>
+        keyFromKeyCode[Number(keyCode)] === key.toLowerCase(),
     );
 
   return keyCode !== undefined ? parseInt(keyCode) : undefined;
@@ -177,7 +178,7 @@ export function __triggerKeyEvent__(
   element: Element | Document,
   eventType: KeyboardEventType,
   key: number | string,
-  modifiers: KeyModifiers = DEFAULT_MODIFIERS
+  modifiers: KeyModifiers = DEFAULT_MODIFIERS,
 ): Promise<Event> {
   return Promise.resolve().then(() => {
     let props;
@@ -189,24 +190,24 @@ export function __triggerKeyEvent__(
         ...modifiers,
       };
     } else if (typeof key === 'string' && key.length !== 0) {
-      let firstCharacter = key[0];
+      const firstCharacter = key[0];
       if (!firstCharacter || firstCharacter !== firstCharacter.toUpperCase()) {
         throw new Error(
-          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`
+          `Must provide a \`key\` to \`triggerKeyEvent\` that starts with an uppercase character but you passed \`${key}\`.`,
         );
       }
 
       if (isNumeric(key) && key.length > 1) {
         throw new Error(
-          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`
+          `Must provide a numeric \`keyCode\` to \`triggerKeyEvent\` but you passed \`${key}\` as a string.`,
         );
       }
 
-      let keyCode = keyCodeFromKey(key);
+      const keyCode = keyCodeFromKey(key);
       props = { keyCode, which: keyCode, key, ...modifiers };
     } else {
       throw new Error(
-        `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``
+        `Must provide a \`key\` or \`keyCode\` to \`triggerKeyEvent\``,
       );
     }
 
@@ -216,7 +217,7 @@ export function __triggerKeyEvent__(
 
 // eslint-disable-next-line require-jsdoc
 function errorMessage(message: string, target: Target) {
-  let description = getDescription(target);
+  const description = getDescription(target);
   return `${message} when calling \`triggerKeyEvent('${description}')\`.`;
 }
 
@@ -247,7 +248,7 @@ export default function triggerKeyEvent(
   target: Target,
   eventType: KeyboardEventType,
   key: number | string,
-  modifiers: KeyModifiers = DEFAULT_MODIFIERS
+  modifiers: KeyModifiers = DEFAULT_MODIFIERS,
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {
@@ -256,15 +257,15 @@ export default function triggerKeyEvent(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `triggerKeyEvent`.'
+          'Must pass an element, selector, or descriptor to `triggerKeyEvent`.',
         );
       }
 
-      let element = getElement(target);
+      const element = getElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`triggerKeyEvent('${description}')\`.`
+          `Element not found when calling \`triggerKeyEvent('${description}')\`.`,
         );
       }
 
@@ -273,9 +274,9 @@ export default function triggerKeyEvent(
       }
 
       if (!isKeyboardEventType(eventType)) {
-        let validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
+        const validEventTypes = KEYBOARD_EVENT_TYPES.join(', ');
         throw new Error(
-          `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`
+          `Must provide an \`eventType\` of ${validEventTypes} to \`triggerKeyEvent\` but you passed \`${eventType}\`.`,
         );
       }
 
@@ -284,7 +285,7 @@ export default function triggerKeyEvent(
       }
 
       return __triggerKeyEvent__(element, eventType, key, modifiers).then(
-        settled
+        settled,
       );
     })
     .then(() => runHooks('triggerKeyEvent', 'end', target, eventType, key));

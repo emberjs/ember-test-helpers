@@ -1,13 +1,13 @@
-import getElement from './-get-element';
-import isFormControl, { type FormControl } from './-is-form-control';
-import guardForMaxlength from './-guard-for-maxlength';
-import { __focus__ } from './focus';
-import settled from '../settled';
-import fireEvent from './fire-event';
-import { isContentEditable, type Target } from './-target';
-import { log } from './-logging';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import getElement from './-get-element.ts';
+import isFormControl, { type FormControl } from './-is-form-control.ts';
+import guardForMaxlength from './-guard-for-maxlength.ts';
+import { __focus__ } from './focus.ts';
+import settled from '../settled.ts';
+import fireEvent from './fire-event.ts';
+import { isContentEditable, type Target } from './-target.ts';
+import { log } from './-logging.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('fillIn', 'start', (target: Target, text: string) => {
   log('fillIn', target, text);
@@ -36,7 +36,7 @@ export default function fillIn(target: Target, text: string): Promise<void> {
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `fillIn`.'
+          'Must pass an element, selector, or descriptor to `fillIn`.',
         );
       }
 
@@ -44,7 +44,7 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       if (!element) {
         let description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`fillIn('${description}')\`.`
+          `Element not found when calling \`fillIn('${description}')\`.`,
         );
       }
 
@@ -55,13 +55,13 @@ export default function fillIn(target: Target, text: string): Promise<void> {
       if (isFormControl(element)) {
         if (element.disabled) {
           throw new Error(
-            `Can not \`fillIn\` disabled '${getDescription(target)}'.`
+            `Can not \`fillIn\` disabled '${getDescription(target)}'.`,
           );
         }
 
         if ('readOnly' in element && element.readOnly) {
           throw new Error(
-            `Can not \`fillIn\` readonly '${getDescription(target)}'.`
+            `Can not \`fillIn\` readonly '${getDescription(target)}'.`,
           );
         }
 
@@ -78,14 +78,14 @@ export default function fillIn(target: Target, text: string): Promise<void> {
         });
       } else {
         throw new Error(
-          '`fillIn` is only usable on form controls or contenteditable elements.'
+          '`fillIn` is only usable on form controls or contenteditable elements.',
         );
       }
     })
     .then((element) =>
       fireEvent(element, 'input')
         .then(() => fireEvent(element, 'change'))
-        .then(settled)
+        .then(settled),
     )
     .then(() => runHooks('fillIn', 'end', target, text));
 }

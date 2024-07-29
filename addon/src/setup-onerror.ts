@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import { type BaseContext, getContext } from './setup-context';
+import { type BaseContext, getContext } from './setup-context.ts';
 
-let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
+const cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
   new Map();
 
 /**
@@ -23,7 +23,7 @@ let cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
  * });
  */
 export default function setupOnerror(onError?: (error: Error) => void): void {
-  let context = getContext();
+  const context = getContext();
 
   if (!context) {
     throw new Error('Must setup test context before calling setupOnerror');
@@ -31,7 +31,7 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
 
   if (!cachedOnerror.has(context)) {
     throw new Error(
-      '_cacheOriginalOnerror must be called before setupOnerror. Normally, this will happen as part of your test harness.'
+      '_cacheOriginalOnerror must be called before setupOnerror. Normally, this will happen as part of your test harness.',
     );
   }
 
@@ -57,7 +57,7 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
  * })
  */
 export function resetOnerror(): void {
-  let context = getContext();
+  const context = getContext();
 
   if (context && cachedOnerror.has(context)) {
     Ember.onerror = cachedOnerror.get(context);

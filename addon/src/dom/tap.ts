@@ -1,12 +1,12 @@
-import getElement from './-get-element';
-import fireEvent from './fire-event';
-import { __click__ } from './click';
-import settled from '../settled';
-import type { Target } from './-target';
-import { log } from './-logging';
-import isFormControl from './-is-form-control';
-import { runHooks, registerHook } from '../helper-hooks';
-import getDescription from './-get-description';
+import getElement from './-get-element.ts';
+import fireEvent from './fire-event.ts';
+import { __click__ } from './click.ts';
+import settled from '../settled.ts';
+import type { Target } from './-target.ts';
+import { log } from './-logging.ts';
+import isFormControl from './-is-form-control.ts';
+import { runHooks, registerHook } from '../helper-hooks.ts';
+import getDescription from './-get-description.ts';
 
 registerHook('tap', 'start', (target: Target) => {
   log('tap', target);
@@ -56,7 +56,7 @@ registerHook('tap', 'start', (target: Target) => {
 */
 export default function tap(
   target: Target,
-  options: TouchEventInit = {}
+  options: TouchEventInit = {},
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {
@@ -65,15 +65,15 @@ export default function tap(
     .then(() => {
       if (!target) {
         throw new Error(
-          'Must pass an element, selector, or descriptor to `tap`.'
+          'Must pass an element, selector, or descriptor to `tap`.',
         );
       }
 
-      let element = getElement(target);
+      const element = getElement(target);
       if (!element) {
-        let description = getDescription(target);
+        const description = getDescription(target);
         throw new Error(
-          `Element not found when calling \`tap('${description}')\`.`
+          `Element not found when calling \`tap('${description}')\`.`,
         );
       }
 
@@ -84,13 +84,13 @@ export default function tap(
       return fireEvent(element, 'touchstart', options)
         .then((touchstartEv) =>
           fireEvent(element as Element, 'touchend', options).then(
-            (touchendEv) => [touchstartEv, touchendEv] as const
-          )
+            (touchendEv) => [touchstartEv, touchendEv] as const,
+          ),
         )
         .then(([touchstartEv, touchendEv]) =>
           !touchstartEv.defaultPrevented && !touchendEv.defaultPrevented
             ? __click__(element as Element, options)
-            : Promise.resolve()
+            : Promise.resolve(),
         )
         .then(settled);
     })

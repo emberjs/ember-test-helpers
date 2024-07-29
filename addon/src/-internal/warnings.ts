@@ -1,6 +1,6 @@
 import type { BaseContext } from '../setup-context';
 import { registerWarnHandler } from '@ember/debug';
-import isPromise from './is-promise';
+import isPromise from './is-promise.ts';
 
 export interface WarningOptions {
   id?: string;
@@ -26,7 +26,7 @@ const WARNINGS = new WeakMap<BaseContext, Array<Warning>>();
 export function getWarningsForContext(context: BaseContext): Array<Warning> {
   if (!context) {
     throw new TypeError(
-      `[@ember/test-helpers] could not get warnings for an invalid test context: '${context}'`
+      `[@ember/test-helpers] could not get warnings for an invalid test context: '${context}'`,
     );
   }
 
@@ -53,11 +53,11 @@ export function getWarningsForContext(context: BaseContext): Array<Warning> {
  */
 export function getWarningsDuringCallbackForContext(
   context: BaseContext,
-  callback: () => void
+  callback: () => void,
 ): Array<Warning> | Promise<Array<Warning>> {
   if (!context) {
     throw new TypeError(
-      `[@ember/test-helpers] could not get warnings for an invalid test context: '${context}'`
+      `[@ember/test-helpers] could not get warnings for an invalid test context: '${context}'`,
     );
   }
 
@@ -80,7 +80,7 @@ export function getWarningsDuringCallbackForContext(
 // * enable a debuggger when a warning by a specific name is encountered via: `/tests/index.html?debugWarnings=some-other-thing` when the
 if (typeof URLSearchParams !== 'undefined') {
   const queryParams = new URLSearchParams(
-    document.location.search.substring(1)
+    document.location.search.substring(1),
   );
   const disabledWarnings = queryParams.get('disabledWarnings');
   const debugWarnings = queryParams.get('debugWarnings');
