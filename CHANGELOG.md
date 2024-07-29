@@ -1,5 +1,18 @@
 # Changelog
 
+## Release (2024-07-29)
+
+@ember/test-helpers 3.3.2 (patch)
+
+#### :house: Internal
+* `@ember/test-helpers`, `test-app`
+  * [#1468](https://github.com/emberjs/ember-test-helpers/pull/1468) Move tests to new test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`, `type-tests`
+  * [#1467](https://github.com/emberjs/ember-test-helpers/pull/1467) Fix import type via upgrading @tsconfig/ember ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-07-23)
 
 @ember/test-helpers 3.3.1 (patch)
