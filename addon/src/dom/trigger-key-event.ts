@@ -215,12 +215,6 @@ export function __triggerKeyEvent__(
   });
 }
 
-// eslint-disable-next-line require-jsdoc
-function errorMessage(message: string, target: Target) {
-  const description = getDescription(target);
-  return `${message} when calling \`triggerKeyEvent('${description}')\`.`;
-}
-
 /**
   Triggers a keyboard event of given type in the target element.
   It also requires the developer to provide either a string with the [`key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)

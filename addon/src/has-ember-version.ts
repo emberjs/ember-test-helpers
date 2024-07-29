@@ -1,4 +1,5 @@
-import Ember from 'ember';
+// @ts-ignore
+import { VERSION } from '@ember/version';
 
 /**
   Checks if the currently running Ember version is greater than or equal to the
@@ -10,7 +11,7 @@ import Ember from 'ember';
   @returns {boolean} true if the Ember version is >= MAJOR.MINOR specified, false otherwise
 */
 export default function hasEmberVersion(major: number, minor: number): boolean {
-  const numbers = Ember.VERSION.split('-')[0]?.split('.');
+  const numbers = VERSION.split('-')[0]?.split('.');
 
   if (!numbers || !numbers[0] || !numbers[1]) {
     throw new Error('`Ember.VERSION` is not set.');

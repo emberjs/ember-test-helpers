@@ -215,6 +215,7 @@ export function resumeTest(): void {
   @private
   @param {Object} context the test context being cleaned up
 */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function cleanup(context: BaseContext) {
   _teardownAJAXHooks();
 

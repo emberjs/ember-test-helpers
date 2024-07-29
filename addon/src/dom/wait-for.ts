@@ -41,7 +41,9 @@ export default function waitFor(
       );
     }
 
-    let { timeout = 1000, count = null, timeoutMessage } = options;
+    const { timeout = 1000, count = null } = options;
+    let { timeoutMessage } = options;
+
     if (!timeoutMessage) {
       const description = getDescription(target);
       timeoutMessage = `waitFor timed out waiting for selector "${description}"`;

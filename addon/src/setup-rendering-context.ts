@@ -1,4 +1,3 @@
-/* globals EmberENV */
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import global from './global.ts';
@@ -40,7 +39,6 @@ export interface RenderingTestContext extends TestContext {
 //  Isolates the notion of transforming a TextContext into a RenderingTestContext.
 // eslint-disable-next-line require-jsdoc
 function prepare(context: TestContext): RenderingTestContext {
-  const renderingTestContext = context as RenderingTestContext;
   (context as RenderingTestContext)[hasCalledSetupRenderingContext] = true;
   return context as RenderingTestContext;
 }

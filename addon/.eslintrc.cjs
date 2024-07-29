@@ -41,9 +41,20 @@ module.exports = {
         // (public types do not always exist for the things we need to import)
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-types': 'off',
         // We access the _routerMicrolib
         // and router:main
         'ember/no-private-routing-service': 'off',
+        // This library must violate this rule so that consumers
+        // can have some additional protections for working _with_ this rule.
+        'ember/no-ember-testing-in-module-scope': 'off',
+        // Used in `setupRenderingContext` to hook in to "appendTo"
+        // on the -top-level-view:main
+        'ember/no-runloop': 'off',
+        // For accessing container_proxy and registry_proxy
+        'ember/no-mixins': 'off',
+        // We violate this for making the owner in build-registry.
+        'ember/no-classic-classes': 'off',
       },
     },
     {
