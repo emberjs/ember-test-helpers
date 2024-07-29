@@ -46,9 +46,6 @@ jobs:
       - run: pnpm i -f # sync injected dependencies
       - run: pnpm test
         working-directory: test-app
-      - name: own types 
-        working-directory: addon
-        run: pnpm tsc --noEmit 
 
   docs-gen:
     timeout-minutes: 5
@@ -87,9 +84,6 @@ jobs:
       - name: Run Tests
         working-directory: test-app
         run: pnpm test
-      - name: own types 
-        working-directory: addon
-        run: pnpm tsc --noEmit 
 
   try-scenarios:
     timeout-minutes: 10
@@ -130,9 +124,6 @@ jobs:
       - name: test
         working-directory: test-app
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
-      - name: types compatibility
-        working-directory: addon
-        run: pnpm lint:ts
 
   types:
     runs-on: ubuntu-latest

@@ -1,7 +1,8 @@
 import { babel } from '@rollup/plugin-babel';
 import copy from 'rollup-plugin-copy';
 import { Addon } from '@embroider/addon-dev/rollup';
-import { execaCommand } from "execa";
+import { execaCommand } from 'execa';
+import { fixBadDeclarationOutput } from 'fix-bad-declaration-output';
 
 const addon = new Addon({
   srcDir: 'src',
@@ -72,9 +73,23 @@ export default {
     {
       name: 'Build declarations',
       closeBundle: async () => {
-        console.log("Building types");
-        await execaCommand(`pnpm glint --declaration`, { stdio: "inherit" });
-      }
-    }
+        console.log('Building types');
+        await execaCommand(`pnpm tsc --declaration`, { stdio: 'inherit' });
+
+        /**
+         * https://github.com/microsoft/TypeScript/issues/56571#
+         * README: https://github.com/NullVoxPopuli/fix-bad-declaration-output
+         */
+        console.log('Fixing types');
+        await fixBadDeclarationOutput('declarations/**/*.d.ts', [
+          ['TypeScript#56571', { types: 'all' }],
+          'Glint#628',
+          'Glint#697',
+        ]);
+        console.log(
+          '⚠️ Dangerously (but neededly) fixed bad declaration output from typescript',
+        );
+      },
+    },
   ],
 };
