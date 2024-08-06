@@ -88,10 +88,9 @@ jobs:
           - ember-lts-4.12
           - ember-lts-5.4
           - ember-lts-5.8
-          # All of these are failing with the waiter tests (needs to be debugged separately)
-          # - ember-release
-          # - ember-beta
-          # - ember-canary
+          - ember-release
+          - ember-beta
+          - ember-canary
           - ember-default
           - embroider-safe
           # - embroider-optimized # see comments in ember-try.js
