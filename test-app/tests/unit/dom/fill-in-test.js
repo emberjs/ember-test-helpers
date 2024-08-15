@@ -314,7 +314,11 @@ module('DOM Helper: fillIn', function (hooks) {
     await fillIn(`#${element.id}`, '');
 
     // For this specific case, Firefox does not emit `selectionchange`.
-    assert.verifySteps(clickSteps.filter((s) => s !== 'selectionchange'));
+    if (isChrome) {
+      assert.verifySteps(clickSteps);
+    } else {
+      assert.verifySteps(clickSteps.filter((s) => s !== 'selectionchange'));
+    }
     assert.strictEqual(
       document.activeElement,
       element,
