@@ -16,6 +16,16 @@ if (isFirefox || isChrome) {
   clickSteps.push('selectionchange');
 }
 
+/**
+ * Prior to Chrome 129 (canary),
+ * Chrome 127.x emits an extra selectionchange event sometimes
+ *
+ * Delete this once we don't want to test against Chrome 127
+ */
+if (isChrome) {
+  clickSteps.push('selectionchange');
+}
+
 module('DOM Helper: fillIn', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;
@@ -313,12 +323,14 @@ module('DOM Helper: fillIn', function (hooks) {
     await setupContext(context);
     await fillIn(`#${element.id}`, '');
 
-    // For this specific case, Firefox does not emit `selectionchange`.
     if (isChrome) {
-      assert.verifySteps(clickSteps);
+      // For this specific case, Chrome 127 doesn't emit two selectionchange events
+      assert.verifySteps([...new Set(clickSteps)]);
     } else {
+      // For this specific case, Firefox does not emit `selectionchange`.
       assert.verifySteps(clickSteps.filter((s) => s !== 'selectionchange'));
     }
+
     assert.strictEqual(
       document.activeElement,
       element,
