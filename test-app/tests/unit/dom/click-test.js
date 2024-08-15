@@ -200,14 +200,7 @@ module('DOM Helper: click', function (hooks) {
   });
 
   module('focusable element types', function () {
-    let clickSteps = [
-      'mousedown',
-      'focus',
-      'focusin',
-      'selectionchange',
-      'mouseup',
-      'click',
-    ];
+    let clickSteps = ['mousedown', 'focus', 'focusin', 'mouseup', 'click'];
 
     test('clicking a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');

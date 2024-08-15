@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isFirefox } from '../../helpers/browser-detect';
+import { isFirefox, isChrome } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
@@ -12,7 +12,7 @@ import { createDescriptor } from 'dom-element-descriptors';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
-if (isFirefox) {
+if (isFirefox || isChrome) {
   clickSteps.push('selectionchange');
 }
 
@@ -270,7 +270,7 @@ module('DOM Helper: fillIn', function (hooks) {
     await setupContext(context);
     await fillIn(createDescriptor({ element }), 'foo');
 
-    assert.verifySteps(clickSteps);
+    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
     assert.strictEqual(
       document.activeElement,
       element,
