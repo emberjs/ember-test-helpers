@@ -43,7 +43,6 @@ jobs:
       - name: Build addon
         working-directory: addon
         run: pnpm build
-      - run: pnpm i -f # sync injected dependencies
       - run: pnpm test
         working-directory: test-app
 
@@ -80,7 +79,6 @@ jobs:
       - name: Build addon
         working-directory: addon
         run: pnpm build
-      - run: pnpm i -f # sync injected dependencies
       - name: Run Tests
         working-directory: test-app
         run: pnpm test
@@ -120,7 +118,6 @@ jobs:
       - name: Build addon
         working-directory: addon
         run: pnpm build
-      - run: pnpm i -f # sync injected dependencies
       - name: test
         working-directory: test-app
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
