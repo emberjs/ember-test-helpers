@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type Lit = string | number | boolean | undefined | null | void | {};
 
 // eslint-disable-next-line require-jsdoc

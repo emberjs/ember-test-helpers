@@ -167,6 +167,7 @@ export function _setupAJAXHooks() {
     .on('ajaxComplete', decrementAjaxPendingRequests);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 let _internalCheckWaiters: Function;
 
 const loader = (Ember as any).__loader;
@@ -187,6 +188,7 @@ if (loader.registry['ember-testing/test/waiters']) {
   @returns {boolean} true if waiters are still pending
 */
 function checkWaiters() {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   type Waiter = [any, Function];
   const EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
 

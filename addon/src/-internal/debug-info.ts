@@ -233,7 +233,7 @@ export class TestDebugInfo implements DebugInfo {
   }
 }
 
-// eslint-disable-next-line require-jsdoc
+// eslint-disable-next-line require-jsdoc, @typescript-eslint/no-empty-object-type
 function isNotNullable<T extends {}>(value: T | null | undefined): value is T {
   return value != null;
 }

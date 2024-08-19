@@ -13,7 +13,7 @@ const MOUSE_EVENT_CONSTRUCTOR = (() => {
   try {
     new MouseEvent('test');
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 })();
@@ -197,7 +197,7 @@ function buildMouseEvent(type: MouseEventType, options: any = {}) {
         eventOpts.button,
         eventOpts.relatedTarget,
       );
-    } catch (e) {
+    } catch {
       event = buildBasicEvent(type, options);
     }
   }
@@ -239,14 +239,14 @@ export function _buildKeyboardEvent(
     });
 
     return event;
-  } catch (e) {
+  } catch {
     // left intentionally blank
   }
 
   try {
     event = document.createEvent('KeyboardEvents');
     eventMethodName = 'initKeyboardEvent';
-  } catch (e) {
+  } catch {
     // left intentionally blank
   }
 
@@ -254,7 +254,7 @@ export function _buildKeyboardEvent(
     try {
       event = document.createEvent('KeyEvents');
       eventMethodName = 'initKeyEvent';
-    } catch (e) {
+    } catch {
       // left intentionally blank
     }
   }
