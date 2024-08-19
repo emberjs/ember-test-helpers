@@ -10,7 +10,7 @@ import {
   insertElement,
   instrumentElement,
 } from '../../helpers/events';
-import { isEdge } from '../../helpers/browser-detect';
+import { isEdge, isChrome } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { createDescriptor } from 'dom-element-descriptors';
 
@@ -19,6 +19,10 @@ let blurSteps = ['blur', 'focusout'];
 
 if (isEdge) {
   blurSteps = ['focusout', 'blur'];
+}
+
+if (isChrome) {
+  focusSteps.push('selectionchange');
 }
 
 module('DOM Helper: focus', function (hooks) {
@@ -123,14 +127,25 @@ module('DOM Helper: focus', function (hooks) {
 
     await focus(element);
 
-    assert.verifySteps([
-      ...blurSteps.map((s) => {
-        return `${s} [object HTMLTextAreaElement] [object HTMLInputElement]`;
-      }),
-      ...focusSteps.map((s) => {
-        return `${s} [object HTMLInputElement]`;
-      }),
-    ]);
+    if (isChrome) {
+      assert.verifySteps([
+        'blur [object HTMLTextAreaElement] [object HTMLInputElement]',
+        'focusout [object HTMLTextAreaElement] [object HTMLInputElement]',
+        'focus [object HTMLInputElement]',
+        'focusin [object HTMLInputElement]',
+        'selectionchange [object HTMLTextAreaElement] undefined',
+        'selectionchange [object HTMLInputElement]',
+      ]);
+    } else {
+      assert.verifySteps([
+        ...blurSteps.map((s) => {
+          return `${s} [object HTMLTextAreaElement] [object HTMLInputElement]`;
+        }),
+        ...focusSteps.map((s) => {
+          return `${s} [object HTMLInputElement]`;
+        }),
+      ]);
+    }
   });
 
   test('does not attempt to blur the previous element if it is not focusable', async function (assert) {

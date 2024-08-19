@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { tap, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
+import { isChrome } from '../../helpers/browser-detect';
 import {
   registerHooks,
   unregisterHooks,
@@ -205,6 +206,10 @@ module('DOM Helper: tap', function (hooks) {
       'click',
     ];
 
+    if (isChrome) {
+      tapSteps.push('selectionchange');
+    }
+
     test('tapping a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');
 
@@ -304,17 +309,32 @@ module('DOM Helper: tap', function (hooks) {
       await tap(focusableElement);
       await tap(element);
 
-      assert.verifySteps([
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-        'blur',
-        'focusout',
-      ]);
+      if (isChrome) {
+        assert.verifySteps([
+          'touchstart',
+          'touchend',
+          'mousedown',
+          'focus',
+          'focusin',
+          'mouseup',
+          'click',
+          'selectionchange',
+          'blur',
+          'focusout',
+        ]);
+      } else {
+        assert.verifySteps([
+          'touchstart',
+          'touchend',
+          'mousedown',
+          'focus',
+          'focusin',
+          'mouseup',
+          'click',
+          'blur',
+          'focusout',
+        ]);
+      }
     });
 
     test('tapping on focusable element triggers blur on active element', async function (assert) {
@@ -327,17 +347,32 @@ module('DOM Helper: tap', function (hooks) {
       await tap(focusableElement);
       await tap(element);
 
-      assert.verifySteps([
-        'touchstart',
-        'touchend',
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-        'blur',
-        'focusout',
-      ]);
+      if (isChrome) {
+        assert.verifySteps([
+          'touchstart',
+          'touchend',
+          'mousedown',
+          'focus',
+          'focusin',
+          'mouseup',
+          'click',
+          'selectionchange',
+          'blur',
+          'focusout',
+        ]);
+      } else {
+        assert.verifySteps([
+          'touchstart',
+          'touchend',
+          'mousedown',
+          'focus',
+          'focusin',
+          'mouseup',
+          'click',
+          'blur',
+          'focusout',
+        ]);
+      }
     });
 
     test('tapping on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {

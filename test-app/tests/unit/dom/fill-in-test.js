@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { fillIn, setupContext, teardownContext } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isFirefox } from '../../helpers/browser-detect';
+import { isFirefox, isChrome } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
@@ -12,7 +12,17 @@ import { createDescriptor } from 'dom-element-descriptors';
 
 let clickSteps = ['focus', 'focusin', 'input', 'change'];
 
-if (isFirefox) {
+if (isFirefox || isChrome) {
+  clickSteps.push('selectionchange');
+}
+
+/**
+ * Prior to Chrome 129 (canary),
+ * Chrome 127.x emits an extra selectionchange event sometimes
+ *
+ * Delete this once we don't want to test against Chrome 127
+ */
+if (isChrome) {
   clickSteps.push('selectionchange');
 }
 
@@ -270,7 +280,7 @@ module('DOM Helper: fillIn', function (hooks) {
     await setupContext(context);
     await fillIn(createDescriptor({ element }), 'foo');
 
-    assert.verifySteps(clickSteps);
+    assert.verifySteps(['focus', 'focusin', 'input', 'change']);
     assert.strictEqual(
       document.activeElement,
       element,
@@ -313,8 +323,14 @@ module('DOM Helper: fillIn', function (hooks) {
     await setupContext(context);
     await fillIn(`#${element.id}`, '');
 
-    // For this specific case, Firefox does not emit `selectionchange`.
-    assert.verifySteps(clickSteps.filter((s) => s !== 'selectionchange'));
+    if (isChrome) {
+      // For this specific case, Chrome 127 doesn't emit two selectionchange events
+      assert.verifySteps([...new Set(clickSteps)]);
+    } else {
+      // For this specific case, Firefox does not emit `selectionchange`.
+      assert.verifySteps(clickSteps.filter((s) => s !== 'selectionchange'));
+    }
+
     assert.strictEqual(
       document.activeElement,
       element,
