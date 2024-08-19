@@ -3,7 +3,6 @@ import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
 
-import require, { has } from 'require';
 import Ember from 'ember';
 
 import type { FullName } from '@ember/owner';
@@ -146,16 +145,6 @@ export default function buildRegistry(resolver: Resolver) {
   owner.__container__ = container;
 
   exposeRegistryMethodsWithoutDeprecations(container);
-
-  if (has('ember-data/setup-container')) {
-    // ember-data is a proper ember-cli addon since 2.3; if no 'import
-    // 'ember-data'' is present somewhere in the tests, there is also no `DS`
-    // available on the globalContext and hence ember-data wouldn't be setup
-    // correctly for the tests; that's why we import and call setupContainer
-    // here; also see https://github.com/emberjs/data/issues/4071 for context
-    let setupContainer = require('ember-data/setup-container')['default'];
-    setupContainer(owner);
-  }
 
   return {
     registry,
