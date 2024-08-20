@@ -14,6 +14,9 @@ importers:
       '@tsconfig/ember':
         specifier: ^2.0.0
         version: 2.0.0
+      '@types/rsvp':
+        specifier: ^4.0.9
+        version: 4.0.9
       dom-element-descriptors:
         specifier: ^0.5.0
         version: 0.5.1
@@ -814,6 +817,9 @@ packages:
 
   '@types/rimraf@2.0.5':
     resolution: {integrity: sha512-YyP+VfeaqAyFmXoTh3HChxOQMyjByRMsHU7kc5KOJkSlXudhMhQIALbYV7rHh/l8d2lX3VUQzprrcAgWdRuU8g==}
+
+  '@types/rsvp@4.0.9':
+    resolution: {integrity: sha512-F6vaN5mbxw2MBCu/AD9fSKwrhnto2pE77dyUsi415qz9IP9ni9ZOWXHxnXfsM4NW9UjW+it189jvvqnhv37Z7Q==}
 
   '@types/symlink-or-copy@1.2.2':
     resolution: {integrity: sha512-MQ1AnmTLOncwEf9IVU+B2e4Hchrku5N67NkgcAHW0p3sdzPe0FNMANxEm6OJUzPniEQGkeT3OROLlCwZJLWFZA==}
@@ -3386,6 +3392,8 @@ snapshots:
     dependencies:
       '@types/glob': 8.1.0
       '@types/node': 22.0.0
+
+  '@types/rsvp@4.0.9': {}
 
   '@types/symlink-or-copy@1.2.2': {}
 

@@ -70,7 +70,7 @@ importers:
         specifier: ^3.5.16
         version: 3.5.30
       '@types/rsvp':
-        specifier: ^4.0.4
+        specifier: ^4.0.9
         version: 4.0.9
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.59.9
