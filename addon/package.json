@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "build:docs": "pnpm build && documentation build --document-exported \"addon-test-support/@ember/test-helpers/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o ../API.md",
+    "build:docs": "pnpm build && documentation build --document-exported \"./dist/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o ../API.md",
     "lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
     "lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
     "lint:js": "eslint . --cache",
@@ -68,6 +68,7 @@
     "@typescript-eslint/parser": "^8.2.0",
     "babel-plugin-ember-template-compilation": "^2.2.5",
     "concurrently": "^8.2.2",
+    "documentation": "^14.0.3",
     "ember-source": "^5.11.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
