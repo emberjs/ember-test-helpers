@@ -1,13 +1,17 @@
 {
   "solution": {
     "@ember/test-helpers": {
-      "impact": "patch",
-      "oldVersion": "3.3.0",
-      "newVersion": "3.3.1",
+      "impact": "major",
+      "oldVersion": "3.3.1",
+      "newVersion": "4.0.0",
       "constraints": [
         {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "major",
+          "reason": "Appears in changelog section :boom: Breaking Change"
+        },
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         },
         {
           "impact": "patch",
@@ -17,5 +21,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-07-23)\n\n@ember/test-helpers 3.3.1 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1464](https://github.com/emberjs/ember-test-helpers/pull/1464) Use the right attribute - `maxlength` instead of `maxLength` ([@shubham88fru](https://github.com/shubham88fru))\n  * [#1449](https://github.com/emberjs/ember-test-helpers/pull/1449) this change makes it so strict package managers installing duplicate … ([@void-mAlex](https://github.com/void-mAlex))\n\n#### :memo: Documentation\n* [#1462](https://github.com/emberjs/ember-test-helpers/pull/1462) correct git clone url for the repo ([@shubham88fru](https://github.com/shubham88fru))\n* [#1451](https://github.com/emberjs/ember-test-helpers/pull/1451) Update `git clone` command in README.md under contribution ([@SergeAstapov](https://github.com/SergeAstapov))\n\n#### :house: Internal\n* `@ember/test-helpers`\n  * [#1460](https://github.com/emberjs/ember-test-helpers/pull/1460) Setup release plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1453](https://github.com/emberjs/ember-test-helpers/pull/1453) Switch to pnpm, upgrade ember-cli-babel to 8.2 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1456](https://github.com/emberjs/ember-test-helpers/pull/1456) Fix: You attempted to render a path ({{model.post_id}}), but model was not in scope: ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1454](https://github.com/emberjs/ember-test-helpers/pull/1454) Test against ember LTS 5.4, and, 5.8 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* Other\n  * [#1457](https://github.com/emberjs/ember-test-helpers/pull/1457) Expand TypeScript test matrix to v5.5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1455](https://github.com/emberjs/ember-test-helpers/pull/1455) Pin isbinaryfile (a sub-sub dependency) so we can keep node support ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 4\n- Alex ([@void-mAlex](https://github.com/void-mAlex))\n- IAmAPro ([@shubham88fru](https://github.com/shubham88fru))\n- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-08-20)\n\n@ember/test-helpers 4.0.0 (major)\n\n#### :boom: Breaking Change\n* Other\n  * [#1474](https://github.com/emberjs/ember-test-helpers/pull/1474) Drop support for TS < 5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`, `test-app`\n  * [#1471](https://github.com/emberjs/ember-test-helpers/pull/1471) V2 Addon Conversion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`, `test-app`, `type-tests`\n  * [#1476](https://github.com/emberjs/ember-test-helpers/pull/1476) Don't use a shared lockfile ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1477](https://github.com/emberjs/ember-test-helpers/pull/1477) Add Docs-Generation to CI -- will error if docs get out of sync and provides actionable information towards resolution. ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* Other\n  * [#1475](https://github.com/emberjs/ember-test-helpers/pull/1475) Use strict .npmrc ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1470](https://github.com/emberjs/ember-test-helpers/pull/1470) Re-enable try scenarios against 5.10, 5.11-beta and 5.12-canary ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `test-app`\n  * [#1473](https://github.com/emberjs/ember-test-helpers/pull/1473) Get tests passing w/ Chrome's new selectionchange event behavior ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`, `test-app`\n  * [#1468](https://github.com/emberjs/ember-test-helpers/pull/1468) Move tests to new test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`, `type-tests`\n  * [#1467](https://github.com/emberjs/ember-test-helpers/pull/1467) Fix import type via upgrading @tsconfig/ember ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

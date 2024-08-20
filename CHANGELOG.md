@@ -1,5 +1,39 @@
 # Changelog
 
+## Release (2024-08-20)
+
+@ember/test-helpers 4.0.0 (major)
+
+#### :boom: Breaking Change
+* Other
+  * [#1474](https://github.com/emberjs/ember-test-helpers/pull/1474) Drop support for TS < 5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`
+  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`, `test-app`
+  * [#1471](https://github.com/emberjs/ember-test-helpers/pull/1471) V2 Addon Conversion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`
+  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `@ember/test-helpers`, `test-app`, `type-tests`
+  * [#1476](https://github.com/emberjs/ember-test-helpers/pull/1476) Don't use a shared lockfile ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`
+  * [#1477](https://github.com/emberjs/ember-test-helpers/pull/1477) Add Docs-Generation to CI -- will error if docs get out of sync and provides actionable information towards resolution. ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* Other
+  * [#1475](https://github.com/emberjs/ember-test-helpers/pull/1475) Use strict .npmrc ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1470](https://github.com/emberjs/ember-test-helpers/pull/1470) Re-enable try scenarios against 5.10, 5.11-beta and 5.12-canary ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `test-app`
+  * [#1473](https://github.com/emberjs/ember-test-helpers/pull/1473) Get tests passing w/ Chrome's new selectionchange event behavior ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`, `test-app`
+  * [#1468](https://github.com/emberjs/ember-test-helpers/pull/1468) Move tests to new test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+* `@ember/test-helpers`, `type-tests`
+  * [#1467](https://github.com/emberjs/ember-test-helpers/pull/1467) Fix import type via upgrading @tsconfig/ember ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-07-23)
 
 @ember/test-helpers 3.3.1 (patch)
