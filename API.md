@@ -55,16 +55,21 @@
     *   [resetOnerror][51]
     *   [getTestMetadata][52]
 *   [rerender][53]
-*   [getDeprecations][54]
-    *   [Examples][55]
-*   [getDeprecationsDuringCallback][56]
-    *   [Parameters][57]
-    *   [Examples][58]
-*   [getWarnings][59]
+*   [registerHook][54]
+    *   [Parameters][55]
+    *   [Examples][56]
+*   [runHooks][57]
+    *   [Parameters][58]
+*   [getDeprecations][59]
     *   [Examples][60]
-*   [getWarningsDuringCallback][61]
+*   [getDeprecationsDuringCallback][61]
     *   [Parameters][62]
     *   [Examples][63]
+*   [getWarnings][64]
+    *   [Examples][65]
+*   [getWarningsDuringCallback][66]
+    *   [Parameters][67]
+    *   [Examples][68]
 
 ## DOM Interaction Helpers
 
@@ -87,7 +92,7 @@ to continue to emulate how actual browsers handle unfocusing a given element.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to unfocus (optional, default `document.activeElement`)
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to unfocus (optional, default `document.activeElement`)
 
 #### Examples
 
@@ -97,7 +102,7 @@ Emulating blurring an input using `blur`
 blur('input');
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### click
 
@@ -124,12 +129,12 @@ For focusable (e.g. form control) elements the following events are triggered
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle clicking a given element.
 
-Use the `options` hash to change the parameters of the [MouseEvents][67].
-You can use this to specifiy modifier keys as well.
+Use the `options` hash to change the parameters of the [MouseEvents][72].
+You can use this to specify modifier keys as well.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to click on
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to click on
 *   `_options` **MouseEventInit** the options to be merged into the mouse events. (optional, default `{}`)
 
 #### Examples
@@ -146,7 +151,7 @@ Emulating clicking a button and pressing the `shift` key simultaneously using `c
 click('button', { shiftKey: true });
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### doubleClick
 
@@ -181,11 +186,11 @@ For focusable (e.g. form control) elements the following events are triggered
 The exact listing of events that are triggered may change over time as needed
 to continue to emulate how actual browsers handle clicking a given element.
 
-Use the `options` hash to change the parameters of the [MouseEvents][67].
+Use the `options` hash to change the parameters of the [MouseEvents][72].
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to double-click on
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to double-click on
 *   `_options` **MouseEventInit** the options to be merged into the mouse events (optional, default `{}`)
 
 #### Examples
@@ -202,7 +207,7 @@ Emulating double clicking a button and pressing the `shift` key simultaneously u
 doubleClick('button', { shiftKey: true });
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### fillIn
 
@@ -212,8 +217,8 @@ events on the specified target.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
-*   `text` **[string][64]** the text to fill into the target element
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
+*   `text` **[string][69]** the text to fill into the target element
 
 #### Examples
 
@@ -223,7 +228,7 @@ Emulating filling an input with text using `fillIn`
 fillIn('input', 'hello world');
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled
+Returns **[Promise][71]\<void>** resolves when the application is settled
 
 ### focus
 
@@ -242,7 +247,7 @@ to continue to emulate how actual browsers handle focusing a given element.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to focus
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to focus
 
 #### Examples
 
@@ -252,7 +257,7 @@ Emulating focusing an input using `focus`
 focus('input');
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled
+Returns **[Promise][71]\<void>** resolves when the application is settled
 
 ### scrollTo
 
@@ -260,9 +265,9 @@ Scrolls DOM element, selector, or descriptor to the given coordinates.
 
 #### Parameters
 
-*   `target` **([string][64] | [HTMLElement][68] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger scroll on
-*   `x` **[Number][69]** x-coordinate
-*   `y` **[Number][69]** y-coordinate
+*   `target` **([string][69] | [HTMLElement][73] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger scroll on
+*   `x` **[Number][74]** x-coordinate
+*   `y` **[Number][74]** y-coordinate
 
 #### Examples
 
@@ -273,7 +278,7 @@ scrollTo('#my-long-div', 0, 0); // scroll to top
 scrollTo('#my-long-div', 0, 100); // scroll down
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### select
 
@@ -284,9 +289,9 @@ multiple attribute is set true on the HTMLSelectElement) then trigger
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor for the select element
-*   `options` **([string][64] | [Array][70]<[string][64]>)** the value/values of the items to select
-*   `keepPreviouslySelected` **[boolean][71]** a flag keep any existing selections (optional, default `false`)
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor for the select element
+*   `options` **([string][69] | [Array][75]<[string][69]>)** the value/values of the items to select
+*   `keepPreviouslySelected` **[boolean][76]** a flag keep any existing selections (optional, default `false`)
 
 #### Examples
 
@@ -300,7 +305,7 @@ select('select', ['apple', 'orange']);
 select('select', ['apple', 'orange'], true);
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled
+Returns **[Promise][71]\<void>** resolves when the application is settled
 
 ### tab
 
@@ -311,10 +316,10 @@ keyboard.
 
 #### Parameters
 
-*   `options` **[Object][72]?** optional tab behaviors (optional, default `{}`)
+*   `options` **[Object][77]?** optional tab behaviors (optional, default `{}`)
 
-    *   `options.backwards` **[boolean][71]** indicates if the the user navigates backwards (optional, default `false`)
-    *   `options.unRestrainTabIndex` **[boolean][71]** indicates if tabbing should throw an error when tabindex is greater than 0 (optional, default `false`)
+    *   `options.backwards` **[boolean][76]** indicates if the the user navigates backwards (optional, default `false`)
+    *   `options.unRestrainTabIndex` **[boolean][76]** indicates if tabbing should throw an error when tabindex is greater than 0 (optional, default `false`)
 
 #### Examples
 
@@ -330,7 +335,7 @@ Emulating pressing the `SHIFT`+`TAB` key combination
 tab({ backwards: true });
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### tap
 
@@ -365,8 +370,8 @@ Use the `options` hash to change the parameters of the tap events.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to tap on
-*   `options` **[Object][72]** the options to be merged into the touch events (optional, default `{}`)
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to tap on
+*   `options` **[Object][77]** the options to be merged into the touch events (optional, default `{}`)
 
 #### Examples
 
@@ -376,7 +381,7 @@ Emulating tapping a button using `tap`
 tap('button');
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### triggerEvent
 
@@ -384,9 +389,9 @@ Triggers an event on the specified target.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
-*   `eventType` **[string][64]** the type of event to trigger
-*   `options` **[Object][72]** additional properties to be set on the event
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
+*   `eventType` **[string][69]** the type of event to trigger
+*   `options` **[Object][77]** additional properties to be set on the event
 
 #### Examples
 
@@ -394,7 +399,7 @@ Using `triggerEvent` to upload a file
 
 When using `triggerEvent` to upload a file the `eventType` must be `change` and you must pass the
 `options` param as an object with a key `files` containing an array of
-[Blob][73].
+[Blob][78].
 
 ```javascript
 triggerEvent(
@@ -406,8 +411,8 @@ triggerEvent(
 
 Using `triggerEvent` to upload a dropped file
 
-When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][74],
-you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer`     object should have a `files` key, containing an array of [File][75].
+When using `triggerEvent` to handle a dropped (via drag-and-drop) file, the `eventType` must be `drop`. Assuming your `drop` event handler uses the [DataTransfer API][79],
+you must pass the `options` param as an object with a key of `dataTransfer`. The `options.dataTransfer`     object should have a `files` key, containing an array of [File][80].
 
 ```javascript
 triggerEvent(
@@ -421,26 +426,26 @@ triggerEvent(
 )
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled
+Returns **[Promise][71]\<void>** resolves when the application is settled
 
 ### triggerKeyEvent
 
 Triggers a keyboard event of given type in the target element.
-It also requires the developer to provide either a string with the [`key`][76]
-or the numeric [`keyCode`][77] of the pressed key.
+It also requires the developer to provide either a string with the [`key`][81]
+or the numeric [`keyCode`][82] of the pressed key.
 Optionally the user can also provide a POJO with extra modifiers for the event.
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to trigger the event on
 *   `eventType` **(`"keydown"` | `"keyup"` | `"keypress"`)** the type of event to trigger
-*   `key` **([number][69] | [string][64])** the `keyCode`(number) or `key`(string) of the event being triggered
-*   `modifiers` **[Object][72]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
+*   `key` **([number][74] | [string][69])** the `keyCode`(number) or `key`(string) of the event being triggered
+*   `modifiers` **[Object][77]?** the state of various modifier keys (optional, default `DEFAULT_MODIFIERS`)
 
-    *   `modifiers.ctrlKey` **[boolean][71]** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
-    *   `modifiers.altKey` **[boolean][71]** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
-    *   `modifiers.shiftKey` **[boolean][71]** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
-    *   `modifiers.metaKey` **[boolean][71]** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
+    *   `modifiers.ctrlKey` **[boolean][76]** if true the generated event will indicate the control key was pressed during the key event (optional, default `false`)
+    *   `modifiers.altKey` **[boolean][76]** if true the generated event will indicate the alt key was pressed during the key event (optional, default `false`)
+    *   `modifiers.shiftKey` **[boolean][76]** if true the generated event will indicate the shift key was pressed during the key event (optional, default `false`)
+    *   `modifiers.metaKey` **[boolean][76]** if true the generated event will indicate the meta key was pressed during the key event (optional, default `false`)
 
 #### Examples
 
@@ -450,7 +455,7 @@ Emulating pressing the `ENTER` key on a button using `triggerKeyEvent`
 triggerKeyEvent('button', 'keydown', 'Enter');
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled unless awaitSettled is false
+Returns **[Promise][71]\<void>** resolves when the application is settled unless awaitSettled is false
 
 ### typeIn
 
@@ -466,9 +471,9 @@ per character of the passed text (this may vary on some browsers).
 
 #### Parameters
 
-*   `target` **([string][64] | [Element][65] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
-*   `text` **[string][64]** the test to fill the element with
-*   `options` **[Object][72]** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{}`)
+*   `target` **([string][69] | [Element][70] | IDOMElementDescriptor)** the element, selector, or descriptor to enter text into
+*   `text` **[string][69]** the test to fill the element with
+*   `options` **[Object][77]** {delay: x} (default 50) number of milliseconds to wait per keypress (optional, default `{}`)
 
 #### Examples
 
@@ -478,7 +483,7 @@ Emulating typing in an input using `typeIn`
 typeIn('input', 'hello world');
 ```
 
-Returns **[Promise][66]\<void>** resolves when the application is settled
+Returns **[Promise][71]\<void>** resolves when the application is settled
 
 ## DOM Query Helpers
 
@@ -491,7 +496,7 @@ Find the first element matched by the given selector. Equivalent to calling
 
 #### Parameters
 
-*   `selector` **[string][64]** the selector to search for
+*   `selector` **[string][69]** the selector to search for
 
 #### Examples
 
@@ -501,7 +506,7 @@ Finding the first element with id 'foo'
 find('#foo');
 ```
 
-Returns **([Element][65] | null)** matched element or null
+Returns **([Element][70] | null)** matched element or null
 
 ### findAll
 
@@ -511,7 +516,7 @@ of a `NodeList`.
 
 #### Parameters
 
-*   `selector` **[string][64]** the selector to search for
+*   `selector` **[string][69]** the selector to search for
 
 #### Examples
 
@@ -521,7 +526,7 @@ Find all of the elements matching '.my-selector'.
 findAll('.my-selector');
 ```
 
-Returns **[Array][70]** array of matched elements
+Returns **[Array][75]** array of matched elements
 
 ### getRootElement
 
@@ -536,7 +541,7 @@ to the element with id 'ember-testing'.
 assert.equal(getRootElement(), document.querySelector('#ember-testing'));
 ```
 
-Returns **[Element][65]** the root element
+Returns **[Element][70]** the root element
 
 ## Routing Helpers
 
@@ -548,8 +553,8 @@ Navigate the application to the provided URL.
 
 #### Parameters
 
-*   `url` **[string][64]** The URL to visit (e.g. `/posts`)
-*   `options` **[object][72]** app boot options
+*   `url` **[string][69]** The URL to visit (e.g. `/posts`)
+*   `options` **[object][77]** app boot options
 
 #### Examples
 
@@ -565,15 +570,15 @@ Visiting the route for post 1 while also providing the `rootElement` app boot op
 await visit('/', { rootElement: '#container' });
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### currentRouteName
 
-Returns **[string][64]** the currently active route name
+Returns **[string][69]** the currently active route name
 
 ### currentURL
 
-Returns **[string][64]** the applications current url
+Returns **[string][69]** the applications current url
 
 ## Rendering Helpers
 
@@ -585,7 +590,7 @@ Renders the provided template and appends it to the DOM.
 
 #### Parameters
 
-*   `templateOrComponent` **(Template | Component)** the component (or template) to render
+*   `templateFactoryOrComponent` **(Template | Component)** the component (or template) to render
 *   `options` **RenderOptions** options hash containing engine owner ({ owner: engineOwner })
 
 #### Examples
@@ -596,7 +601,7 @@ Render a div element with the class 'container'.
 await render(hbs`<div class="container"></div>`);
 ```
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### clearRender
 
@@ -604,7 +609,7 @@ Clears any templates previously rendered. This is commonly used for
 confirming behavior that is triggered by teardown (e.g.
 `willDestroyElement`).
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ## Wait Helpers
 
@@ -618,11 +623,11 @@ interim DOM states (e.g. loading states, pending promises, etc).
 
 #### Parameters
 
-*   `target` **([string][64] | IDOMElementDescriptor)** the selector or DOM element descriptor to wait for
-*   `options` **[Object][72]?** the options to be used (optional, default `{}`)
+*   `target` **([string][69] | IDOMElementDescriptor)** the selector or DOM element descriptor to wait for
+*   `options` **[Object][77]?** the options to be used (optional, default `{}`)
 
-    *   `options.timeout` **[number][69]** the time to wait (in ms) for a match (optional, default `1000`)
-    *   `options.count` **[number][69]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
+    *   `options.timeout` **[number][74]** the time to wait (in ms) for a match (optional, default `1000`)
+    *   `options.count` **[number][74]** the number of elements that should match the provided selector (null means one or more) (optional, default `null`)
 
 #### Examples
 
@@ -632,7 +637,7 @@ Waiting until a selector is rendered:
 await waitFor('.my-selector', { timeout: 2000 })
 ```
 
-Returns **[Promise][66]<([Element][65] | [Array][70]<[Element][65]>)>** resolves when the element(s) appear on the page
+Returns **[Promise][71]<([Element][70] | [Array][75]<[Element][70]>)>** resolves when the element(s) appear on the page
 
 ### waitUntil
 
@@ -643,11 +648,11 @@ while *not* settled (e.g. "loading" or "pending" states).
 
 #### Parameters
 
-*   `callback` **[Function][78]** the callback to use for testing when waiting should stop
-*   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
+*   `callback` **[Function][83]** the callback to use for testing when waiting should stop
+*   `options` **[Object][77]?** options used to override defaults (optional, default `{}`)
 
-    *   `options.timeout` **[number][69]** the maximum amount of time to wait (optional, default `1000`)
-    *   `options.timeoutMessage` **[string][64]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
+    *   `options.timeout` **[number][74]** the maximum amount of time to wait (optional, default `1000`)
+    *   `options.timeoutMessage` **[string][69]** the message to use in the reject on timeout (optional, default `'waitUntil timed out'`)
 
 #### Examples
 
@@ -659,14 +664,14 @@ return find('.my-selector').textContent.includes('something')
 }, { timeout: 2000 })
 ```
 
-Returns **[Promise][66]** resolves with the callback value when it returns a truthy value
+Returns **[Promise][71]** resolves with the callback value when it returns a truthy value
 
 ### settled
 
 Returns a promise that resolves when in a settled state (see `isSettled` for
 a definition of "settled state").
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### isSettled
 
@@ -676,46 +681,33 @@ Settled generally means that there are no pending timers, no pending waiters,
 no pending AJAX requests, and no current run loop. However, new settledness
 metrics may be added and used as they become available.
 
-Returns **[boolean][71]** `true` if settled, `false` otherwise
+Returns **[boolean][76]** `true` if settled, `false` otherwise
 
 ### getSettledState
 
 Check various settledness metrics, and return an object with the following properties:
 
 *   `hasRunLoop` - Checks if a run-loop has been started. If it has, this will
-
-be `true` otherwise it will be `false`.
-
+    be `true` otherwise it will be `false`.
 *   `hasPendingTimers` - Checks if there are scheduled timers in the run-loop.
-
-These pending timers are primarily registered by `Ember.run.schedule`. If
-there are pending timers, this will be `true`, otherwise `false`.
-
+    These pending timers are primarily registered by `Ember.run.schedule`. If
+    there are pending timers, this will be `true`, otherwise `false`.
 *   `hasPendingWaiters` - Checks if any registered test waiters are still
-
-pending (e.g. the waiter returns `true`). If there are pending waiters,
-this will be `true`, otherwise `false`.
-
+    pending (e.g. the waiter returns `true`). If there are pending waiters,
+    this will be `true`, otherwise `false`.
 *   `hasPendingRequests` - Checks if there are pending AJAX requests (based on
-
-`ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
-are pending requests, this will be `true`, otherwise `false`.
-
+    `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
+    are pending requests, this will be `true`, otherwise `false`.
 *   `hasPendingTransitions` - Checks if there are pending route transitions. If the
-
-router has not been instantiated / setup for the test yet this will return `null`,
-if there are pending transitions, this will be `true`, otherwise `false`.
-
+    router has not been instantiated / setup for the test yet this will return `null`,
+    if there are pending transitions, this will be `true`, otherwise `false`.
 *   `pendingRequestCount` - The count of pending AJAX requests.
 *   `debugInfo` - Debug information that's combined with info return from backburner's
-
-getDebugInfo method.
-
+    getDebugInfo method.
 *   `isRenderPending` - Checks if there are any pending render operations. This will be true as long
+    as there are tracked values in the template that have not been rerendered yet.
 
-as there are tracked values in the template that have not been rerendered yet.
-
-Returns **[Object][72]** object with properties for each of the metrics used to determine settledness
+Returns **[Object][77]** object with properties for each of the metrics used to determine settledness
 
 ## Pause Helpers
 
@@ -758,7 +750,7 @@ module('awesome-sauce', function(hooks) {
 });
 ```
 
-Returns **[Promise][66]\<void>** resolves *only* when `resumeTest()` is invoked
+Returns **[Promise][71]\<void>** resolves *only* when `resumeTest()` is invoked
 
 ### resumeTest
 
@@ -834,18 +826,18 @@ Responsible for:
 
 #### Parameters
 
-*   `base` **[Object][72]** the context to setup
-*   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
+*   `base` **[Object][77]** the context to setup
+*   `options` **[Object][77]?** options used to override defaults (optional, default `{}`)
 
     *   `options.resolver` **Resolver?** a resolver to use for customizing normal resolution
 
-Returns **[Promise][66]<[Object][72]>** resolves with the context that was setup
+Returns **[Promise][71]<[Object][77]>** resolves with the context that was setup
 
 ### getContext
 
 Retrieve the "global testing context" as stored by `setContext`.
 
-Returns **[Object][72]** the previously stored testing context
+Returns **[Object][77]** the previously stored testing context
 
 ### setContext
 
@@ -855,7 +847,7 @@ Generally setup automatically by `setupContext`.
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to use
+*   `context` **[Object][77]** the context to use
 
 ### unsetContext
 
@@ -875,12 +867,12 @@ Responsible for:
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to setup
-*   `options` **[Object][72]?** options used to override defaults (optional, default `{}`)
+*   `context` **[Object][77]** the context to setup
+*   `options` **[Object][77]?** options used to override defaults (optional, default `{}`)
 
-    *   `options.waitForSettled` **[boolean][71]** should the teardown wait for `settled()`ness (optional, default `true`)
+    *   `options.waitForSettled` **[boolean][76]** should the teardown wait for `settled()`ness (optional, default `true`)
 
-Returns **[Promise][66]\<void>** resolves when settled
+Returns **[Promise][71]\<void>** resolves when settled
 
 ### setupRenderingContext
 
@@ -892,14 +884,11 @@ prior to calling `setupRenderingContext`.
 Responsible for:
 
 *   Setup the basic framework used for rendering by the
-
-`render` helper.
-
+    `render` helper.
 *   Ensuring the event dispatcher is properly setup.
 *   Setting `this.element` to the root element of the testing
-
-container (things rendered via `render` will go *into* this
-element).
+    container (things rendered via `render` will go *into* this
+    element).
 
 #### Parameters
 
@@ -916,7 +905,7 @@ await clearRender();
 assert.equal(this.element.textContent, '', 'has rendered content');
 ```
 
-Returns **[Promise][66]\<RenderingTestContext>** resolves with the context that was setup
+Returns **[Promise][71]\<RenderingTestContext>** resolves with the context that was setup
 
 ### getApplication
 
@@ -947,9 +936,9 @@ Sets up the basic framework used by application tests.
 
 #### Parameters
 
-*   `context` **[Object][72]** the context to setup
+*   `context` **[Object][77]** the context to setup
 
-Returns **[Promise][66]\<void>** resolves when the context is set up
+Returns **[Promise][71]\<void>** resolves when the context is set up
 
 ### validateErrorHandler
 
@@ -964,7 +953,7 @@ everything is on fire...
 
 #### Parameters
 
-*   `callback` **[Function][78]** the callback to validate (optional, default `Ember.onerror`)
+*   `callback` **[Function][83]** the callback to validate (optional, default `Ember.onerror`)
 
 #### Examples
 
@@ -979,7 +968,7 @@ test('Ember.onerror is functioning properly', function(assert) {
 });
 ```
 
-Returns **[Object][72]** object with `isValid` and `message`
+Returns **[Object][77]** object with `isValid` and `message`
 
 ### setupOnerror
 
@@ -989,7 +978,7 @@ without an `onError` argument.
 
 #### Parameters
 
-*   `onError` **[Function][78]** the onError function to be set on Ember.onerror
+*   `onError` **[Function][83]** the onError function to be set on Ember.onerror
 
 #### Examples
 
@@ -1046,7 +1035,55 @@ run loops, etc) but instead only want to know when that updated value has
 been rendered in the DOM. **THAT** is what `await rerender()` is *perfect*
 for.
 
-Returns **[Promise][66]\<void>** a promise which fulfills when rendering has completed
+Returns **[Promise][71]\<void>** a promise which fulfills when rendering has completed
+
+## registerHook
+
+Registers a function to be run during the invocation of a test helper.
+
+### Parameters
+
+*   `helperName` **[string][69]** The name of the test helper in which to run the hook.
+    Test helper names include `blur`, `click`, `doubleClick`, `fillIn`,
+    `fireEvent`, `focus`, `render`, `scrollTo`, `select`, `tab`, `tap`, `triggerEvent`,
+    `triggerKeyEvent`, `typeIn`, and `visit`.
+*   `label` **[string][69]** A label to help identify the hook. Built-in labels include `start`, `end`,
+    and `targetFound`, the former designating either the start or end of
+    the helper invocation.
+*   `hook` **[Function][83]** The hook function to run when the test helper is invoked.
+
+### Examples
+
+Registering a hook for the `end` point of the `click` test helper invocation
+
+```javascript
+const hook = registerHook('click', 'end', () => {
+  console.log('Running `click:end` test helper hook');
+});
+
+// Unregister the hook at some later point in time
+hook.unregister();
+```
+
+Returns **HookUnregister** An object containing an `unregister` function that unregisters
+the specific hook initially registered to the helper.
+
+## runHooks
+
+Runs all hooks registered for a specific test helper.
+
+### Parameters
+
+*   `helperName` **[string][69]** The name of the test helper in which to run the hook.
+    Test helper names include `blur`, `click`, `doubleClick`, `fillIn`,
+    `fireEvent`, `focus`, `render`, `scrollTo`, `select`, `tab`, `tap`, `triggerEvent`,
+    `triggerKeyEvent`, `typeIn`, and `visit`.
+*   `label` **[string][69]** A label to help identify the hook. Built-in labels include `start`, `end`,
+    and `targetFound`, the former designating either the start or end of
+    the helper invocation.
+*   `args` **[Array][75]\<unknown>** Any arguments originally passed to the test helper.
+
+Returns **[Promise][71]\<void>** A promise representing the serial invocation of the hooks.
 
 ## getDeprecations
 
@@ -1068,7 +1105,7 @@ const deprecations = getDeprecations() // => returns deprecations which have occ
 });
 ```
 
-Returns **[Array][70]\<DeprecationFailure>** An array of deprecation messages
+Returns **[Array][75]\<DeprecationFailure>** An array of deprecation messages
 
 ## getDeprecationsDuringCallback
 
@@ -1076,7 +1113,7 @@ Returns deprecations which have occurred so far for a the current test context
 
 ### Parameters
 
-*   `callback` **[Function][78]?** The callback that when executed will have its DeprecationFailure recorded
+*   `callback` **[Function][83]?** The callback that when executed will have its DeprecationFailure recorded
 
 ### Examples
 
@@ -1104,7 +1141,7 @@ module('awesome-sauce', function(hooks) {
 });
 ```
 
-Returns **([Array][70]\<DeprecationFailure> | [Promise][66]<[Array][70]\<DeprecationFailure>>)** An array of deprecation messages
+Returns **([Array][75]\<DeprecationFailure> | [Promise][71]<[Array][75]\<DeprecationFailure>>)** An array of deprecation messages
 
 ## getWarnings
 
@@ -1126,7 +1163,7 @@ const warnings = getWarnings() // => returns warnings which have occurred so far
 });
 ```
 
-Returns **[Array][70]\<Warning>** An array of warnings
+Returns **[Array][75]\<Warning>** An array of warnings
 
 ## getWarningsDuringCallback
 
@@ -1134,7 +1171,7 @@ Returns warnings which have occurred so far for a the current test context
 
 ### Parameters
 
-*   `callback` **[Function][78]?** The callback that when executed will have its warnings recorded
+*   `callback` **[Function][83]?** The callback that when executed will have its warnings recorded
 
 ### Examples
 
@@ -1164,7 +1201,7 @@ module('awesome-sauce', function(hooks) {
 });
 ```
 
-Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An array of warnings information
+Returns **([Array][75]\<Warning> | [Promise][71]<[Array][75]\<Warning>>)** An array of warnings information
 
 [1]: #dom-interaction-helpers
 
@@ -1272,52 +1309,62 @@ Returns **([Array][70]\<Warning> | [Promise][66]<[Array][70]\<Warning>>)** An ar
 
 [53]: #rerender
 
-[54]: #getdeprecations
+[54]: #registerhook
 
-[55]: #examples-25
+[55]: #parameters-29
 
-[56]: #getdeprecationsduringcallback
+[56]: #examples-25
 
-[57]: #parameters-29
+[57]: #runhooks
 
-[58]: #examples-26
+[58]: #parameters-30
 
-[59]: #getwarnings
+[59]: #getdeprecations
 
-[60]: #examples-27
+[60]: #examples-26
 
-[61]: #getwarningsduringcallback
+[61]: #getdeprecationsduringcallback
 
-[62]: #parameters-30
+[62]: #parameters-31
 
-[63]: #examples-28
+[63]: #examples-27
 
-[64]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[64]: #getwarnings
 
-[65]: https://developer.mozilla.org/docs/Web/API/Element
+[65]: #examples-28
 
-[66]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[66]: #getwarningsduringcallback
 
-[67]: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
+[67]: #parameters-32
 
-[68]: https://developer.mozilla.org/docs/Web/HTML/Element
+[68]: #examples-29
 
-[69]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[69]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[70]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[70]: https://developer.mozilla.org/docs/Web/API/Element
 
-[71]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[71]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[72]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[72]: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
 
-[73]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+[73]: https://developer.mozilla.org/docs/Web/HTML/Element
 
-[74]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
+[74]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[75]: https://developer.mozilla.org/en-US/docs/Web/API/File
+[75]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[76]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+[76]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[77]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+[77]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[78]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[78]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+
+[79]: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
+
+[80]: https://developer.mozilla.org/en-US/docs/Web/API/File
+
+[81]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+
+[82]: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+
+[83]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

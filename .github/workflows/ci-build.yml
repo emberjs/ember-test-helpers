@@ -50,6 +50,23 @@ jobs:
         working-directory: addon
         run: pnpm tsc --noEmit 
 
+  docs-gen:
+    timeout-minutes: 5
+    name: Docs Generation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install 
+      - run: pnpm build:docs
+      - run: echo "If this fails, docs gen is out of sync. Please run 'pnpm build:docs'" && git diff --exit-code
+
+
   floating:
     name: "Floating Dependencies"
     runs-on: ubuntu-latest

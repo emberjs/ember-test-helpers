@@ -5,6 +5,7 @@
   "repository": "https://github.com/emberjs/ember-test-helpers",
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
+    "build:docs": "pnpm --filter '@ember/test-helpers' run docs",
     "lint": "pnpm --filter '*' lint",
     "lint:fix": "pnpm --filter '*' lint:fix",
     "test": "pnpm --filter '*' test"
