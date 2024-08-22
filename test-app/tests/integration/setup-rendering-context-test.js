@@ -65,11 +65,15 @@ const ClickMeButtonComponent = Component.extend({
 module('setupRenderingContext "real world"', function (hooks) {
   hooks.beforeEach(async function () {
     setResolverRegistry({
-      'component:promise-wrapper': PromiseWrapper,
-      'template:components/promise-wrapper': PromiseWrapperTemplate,
+      'component:promise-wrapper': setComponentTemplate(
+        PromiseWrapper,
+        PromiseWrapperTemplate
+      ),
 
-      'component:click-me-button': ClickMeButtonComponent,
-      'template:components/click-me-button': ClickMeButtonTemplate,
+      'component:click-me-button': setComponentTemplate(
+        ClickMeButtonComponent,
+        ClickMeButtonTemplate
+      ),
     });
 
     await setupContext(this);
