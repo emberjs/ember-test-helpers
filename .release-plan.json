@@ -1,25 +1,17 @@
 {
   "solution": {
     "@ember/test-helpers": {
-      "impact": "major",
-      "oldVersion": "3.3.1",
-      "newVersion": "4.0.0",
+      "impact": "patch",
+      "oldVersion": "4.0.0",
+      "newVersion": "4.0.1",
       "constraints": [
         {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
-        },
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
-        {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-08-20)\n\n@ember/test-helpers 4.0.0 (major)\n\n#### :boom: Breaking Change\n* Other\n  * [#1474](https://github.com/emberjs/ember-test-helpers/pull/1474) Drop support for TS < 5 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`, `test-app`\n  * [#1471](https://github.com/emberjs/ember-test-helpers/pull/1471) V2 Addon Conversion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1472](https://github.com/emberjs/ember-test-helpers/pull/1472) Remove require usage, dropping support for automatic ember-data/setup-container inclusion ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`, `test-app`, `type-tests`\n  * [#1476](https://github.com/emberjs/ember-test-helpers/pull/1476) Don't use a shared lockfile ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`\n  * [#1477](https://github.com/emberjs/ember-test-helpers/pull/1477) Add Docs-Generation to CI -- will error if docs get out of sync and provides actionable information towards resolution. ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* Other\n  * [#1475](https://github.com/emberjs/ember-test-helpers/pull/1475) Use strict .npmrc ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1470](https://github.com/emberjs/ember-test-helpers/pull/1470) Re-enable try scenarios against 5.10, 5.11-beta and 5.12-canary ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `test-app`\n  * [#1473](https://github.com/emberjs/ember-test-helpers/pull/1473) Get tests passing w/ Chrome's new selectionchange event behavior ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`, `test-app`\n  * [#1468](https://github.com/emberjs/ember-test-helpers/pull/1468) Move tests to new test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `@ember/test-helpers`, `type-tests`\n  * [#1467](https://github.com/emberjs/ember-test-helpers/pull/1467) Fix import type via upgrading @tsconfig/ember ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-08-22)\n\n@ember/test-helpers 4.0.1 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1482](https://github.com/emberjs/ember-test-helpers/pull/1482) Resolve Error: @ember/test-helpers is trying to import from @ember/-internals but that is not one of its explicit dependencies ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :memo: Documentation\n* [#1483](https://github.com/emberjs/ember-test-helpers/pull/1483) Update README.md to reflect TS support ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `test-app`\n  * [#1484](https://github.com/emberjs/ember-test-helpers/pull/1484) Update tests to be compatible with Ember v6 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
