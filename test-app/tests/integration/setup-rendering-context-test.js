@@ -66,13 +66,13 @@ module('setupRenderingContext "real world"', function (hooks) {
   hooks.beforeEach(async function () {
     setResolverRegistry({
       'component:promise-wrapper': setComponentTemplate(
-        PromiseWrapper,
-        PromiseWrapperTemplate
+        PromiseWrapperTemplate,
+        class extends PromiseWrapper {}
       ),
 
       'component:click-me-button': setComponentTemplate(
-        ClickMeButtonComponent,
-        ClickMeButtonTemplate
+        ClickMeButtonTemplate,
+        class extends ClickMeButtonComponent {}
       ),
     });
 
