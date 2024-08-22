@@ -9,7 +9,7 @@ Compatibility
 - Ember.js v4 or above
 - Ember CLI v4 or above
 - Node.js v16 or above
-- TypeScript 4.7, 4.8, 4.9, 5.0, and 5.1
+- TypeScript 5.0, 5.1, 5.2, 5.3, 5.4, and 5.5
   - SemVer policy: [simple majors](https://www.semver-ts.org/#simple-majors)
   - the public API is defined by [API.md](./API.md).
 
