@@ -80,13 +80,22 @@ module('setupRenderingContext', function (hooks) {
     hooks.beforeEach(async function () {
       setResolverRegistry({
         'service:foo': Service.extend({ isFoo: true }),
-        'template:components/template-only': hbs`template-only component here`,
+        'component:template-only': setComponentTemplate(
+          hbs`template-only component here`,
+          class extends Component {}
+        ),
         'component:js-only': Component.extend({
           classNames: ['js-only'],
         }),
         'helper:jax': helper(([name]) => `${name}-jax`),
-        'template:components/outer-comp': hbs`outer{{inner-comp}}outer`,
-        'template:components/inner-comp': hbs`inner`,
+        'component:outer-comp': setComponentTemplate(
+          hbs`outer{{inner-comp}}outer`,
+          class extends Component {}
+        ),
+        'component:inner-comp': setComponentTemplate(
+          hbs`inner`,
+          class extends Component {}
+        ),
       });
 
       await setupContext(this);
@@ -113,10 +122,16 @@ module('setupRenderingContext', function (hooks) {
       }
 
       let alternateOwner = await buildEngineOwner(this.owner, {
-        'template:components/foo': hbs`hello!`,
+        'component:foo': setComponentTemplate(
+          hbs`hello!`,
+          class extends Component {}
+        ),
       });
 
-      this.owner.register('template:components/foo', hbs`noooooooo!`);
+      this.owner.register(
+        'component:foo',
+        setComponentTemplate(hbs`noooooooo!`, class extends Component {})
+      );
 
       await render(hbs`<Foo />`, { owner: alternateOwner });
 
@@ -292,7 +307,10 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('can use the component helper in its layout', async function (assert) {
-      this.owner.register('template:components/x-foo', hbs`x-foo here`);
+      this.owner.register(
+        'component:x-foo',
+        setComponentTemplate(hbs`x-foo here`, class extends Component {})
+      );
 
       await render(hbs`{{component 'x-foo'}}`);
 
@@ -319,15 +337,14 @@ module('setupRenderingContext', function (hooks) {
 
       this.owner.register(
         'component:x-foo',
-        Component.extend({
-          click() {
-            assert.ok(true, 'click was fired');
-          },
-        })
-      );
-      this.owner.register(
-        'template:components/x-foo',
-        hbs`<button>Click me!</button>`
+        setComponentTemplate(
+          hbs`<button>Click me!</button>`,
+          Component.extend({
+            click() {
+              assert.ok(true, 'click was fired');
+            },
+          })
+        )
       );
 
       await render(hbs`{{x-foo}}`);
@@ -345,17 +362,15 @@ module('setupRenderingContext', function (hooks) {
 
       this.owner.register(
         'component:x-foo',
-        Component.extend({
-          actions: {
-            clicked() {
+        setComponentTemplate(
+          hbs`<button {{on 'click' this.clicked}}>Click me!</button>`,
+
+          class extends Component {
+            clicked = () => {
               assert.ok(true, 'click was fired');
-            },
-          },
-        })
-      );
-      this.owner.register(
-        'template:components/x-foo',
-        hbs`<button {{action 'clicked'}}>Click me!</button>`
+            };
+          }
+        )
       );
 
       await render(hbs`{{x-foo}}`);
@@ -371,10 +386,12 @@ module('setupRenderingContext', function (hooks) {
     test('can pass function to be used as a "closure action"', async function (assert) {
       assert.expect(2);
 
-      this.owner.register('component:x-foo', Component.extend());
       this.owner.register(
-        'template:components/x-foo',
-        hbs`<button onclick={{action @clicked}}>Click me!</button>`
+        'component:x-foo',
+        setComponentTemplate(
+          hbs`<button {{on 'click' @clicked}}>Click me!</button>`,
+          Component.extend()
+        )
       );
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
@@ -391,9 +408,12 @@ module('setupRenderingContext', function (hooks) {
     test('can pass function to be used as a "closure action" to a template only component', async function (assert) {
       assert.expect(2);
 
-      let template = hbs`<button onclick={{action @clicked}}>Click me!</button>`;
+      let template = hbs`<button onclick={{@clicked}}>Click me!</button>`;
 
-      this.owner.register('template:components/x-foo', template);
+      this.owner.register(
+        'component:x-foo',
+        setComponentTemplate(template, class extends Component {})
+      );
 
       this.set('clicked', () => assert.ok(true, 'action was triggered'));
       await render(hbs`{{x-foo clicked=this.clicked}}`);
@@ -408,8 +428,11 @@ module('setupRenderingContext', function (hooks) {
 
     test('can update a passed in argument with an <input>', async function (assert) {
       this.owner.register(
-        'template:components/my-input',
-        hbs`{{input value=@value}}`
+        'component:my-input',
+        setComponentTemplate(
+          hbs`{{input value=@value}}`,
+          class extends Component {}
+        )
       );
 
       await render(hbs`<MyInput @value={{this.value}} />`);
@@ -436,8 +459,11 @@ module('setupRenderingContext', function (hooks) {
 
     test('it supports dom triggered focus events', async function (assert) {
       this.owner.register(
-        'template:components/x-input',
-        hbs`<input onblur={{this.onBlur}} onfocusout={{this.onFocus}} />`
+        'component:x-input',
+        setComponentTemplate(
+          hbs`<input onblur={{this.onBlur}} onfocusout={{this.onFocus}} />`,
+          class extends Component {}
+        )
       );
       await render(hbs`<XInput />`);
 
@@ -463,17 +489,14 @@ module('setupRenderingContext', function (hooks) {
     test('two way bound arguments are updated', async function (assert) {
       this.owner.register(
         'component:my-component',
-        Component.extend({
-          actions: {
-            clicked() {
+        setComponentTemplate(
+          hbs`<button {{on 'click' this.clicked}}>{{this.foo}}</button>`,
+          class extends Component {
+            clicked = () => {
               this.set('foo', 'updated!');
-            },
-          },
-        })
-      );
-      this.owner.register(
-        'template:components/my-component',
-        hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`
+            };
+          }
+        )
       );
 
       this.set('foo', 'original');
@@ -496,18 +519,15 @@ module('setupRenderingContext', function (hooks) {
     test('two way bound arguments are available after clearRender is called', async function (assert) {
       this.owner.register(
         'component:my-component',
-        Component.extend({
-          actions: {
-            clicked() {
+        setComponentTemplate(
+          hbs`<button {{on 'click' this.clicked}}>{{this.foo}}</button>`,
+          class extends Component {
+            clicked = () => {
               this.set('foo', 'updated!');
               this.set('bar', 'updated bar!');
-            },
-          },
-        })
-      );
-      this.owner.register(
-        'template:components/my-component',
-        hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`
+            };
+          }
+        )
       );
 
       // using two arguments here to ensure the two way binding
