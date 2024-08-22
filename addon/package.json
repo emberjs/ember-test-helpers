@@ -47,6 +47,9 @@
     "start": "rollup --config --watch --no-watch.clearScreen",
     "test": "echo 'A v2 addon does not have tests, run tests in test-app'"
   },
+  "peerDependencies": {
+    "ember-source": ">= 4.0.0"
+  },
   "dependencies": {
     "@ember/test-waiters": "^3.1.0",
     "@embroider/addon-shim": "^1.8.7",
@@ -94,6 +97,7 @@
     "version": 2,
     "type": "addon",
     "main": "addon-main.cjs",
-    "app-js": {}
+    "app-js": {},
+    "externals": ["@glimmer/manager", "@ember/-internals"]
   }
 }
