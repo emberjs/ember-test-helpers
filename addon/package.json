@@ -97,6 +97,7 @@
     "version": 2,
     "type": "addon",
     "main": "addon-main.cjs",
-    "app-js": {}
+    "app-js": {},
+    "externals": ["@glimmer/manager", "@ember/-internals"]
   }
 }
