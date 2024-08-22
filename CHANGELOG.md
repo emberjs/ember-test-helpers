@@ -1,5 +1,23 @@
 # Changelog
 
+## Release (2024-08-22)
+
+@ember/test-helpers 4.0.1 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`
+  * [#1482](https://github.com/emberjs/ember-test-helpers/pull/1482) Resolve Error: @ember/test-helpers is trying to import from @ember/-internals but that is not one of its explicit dependencies ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :memo: Documentation
+* [#1483](https://github.com/emberjs/ember-test-helpers/pull/1483) Update README.md to reflect TS support ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `test-app`
+  * [#1484](https://github.com/emberjs/ember-test-helpers/pull/1484) Update tests to be compatible with Ember v6 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-08-20)
 
 @ember/test-helpers 4.0.0 (major)
