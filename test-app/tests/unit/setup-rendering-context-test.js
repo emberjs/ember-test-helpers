@@ -363,15 +363,13 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register(
         'component:x-foo',
         setComponentTemplate(
-          hbs`<button {{action 'clicked'}}>Click me!</button>`,
+          hbs`<button {{on 'click' this.clicked}}>Click me!</button>`,
 
-          Component.extend({
-            actions: {
-              clicked() {
-                assert.ok(true, 'click was fired');
-              },
-            },
-          })
+          class extends Component {
+            clicked = () => {
+              assert.ok(true, 'click was fired');
+            };
+          }
         )
       );
 
@@ -391,7 +389,7 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register(
         'component:x-foo',
         setComponentTemplate(
-          hbs`<button onclick={{action @clicked}}>Click me!</button>`,
+          hbs`<button {{on 'click' @clicked}}>Click me!</button>`,
           Component.extend()
         )
       );
@@ -410,7 +408,7 @@ module('setupRenderingContext', function (hooks) {
     test('can pass function to be used as a "closure action" to a template only component', async function (assert) {
       assert.expect(2);
 
-      let template = hbs`<button onclick={{action @clicked}}>Click me!</button>`;
+      let template = hbs`<button onclick={{@clicked}}>Click me!</button>`;
 
       this.owner.register(
         'component:x-foo',
@@ -492,14 +490,12 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register(
         'component:my-component',
         setComponentTemplate(
-          hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`,
-          Component.extend({
-            actions: {
-              clicked() {
-                this.set('foo', 'updated!');
-              },
-            },
-          })
+          hbs`<button {{on 'click' this.clicked}}>{{this.foo}}</button>`,
+          class extends Component {
+            clicked = () => {
+              this.set('foo', 'updated!');
+            };
+          }
         )
       );
 
@@ -524,15 +520,13 @@ module('setupRenderingContext', function (hooks) {
       this.owner.register(
         'component:my-component',
         setComponentTemplate(
-          hbs`<button {{action 'clicked'}}>{{this.foo}}</button>`,
-          Component.extend({
-            actions: {
-              clicked() {
-                this.set('foo', 'updated!');
-                this.set('bar', 'updated bar!');
-              },
-            },
-          })
+          hbs`<button {{on 'click' this.clicked}}>{{this.foo}}</button>`,
+          class extends Component {
+            clicked = () => {
+              this.set('foo', 'updated!');
+              this.set('bar', 'updated bar!');
+            };
+          }
         )
       );
 
