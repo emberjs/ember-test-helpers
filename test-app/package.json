@@ -18,9 +18,10 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "ember serve",
-    "test": "ember test",
-    "test:ember": "ember test"
+    "start": "pnpm _syncPnpm && concurrently 'ember serve' 'pnpm _syncPnpm --watch' --names 'tests serve,tests sync deps'",
+    "test": "pnpm _syncPnpm; ember test",
+    "test:ember": "ember test",
+    "_syncPnpm": "DEBUG=sync-pnpm pnpm sync-dependencies-meta-injected"
   },
   "dependenciesMeta": {
     "@ember/test-helpers": {
@@ -64,6 +65,7 @@
     "eslint-plugin-qunit": "^7.3.4",
     "latest-version": "^5.0.0",
     "loader.js": "^4.7.0",
+    "pnpm-sync-dependencies-meta-injected": "^0.0.14",
     "pretender": "^3.4.7",
     "prettier": "^2.8.7",
     "qunit": "^2.21.1",
