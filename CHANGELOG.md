@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-08-23)
+
+@ember/test-helpers 4.0.2 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1487](https://github.com/emberjs/ember-test-helpers/pull/1487) Add @ember/renderer to externals ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-08-22)
 
 @ember/test-helpers 4.0.1 (patch)
