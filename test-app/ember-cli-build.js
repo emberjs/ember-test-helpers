@@ -39,6 +39,9 @@ module.exports = function (defaults) {
           '{{inner-comp}}': { safeToIgnore: true },
           '{{template-only}}': { safeToIgnore: true },
         },
+        helpers: {
+          '{{jax}}': { safeToIgnore: true },
+        },
       },
     ],
   });
