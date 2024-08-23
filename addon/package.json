@@ -100,7 +100,8 @@
     "app-js": {},
     "externals": [
       "@glimmer/manager",
-      "@ember/-internals"
+      "@ember/-internals",
+      "@ember/renderer"
     ]
   }
 }
