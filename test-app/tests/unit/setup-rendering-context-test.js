@@ -87,7 +87,6 @@ module('setupRenderingContext', function (hooks) {
         'component:js-only': Component.extend({
           classNames: ['js-only'],
         }),
-        'helper:jax': helper(([name]) => `${name}-jax`),
         'component:outer-comp': setComponentTemplate(
           hbs`outer{{inner-comp}}outer`,
           class extends Component {}
@@ -287,15 +286,21 @@ module('setupRenderingContext', function (hooks) {
     });
 
     test('can invoke helper', async function (assert) {
-      await render(hbs`{{jax "max"}}`);
+      this.setProperties({
+        jax: helper(([name]) => `${name}-jax`),
+      });
+      await render(hbs`{{this.jax "max"}}`);
 
       assert.equal(this.element.textContent, 'max-jax');
     });
 
     test('can pass arguments to helper from context', async function (assert) {
+      this.setProperties({
+        jax: helper(([name]) => `${name}-jax`),
+      });
       this.set('name', 'james');
 
-      await render(hbs`{{jax this.name}}`);
+      await render(hbs`{{this.jax this.name}}`);
 
       assert.equal(this.element.textContent, 'james-jax');
     });

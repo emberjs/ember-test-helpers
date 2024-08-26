@@ -190,11 +190,16 @@ if (loader.registry['ember-testing/test/waiters']) {
 function checkWaiters() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   type Waiter = [any, Function];
-  const EmberTest = Ember.Test as any as { waiters: Array<Waiter> };
+  const EmberTest = Ember.Test as any as {
+    waiters: Array<Waiter>;
+    checkWaiters: () => boolean;
+  };
 
   if (_internalCheckWaiters) {
     return _internalCheckWaiters();
-  } else if (EmberTest.waiters) {
+  }
+
+  if (EmberTest.waiters) {
     if (
       EmberTest.waiters.some(([context, callback]) => !callback.call(context))
     ) {
@@ -202,7 +207,7 @@ function checkWaiters() {
     }
   }
 
-  return false;
+  return EmberTest.checkWaiters();
 }
 
 export interface SettledState {
