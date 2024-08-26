@@ -103,5 +103,8 @@
       "@ember/-internals",
       "@ember/renderer"
     ]
+  },
+  "volta": {
+    "extends": "../package.json"
   }
 }
