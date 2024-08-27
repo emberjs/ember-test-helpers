@@ -2,9 +2,9 @@
 // "provides" this public API, but does not for earlier versions. As a result,
 // this type will be `any`.
 import { _backburner } from '@ember/runloop';
-import Ember from 'ember';
-
-import EmberApplicationInstance from '@ember/application/instance';
+import { Test } from 'ember-testing';
+export const checkWaiters = Test.checkWaiters;
+import { pendingRequests as _internalGetPendingRequestsCount } from 'ember-testing/lib/test/pending_requests';
 
 import { nextTick } from './-utils.ts';
 import waitUntil from './wait-until.ts';
@@ -12,68 +12,6 @@ import { hasPendingTransitions } from './setup-application-context.ts';
 import { hasPendingWaiters } from '@ember/test-waiters';
 import type DebugInfo from './-internal/debug-info.ts';
 import { TestDebugInfo } from './-internal/debug-info.ts';
-
-// Ember internally tracks AJAX requests in the same way that we do here for
-// legacy style "acceptance" tests using the `ember-testing.js` asset provided
-// by emberjs/ember.js itself. When `@ember/test-helpers`'s `settled` utility
-// is used in a legacy acceptance test context any pending AJAX requests are
-// not properly considered during the `isSettled` check below.
-//
-// This utilizes a local utility method present in Ember since around 2.8.0 to
-// properly consider pending AJAX requests done within legacy acceptance tests.
-const _internalPendingRequestsModule = (() => {
-  const loader = (Ember as any).__loader;
-
-  if (loader.registry['ember-testing/test/pending_requests']) {
-    // Ember <= 3.1
-    return loader.require('ember-testing/test/pending_requests');
-  } else if (loader.registry['ember-testing/lib/test/pending_requests']) {
-    // Ember >= 3.2
-    return loader.require('ember-testing/lib/test/pending_requests');
-  }
-
-  return null;
-})();
-
-const _internalGetPendingRequestsCount = () => {
-  if (_internalPendingRequestsModule) {
-    return _internalPendingRequestsModule.pendingRequests();
-  }
-  return 0;
-};
-
-if (
-  typeof (globalThis as any).jQuery !== 'undefined' &&
-  _internalPendingRequestsModule
-) {
-  // This exists to ensure that the AJAX listeners setup by Ember itself
-  // (which as of 2.17 are not properly torn down) get cleared and released
-  // when the application is destroyed. Without this, any AJAX requests
-  // that happen _between_ acceptance tests will always share
-  // `pendingRequests`.
-  //
-  // This can be removed once Ember 4.0.0 is released
-  EmberApplicationInstance.reopen({
-    willDestroy(this: EmberApplicationInstance, ...args: any[]) {
-      (globalThis as any)
-        .jQuery(document)
-        .off(
-          'ajaxSend',
-          _internalPendingRequestsModule.incrementPendingRequests,
-        );
-      (globalThis as any)
-        .jQuery(document)
-        .off(
-          'ajaxComplete',
-          _internalPendingRequestsModule.decrementPendingRequests,
-        );
-
-      _internalPendingRequestsModule.clearPendingRequests();
-
-      this._super(...args);
-    },
-  });
-}
 
 let requests: XMLHttpRequest[];
 
@@ -165,49 +103,6 @@ export function _setupAJAXHooks() {
   (globalThis as any)
     .jQuery(document)
     .on('ajaxComplete', decrementAjaxPendingRequests);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-let _internalCheckWaiters: Function;
-
-const loader = (Ember as any).__loader;
-if (loader.registry['ember-testing/test/waiters']) {
-  // Ember <= 3.1
-  _internalCheckWaiters = loader.require(
-    'ember-testing/test/waiters',
-  ).checkWaiters;
-} else if (loader.registry['ember-testing/lib/test/waiters']) {
-  // Ember >= 3.2
-  _internalCheckWaiters = loader.require(
-    'ember-testing/lib/test/waiters',
-  ).checkWaiters;
-}
-
-/**
-  @private
-  @returns {boolean} true if waiters are still pending
-*/
-function checkWaiters() {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  type Waiter = [any, Function];
-  const EmberTest = Ember.Test as any as {
-    waiters: Array<Waiter>;
-    checkWaiters: () => boolean;
-  };
-
-  if (_internalCheckWaiters) {
-    return _internalCheckWaiters();
-  }
-
-  if (EmberTest.waiters) {
-    if (
-      EmberTest.waiters.some(([context, callback]) => !callback.call(context))
-    ) {
-      return true;
-    }
-  }
-
-  return EmberTest.checkWaiters();
 }
 
 export interface SettledState {
