@@ -105,7 +105,7 @@ jobs:
           - ember-canary
           - ember-default
           - embroider-safe
-          # - embroider-optimized # see comments in ember-try.js
+          - embroider-optimized 
 
     steps:
       - uses: actions/checkout@v4

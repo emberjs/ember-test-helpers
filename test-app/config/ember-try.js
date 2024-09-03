@@ -1,7 +1,7 @@
 'use strict';
 
 const getChannelURL = require('ember-source-channel-url');
-const { embroiderSafe } = require('@embroider/test-setup');
+const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 const latestVersion = require('latest-version');
 
 module.exports = async function () {
@@ -122,19 +122,7 @@ module.exports = async function () {
         },
       },
       embroiderSafe(),
-      // disable embroider optimized test scenarios, as the dynamism these
-      // tests use is not compatible with embroider we are still exploring
-      // appropriate paths forward.
-      //
-      // Steps to re-enable:
-      //
-      // 1. have a strategy to make this work, import from '@embroider/test-setup'
-      // 2. uncomment the next line
-      // embroiderOptimized();
-      //
-      // 3. add "embroider-optimized" to .github/workflows/ci-build.yml's
-      //    ember-try-scenario list.
-      //
+      embroiderOptimized(),
     ],
   };
 };

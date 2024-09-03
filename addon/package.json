@@ -101,7 +101,11 @@
     "externals": [
       "@glimmer/manager",
       "@ember/-internals",
-      "@ember/renderer"
+      "@ember/renderer",
+      "ember-testing"
     ]
+  },
+  "volta": {
+    "extends": "../package.json"
   }
 }
