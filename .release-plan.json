@@ -2,16 +2,20 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "patch",
-      "oldVersion": "4.0.1",
-      "newVersion": "4.0.2",
+      "oldVersion": "4.0.2",
+      "newVersion": "4.0.3",
       "constraints": [
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-08-23)\n\n@ember/test-helpers 4.0.2 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1487](https://github.com/emberjs/ember-test-helpers/pull/1487) Add @ember/renderer to externals ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-09-03)\n\n@ember/test-helpers 4.0.3 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`, `type-tests`\n  * [#1486](https://github.com/emberjs/ember-test-helpers/pull/1486) Remove old code that existed for now unsupported ember-sources (2.4, etc) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`, `test-app`, `type-tests`\n  * [#1486](https://github.com/emberjs/ember-test-helpers/pull/1486) Remove old code that existed for now unsupported ember-sources (2.4, etc) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

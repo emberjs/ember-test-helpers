@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2024-09-03)
+
+@ember/test-helpers 4.0.3 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`, `type-tests`
+  * [#1486](https://github.com/emberjs/ember-test-helpers/pull/1486) Remove old code that existed for now unsupported ember-sources (2.4, etc) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `@ember/test-helpers`, `test-app`, `type-tests`
+  * [#1486](https://github.com/emberjs/ember-test-helpers/pull/1486) Remove old code that existed for now unsupported ember-sources (2.4, etc) ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-08-23)
 
 @ember/test-helpers 4.0.2 (patch)
