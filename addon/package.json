@@ -1,6 +1,6 @@
 {
   "name": "@ember/test-helpers",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Helpers for testing Ember.js applications",
   "keywords": [
     "ember-addon"
