@@ -3,7 +3,6 @@
 // this type will be `any`.
 import { _backburner } from '@ember/runloop';
 import { Test } from 'ember-testing';
-export const checkWaiters = Test.checkWaiters;
 import { pendingRequests as _internalGetPendingRequestsCount } from 'ember-testing/lib/test/pending_requests';
 
 import { nextTick } from './-utils.ts';
@@ -14,6 +13,7 @@ import type DebugInfo from './-internal/debug-info.ts';
 import { TestDebugInfo } from './-internal/debug-info.ts';
 
 let requests: XMLHttpRequest[];
+const checkWaiters = Test.checkWaiters;
 
 /**
   @private
