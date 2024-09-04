@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2024-09-04)
+
+@ember/test-helpers 4.0.4 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `@ember/test-helpers`
+  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-09-03)
 
 @ember/test-helpers 4.0.3 (patch)
