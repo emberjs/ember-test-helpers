@@ -37,9 +37,6 @@ jobs:
           cache: pnpm
       - name: Install Dependencies
         run: pnpm install 
-      - run: |
-          google-chrome --version
-
       - name: Build addon
         working-directory: addon
         run: pnpm build

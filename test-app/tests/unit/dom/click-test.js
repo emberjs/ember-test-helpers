@@ -6,7 +6,6 @@ import {
   insertElement,
 } from '../../helpers/events';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import { isChrome } from '../../helpers/browser-detect';
 import {
   registerHooks,
   unregisterHooks,
@@ -203,17 +202,6 @@ module('DOM Helper: click', function (hooks) {
   module('focusable element types', function () {
     let clickSteps = ['mousedown', 'focus', 'focusin', 'mouseup', 'click'];
 
-    if (isChrome) {
-      clickSteps = [
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-        'selectionchange',
-      ];
-    }
-
     test('clicking a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');
 
@@ -309,17 +297,7 @@ module('DOM Helper: click', function (hooks) {
 
       await click(child);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-        ]);
-      } else {
-        assert.verifySteps(clickSteps);
-      }
+      assert.verifySteps(clickSteps);
       assert.strictEqual(
         document.activeElement,
         element,
@@ -356,28 +334,15 @@ module('DOM Helper: click', function (hooks) {
       await click(focusableElement);
       await click(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'selectionchange',
-          'blur',
-          'focusout',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'blur',
-          'focusout',
-        ]);
-      }
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('clicking on non-focusable element inside active element does not trigger blur on active element', async function (assert) {
@@ -412,28 +377,15 @@ module('DOM Helper: click', function (hooks) {
       await click(focusableElement);
       await click(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'selectionchange',
-          'blur',
-          'focusout',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'blur',
-          'focusout',
-        ]);
-      }
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
@@ -465,24 +417,7 @@ module('DOM Helper: click', function (hooks) {
       await click(focusableElement);
       await click(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'selectionchange',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-        ]);
-      }
+      assert.verifySteps(['mousedown', 'focus', 'focusin', 'mouseup', 'click']);
 
       element.removeEventListener('mousedown', preventDefault);
       await click(element);

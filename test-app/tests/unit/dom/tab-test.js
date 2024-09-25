@@ -10,7 +10,7 @@ import {
   insertElement,
   instrumentElement,
 } from '../../helpers/events';
-import { isEdge, isChrome } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 let _focusSteps = ['focus', 'focusin'];
@@ -78,13 +78,10 @@ module('DOM Helper: tab', function (hooks) {
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[0].id),
-        `keyup ${elements[0].id}`,
-        isChrome && `selectionchange ${elements[0].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+    ]);
   });
 
   test('tabs backwards to focusable element', async function (assert) {
@@ -93,13 +90,10 @@ module('DOM Helper: tab', function (hooks) {
     await setupContext(context);
     await tab({ backwards: true });
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[0].id),
-        `keyup ${elements[0].id}`,
-        isChrome && `selectionchange ${elements[0].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+    ]);
   });
 
   test('blurs target when tabs through the last target', async function (assert) {
@@ -109,15 +103,13 @@ module('DOM Helper: tab', function (hooks) {
     await tab();
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[0].id),
-        `keyup ${elements[0].id}`,
-        isChrome && `selectionchange ${elements[0].id}`,
-        `keydown ${elements[0].id}`,
-        ...blurSteps(elements[0].id),
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+
+      `keydown ${elements[0].id}`,
+      ...blurSteps(elements[0].id),
+    ]);
   });
 
   test('tabs between focusable elements', async function (assert) {
@@ -134,15 +126,7 @@ module('DOM Helper: tab', function (hooks) {
     await tab();
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps('a'),
-        `keyup a`,
-        isChrome && `selectionchange a`,
-        ...moveFocus('a', 'b'),
-        isChrome && `selectionchange b`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([...focusSteps('a'), `keyup a`, ...moveFocus('a', 'b')]);
   });
 
   test('ignores focusable elements with tab index = -1', async function (assert) {
@@ -157,16 +141,13 @@ module('DOM Helper: tab', function (hooks) {
 
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[1].id),
-        `keyup ${elements[1].id}`,
-        isChrome && `selectionchange ${elements[1].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[1].id),
+      `keyup ${elements[1].id}`,
+    ]);
   });
 
-  test('going backwards, ignores focusable elements with tab index = -1', async function (assert) {
+  test('ignores focusable elements with tab index = -1', async function (assert) {
     elements = [
       buildInstrumentedElement('input', ['target.id']),
       buildInstrumentedElement('input', ['target.id']),
@@ -178,13 +159,10 @@ module('DOM Helper: tab', function (hooks) {
 
     await tab({ backwards: true });
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[0].id),
-        `keyup ${elements[0].id}`,
-        isChrome && `selectionchange ${elements[0].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+    ]);
   });
 
   test('throws an error when elements have tab index > 0', async function (assert) {
@@ -226,15 +204,12 @@ module('DOM Helper: tab', function (hooks) {
     await tab();
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[0].id),
-        `keyup ${elements[0].id}`,
-        isChrome && `selectionchange ${elements[0].id}`,
-        `keydown ${elements[0].id}`,
-        `keyup ${elements[0].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[0].id),
+      `keyup ${elements[0].id}`,
+      `keydown ${elements[0].id}`,
+      `keyup ${elements[0].id}`,
+    ]);
   });
 
   test('tabs an input that moves focus during an event', async function (assert) {
@@ -286,42 +261,13 @@ module('DOM Helper: tab', function (hooks) {
     await tab({ unRestrainTabIndex: true });
     await tab({ unRestrainTabIndex: true });
 
-    if (isChrome) {
-      assert.verifySteps([
-        'focus a',
-        'focusin a',
-        'keyup a',
-        'selectionchange a',
-        'keydown a',
-        'blur a',
-        'focusout a',
-        'focus b',
-        'focusin b',
-        'keyup b',
-        'selectionchange b',
-        'keydown b',
-        'blur b',
-        'focusout b',
-        'focus c',
-        'focusin c',
-        'keyup c',
-        'keydown c',
-        'blur c',
-        'focusout c',
-        'focus d',
-        'focusin d',
-        'keyup d',
-        'selectionchange d',
-      ]);
-    } else {
-      assert.verifySteps([
-        ...focusSteps('a'),
-        'keyup a',
-        ...moveFocus('a', 'b'),
-        ...moveFocus('b', 'c'),
-        ...moveFocus('c', 'd'),
-      ]);
-    }
+    assert.verifySteps([
+      ...focusSteps('a'),
+      'keyup a',
+      ...moveFocus('a', 'b'),
+      ...moveFocus('b', 'c'),
+      ...moveFocus('c', 'd'),
+    ]);
   });
 
   module('programmatically focusable elements', function (hooks) {
@@ -347,26 +293,18 @@ module('DOM Helper: tab', function (hooks) {
 
     test('tabs backwards focuses previous node', async function (assert) {
       await tab({ backwards: true, unRestrainTabIndex: true });
-      assert.verifySteps(
-        [
-          ...focusSteps(elements[1].id),
-          isChrome && `selectionchange ${elements[1].id}`,
-          ...moveFocus(elements[1].id, elements[0].id),
-          isChrome && `selectionchange ${elements[0].id}`,
-        ].filter(Boolean)
-      );
+      assert.verifySteps([
+        ...focusSteps(elements[1].id),
+        ...moveFocus(elements[1].id, elements[0].id),
+      ]);
     });
 
     test('tabs focuses next focus area', async function (assert) {
       await tab({ unRestrainTabIndex: true });
-      assert.verifySteps(
-        [
-          ...focusSteps(elements[1].id),
-          isChrome && `selectionchange ${elements[1].id}`,
-          ...moveFocus(elements[1].id, elements[2].id),
-          isChrome && `selectionchange ${elements[2].id}`,
-        ].filter(Boolean)
-      );
+      assert.verifySteps([
+        ...focusSteps(elements[1].id),
+        ...moveFocus(elements[1].id, elements[2].id),
+      ]);
     });
   });
 
@@ -384,13 +322,10 @@ module('DOM Helper: tab', function (hooks) {
       await setupContext(context);
       await tab();
 
-      assert.verifySteps(
-        [
-          ...focusSteps(elements[1].id),
-          `keyup ${elements[1].id}`,
-          isChrome && `selectionchange ${elements[1].id}`,
-        ].filter(Boolean)
-      );
+      assert.verifySteps([
+        ...focusSteps(elements[1].id),
+        `keyup ${elements[1].id}`,
+      ]);
     });
 
     test('ignores invisible elements', async function (assert) {
@@ -399,13 +334,10 @@ module('DOM Helper: tab', function (hooks) {
       await setupContext(context);
       await tab();
 
-      assert.verifySteps(
-        [
-          ...focusSteps(elements[1].id),
-          `keyup ${elements[1].id}`,
-          isChrome && `selectionchange ${elements[1].id}`,
-        ].filter(Boolean)
-      );
+      assert.verifySteps([
+        ...focusSteps(elements[1].id),
+        `keyup ${elements[1].id}`,
+      ]);
     });
   });
 
@@ -423,13 +355,10 @@ module('DOM Helper: tab', function (hooks) {
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[1].id),
-        `keyup ${elements[1].id}`,
-        isChrome && `selectionchange ${elements[1].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[1].id),
+      `keyup ${elements[1].id}`,
+    ]);
   });
 
   test('ignores children of disabled fieldset', async function (assert) {
@@ -446,13 +375,10 @@ module('DOM Helper: tab', function (hooks) {
     await setupContext(context);
     await tab();
 
-    assert.verifySteps(
-      [
-        ...focusSteps(elements[1].id),
-        `keyup ${elements[1].id}`,
-        isChrome && `selectionchange ${elements[1].id}`,
-      ].filter(Boolean)
-    );
+    assert.verifySteps([
+      ...focusSteps(elements[1].id),
+      `keyup ${elements[1].id}`,
+    ]);
   });
 
   test('first summary element of a details should be focusable', async function (assert) {

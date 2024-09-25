@@ -7,7 +7,7 @@ import {
   registerHook,
 } from '@ember/test-helpers';
 import { buildInstrumentedElement, insertElement } from '../../helpers/events';
-import { isEdge, isChrome } from '../../helpers/browser-detect';
+import { isEdge } from '../../helpers/browser-detect';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { createDescriptor } from 'dom-element-descriptors';
 
@@ -16,10 +16,6 @@ let blurSteps = ['blur', 'focusout'];
 
 if (isEdge) {
   blurSteps = ['focusout', 'blur'];
-}
-
-if (isChrome) {
-  focusSteps.push('selectionchange');
 }
 
 module('DOM Helper: blur', function (hooks) {
@@ -57,11 +53,7 @@ module('DOM Helper: blur', function (hooks) {
   });
 
   test('it executes registered blur hooks', async function (assert) {
-    if (isChrome) {
-      assert.expect(15);
-    } else {
-      assert.expect(13);
-    }
+    assert.expect(13);
 
     let element = document.createElement('input');
     insertElement(element);

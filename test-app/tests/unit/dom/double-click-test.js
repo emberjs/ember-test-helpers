@@ -1,5 +1,4 @@
 import { module, test } from 'qunit';
-import { isChrome } from '../../helpers/browser-detect';
 import {
   doubleClick,
   setupContext,
@@ -27,10 +26,6 @@ const expectedEvents = [
   'click',
   'dblclick',
 ];
-
-if (isChrome) {
-  expectedEvents.push('selectionchange');
-}
 
 module('DOM Helper: doubleClick', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
@@ -69,7 +64,7 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(element);
 
       const expectedSteps = buildExpectedSteps('doubleClick', {
-        expectedEvents: expectedEvents.filter((x) => x !== 'selectionchange'),
+        expectedEvents,
       });
       assert.verifySteps(expectedSteps);
     } finally {
@@ -78,23 +73,21 @@ module('DOM Helper: doubleClick', function (hooks) {
   });
 
   module('non-focusable element types', function () {
-    let expectedEvents = [
-      'mousedown',
-      'mouseup',
-      'click',
-      'mousedown',
-      'mouseup',
-      'click',
-      'dblclick',
-    ];
-
     test('double-clicking a div via selector with context set', async function (assert) {
       element = buildInstrumentedElement('div');
 
       await setupContext(context);
       await doubleClick(`#${element.id}`);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via element with context set', async function (assert) {
@@ -103,7 +96,15 @@ module('DOM Helper: doubleClick', function (hooks) {
       await setupContext(context);
       await doubleClick(element);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via element without context set', async function (assert) {
@@ -111,7 +112,15 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await doubleClick(element);
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via descriptor with context set', async function (assert) {
@@ -120,7 +129,15 @@ module('DOM Helper: doubleClick', function (hooks) {
       await setupContext(context);
       await doubleClick(createDescriptor({ element }));
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('double-clicking a div via descriptor without context set', async function (assert) {
@@ -128,7 +145,15 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await doubleClick(createDescriptor({ element }));
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('does not run sync', async function (assert) {
@@ -140,7 +165,15 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await promise;
 
-      assert.verifySteps(expectedEvents);
+      assert.verifySteps([
+        'mousedown',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
     });
 
     test('rejects if selector is not found', async function (assert) {
@@ -224,21 +257,6 @@ module('DOM Helper: doubleClick', function (hooks) {
       'click',
       'dblclick',
     ];
-
-    if (isChrome) {
-      clickSteps = [
-        'mousedown',
-        'focus',
-        'focusin',
-        'mouseup',
-        'click',
-        'mousedown',
-        'mouseup',
-        'click',
-        'dblclick',
-        'selectionchange',
-      ];
-    }
 
     test('double-clicking a input via selector with context set', async function (assert) {
       element = buildInstrumentedElement('input');
@@ -324,8 +342,7 @@ module('DOM Helper: doubleClick', function (hooks) {
 
       await doubleClick(child);
 
-      // selectionchange does not fire on un-focusable elements
-      assert.verifySteps(clickSteps.filter((x) => x !== 'selectionchange'));
+      assert.verifySteps(clickSteps);
       assert.strictEqual(
         document.activeElement,
         element,
@@ -370,36 +387,19 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(focusableElement);
       await doubleClick(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-          'selectionchange',
-          'blur',
-          'focusout',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-          'blur',
-          'focusout',
-        ]);
-      }
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('double-clicking on non-focusable element inside active element does not trigger blur on active element', async function (assert) {
@@ -442,36 +442,19 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(focusableElement);
       await doubleClick(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-          'selectionchange',
-          'blur',
-          'focusout',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-          'blur',
-          'focusout',
-        ]);
-      }
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+        'blur',
+        'focusout',
+      ]);
     });
 
     test('double-clicking on non-focusable element does not trigger blur on non-focusable active element', async function (assert) {
@@ -508,32 +491,17 @@ module('DOM Helper: doubleClick', function (hooks) {
       await doubleClick(focusableElement);
       await doubleClick(element);
 
-      if (isChrome) {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-          'selectionchange',
-        ]);
-      } else {
-        assert.verifySteps([
-          'mousedown',
-          'focus',
-          'focusin',
-          'mouseup',
-          'click',
-          'mousedown',
-          'mouseup',
-          'click',
-          'dblclick',
-        ]);
-      }
+      assert.verifySteps([
+        'mousedown',
+        'focus',
+        'focusin',
+        'mouseup',
+        'click',
+        'mousedown',
+        'mouseup',
+        'click',
+        'dblclick',
+      ]);
 
       element.removeEventListener('mousedown', preventDefault);
       await doubleClick(element);
