@@ -65,28 +65,17 @@ module('teardownContext', function (hooks) {
     assert.strictEqual(getContext(), undefined, 'context is unset');
   });
 
-  test('destroyables registered with the context are invoked', async function (assert) {
-    registerDestructor(context, () => {
-      assert.step('destructor was ran');
-    });
-
-    assert.step('teardown started');
-
-    await teardownContext(context);
-
-    assert.step('teardown completed');
-
-    assert.verifySteps([
-      'teardown started',
-      'destructor was ran',
-      'teardown completed',
-    ]);
-  });
-
   test('the owner is destroyed', async function (assert) {
     await teardownContext(context);
 
     assert.ok(context.owner.isDestroyed);
+  });
+
+  test('the context is not destroyed', async function (assert) {
+    await teardownContext(context);
+
+    assert.ok(context.owner.isDestroyed);
+    assert.notOk(context.isDestroyed);
   });
 
   test('the application instance is destroyed and unwatched', async function (assert) {
