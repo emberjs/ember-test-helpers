@@ -15,7 +15,6 @@ import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 import Pretender from 'pretender';
 import setupManualTestWaiter from '../helpers/manual-test-waiter';
-import { registerDestructor } from '@ember/destroyable';
 
 module('teardownContext', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
