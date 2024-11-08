@@ -16,16 +16,6 @@ if (isFirefox || isChrome) {
   clickSteps.push('selectionchange');
 }
 
-/**
- * Prior to Chrome 129 (canary),
- * Chrome 127.x emits an extra selectionchange event sometimes
- *
- * Delete this once we don't want to test against Chrome 127
- */
-if (isChrome) {
-  clickSteps.push('selectionchange');
-}
-
 module('DOM Helper: fillIn', function (hooks) {
   if (!hasEmberVersion(2, 4)) {
     return;

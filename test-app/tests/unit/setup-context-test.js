@@ -943,5 +943,19 @@ module('setupContext', function (hooks) {
         }
       }
     });
+
+    test('can reset context during a test', async function (assert) {
+      assert.expect(1);
+
+      let context = await setupContext({});
+      try {
+        await teardownContext(context);
+        context = await setupContext(context);
+      } finally {
+        await teardownContext(context);
+      }
+
+      assert.ok(true, 'No error calling setupContext after teardownContext');
+    });
   });
 });

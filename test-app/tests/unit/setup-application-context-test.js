@@ -257,4 +257,17 @@ module('setupApplicationContext', function (hooks) {
       'after click resolved',
     ]);
   });
+
+  test('can reset context during a test', async function (assert) {
+    await visit('/');
+    assert.equal(currentURL(), '/');
+
+    await teardownContext(this);
+    await setupContext(this);
+    await setupApplicationContext(this);
+    assert.equal(currentURL(), null);
+
+    await visit('/');
+    assert.equal(currentURL(), '/');
+  });
 });
