@@ -117,18 +117,7 @@
     "node": "10.* || 12.* || 14.* || 15.* || >= 16.*"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "changelog": {
-    "repo": "emberjs/ember-test-helpers",
-    "labels": {
-      "breaking": ":boom: Breaking Change",
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
-      "documentation": ":memo: Documentation",
-      "internal": ":house: Internal"
-    }
+    "registry": "https://addepar.jfrog.io/addepar/api/npm/npm/"
   },
   "ember": {
     "edition": "octane"
@@ -137,21 +126,9 @@
     "configPath": "tests/dummy/config"
   },
   "release-it": {
-    "scripts": {
-      "after:bump": "yarn docs"
-    },
-    "plugins": {
-      "release-it-lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": true
-      }
-    },
     "git": {
+      "requireUpstream": false,
       "tagName": "v${version}"
-    },
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
     }
   },
   "volta": {
