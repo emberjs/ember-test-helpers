@@ -4,13 +4,8 @@ import {
   setupContext,
   teardownContext,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: getRootElement', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context;
 
   hooks.beforeEach(function () {

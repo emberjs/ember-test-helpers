@@ -17,7 +17,6 @@ import {
 } from '@ember/test-helpers';
 import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
 import { getWarningsForContext } from '@ember/test-helpers/-internal/warnings';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   setResolverRegistry,
   createCustomResolver,
@@ -30,10 +29,6 @@ import Ember from 'ember';
 import { deprecate, warn } from '@ember/debug';
 
 module('setupContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(function () {
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
@@ -74,14 +69,11 @@ module('setupContext', function (hooks) {
           'function',
           'has expected lookup interface'
         );
-
-        if (hasEmberVersion(2, 12)) {
-          assert.equal(
-            typeof owner.factoryFor,
-            'function',
-            'has expected factory interface'
-          );
-        }
+        assert.equal(
+          typeof owner.factoryFor,
+          'function',
+          'has expected factory interface'
+        );
       });
 
       overwriteTest(context, 'owner');

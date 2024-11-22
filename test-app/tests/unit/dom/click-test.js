@@ -5,7 +5,6 @@ import {
   instrumentElement,
   insertElement,
 } from '../../helpers/events';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isChrome } from '../../helpers/browser-detect';
 import {
   registerHooks,
@@ -15,10 +14,6 @@ import {
 import { createDescriptor } from 'dom-element-descriptors';
 
 module('DOM Helper: click', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {

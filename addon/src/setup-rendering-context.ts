@@ -1,6 +1,5 @@
 import { run } from '@ember/runloop';
 import Ember from 'ember';
-import global from './global.ts';
 import {
   type BaseContext,
   type TestContext,
@@ -13,7 +12,6 @@ import type { Owner } from './build-owner.ts';
 import getTestMetadata from './test-metadata.ts';
 import { assert } from '@ember/debug';
 import { runHooks } from './helper-hooks.ts';
-import hasEmberVersion from './has-ember-version.ts';
 import isComponent from './-internal/is-component.ts';
 import { ComponentRenderMap, SetUsage } from './setup-context.ts';
 
@@ -188,20 +186,6 @@ export function render(
       };
       toplevelView.setOutletState(outletState);
 
-      // Ember's rendering engine is integration with the run loop so that when a run
-      // loop starts, the rendering is scheduled to be done.
-      //
-      // Ember should be ensuring an instance on its own here (the act of
-      // setting outletState should ensureInstance, since we know we need to
-      // render), but on Ember < 3.23 that is not guaranteed.
-      if (!hasEmberVersion(3, 23)) {
-        // SAFETY: this was correct and type checked on the Ember v3 types, but
-        // since the `run` namespace does not exist in Ember v4, this no longer
-        // can be type checked. When (eventually) dropping support for Ember v3,
-        // and therefore for versions before 3.23, this can be removed entirely.
-        (run as any).backburner.ensureInstance();
-      }
-
       // returning settled here because the actual rendering does not happen until
       // the renderer detects it is dirty (which happens on backburner's end
       // hook), see the following implementation details:
@@ -315,18 +299,7 @@ export default function setupRenderingContext(
       Object.defineProperty(renderingContext, 'element', {
         configurable: true,
         enumerable: true,
-        // ensure the element is based on the wrapping toplevel view
-        // Ember still wraps the main application template with a
-        // normal tagged view
-        //
-        // In older Ember versions (2.4) the element itself is not stable,
-        // and therefore we cannot update the `this.element` until after the
-        // rendering is completed
-        value:
-          global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false
-            ? getRootElement().querySelector('.ember-view')
-            : getRootElement(),
-
+        value: getRootElement(),
         writable: false,
       });
 

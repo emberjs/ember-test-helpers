@@ -12,7 +12,6 @@ import {
   render,
   rerender,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
 import { hbs } from 'ember-cli-htmlbars';
 import Pretender from 'pretender';
@@ -119,10 +118,6 @@ const TestComponent5 = Component.extend({
 });
 
 module('settled real-world scenarios', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);

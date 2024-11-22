@@ -1,12 +1,7 @@
 import { module, test } from 'qunit';
 import { findAll, setupContext, teardownContext } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('DOM Helper: findAll', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element1, element2;
 
   hooks.beforeEach(function () {

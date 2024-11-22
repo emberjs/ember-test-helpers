@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   _setupAJAXHooks,
   _teardownAJAXHooks,
@@ -16,10 +15,6 @@ import ajax from '../helpers/ajax';
 const WAITER_NAME = 'custom-waiter';
 
 module('settled', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   hooks.beforeEach(function (assert) {
     _setupAJAXHooks();
 
