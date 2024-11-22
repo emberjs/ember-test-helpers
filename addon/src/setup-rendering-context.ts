@@ -12,7 +12,6 @@ import type { Owner } from './build-owner.ts';
 import getTestMetadata from './test-metadata.ts';
 import { assert } from '@ember/debug';
 import { runHooks } from './helper-hooks.ts';
-import hasEmberVersion from './has-ember-version.ts';
 import isComponent from './-internal/is-component.ts';
 import { ComponentRenderMap, SetUsage } from './setup-context.ts';
 
@@ -186,20 +185,6 @@ export function render(
         },
       };
       toplevelView.setOutletState(outletState);
-
-      // Ember's rendering engine is integration with the run loop so that when a run
-      // loop starts, the rendering is scheduled to be done.
-      //
-      // Ember should be ensuring an instance on its own here (the act of
-      // setting outletState should ensureInstance, since we know we need to
-      // render), but on Ember < 3.23 that is not guaranteed.
-      if (!hasEmberVersion(3, 23)) {
-        // SAFETY: this was correct and type checked on the Ember v3 types, but
-        // since the `run` namespace does not exist in Ember v4, this no longer
-        // can be type checked. When (eventually) dropping support for Ember v3,
-        // and therefore for versions before 3.23, this can be removed entirely.
-        (run as any).backburner.ensureInstance();
-      }
 
       // returning settled here because the actual rendering does not happen until
       // the renderer detects it is dirty (which happens on backburner's end

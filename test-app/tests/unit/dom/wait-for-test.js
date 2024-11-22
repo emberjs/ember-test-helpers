@@ -1,13 +1,8 @@
 import { module, test } from 'qunit';
 import { waitFor, setupContext, teardownContext } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { registerDescriptorData } from 'dom-element-descriptors';
 
 module('DOM Helper: waitFor', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, rootElement;
 
   hooks.beforeEach(function () {

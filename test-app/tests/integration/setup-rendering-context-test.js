@@ -15,7 +15,6 @@ import {
 } from '@ember/test-helpers';
 import templateOnly from '@ember/component/template-only';
 
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 import { precompileTemplate } from '@ember/template-compilation';
@@ -149,60 +148,56 @@ module('setupRenderingContext "real world"', function (hooks) {
   });
 
   module('lexical scope access', function () {
-    if (hasEmberVersion(3, 28)) {
-      test('can render components passed as locals', async function (assert) {
-        let add = helper(function ([first, second]) {
-          return first + second;
-        });
-
-        await render(
-          precompileTemplate('{{add 1 3}}', {
-            scope() {
-              return { add };
-            },
-          })
-        );
-
-        assert.equal(this.element.textContent, '4');
+    test('can render components passed as locals', async function (assert) {
+      let add = helper(function ([first, second]) {
+        return first + second;
       });
-    }
+
+      await render(
+        precompileTemplate('{{add 1 3}}', {
+          scope() {
+            return { add };
+          },
+        })
+      );
+
+      assert.equal(this.element.textContent, '4');
+    });
   });
 
   module('render with a component', function () {
-    if (hasEmberVersion(3, 25)) {
-      test('can render locally defined components', async function (assert) {
-        class MyComponent extends GlimmerComponent {}
+    test('can render locally defined components', async function (assert) {
+      class MyComponent extends GlimmerComponent {}
 
-        setComponentTemplate(hbs`my name is {{@name}}`, MyComponent);
+      setComponentTemplate(hbs`my name is {{@name}}`, MyComponent);
 
-        const somePerson = new (class {
-          @tracked name = 'Zoey';
-        })();
+      const somePerson = new (class {
+        @tracked name = 'Zoey';
+      })();
 
-        const template = precompileTemplate(
-          '<MyComponent @name={{somePerson.name}} />',
-          {
-            scope() {
-              return {
-                somePerson,
-                MyComponent,
-              };
-            },
-          }
-        );
+      const template = precompileTemplate(
+        '<MyComponent @name={{somePerson.name}} />',
+        {
+          scope() {
+            return {
+              somePerson,
+              MyComponent,
+            };
+          },
+        }
+      );
 
-        const component = setComponentTemplate(template, templateOnly());
+      const component = setComponentTemplate(template, templateOnly());
 
-        await render(component);
+      await render(component);
 
-        assert.equal(this.element.textContent, 'my name is Zoey');
+      assert.equal(this.element.textContent, 'my name is Zoey');
 
-        somePerson.name = 'Tomster';
+      somePerson.name = 'Tomster';
 
-        await rerender();
+      await rerender();
 
-        assert.equal(this.element.textContent, 'my name is Tomster');
-      });
-    }
+      assert.equal(this.element.textContent, 'my name is Tomster');
+    });
   });
 });
