@@ -1,4 +1,3 @@
-/* globals EmberENV */
 import { module, test } from 'qunit';
 import Service from '@ember/service';
 import Component, { setComponentTemplate } from '@ember/component';
@@ -137,36 +136,18 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.element.textContent, 'hello!');
     });
 
-    if (EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-      test('render exposes an `.element` property with application template wrapper', async function (assert) {
-        let rootElement = document.getElementById('ember-testing');
-        assert.notEqual(
-          this.element,
-          rootElement,
-          'this.element should not be rootElement'
-        );
-        assert.ok(
-          rootElement.contains(this.element),
-          'this.element is _within_ the rootElement'
-        );
-        await render(hbs`<p>Hello!</p>`);
+    test('render exposes an `.element` property without an application template wrapper', async function (assert) {
+      let rootElement = document.getElementById('ember-testing');
+      assert.equal(
+        this.element,
+        rootElement,
+        'this.element should _be_ rootElement'
+      );
 
-        assert.equal(this.element.textContent, 'Hello!');
-      });
-    } else {
-      test('render exposes an `.element` property without an application template wrapper', async function (assert) {
-        let rootElement = document.getElementById('ember-testing');
-        assert.equal(
-          this.element,
-          rootElement,
-          'this.element should _be_ rootElement'
-        );
+      await render(hbs`<p>Hello!</p>`);
 
-        await render(hbs`<p>Hello!</p>`);
-
-        assert.equal(this.element.textContent, 'Hello!');
-      });
-    }
+      assert.equal(this.element.textContent, 'Hello!');
+    });
 
     test('is settled after rendering', async function (assert) {
       await render(hbs`Hi!`);

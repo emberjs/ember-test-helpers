@@ -4,7 +4,6 @@ import {
   isTestContext,
   type TestContext,
 } from './setup-context.ts';
-import global from './global.ts';
 import hasEmberVersion from './has-ember-version.ts';
 import settled from './settled.ts';
 import getTestMetadata from './test-metadata.ts';
@@ -168,13 +167,7 @@ export function visit(
       return visitResult;
     })
     .then(() => {
-      if (global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false) {
-        context.element = document.querySelector(
-          '#ember-testing > .ember-view',
-        );
-      } else {
-        context.element = document.querySelector('#ember-testing');
-      }
+      context.element = document.querySelector('#ember-testing');
     })
     .then(settled)
     .then(() => {
