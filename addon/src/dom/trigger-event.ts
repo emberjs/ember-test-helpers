@@ -18,6 +18,7 @@ registerHook('triggerEvent', 'start', (target: Target, eventType: string) => {
  * @param {string|Element|IDOMElementDescriptor} target the element, selector, or descriptor to trigger the event on
  * @param {string} eventType the type of event to trigger
  * @param {Object} options additional properties to be set on the event
+ * @param {boolean} force if true, will bypass availability checks (false by default)
  * @return {Promise<void>} resolves when the application is settled
  *
  * @example
@@ -58,6 +59,7 @@ export default function triggerEvent(
   target: Target,
   eventType: string,
   options?: Record<string, unknown>,
+  force: boolean = false,
 ): Promise<void> {
   return Promise.resolve()
     .then(() => {
@@ -82,7 +84,7 @@ export default function triggerEvent(
         );
       }
 
-      if (isFormControl(element) && element.disabled) {
+      if (!force && isFormControl(element) && element.disabled) {
         throw new Error(`Can not \`triggerEvent\` on disabled ${element}`);
       }
 
