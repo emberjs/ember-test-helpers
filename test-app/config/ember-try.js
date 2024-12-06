@@ -123,6 +123,14 @@ module.exports = async function () {
       },
       embroiderSafe(),
       embroiderOptimized(),
+      embroiderOptimized({
+        name: '@ember/test-waiters@v4',
+        npm: {
+          devDependencies: {
+            '@ember/test-waiters': '^4.0.0',
+          },
+        },
+      }),
     ],
   };
 };
