@@ -1,0 +1,111 @@
+{
+  "name": "@ember/test-helpers",
+  "version": "4.0.4",
+  "description": "Helpers for testing Ember.js applications",
+  "keywords": [
+    "ember-addon"
+  ],
+  "homepage": "https://github.com/emberjs/ember-test-helpers#readme",
+  "bugs": {
+    "url": "https://github.com/emberjs/ember-test-helpers/issues"
+  },
+  "repository": "https://github.com/emberjs/ember-test-helpers",
+  "license": "(MIT OR Apache-2.0)",
+  "author": "",
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "declarations/*"
+      ]
+    }
+  },
+  "files": [
+    "addon-main.cjs",
+    "declarations",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "build:docs": "pnpm build && documentation build --document-exported \"./dist/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o ../API.md",
+    "lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
+    "lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "lint:types": "tsc --noEmit --emitDeclarationOnly false",
+    "prepack": "pnpm build",
+    "start": "rollup --config --watch --no-watch.clearScreen",
+    "test": "echo 'A v2 addon does not have tests, run tests in test-app'"
+  },
+  "peerDependencies": {
+    "ember-source": ">= 4.0.0"
+  },
+  "dependencies": {
+    "@ember/test-waiters": "^3.1.0",
+    "@embroider/addon-shim": "^1.8.7",
+    "@embroider/macros": "^1.16.5",
+    "@simple-dom/interface": "^1.4.0",
+    "decorator-transforms": "^2.0.0",
+    "dom-element-descriptors": "^0.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-typescript": "^7.25.2",
+    "@babel/runtime": "^7.24.4",
+    "@embroider/addon-dev": "^5.0.0",
+    "@glint/template": "^1.4.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@tsconfig/ember": "^3.0.6",
+    "@types/rsvp": "^4.0.9",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "babel-plugin-ember-template-compilation": "^2.2.5",
+    "concurrently": "^8.2.2",
+    "documentation": "^14.0.3",
+    "ember-source": "^5.11.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-ember": "^12.2.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^17.10.2",
+    "eslint-plugin-prettier": "^5.1.3",
+    "execa": "^9.3.1",
+    "fix-bad-declaration-output": "^1.1.4",
+    "prettier": "^3.2.5",
+    "prettier-plugin-ember-template-tag": "^2.0.2",
+    "rollup": "^4.21.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "typescript": "^5.4.5"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
+    "app-js": {},
+    "externals": [
+      "@glimmer/manager",
+      "@ember/-internals",
+      "@ember/renderer",
+      "ember-testing"
+    ]
+  },
+  "volta": {
+    "extends": "../package.json"
+  }
+}
