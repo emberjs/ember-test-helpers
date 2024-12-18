@@ -1,6 +1,6 @@
-import Ember from 'ember';
 import { later, run } from '@ember/runloop';
 import Component from '@ember/component';
+import { registerWaiter, unregisterWaiter } from '@ember/test';
 import {
   settled,
   setupContext,
@@ -95,14 +95,7 @@ const TestComponent5 = Component.extend({
 
   init() {
     this._super.apply(this, arguments);
-    // In Ember < 2.8 `registerWaiter` expected to be bound to
-    // `Ember.Test` 😭
-    //
-    // Once we have dropped support for < 2.8 we should swap this to
-    // use:
-    //
-    // import { registerWaiter } from '@ember/test';
-    Ember.Test.registerWaiter(this, this.isReady);
+    registerWaiter(this, this.isReady);
     later(() => {
       this.setProperties({
         internalValue: 'async value',
@@ -113,8 +106,7 @@ const TestComponent5 = Component.extend({
 
   willDestroy() {
     this._super.apply(this, arguments);
-    // must be called with `Ember.Test` as context for Ember < 2.8
-    Ember.Test.unregisterWaiter(this, this.isReady);
+    unregisterWaiter(this, this.isReady);
   },
 });
 

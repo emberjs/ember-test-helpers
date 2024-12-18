@@ -100,9 +100,6 @@ export default function buildRegistry(resolver: Resolver) {
 
   // @ts-ignore: this is private API.
   const fallbackRegistry = Application.buildRegistry(namespace);
-  // TODO: only do this on Ember < 3.13
-  // @ts-ignore: this is private API.
-  fallbackRegistry.register('component-lookup:main', Ember.ComponentLookup);
 
   // @ts-ignore: this is private API.
   const registry = new Ember.Registry({
