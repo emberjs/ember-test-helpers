@@ -10,7 +10,6 @@ import {
   instrumentElement,
   insertElement,
 } from '../../helpers/events';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
   unregisterHooks,
@@ -33,10 +32,6 @@ if (isChrome) {
 }
 
 module('DOM Helper: doubleClick', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {
