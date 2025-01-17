@@ -11,11 +11,9 @@ import settled from './settled.ts';
 import getRootElement from './dom/get-root-element.ts';
 import type { Owner } from './build-owner.ts';
 import getTestMetadata from './test-metadata.ts';
-import { assert } from '@ember/debug';
 import { runHooks } from './helper-hooks.ts';
 import hasEmberVersion from './has-ember-version.ts';
 import isComponent from './-internal/is-component.ts';
-import { ComponentRenderMap, SetUsage } from './setup-context.ts';
 
 // the built in types do not provide types for @ember/template-compilation
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -134,20 +132,6 @@ export function render(
       const ownerToRenderFrom = options?.owner || owner;
 
       if (isComponent(templateFactoryOrComponent)) {
-        // We use this to track when `render` is used with a component so that we can throw an
-        // assertion if `this.{set,setProperty} is used in the same test
-        ComponentRenderMap.set(context, true);
-
-        const setCalls = SetUsage.get(context);
-
-        if (setCalls !== undefined) {
-          assert(
-            `You cannot call \`this.set\` or \`this.setProperties\` when passing a component to \`render\`, but they were called for the following properties:\n${setCalls
-              .map((key) => `  - ${key}`)
-              .join('\n')}`,
-          );
-        }
-
         context = {
           ProvidedComponent: templateFactoryOrComponent,
         };
