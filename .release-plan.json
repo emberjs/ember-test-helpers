@@ -1,21 +1,21 @@
 {
   "solution": {
     "@ember/test-helpers": {
-      "impact": "patch",
-      "oldVersion": "4.0.3",
-      "newVersion": "4.0.4",
+      "impact": "major",
+      "oldVersion": "4.0.4",
+      "newVersion": "5.0.0",
       "constraints": [
         {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "major",
+          "reason": "Appears in changelog section :boom: Breaking Change"
         },
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-09-04)\n\n@ember/test-helpers 4.0.4 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`\n  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2025-01-17)\n\n@ember/test-helpers 5.0.0 (major)\n\n#### :boom: Breaking Change\n* `@ember/test-helpers`, `test-app`\n  * [#1511](https://github.com/emberjs/ember-test-helpers/pull/1511) Make test context reusable during a test ([@eliasdawson](https://github.com/eliasdawson))\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1527](https://github.com/emberjs/ember-test-helpers/pull/1527) Remove incorrect assertions ([@ef4](https://github.com/ef4))\n\n#### :house: Internal\n* [#1525](https://github.com/emberjs/ember-test-helpers/pull/1525) Fix floating deps tests ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 3\n- Edward Faulkner ([@ef4](https://github.com/ef4))\n- Elias Dawson ([@eliasdawson](https://github.com/eliasdawson))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

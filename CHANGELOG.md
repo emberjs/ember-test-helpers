@@ -1,5 +1,25 @@
 # Changelog
 
+## Release (2025-01-17)
+
+@ember/test-helpers 5.0.0 (major)
+
+#### :boom: Breaking Change
+* `@ember/test-helpers`, `test-app`
+  * [#1511](https://github.com/emberjs/ember-test-helpers/pull/1511) Make test context reusable during a test ([@eliasdawson](https://github.com/eliasdawson))
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`
+  * [#1527](https://github.com/emberjs/ember-test-helpers/pull/1527) Remove incorrect assertions ([@ef4](https://github.com/ef4))
+
+#### :house: Internal
+* [#1525](https://github.com/emberjs/ember-test-helpers/pull/1525) Fix floating deps tests ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 3
+- Edward Faulkner ([@ef4](https://github.com/ef4))
+- Elias Dawson ([@eliasdawson](https://github.com/eliasdawson))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-09-04)
 
 @ember/test-helpers 4.0.4 (patch)
