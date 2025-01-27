@@ -1,6 +1,5 @@
 import { run } from '@ember/runloop';
 import { EventDispatcher } from '@ember/-internals/views';
-import global from './global.ts';
 import {
   type BaseContext,
   type TestContext,
@@ -283,17 +282,10 @@ export default function setupRenderingContext(
       Object.defineProperty(renderingContext, 'element', {
         configurable: true,
         enumerable: true,
-        // ensure the element is based on the wrapping toplevel view
-        // Ember still wraps the main application template with a
-        // normal tagged view
-        //
         // In older Ember versions (2.4) the element itself is not stable,
         // and therefore we cannot update the `this.element` until after the
         // rendering is completed
-        value:
-          global.EmberENV._APPLICATION_TEMPLATE_WRAPPER !== false
-            ? getRootElement().querySelector('.ember-view')
-            : getRootElement(),
+        value: getRootElement(),
 
         writable: false,
       });
