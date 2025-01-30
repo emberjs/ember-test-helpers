@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import { isSettled, getSettledState } from '@ember/test-helpers';
+import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
@@ -418,12 +419,22 @@ module('settled', function (hooks) {
           hasPendingTimers: false,
           hasRunLoop: false,
 
-          // this is true due to
-          // https://github.com/rwjblue/ember-test-waiters/pull/13 (and
-          // https://github.com/rwjblue/ember-test-waiters/pull/17), but should
-          // actually be false once ember-test-waiters drops support for legacy
-          // waiters (likely quite a while from now)
-          hasPendingLegacyWaiters: true,
+          ...(macroCondition(
+            dependencySatisfies('@ember/test-waiters', '>= 4.0.0')
+          )
+            ? {
+                hasPendingLegacyWaiters: false,
+              }
+            : {
+                // when using @ember/test-waiters @ v3 or earlier
+                // this is true due to
+                // https://github.com/rwjblue/ember-test-waiters/pull/13 (and
+                // https://github.com/rwjblue/ember-test-waiters/pull/17), but should
+                // actually be false once ember-test-waiters drops support for legacy
+                // waiters (likely quite a while from now)
+
+                hasPendingLegacyWaiters: true,
+              }),
 
           hasPendingTestWaiters: true,
           hasPendingRequests: false,
