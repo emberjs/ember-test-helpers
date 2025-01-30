@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2025-01-30)
+
+@ember/test-helpers 4.0.5 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`
+  * [#1530](https://github.com/emberjs/ember-test-helpers/pull/1530) v4: Widen test-waiters range ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* [#1531](https://github.com/emberjs/ember-test-helpers/pull/1531) make release-plan work for v4 ([@mansona](https://github.com/mansona))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-09-04)
 
 @ember/test-helpers 4.0.4 (patch)

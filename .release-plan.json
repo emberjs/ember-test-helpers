@@ -2,20 +2,16 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "patch",
-      "oldVersion": "4.0.3",
-      "newVersion": "4.0.4",
+      "oldVersion": "4.0.4",
+      "newVersion": "4.0.5",
       "constraints": [
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-09-04)\n\n@ember/test-helpers 4.0.4 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`\n  * [#1503](https://github.com/emberjs/ember-test-helpers/pull/1503) Don't export checkWaiters ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2025-01-30)\n\n@ember/test-helpers 4.0.5 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1530](https://github.com/emberjs/ember-test-helpers/pull/1530) v4: Widen test-waiters range ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* [#1531](https://github.com/emberjs/ember-test-helpers/pull/1531) make release-plan work for v4 ([@mansona](https://github.com/mansona))\n\n#### Committers: 2\n- Chris Manson ([@mansona](https://github.com/mansona))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
