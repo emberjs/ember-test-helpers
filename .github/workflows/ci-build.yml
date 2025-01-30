@@ -79,6 +79,8 @@ jobs:
       - name: Build addon
         working-directory: addon
         run: pnpm build
+      - name: Force re-sync of injected Dependencies
+        run: pnpm i -f
       - name: Run Tests
         working-directory: test-app
         run: pnpm test
