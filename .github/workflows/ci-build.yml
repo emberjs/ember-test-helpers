@@ -79,6 +79,8 @@ jobs:
       - name: Build addon
         working-directory: addon
         run: pnpm build
+      - name: Force re-sync of injected Dependencies
+        run: pnpm i -f
       - name: Run Tests
         working-directory: test-app
         run: pnpm test
@@ -106,6 +108,7 @@ jobs:
           - ember-default
           - embroider-safe
           - embroider-optimized 
+          - "@ember/test-waiters@v4"
 
     steps:
       - uses: actions/checkout@v4
