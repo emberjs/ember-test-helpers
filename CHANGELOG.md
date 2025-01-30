@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-01-30)
+
+@ember/test-helpers 5.1.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`, `test-app`
+  * [#1524](https://github.com/emberjs/ember-test-helpers/pull/1524) Widen test-waiters range ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-01-17)
 
 @ember/test-helpers 5.0.0 (major)
