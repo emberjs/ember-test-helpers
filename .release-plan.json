@@ -1,21 +1,17 @@
 {
   "solution": {
     "@ember/test-helpers": {
-      "impact": "major",
-      "oldVersion": "4.0.4",
-      "newVersion": "5.0.0",
+      "impact": "minor",
+      "oldVersion": "5.0.0",
+      "newVersion": "5.1.0",
       "constraints": [
         {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-01-17)\n\n@ember/test-helpers 5.0.0 (major)\n\n#### :boom: Breaking Change\n* `@ember/test-helpers`, `test-app`\n  * [#1511](https://github.com/emberjs/ember-test-helpers/pull/1511) Make test context reusable during a test ([@eliasdawson](https://github.com/eliasdawson))\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1527](https://github.com/emberjs/ember-test-helpers/pull/1527) Remove incorrect assertions ([@ef4](https://github.com/ef4))\n\n#### :house: Internal\n* [#1525](https://github.com/emberjs/ember-test-helpers/pull/1525) Fix floating deps tests ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 3\n- Edward Faulkner ([@ef4](https://github.com/ef4))\n- Elias Dawson ([@eliasdawson](https://github.com/eliasdawson))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2025-01-30)\n\n@ember/test-helpers 5.1.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`, `test-app`\n  * [#1524](https://github.com/emberjs/ember-test-helpers/pull/1524) Widen test-waiters range ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
