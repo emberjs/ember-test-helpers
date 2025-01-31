@@ -1,5 +1,15 @@
 # Changelog
 
+## Release (2025-01-31)
+
+
+
+#### :house: Internal
+* [#1533](https://github.com/emberjs/ember-test-helpers/pull/1533) Make release-plan work for v3 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2024-07-23)
 
 @ember/test-helpers 3.3.1 (patch)
