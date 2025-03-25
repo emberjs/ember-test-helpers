@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { getOnerror, setOnerror } from '@ember/-internals/error-handling';
 import { type BaseContext, getContext } from './setup-context.ts';
 
 const cachedOnerror: Map<BaseContext, ((error: Error) => void) | undefined> =
@@ -39,7 +39,7 @@ export default function setupOnerror(onError?: (error: Error) => void): void {
     onError = cachedOnerror.get(context);
   }
 
-  Ember.onerror = onError;
+  setOnerror(onError);
 }
 
 /**
@@ -60,7 +60,7 @@ export function resetOnerror(): void {
   const context = getContext();
 
   if (context && cachedOnerror.has(context)) {
-    Ember.onerror = cachedOnerror.get(context);
+    setOnerror(cachedOnerror.get(context));
   }
 }
 
@@ -76,7 +76,7 @@ export function _prepareOnerror(context: BaseContext) {
     throw new Error('_prepareOnerror should only be called once per-context');
   }
 
-  cachedOnerror.set(context, Ember.onerror);
+  cachedOnerror.set(context, getOnerror);
 }
 
 /**
