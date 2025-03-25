@@ -1,4 +1,7 @@
-import Ember from 'ember';
+// Private API
+import { getOnerror, setOnerror } from '@ember/-internals/error-handling';
+// Private API
+import { isTesting, setTesting } from '@ember/debug';
 
 type ErrorHandlerValidation =
   | Readonly<{ isValid: true; message: null }>
@@ -34,7 +37,7 @@ const INVALID = Object.freeze({
  * });
  */
 export default function validateErrorHandler(
-  callback = Ember.onerror,
+  callback = getOnerror,
 ): ErrorHandlerValidation {
   if (callback === undefined || callback === null) {
     return VALID;
@@ -42,16 +45,16 @@ export default function validateErrorHandler(
 
   const error = new Error('Error handler validation error!');
 
-  const originalEmberTesting = Ember.testing;
-  (Ember as any).testing = true;
+  const originalEmberTesting = isTesting();
+  setTesting(true);
   try {
-    callback(error);
+    callback?.()?.(error);
   } catch (e) {
     if (e === error) {
       return VALID;
     }
   } finally {
-    (Ember as any).testing = originalEmberTesting;
+    setTesting(originalEmberTesting);
   }
 
   return INVALID;
