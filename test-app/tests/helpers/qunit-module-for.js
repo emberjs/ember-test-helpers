@@ -24,7 +24,7 @@ export default function qunitModuleFor(testModule) {
         setAdapter(null);
         if (isTesting()) {
           throw new Error(
-            'should not have Ember.testing === true after tests have finished'
+            'should not have isTesting() === true after tests have finished'
           );
         }
       });
