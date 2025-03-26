@@ -37,7 +37,7 @@ const INVALID = Object.freeze({
  * });
  */
 export default function validateErrorHandler(
-  callback = getOnerror,
+  callback = getOnerror(),
 ): ErrorHandlerValidation {
   if (callback === undefined || callback === null) {
     return VALID;
@@ -48,7 +48,7 @@ export default function validateErrorHandler(
   const originalEmberTesting = isTesting();
   setTesting(true);
   try {
-    callback?.()?.(error);
+    callback(error);
   } catch (e) {
     if (e === error) {
       return VALID;
