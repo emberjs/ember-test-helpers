@@ -7,13 +7,10 @@ import { ComponentLookup } from '@ember/-internals/views';
 
 import type { FullName } from '@ember/owner';
 
-// These shenanigans work around the fact that the import locations are not
-// public API and are not stable, so we jump through hoops to get the right
-// types and values to use.
 import {
   ContainerProxyMixin,
   RegistryProxyMixin,
-} from './-owner-mixin-imports.ts';
+} from '@ember/-internals/runtime';
 
 /**
  * Adds methods that are normally only on registry to the container. This is largely to support the legacy APIs
