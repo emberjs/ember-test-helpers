@@ -2,16 +2,20 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "minor",
-      "oldVersion": "5.0.0",
-      "newVersion": "5.1.0",
+      "oldVersion": "5.1.0",
+      "newVersion": "5.2.0",
       "constraints": [
         {
           "impact": "minor",
           "reason": "Appears in changelog section :rocket: Enhancement"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-01-30)\n\n@ember/test-helpers 5.1.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`, `test-app`\n  * [#1524](https://github.com/emberjs/ember-test-helpers/pull/1524) Widen test-waiters range ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2025-03-26)\n\n@ember/test-helpers 5.2.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1539](https://github.com/emberjs/ember-test-helpers/pull/1539) Cleanup some private API and now-unsupported usage ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1537](https://github.com/emberjs/ember-test-helpers/pull/1537) Resolve deprecations from ember barrel file ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

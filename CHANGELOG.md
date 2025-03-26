@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2025-03-26)
+
+@ember/test-helpers 5.2.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`
+  * [#1539](https://github.com/emberjs/ember-test-helpers/pull/1539) Cleanup some private API and now-unsupported usage ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`
+  * [#1537](https://github.com/emberjs/ember-test-helpers/pull/1537) Resolve deprecations from ember barrel file ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-01-30)
 
 @ember/test-helpers 5.1.0 (minor)
