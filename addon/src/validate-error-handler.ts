@@ -1,5 +1,5 @@
 // Private API
-import { getOnerror, setOnerror } from '@ember/-internals/error-handling';
+import { getOnerror } from '@ember/-internals/error-handling';
 // Private API
 import { isTesting, setTesting } from '@ember/debug';
 
