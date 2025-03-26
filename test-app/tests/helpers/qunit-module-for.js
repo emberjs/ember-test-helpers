@@ -14,7 +14,7 @@ export default function qunitModuleFor(testModule) {
       return testModule.setup(assert).finally(() => {
         if (!isTesting()) {
           throw new Error(
-            'should have Ember.testing === true after tests have started'
+            'should have isTesting() === true after tests have started'
           );
         }
       });
