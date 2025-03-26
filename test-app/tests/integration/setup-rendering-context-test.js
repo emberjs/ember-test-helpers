@@ -1,9 +1,8 @@
-import Ember from 'ember';
 import { module, test } from 'qunit';
 import Component, { setComponentTemplate } from '@ember/component';
 import GlimmerComponent from '@glimmer/component';
 import { helper } from '@ember/component/helper';
-import { registerWaiter } from '@ember/test';
+import { unregisterWaiter, registerWaiter } from '@ember/test';
 import {
   setupContext,
   setupRenderingContext,
@@ -87,7 +86,7 @@ module('setupRenderingContext "real world"', function (hooks) {
   });
 
   hooks.afterEach(async function () {
-    Ember.Test.unregisterWaiter(this._waiter);
+    unregisterWaiter(this._waiter);
     await teardownContext(this);
   });
 

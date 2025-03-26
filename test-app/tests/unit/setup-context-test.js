@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { isTesting } from '@ember/debug';
 import Service, { inject as injectService } from '@ember/service';
 import {
   setupContext,
@@ -26,7 +27,6 @@ import {
 } from '../helpers/resolver';
 import App from '../../app';
 import config from '../../config/environment';
-import Ember from 'ember';
 import { deprecate, warn } from '@ember/debug';
 
 module('setupContext', function (hooks) {
@@ -822,20 +822,17 @@ module('setupContext', function (hooks) {
       });
     });
 
-    test('Ember.testing', async function (assert) {
-      assert.notOk(
-        Ember.testing,
-        'precond - Ember.testing is falsey before setup'
-      );
+    test('isTesting()', async function (assert) {
+      assert.notOk(isTesting(), 'precond - isTesting() is falsey before setup');
 
       context = {};
       let promise = setupContext(context);
 
-      assert.ok(Ember.testing, 'Ember.testing is truthy sync after setup');
+      assert.ok(isTesting(), 'isTesting() is truthy sync after setup');
 
       await promise;
 
-      assert.ok(Ember.testing, 'Ember.testing is truthy async after setup');
+      assert.ok(isTesting(), 'isTesting() is truthy async after setup');
     });
   }
 

@@ -1,5 +1,5 @@
 import type { TestContext } from './setup-context';
-import Ember from 'ember';
+import { setTesting } from '@ember/debug';
 import { unsetContext } from './setup-context.ts';
 import settled, { _teardownAJAXHooks } from './settled.ts';
 import { _cleanupOnerror } from './setup-onerror.ts';
@@ -31,14 +31,10 @@ export default function teardownContext(
   return Promise.resolve()
     .then(() => {
       _cleanupOnerror(context);
-
       _teardownAJAXHooks();
 
-      // SAFETY: this is intimate API *designed* for us to override.
-      (Ember as any).testing = false;
-
+      setTesting(false);
       unsetContext();
-
       destroy(context.owner);
     })
     .finally(() => {

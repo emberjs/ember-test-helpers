@@ -2,18 +2,15 @@ import type { Resolver } from '@ember/owner';
 import ApplicationInstance from '@ember/application/instance';
 import Application from '@ember/application';
 import EmberObject from '@ember/object';
-
-import Ember from 'ember';
+import { Registry } from '@ember/-internals/container';
+import { ComponentLookup } from '@ember/-internals/views';
 
 import type { FullName } from '@ember/owner';
 
-// These shenanigans work around the fact that the import locations are not
-// public API and are not stable, so we jump through hoops to get the right
-// types and values to use.
 import {
   ContainerProxyMixin,
   RegistryProxyMixin,
-} from './-owner-mixin-imports.ts';
+} from '@ember/-internals/runtime';
 
 /**
  * Adds methods that are normally only on registry to the container. This is largely to support the legacy APIs
@@ -102,10 +99,9 @@ export default function buildRegistry(resolver: Resolver) {
   const fallbackRegistry = Application.buildRegistry(namespace);
   // TODO: only do this on Ember < 3.13
   // @ts-ignore: this is private API.
-  fallbackRegistry.register('component-lookup:main', Ember.ComponentLookup);
+  fallbackRegistry.register('component-lookup:main', ComponentLookup);
 
-  // @ts-ignore: this is private API.
-  const registry = new Ember.Registry({
+  const registry = new Registry({
     fallback: fallbackRegistry,
   });
 

@@ -1,29 +1,30 @@
-import Ember from 'ember';
+import { isTesting } from '@ember/debug';
 import { module } from 'qunit';
 import QUnitTestAdapter from './qunit-test-adapter';
+import { setAdapter } from 'ember-testing/lib/setup_for_testing';
 
 export default function qunitModuleFor(testModule) {
   module(testModule.name, {
     beforeEach(assert) {
-      if (Ember.testing) {
-        throw new Error('should not have Ember.testing === true in beforeEach');
+      if (isTesting()) {
+        throw new Error('should not have  isTesting() === true in beforeEach');
       }
-      Ember.Test.adapter = QUnitTestAdapter.create();
+      setAdapter(QUnitTestAdapter.create());
       testModule.setContext(this);
       return testModule.setup(assert).finally(() => {
-        if (!Ember.testing) {
+        if (!isTesting()) {
           throw new Error(
-            'should have Ember.testing === true after tests have started'
+            'should have isTesting() === true after tests have started'
           );
         }
       });
     },
     afterEach(assert) {
       return testModule.teardown(assert).finally(() => {
-        Ember.Test.adapter = null;
-        if (Ember.testing) {
+        setAdapter(null);
+        if (isTesting()) {
           throw new Error(
-            'should not have Ember.testing === true after tests have finished'
+            'should not have isTesting() === true after tests have finished'
           );
         }
       });

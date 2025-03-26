@@ -9,7 +9,7 @@ import { setOwner } from '@ember/application';
 import buildOwner, { type Owner } from './build-owner.ts';
 import { _setupAJAXHooks } from './settled.ts';
 import { _prepareOnerror } from './setup-onerror.ts';
-import Ember from 'ember';
+import { setTesting } from '@ember/debug';
 import {
   assert,
   registerDeprecationHandler,
@@ -379,7 +379,7 @@ export default function setupContext<T extends object>(
   const context = base as T & TestContext;
 
   // SAFETY: this is intimate API *designed* for us to override.
-  (Ember as any).testing = true;
+  setTesting(true);
   setContext(context);
 
   const testMetadata = getTestMetadata(context);

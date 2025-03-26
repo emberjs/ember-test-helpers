@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { registerWaiter, unregisterWaiter } from '@ember/test';
 import { module, test } from 'qunit';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
@@ -69,20 +69,13 @@ module('settled', function (hooks) {
       return !this.isWaiterPending;
     };
 
-    // In Ember < 2.8 `registerWaiter` expected to be bound to
-    // `Ember.Test` 😭
-    //
-    // Once we have dropped support for < 2.8 we should swap this to
-    // use:
-    //
-    // import { registerWaiter } from '@ember/test';
-    Ember.Test.registerWaiter(this._legacyWaiter);
+    registerWaiter(this._legacyWaiter);
 
     this._testWaiter = buildWaiter(WAITER_NAME);
   });
 
   hooks.afterEach(function () {
-    Ember.Test.unregisterWaiter(this._legacyWaiter);
+    unregisterWaiter(this._legacyWaiter);
     resetWaiters();
     this.server.shutdown();
     _teardownAJAXHooks();

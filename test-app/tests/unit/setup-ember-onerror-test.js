@@ -1,5 +1,5 @@
-import Ember from 'ember';
 import { module, test } from 'qunit';
+import { getOnerror } from '@ember/-internals/error-handling';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setupContext, teardownContext } from '@ember/test-helpers';
 import { setupOnerror, resetOnerror } from '@ember/test-helpers';
@@ -23,38 +23,38 @@ module('setupOnerror', function (hooks) {
         await setupContext(context);
       });
 
-      test('Ember.onerror is undefined by default', function (assert) {
+      test('onerror is undefined by default', function (assert) {
         assert.expect(1);
 
-        assert.equal(Ember.onerror, undefined);
+        assert.equal(getOnerror(), undefined);
       });
 
-      test('Ember.onerror is setup correctly', async function (assert) {
+      test('onerror is setup correctly', async function (assert) {
         assert.expect(2);
 
         let onerror = (err) => err;
 
-        assert.equal(Ember.onerror, undefined);
+        assert.equal(getOnerror(), undefined);
 
         setupOnerror(onerror);
 
-        assert.equal(Ember.onerror, onerror);
+        assert.equal(getOnerror(), onerror);
       });
 
-      test('Ember.onerror is reset correctly', async function (assert) {
+      test('onerror is reset correctly', async function (assert) {
         assert.expect(3);
 
         let onerror = (err) => err;
 
-        assert.equal(Ember.onerror, undefined);
+        assert.equal(getOnerror(), undefined);
 
         setupOnerror(onerror);
 
-        assert.equal(Ember.onerror, onerror);
+        assert.equal(getOnerror(), onerror);
 
         resetOnerror();
 
-        assert.equal(Ember.onerror, undefined);
+        assert.equal(getOnerror(), undefined);
       });
     });
 

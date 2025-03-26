@@ -1,5 +1,5 @@
 import { run } from '@ember/runloop';
-import Ember from 'ember';
+import { EventDispatcher } from '@ember/-internals/views';
 import global from './global.ts';
 import {
   type BaseContext,
@@ -265,9 +265,8 @@ export default function setupRenderingContext(
       // manually start the event dispatcher.
       if (owner._emberTestHelpersMockOwner) {
         const dispatcher =
-          owner.lookup('event_dispatcher:main') ||
-          (Ember.EventDispatcher as any).create();
-        dispatcher.setup({}, '#ember-testing');
+          owner.lookup('event_dispatcher:main') || EventDispatcher.create();
+        (dispatcher as any).setup({}, '#ember-testing');
       }
 
       const OutletView = owner.factoryFor

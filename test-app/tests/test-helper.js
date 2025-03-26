@@ -1,5 +1,6 @@
 import * as QUnit from 'qunit';
-import Ember from 'ember';
+
+import { isTesting, setTesting } from '@ember/debug';
 import { isSettled, getSettledState } from '@ember/test-helpers';
 import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
@@ -49,13 +50,13 @@ QUnit.testDone(function ({ module, name }) {
   }
 
   // this is used to ensure that no tests accidentally leak `Ember.testing` state
-  if (Ember.testing) {
-    let message = `Ember.testing should be reset after test has completed. ${module}: ${name} did not reset Ember.testing`;
+  if (isTesting()) {
+    let message = `isTesting() should be reset after test has completed. ${module}: ${name} did not reset isTesting()`;
     cleanupFailures.push(message);
 
     // eslint-disable-next-line
     console.error(message);
-    Ember.testing = false;
+    setTesting(false);
   }
 
   if (!isSettled()) {
