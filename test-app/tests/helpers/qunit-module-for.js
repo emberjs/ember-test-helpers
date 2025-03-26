@@ -7,7 +7,7 @@ export default function qunitModuleFor(testModule) {
   module(testModule.name, {
     beforeEach(assert) {
       if (isTesting()) {
-        throw new Error('should not have Ember.testing === true in beforeEach');
+        throw new Error('should not have  isTesting() === true in beforeEach');
       }
       setAdapter(QUnitTestAdapter.create());
       testModule.setContext(this);
