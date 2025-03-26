@@ -10,7 +10,8 @@ import {
 } from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import Ember from 'ember';
+import { isTesting } from '@ember/debug';
+
 import hasjQuery from '../helpers/has-jquery';
 import ajax from '../helpers/ajax';
 import Pretender from 'pretender';
@@ -48,12 +49,12 @@ module('teardownContext', function (hooks) {
     assert.ok(instance.isDestroying, 'destroying');
   });
 
-  test('it sets Ember.testing to false', async function (assert) {
-    assert.ok(Ember.testing, 'precond - Ember.testing is truthy');
+  test('it sets isTesting() to false', async function (assert) {
+    assert.ok(isTesting(), 'precond - isTesting() is truthy');
 
     await teardownContext(context);
 
-    assert.notOk(Ember.testing, 'Ember.testing is falsey after teardown');
+    assert.notOk(isTesting(), 'isTesting() is falsey after teardown');
   });
 
   test('it unsets the context', async function (assert) {

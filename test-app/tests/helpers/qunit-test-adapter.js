@@ -1,5 +1,5 @@
-import Ember from 'ember';
 import QUnit from 'qunit';
+import { Adapter } from '@ember/test';
 
 /*
  * This module is inlined here, because this library cannot depend on
@@ -30,7 +30,7 @@ function unhandledRejectionAssertion(current, error) {
   });
 }
 
-export default Ember.Test.Adapter.extend({
+export default Adapter.extend({
   init() {
     this.doneCallbacks = [];
   },

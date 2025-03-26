@@ -1,15 +1,16 @@
 import { resolve } from 'rsvp';
+import { setTesting } from '@ember/debug';
 import { module } from 'qunit';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import { setResolverRegistry } from './resolver';
 import QUnitTestAdapter from './qunit-test-adapter';
-import Ember from 'ember';
+import { setAdapter } from 'ember-testing/lib/setup_for_testing';
 
 export default function (name, options = {}) {
   module(name, {
     beforeEach() {
-      Ember.Test.adapter = QUnitTestAdapter.create();
+      setAdapter(QUnitTestAdapter.create());
 
       if (options.registry) {
         setResolverRegistry(options.registry);
@@ -20,7 +21,7 @@ export default function (name, options = {}) {
       );
       this.fixtureResetValue = testElementContainer.innerHTML;
 
-      Ember.testing = true;
+      setTesting(true);
       this.application = startApp();
 
       if (options.beforeEach) {
@@ -34,7 +35,7 @@ export default function (name, options = {}) {
       return resolve(afterEach)
         .then(() => destroyApp(this.application))
         .finally(() => {
-          Ember.testing = false;
+          setTesting(false);
 
           document.getElementById('ember-testing-container').innerHTML =
             this.fixtureResetValue;

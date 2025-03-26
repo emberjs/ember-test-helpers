@@ -1,5 +1,5 @@
+import { getOnerror, setOnerror } from '@ember/-internals/error-handling';
 import { module, test } from 'qunit';
-import Ember from 'ember';
 
 import { validateErrorHandler } from '@ember/test-helpers';
 
@@ -52,41 +52,41 @@ module('validateErrorHandler', function (hooks) {
 
   module('without a passed in callback', function (hooks) {
     hooks.beforeEach(function () {
-      this.originalOnerror = Ember.onerror;
+      this.originalOnerror = getOnerror();
     });
 
     hooks.afterEach(function () {
-      Ember.onerror = this.originalOnerror;
+      setOnerror(this.originalOnerror);
     });
 
     test('invokes the provided callback', function (assert) {
       assert.expect(1);
 
-      Ember.onerror = function () {
+      setOnerror(function () {
         assert.ok(true, 'error handler was invoked');
-      };
+      });
 
       validateErrorHandler();
     });
 
     test('considers handler missing to be a valid handler', function (assert) {
-      Ember.onerror = undefined;
+      setOnerror(undefined);
       let result = validateErrorHandler();
 
       assert.valid(result);
     });
 
     test('when the provided function does _not_ rethrow it is invalid', function (assert) {
-      Ember.onerror = function () {};
+      setOnerror(function () {});
       let result = validateErrorHandler();
 
       assert.invalid(result);
     });
 
     test('when the provided function does rethrow it is valid', function (assert) {
-      Ember.onerror = function (error) {
+      setOnerror(function (error) {
         throw error;
-      };
+      });
 
       let result = validateErrorHandler();
 
