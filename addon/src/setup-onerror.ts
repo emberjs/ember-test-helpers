@@ -76,7 +76,8 @@ export function _prepareOnerror(context: BaseContext) {
     throw new Error('_prepareOnerror should only be called once per-context');
   }
 
-  cachedOnerror.set(context, getOnerror);
+  // SAFETY: getOnerror doesn't have correct types
+  cachedOnerror.set(context, getOnerror() as any);
 }
 
 /**
