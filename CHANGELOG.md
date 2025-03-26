@@ -2,6 +2,17 @@
 
 ## Release (2025-03-26)
 
+
+
+#### :house: Internal
+* `test-app`
+  * [#1540](https://github.com/emberjs/ember-test-helpers/pull/1540) Delete unused code in the test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2025-03-26)
+
 @ember/test-helpers 5.2.0 (minor)
 
 #### :rocket: Enhancement
