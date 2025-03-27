@@ -90,7 +90,21 @@ export function isTestContext(context: BaseContext): context is TestContext {
   );
 }
 
-let __test_context__: BaseContext | undefined;
+/**
+  @private
+  @param {Object} it the global object to test
+  @returns {Boolean} it exists
+*/
+function check(it: any) {
+  // Math is known to exist as a global in every environment.
+  return it && it.Math === Math && it;
+}
+
+const globalObject =
+  check(typeof globalThis == 'object' && globalThis) ||
+  check(typeof window === 'object' && window) ||
+  check(typeof self === 'object' && self) ||
+  check(typeof global === 'object' && global);
 
 /**
   Stores the provided context as the "global testing context".
@@ -101,17 +115,17 @@ let __test_context__: BaseContext | undefined;
   @param {Object} context the context to use
 */
 export function setContext(context: BaseContext): void {
-  __test_context__ = context;
+  globalObject.__test_context__ = context;
 }
 
 /**
-  Retrive the "global testing context" as stored by `setContext`.
+  Retrieve the "global testing context" as stored by `setContext`.
 
   @public
   @returns {Object} the previously stored testing context
 */
 export function getContext(): BaseContext | undefined {
-  return __test_context__;
+  return globalObject.__test_context__;
 }
 
 /**
@@ -122,7 +136,7 @@ export function getContext(): BaseContext | undefined {
   @public
 */
 export function unsetContext(): void {
-  __test_context__ = undefined;
+  globalObject.__test_context__ = undefined;
 }
 
 /**
