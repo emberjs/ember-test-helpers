@@ -1,6 +1,15 @@
 
 
 
+
+## v2.9.5 (2025-03-27)
+
+#### :bug: Bug Fix
+* [#1542](https://github.com/emberjs/ember-test-helpers/pull/1542) backport globalThis setupContext ([@void-mAlex](https://github.com/void-mAlex))
+
+#### Committers: 1
+- Alex ([@void-mAlex](https://github.com/void-mAlex))
+
 ## v2.9.4 (2023-06-15)
 
 #### :bug: Bug Fix
