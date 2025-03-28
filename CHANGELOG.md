@@ -2,6 +2,11 @@
 
 
 
+## v2.9.6 (2025-03-28)
+
+Republish with built assets, as v2.9.5 did not have them.
+
+
 ## v2.9.5 (2025-03-27)
 
 #### :bug: Bug Fix
