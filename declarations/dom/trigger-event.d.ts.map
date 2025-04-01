@@ -1,0 +1,1 @@
+{"version":3,"file":"trigger-event.d.ts","sourceRoot":"","sources":["../../src/dom/trigger-event.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,cAAc,CAAC;AAU3C;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;GA0CG;AACH,MAAM,CAAC,OAAO,UAAU,YAAY,CAClC,MAAM,EAAE,MAAM,EACd,SAAS,EAAE,MAAM,EACjB,OAAO,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,OAAO,CAAC,GAChC,OAAO,CAAC,IAAI,CAAC,CAiCf"}
