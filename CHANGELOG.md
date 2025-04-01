@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2025-04-01)
+
+@ember/test-helpers 5.2.1 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`, `test-app`
+  * [#1528](https://github.com/emberjs/ember-test-helpers/pull/1528) Remove `application-template-wrapper` feature ([@bobisjan](https://github.com/bobisjan))
+
+#### :house: Internal
+* `test-app`
+  * [#1540](https://github.com/emberjs/ember-test-helpers/pull/1540) Delete unused code in the test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Jan Bobisud ([@bobisjan](https://github.com/bobisjan))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-03-26)
 
 @ember/test-helpers 5.2.0 (minor)
