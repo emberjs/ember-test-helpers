@@ -122,7 +122,8 @@ expectTypeOf(triggerEvent).toEqualTypeOf<
   (
     target: Target,
     eventType: string,
-    options?: Record<string, unknown>
+    options?: Record<string, unknown>,
+    force?: boolean,
   ) => Promise<void>
 >();
 expectTypeOf(triggerKeyEvent).toEqualTypeOf<
