@@ -39,6 +39,7 @@ import {
 registerDeprecationHandler((message, options, next) => {
   const context = getContext();
   if (context === undefined) {
+    next.apply(null, [message, options]);
     return;
   }
 
@@ -53,6 +54,7 @@ registerDeprecationHandler((message, options, next) => {
 registerWarnHandler((message, options, next) => {
   const context = getContext();
   if (context === undefined) {
+    next.apply(null, [message, options]);
     return;
   }
 
