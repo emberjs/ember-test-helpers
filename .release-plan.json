@@ -2,8 +2,9 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "patch",
-      "oldVersion": "5.2.0",
-      "newVersion": "5.2.1",
+      "oldVersion": "5.2.1",
+      "newVersion": "5.2.2",
+      "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
@@ -13,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-04-01)\n\n@ember/test-helpers 5.2.1 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`, `test-app`\n  * [#1528](https://github.com/emberjs/ember-test-helpers/pull/1528) Remove `application-template-wrapper` feature ([@bobisjan](https://github.com/bobisjan))\n\n#### :house: Internal\n* `test-app`\n  * [#1540](https://github.com/emberjs/ember-test-helpers/pull/1540) Delete unused code in the test-app ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 2\n- Jan Bobisud ([@bobisjan](https://github.com/bobisjan))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2025-05-10)\n\n* @ember/test-helpers 5.2.2 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1543](https://github.com/emberjs/ember-test-helpers/pull/1543) Remove unneeded peers ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* [#1545](https://github.com/emberjs/ember-test-helpers/pull/1545) Update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

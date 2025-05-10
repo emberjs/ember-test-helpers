@@ -1,5 +1,19 @@
 # Changelog
 
+## Release (2025-05-10)
+
+* @ember/test-helpers 5.2.2 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1543](https://github.com/emberjs/ember-test-helpers/pull/1543) Remove unneeded peers ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* [#1545](https://github.com/emberjs/ember-test-helpers/pull/1545) Update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-04-01)
 
 @ember/test-helpers 5.2.1 (patch)
