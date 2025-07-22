@@ -1,5 +1,15 @@
 # Changelog
 
+## Release (2025-07-22)
+
+
+
+#### :memo: Documentation
+* [#1547](https://github.com/emberjs/ember-test-helpers/pull/1547) docs: Correct pnpm installation syntax ([@MichalBryxi](https://github.com/MichalBryxi))
+
+#### Committers: 1
+- Michal Bryxí ([@MichalBryxi](https://github.com/MichalBryxi))
+
 ## Release (2025-05-10)
 
 * @ember/test-helpers 5.2.2 (patch)
