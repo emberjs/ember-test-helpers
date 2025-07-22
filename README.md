@@ -20,7 +20,7 @@ Installation
 
 #### pnpm
 ```bash
-pnpm add --dev @ember/test-helpers
+pnpm add --save-dev @ember/test-helpers
 ```
 
 #### npm
