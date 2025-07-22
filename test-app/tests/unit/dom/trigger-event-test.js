@@ -177,6 +177,24 @@ module('DOM Helper: triggerEvent', function (hooks) {
     );
   });
 
+  test('allows triggering events on disabled form control when `force` is true', async function (assert) {
+    element = buildInstrumentedElement('textarea');
+    element.setAttribute('disabled', true);
+
+    element.addEventListener('fliberty', (e) => {
+      assert.step('fliberty');
+      assert.ok(
+        e instanceof Event,
+        `fliberty listener receives a native event`
+      );
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'fliberty', {}, true);
+
+    assert.verifySteps(['fliberty']);
+  });
+
   test('events properly bubble upwards', async function (assert) {
     await setupContext(context);
     element = buildInstrumentedElement('div');
