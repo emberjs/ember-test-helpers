@@ -146,7 +146,7 @@ STACK`
     );
   });
 
-  test('toConsole correctly prints AJAX information', function (assert) {
+  test('toConsole correctly prints pending requests information', function (assert) {
     assert.expect(1);
 
     let mockConsole = new MockConsole();
@@ -161,7 +161,7 @@ STACK`
 
     testDebugInfo.toConsole(mockConsole);
 
-    assert.deepEqual(mockConsole.toString(), `Pending AJAX requests`);
+    assert.deepEqual(mockConsole.toString(), `Pending requests`);
   });
 
   test('toConsole correctly prints pending legacy test waiter information', function (assert) {

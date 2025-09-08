@@ -94,7 +94,7 @@ module('setupRenderingContext "real world"', function (hooks) {
     let deferred = defer();
     this.set('promise', deferred.promise);
 
-    // force the waiter to pause, emulating a pending AJAX or fetch request
+    // force the waiter to pause, emulating a pending fetch request
     this.isWaiterPending = true;
 
     // Does not use `await` intentionally

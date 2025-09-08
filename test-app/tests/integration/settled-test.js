@@ -1,4 +1,4 @@
-import { later, run } from '@ember/runloop';
+import { later } from '@ember/runloop';
 import { registerWaiter, unregisterWaiter } from '@ember/test';
 import Component from '@ember/component';
 import {
@@ -15,8 +15,6 @@ import {
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { module, test } from 'qunit';
 import { hbs } from 'ember-cli-htmlbars';
-import Pretender from 'pretender';
-import ajax from '../helpers/ajax';
 
 const TestComponent1 = Component.extend({
   layout: hbs`{{this.internalValue}}`,
@@ -37,48 +35,6 @@ const TestComponent2 = Component.extend({
 
   click() {
     later(this, () => this.set('internalValue', 'async value'), 10);
-  },
-});
-
-const TestComponent3 = Component.extend({
-  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
-
-  internalValue: '',
-
-  click() {
-    ajax('/whazzits').then((data) => {
-      let value = this.get('internalValue');
-
-      run(this, 'set', 'internalValue', value + data);
-    });
-  },
-});
-
-const TestComponent4 = Component.extend({
-  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
-
-  internalValue: '',
-
-  click() {
-    later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
-
-    ajax('/whazzits').then((data) => {
-      let value = this.get('internalValue');
-
-      run(this, 'set', 'internalValue', value + data);
-
-      later(() => {
-        ajax('/whazzits').then((data) => {
-          if (this.isDestroyed) {
-            return;
-          }
-
-          let value = this.get('internalValue');
-
-          run(this, 'set', 'internalValue', value + data);
-        });
-      }, 15);
-    });
   },
 });
 
@@ -118,23 +74,10 @@ module('settled real-world scenarios', function (hooks) {
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);
-
-    this.server = new Pretender(function () {
-      this.get(
-        '/whazzits',
-        function () {
-          return [200, { 'Content-Type': 'text/plain' }, 'Remote Data!'];
-        },
-        25
-      );
-    });
   });
 
   hooks.afterEach(async function () {
     await settled();
-
-    this.server.shutdown();
-
     await teardownContext(this);
   });
 
@@ -186,29 +129,6 @@ module('settled real-world scenarios', function (hooks) {
     await click('.test-component');
 
     assert.equal(this.element.textContent, 'async value');
-  });
-
-  test('it waits for AJAX requests to finish', async function (assert) {
-    this.owner.register('component:x-test-3', TestComponent3);
-
-    await render(hbs`{{x-test-3}}`);
-
-    await click('.test-component');
-
-    assert.equal(this.element.textContent, 'Remote Data!');
-  });
-
-  test('it waits for interleaved AJAX and run loops to finish', async function (assert) {
-    this.owner.register('component:x-test-4', TestComponent4);
-
-    await render(hbs`{{x-test-4}}`);
-
-    await click('.test-component');
-
-    assert.equal(
-      this.element.textContent,
-      'Local Data!Remote Data!Remote Data!'
-    );
   });
 
   test('it waits for Ember test waiters', async function (assert) {

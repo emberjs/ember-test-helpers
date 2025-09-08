@@ -4,7 +4,6 @@ import {
   getContext,
   setupContext,
   teardownContext,
-  getSettledState,
   settled,
   isSettled,
 } from '@ember/test-helpers';
@@ -12,9 +11,6 @@ import { setResolverRegistry } from '../helpers/resolver';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isTesting } from '@ember/debug';
 
-import hasjQuery from '../helpers/has-jquery';
-import ajax from '../helpers/ajax';
-import Pretender from 'pretender';
 import setupManualTestWaiter from '../helpers/manual-test-waiter';
 
 module('teardownContext', function (hooks) {
@@ -26,16 +22,11 @@ module('teardownContext', function (hooks) {
 
   let context;
   hooks.beforeEach(function () {
-    this.pretender = new Pretender();
     setResolverRegistry({
       'service:foo': Service.extend({ isFoo: true }),
     });
     context = {};
     return setupContext(context);
-  });
-
-  hooks.afterEach(function () {
-    this.pretender.shutdown();
   });
 
   test('it destroys any instances created', async function (assert) {
@@ -88,28 +79,6 @@ module('teardownContext', function (hooks) {
       false
     );
   });
-
-  if (hasjQuery()) {
-    test('out of balance xhr semaphores are cleaned up on teardown', async function (assert) {
-      this.pretender.unhandledRequest = function (/* verb, path, request */) {
-        throw new Error(
-          `Synchronous error from Pretender.prototype.unhandledRequest`
-        );
-      };
-
-      ajax('/some/totally/invalid/url');
-
-      await teardownContext(context);
-
-      let state = getSettledState();
-      assert.equal(
-        state.hasPendingRequests,
-        false,
-        'hasPendingRequests is false'
-      );
-      assert.equal(state.pendingRequestCount, 0, 'pendingRequestCount is 0');
-    });
-  }
 
   test('can opt out of waiting for settledness', async function (assert) {
     this.shouldWait = true;
