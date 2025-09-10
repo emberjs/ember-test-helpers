@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2025-09-10)
+
+* @ember/test-helpers 5.3.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`
+  * [#1521](https://github.com/emberjs/ember-test-helpers/pull/1521) Add `force` argument to `triggerEvent` ([@jrmlt](https://github.com/jrmlt))
+
+#### :memo: Documentation
+* [#1547](https://github.com/emberjs/ember-test-helpers/pull/1547) docs: Correct pnpm installation syntax ([@MichalBryxi](https://github.com/MichalBryxi))
+
+#### Committers: 2
+- Jeremy LE TRIONNAIRE ([@jrmlt](https://github.com/jrmlt))
+- Michal Bryxí ([@MichalBryxi](https://github.com/MichalBryxi))
+
 ## Release (2025-05-10)
 
 * @ember/test-helpers 5.2.2 (patch)
