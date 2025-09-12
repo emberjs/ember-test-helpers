@@ -678,7 +678,7 @@ Returns **[Promise][71]\<void>** resolves when settled
 Checks various settledness metrics (via `getSettledState()`) to determine if things are settled or not.
 
 Settled generally means that there are no pending timers, no pending waiters,
-no pending AJAX requests, and no current run loop. However, new settledness
+no pending requests, and no current run loop. However, new settledness
 metrics may be added and used as they become available.
 
 Returns **[boolean][76]** `true` if settled, `false` otherwise
@@ -695,13 +695,12 @@ Check various settledness metrics, and return an object with the following prope
 *   `hasPendingWaiters` - Checks if any registered test waiters are still
     pending (e.g. the waiter returns `true`). If there are pending waiters,
     this will be `true`, otherwise `false`.
-*   `hasPendingRequests` - Checks if there are pending AJAX requests (based on
-    `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
+*   `hasPendingRequests` - Checks if there are pending requests. If there
     are pending requests, this will be `true`, otherwise `false`.
 *   `hasPendingTransitions` - Checks if there are pending route transitions. If the
     router has not been instantiated / setup for the test yet this will return `null`,
     if there are pending transitions, this will be `true`, otherwise `false`.
-*   `pendingRequestCount` - The count of pending AJAX requests.
+*   `pendingRequestCount` - The count of pending requests.
 *   `debugInfo` - Debug information that's combined with info return from backburner's
     getDebugInfo method.
 *   `isRenderPending` - Checks if there are any pending render operations. This will be true as long
@@ -821,7 +820,6 @@ Responsible for:
 *   sets the "global testing context" to the provided context (`setContext`)
 *   create an owner object and set it on the provided context (e.g. `this.owner`)
 *   setup `this.set`, `this.setProperties`, `this.get`, and `this.getProperties` to the provided context
-*   setting up AJAX listeners
 *   setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
 
 #### Parameters
@@ -863,7 +861,6 @@ Responsible for:
 
 *   un-setting the "global testing context" (`unsetContext`)
 *   destroy the contexts owner object
-*   remove AJAX listeners
 
 #### Parameters
 
@@ -1030,7 +1027,7 @@ etc.  that are then used in a template) has been updated in the DOM.
 For example, in a test you might want to update some tracked state and
 then run some assertions after rendering has completed. You *could* use
 `await settled()` in that location, but in some contexts you don't want to
-wait for full settledness (which includes test waiters, pending AJAX/fetch,
+wait for full settledness (which includes test waiters, pending fetch,
 run loops, etc) but instead only want to know when that updated value has
 been rendered in the DOM. **THAT** is what `await rerender()` is *perfect*
 for.

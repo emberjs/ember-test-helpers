@@ -7,7 +7,6 @@ import type { Resolver } from '@ember/owner';
 import { setOwner } from '@ember/application';
 
 import buildOwner, { type Owner } from './build-owner.ts';
-import { _setupAJAXHooks } from './settled.ts';
 import { _prepareOnerror } from './setup-onerror.ts';
 import { setTesting } from '@ember/debug';
 import {
@@ -363,7 +362,6 @@ export function getWarningsDuringCallback(
   - sets the "global testing context" to the provided context (`setContext`)
   - create an owner object and set it on the provided context (e.g. `this.owner`)
   - setup `this.set`, `this.setProperties`, `this.get`, and `this.getProperties` to the provided context
-  - setting up AJAX listeners
   - setting up `pauseTest` (also available as `this.pauseTest()`) and `resumeTest` helpers
 
   @public
@@ -485,8 +483,6 @@ export default function setupContext<T extends object>(
           global.resumeTest = resumeTest;
         });
       };
-
-      _setupAJAXHooks();
 
       return context;
     });
