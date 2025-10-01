@@ -33,6 +33,8 @@ export default {
       '-internal/is-promise',
       '-internal/debug-info-helpers',
       '-internal/test-metadata',
+      '-internal/warnings',
+      '-internal/deprecations',
     ]),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
