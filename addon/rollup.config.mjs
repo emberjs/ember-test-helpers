@@ -22,7 +22,18 @@ export default {
     // up your addon's public API. Also make sure your package.json#exports
     // is aligned to the config here.
     // See https://github.com/embroider-build/embroider/blob/main/docs/v2-faq.md#how-can-i-define-the-public-exports-of-my-addon
-    addon.publicEntrypoints(['index.js']),
+    addon.publicEntrypoints([
+      'index.js',
+      // Included for legacy reasons
+      'has-ember-version.js',
+      // included because this repo doesn't yet use the new source-testing approach
+      // present in @ember/addon-blueprint
+      //
+      // We can delete these entries when we update the blueprint
+      '-internal/is-promise',
+      '-internal/debug-info-helpers',
+      '-internal/test-metadata',
+    ]),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
     // `dependencies` and `peerDependencies` as well as standard Ember-provided
