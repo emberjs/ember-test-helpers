@@ -200,6 +200,15 @@ module('setupRenderingContext', function (hooks) {
       assert.equal(this.element.textContent, 'World!');
     });
 
+    test('foo', async function (assert) {
+      const MyComponentTpl = hbs`<div class="my-component">Hello, {{@name}}</div>`;
+      const MyComponent = setComponentTemplate(MyComponentTpl, class extends Component {});
+      await render(MyComponent, {
+        name: 'Tomster',
+      });
+      assert.equal(this.element.querySelector('.my-component').textContent, 'Hello, Tomster');
+    });
+
     test('render does not run sync', async function (assert) {
       assert.ok(
         this.element,

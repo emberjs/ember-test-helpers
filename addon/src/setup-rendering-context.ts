@@ -1,5 +1,9 @@
 import { run } from '@ember/runloop';
 import { EventDispatcher } from '@ember/-internals/views';
+import { createComputeRef } from '@glimmer/reference';
+import { createCapturedArgs, curry, EMPTY_POSITIONAL } from '@glimmer/runtime';
+import { dict } from '@glimmer/util';
+
 import {
   type BaseContext,
   type TestContext,
@@ -130,8 +134,23 @@ export function render(
       const ownerToRenderFrom = options?.owner || owner;
 
       if (isComponent(templateFactoryOrComponent)) {
+        const { owner: _owner, ...namedArgs } = options ?? {};
+        const namedDict = dict();
+
+        for (const key of Object.keys(namedArgs)) {
+          // @ts-expect-error TODO: fix this
+          namedDict[key] = createComputeRef(() => namedArgs[key]);
+        }
+
         context = {
-          ProvidedComponent: templateFactoryOrComponent,
+          ProvidedComponent: curry(
+            0,
+            templateFactoryOrComponent,
+            // @ts-expect-error TODO: fix this
+            createCapturedArgs(namedDict, EMPTY_POSITIONAL),
+            null,
+            true,
+          ),
         };
         templateFactoryOrComponent = INVOKE_PROVIDED_COMPONENT;
       }
