@@ -82,7 +82,7 @@
     "prettier-plugin-ember-template-tag": "^2.0.2",
     "rollup": "^4.21.0",
     "rollup-plugin-copy": "^3.5.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.7.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
