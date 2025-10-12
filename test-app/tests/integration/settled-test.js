@@ -1,6 +1,7 @@
 import { later, run } from '@ember/runloop';
 import { registerWaiter, unregisterWaiter } from '@ember/test';
 import Component from '@ember/component';
+import { registerWaiter, unregisterWaiter } from '@ember/test';
 import {
   settled,
   setupContext,
