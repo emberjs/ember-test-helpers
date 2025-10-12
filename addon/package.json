@@ -58,7 +58,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/plugin-transform-typescript": "^7.25.2",
-    "@babel/runtime": "^7.24.4",
+    "@babel/runtime": "^7.26.0",
     "@embroider/addon-dev": "^5.0.0",
     "@glint/template": "^1.4.0",
     "@rollup/plugin-babel": "^6.0.4",
