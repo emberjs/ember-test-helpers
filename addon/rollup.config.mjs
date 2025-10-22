@@ -30,11 +30,14 @@ export default {
       // present in @ember/addon-blueprint
       //
       // We can delete these entries when we update the blueprint
-      '-internal/is-promise',
-      '-internal/debug-info-helpers',
-      '-internal/test-metadata',
-      '-internal/warnings',
-      '-internal/deprecations',
+      '-internal/debug-info.js',
+      '-internal/debug-info-helpers.js',
+      '-internal/deprecations.js',
+      '-internal/is-promise.js',
+      '-internal/test-metadata.js',
+      '-internal/warnings.js',
+      'dom/-logging.js',
+      'settled.js',
     ]),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
