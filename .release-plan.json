@@ -2,8 +2,8 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "minor",
-      "oldVersion": "5.2.2",
-      "newVersion": "5.3.0",
+      "oldVersion": "5.3.0",
+      "newVersion": "5.4.0",
       "tagName": "latest",
       "constraints": [
         {
@@ -14,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-09-10)\n\n* @ember/test-helpers 5.3.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1521](https://github.com/emberjs/ember-test-helpers/pull/1521) Add `force` argument to `triggerEvent` ([@jrmlt](https://github.com/jrmlt))\n\n#### :memo: Documentation\n* [#1547](https://github.com/emberjs/ember-test-helpers/pull/1547) docs: Correct pnpm installation syntax ([@MichalBryxi](https://github.com/MichalBryxi))\n\n#### Committers: 2\n- Jeremy LE TRIONNAIRE ([@jrmlt](https://github.com/jrmlt))\n- Michal Bryxí ([@MichalBryxi](https://github.com/MichalBryxi))\n"
+  "description": "## Release (2025-10-22)\n\n* @ember/test-helpers 5.4.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1553](https://github.com/emberjs/ember-test-helpers/pull/1553) `waitForFocus` DOM Helper ([@mogstad](https://github.com/mogstad))\n\n#### Committers: 1\n- Bjarne Mogstad ([@mogstad](https://github.com/mogstad))\n"
 }
