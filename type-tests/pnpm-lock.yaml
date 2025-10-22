@@ -12,8 +12,8 @@ importers:
         specifier: workspace:*
         version: link:../addon
       '@tsconfig/ember':
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^3.0.0
+        version: 3.0.11
       '@types/rsvp':
         specifier: ^4.0.9
         version: 4.0.9
@@ -794,8 +794,8 @@ packages:
   '@simple-dom/interface@1.4.0':
     resolution: {integrity: sha512-l5qumKFWU0S+4ZzMaLXFU8tQZsicHEMEyAxI5kDFGhJsRqDwe0a7/iPA/GdxlGyDKseQQAgIz5kzU7eXTrlSpA==}
 
-  '@tsconfig/ember@2.0.0':
-    resolution: {integrity: sha512-RzbDYYcjxVdG8Ki0xe99HN3+nHTZe6EBgw6N7B3yup7QogVFQQxA9nY7X80j1XzF15xqetwWiYfAjv5lkkp0/A==}
+  '@tsconfig/ember@3.0.11':
+    resolution: {integrity: sha512-c9uaKBN4KxtdT/UNPPxoWghyoDsTRHzYb53Z5Fv9eum+4cok0U+hYwyKNjvCxkBjEPECS8QAyp8nGAhRifZnBQ==}
 
   '@types/fs-extra@5.1.0':
     resolution: {integrity: sha512-AInn5+UBFIK9FK5xc9yP5e3TQSPNNgjHByqYcj9g5elVBnDQcQL7PlO1CIRy2gWlbwK7UPYqi7vRvFA44dCmYQ==}
@@ -3367,7 +3367,7 @@ snapshots:
 
   '@simple-dom/interface@1.4.0': {}
 
-  '@tsconfig/ember@2.0.0': {}
+  '@tsconfig/ember@3.0.11': {}
 
   '@types/fs-extra@5.1.0':
     dependencies:
