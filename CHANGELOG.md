@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-10-22)
+
+* @ember/test-helpers 5.4.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`
+  * [#1553](https://github.com/emberjs/ember-test-helpers/pull/1553) `waitForFocus` DOM Helper ([@mogstad](https://github.com/mogstad))
+
+#### Committers: 1
+- Bjarne Mogstad ([@mogstad](https://github.com/mogstad))
+
 ## Release (2025-09-10)
 
 * @ember/test-helpers 5.3.0 (minor)
