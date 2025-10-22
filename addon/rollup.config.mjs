@@ -34,10 +34,10 @@ export default {
       '-internal/debug-info-helpers.js',
       '-internal/deprecations.js',
       '-internal/is-promise.js',
-      '-internal/test-metadata.js',
       '-internal/warnings.js',
       'dom/-logging.js',
       'settled.js',
+      'test-metadata.js',
     ]),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
