@@ -3,6 +3,7 @@
     // We can't upgrade @tsconfig ember until we only support TS v5+
   "extends": "@tsconfig/ember",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "*": [
