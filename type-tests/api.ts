@@ -1,4 +1,4 @@
-import { expectTypeOf } from 'expect-type';
+import { expectTypeOf } from "expect-type";
 
 import {
   // DOM Interaction Helpers
@@ -28,6 +28,7 @@ import {
   clearRender,
   // Wait Helpers
   waitFor,
+  waitForFocus,
   waitUntil,
   settled,
   isSettled,
@@ -73,12 +74,12 @@ import {
   type Hook,
   type HookLabel,
   type HookUnregister,
-} from '@ember/test-helpers';
-import type { Owner } from '@ember/test-helpers/build-owner';
-import type { DebugInfo as BackburnerDebugInfo } from '@ember/runloop/-private/backburner';
-import type { Resolver as EmberResolver } from '@ember/owner';
-import Application from '@ember/application';
-import type { IDOMElementDescriptor } from 'dom-element-descriptors';
+} from "@ember/test-helpers";
+import type { Owner } from "@ember/test-helpers/build-owner";
+import type { DebugInfo as BackburnerDebugInfo } from "@ember/runloop/-private/backburner";
+import type { Resolver as EmberResolver } from "@ember/owner";
+import Application from "@ember/application";
+import type { IDOMElementDescriptor } from "dom-element-descriptors";
 
 // DOM Interaction Helpers
 expectTypeOf(blur).toEqualTypeOf<(target?: Target) => Promise<void>>();
@@ -123,13 +124,13 @@ expectTypeOf(triggerEvent).toEqualTypeOf<
     target: Target,
     eventType: string,
     options?: Record<string, unknown>,
-    force?: boolean,
+    force?: boolean
   ) => Promise<void>
 >();
 expectTypeOf(triggerKeyEvent).toEqualTypeOf<
   (
     target: Target,
-    eventType: 'keydown' | 'keyup' | 'keypress',
+    eventType: "keydown" | "keyup" | "keypress",
     key: number | string,
     modifiers?: {
       ctrlKey?: boolean;
@@ -150,16 +151,16 @@ expectTypeOf(typeIn).toEqualTypeOf<
 >();
 
 // DOM Query Helpers
-expectTypeOf(find).toEqualTypeOf<Document['querySelector']>();
-expectTypeOf(find('a')).toEqualTypeOf<HTMLAnchorElement | SVGAElement | null>();
-expectTypeOf(find('div')).toEqualTypeOf<HTMLDivElement | null>();
-expectTypeOf(find('circle')).toEqualTypeOf<SVGCircleElement | null>();
-expectTypeOf(find('.corkscrew')).toEqualTypeOf<Element | null>();
+expectTypeOf(find).toEqualTypeOf<Document["querySelector"]>();
+expectTypeOf(find("a")).toEqualTypeOf<HTMLAnchorElement | SVGAElement | null>();
+expectTypeOf(find("div")).toEqualTypeOf<HTMLDivElement | null>();
+expectTypeOf(find("circle")).toEqualTypeOf<SVGCircleElement | null>();
+expectTypeOf(find(".corkscrew")).toEqualTypeOf<Element | null>();
 expectTypeOf(findAll).toEqualTypeOf<(selector: string) => Array<Element>>();
-expectTypeOf(findAll('a')).toEqualTypeOf<(HTMLAnchorElement | SVGAElement)[]>();
-expectTypeOf(findAll('div')).toEqualTypeOf<HTMLDivElement[]>();
-expectTypeOf(findAll('circle')).toEqualTypeOf<SVGCircleElement[]>();
-expectTypeOf(findAll('.corkscrew')).toEqualTypeOf<Element[]>();
+expectTypeOf(findAll("a")).toEqualTypeOf<(HTMLAnchorElement | SVGAElement)[]>();
+expectTypeOf(findAll("div")).toEqualTypeOf<HTMLDivElement[]>();
+expectTypeOf(findAll("circle")).toEqualTypeOf<SVGCircleElement[]>();
+expectTypeOf(findAll(".corkscrew")).toEqualTypeOf<Element[]>();
 expectTypeOf(getRootElement).toEqualTypeOf<() => Element | Document>();
 
 // Routing Helpers
@@ -187,9 +188,19 @@ expectTypeOf(waitFor).toEqualTypeOf<
     }
   ) => Promise<Element | Array<Element>>
 >();
+expectTypeOf(waitForFocus).toEqualTypeOf<
+  (
+    selector: string | IDOMElementDescriptor,
+    options?: {
+      timeout?: number;
+      timeoutMessage?: string;
+    }
+  ) => Promise<Element>
+>();
+
 expectTypeOf(waitUntil).toEqualTypeOf<
   <T>(
-    callback: () => T | void | false | 0 | '' | null | undefined,
+    callback: () => T | void | false | 0 | "" | null | undefined,
     options?: {
       timeout?: number;
       timeoutMessage?: string;

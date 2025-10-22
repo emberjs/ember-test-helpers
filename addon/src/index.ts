@@ -74,6 +74,8 @@ export { default as find } from './dom/find.ts';
 export { default as findAll } from './dom/find-all.ts';
 export { default as typeIn } from './dom/type-in.ts';
 export { default as scrollTo } from './dom/scroll-to.ts';
+export { default as waitForFocus } from './dom/wait-for-focus.ts';
+
 export type { Target } from './dom/-target.ts';
 
 // Declaration-merge for our internal purposes.
