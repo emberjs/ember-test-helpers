@@ -18,7 +18,7 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "pnpm _syncPnpm && concurrently 'ember serve' 'pnpm _syncPnpm --watch' --names 'tests serve,tests sync deps'",
+    "start": "pnpm _syncPnpm && concurrently 'ember serve --port=0' 'pnpm _syncPnpm --watch' --names 'tests serve,tests sync deps'",
     "test": "pnpm _syncPnpm; ember test",
     "test:ember": "ember test",
     "_syncPnpm": "DEBUG=sync-pnpm pnpm sync-dependencies-meta-injected"
@@ -31,7 +31,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.3",
     "@babel/plugin-proposal-decorators": "^7.21.0",
-    "@ember/jquery": "^2.0.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "workspace:*",
@@ -67,7 +66,6 @@
     "latest-version": "^5.0.0",
     "loader.js": "^4.7.0",
     "pnpm-sync-dependencies-meta-injected": "^0.0.14",
-    "pretender": "^3.4.7",
     "prettier": "^2.8.7",
     "qunit": "^2.21.1",
     "qunit-console-grouper": "^0.3.0",
