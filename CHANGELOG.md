@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-11-14)
+
+* @ember/test-helpers 5.4.1 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1558](https://github.com/emberjs/ember-test-helpers/pull/1558) chore: bump addon-shim ([@aklkv](https://github.com/aklkv))
+
+#### Committers: 1
+- Alexey Kulakov ([@aklkv](https://github.com/aklkv))
+
 ## Release (2025-10-22)
 
 * @ember/test-helpers 5.4.0 (minor)

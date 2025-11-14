@@ -1,18 +1,18 @@
 {
   "solution": {
     "@ember/test-helpers": {
-      "impact": "minor",
-      "oldVersion": "5.3.0",
-      "newVersion": "5.4.0",
+      "impact": "patch",
+      "oldVersion": "5.4.0",
+      "newVersion": "5.4.1",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-10-22)\n\n* @ember/test-helpers 5.4.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1553](https://github.com/emberjs/ember-test-helpers/pull/1553) `waitForFocus` DOM Helper ([@mogstad](https://github.com/mogstad))\n\n#### Committers: 1\n- Bjarne Mogstad ([@mogstad](https://github.com/mogstad))\n"
+  "description": "## Release (2025-11-14)\n\n* @ember/test-helpers 5.4.1 (patch)\n\n#### :bug: Bug Fix\n* `@ember/test-helpers`\n  * [#1558](https://github.com/emberjs/ember-test-helpers/pull/1558) chore: bump addon-shim ([@aklkv](https://github.com/aklkv))\n\n#### Committers: 1\n- Alexey Kulakov ([@aklkv](https://github.com/aklkv))\n"
 }
