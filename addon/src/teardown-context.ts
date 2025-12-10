@@ -29,6 +29,7 @@ export default function teardownContext(
   { waitForSettled = true }: TeardownContextOptions = {},
 ): Promise<void> {
   return Promise.resolve()
+    .then(settled)
     .then(() => {
       _cleanupOnerror(context);
       _teardownAJAXHooks();
