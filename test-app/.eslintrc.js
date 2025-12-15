@@ -66,8 +66,6 @@ module.exports = {
         'ember/no-empty-glimmer-component-classes': 'off',
         'ember/no-get': 'off',
         'ember/require-super-in-lifecycle-hooks': 'off',
-        'ember/no-global-jquery': 'off',
-        'ember/no-jquery': 'off',
         'ember/no-legacy-test-waiters': 'off',
         'ember/no-pause-test': 'off',
         'ember/no-settled-after-test-helper': 'off',

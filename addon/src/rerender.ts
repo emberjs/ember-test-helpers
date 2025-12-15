@@ -9,7 +9,7 @@ import renderSettled from './-internal/render-settled.ts';
   For example, in a test you might want to update some tracked state and
   then run some assertions after rendering has completed. You _could_ use
   `await settled()` in that location, but in some contexts you don't want to
-  wait for full settledness (which includes test waiters, pending AJAX/fetch,
+  wait for full settledness (which includes test waiters, pending fetch,
   run loops, etc) but instead only want to know when that updated value has
   been rendered in the DOM. **THAT** is what `await rerender()` is _perfect_
   for.

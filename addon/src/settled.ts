@@ -5,14 +5,12 @@ import { _backburner } from '@ember/runloop';
 import { Test } from 'ember-testing';
 import { pendingRequests as _internalGetPendingRequestsCount } from 'ember-testing/lib/test/pending_requests';
 
-import { nextTick } from './-utils.ts';
 import waitUntil from './wait-until.ts';
 import { hasPendingTransitions } from './setup-application-context.ts';
 import { hasPendingWaiters } from '@ember/test-waiters';
 import type DebugInfo from './-internal/debug-info.ts';
 import { TestDebugInfo } from './-internal/debug-info.ts';
 
-let requests: XMLHttpRequest[];
 const checkWaiters = Test.checkWaiters;
 
 /**
@@ -20,89 +18,7 @@ const checkWaiters = Test.checkWaiters;
   @returns {number} the count of pending requests
 */
 function pendingRequests() {
-  const localRequestsPending = requests !== undefined ? requests.length : 0;
-  const internalRequestsPending = _internalGetPendingRequestsCount();
-
-  return localRequestsPending + internalRequestsPending;
-}
-
-/**
-  @private
-  @param {Event} event (unused)
-  @param {XMLHTTPRequest} xhr the XHR that has initiated a request
-*/
-function incrementAjaxPendingRequests(event: any, xhr: XMLHttpRequest): void {
-  requests.push(xhr);
-}
-
-/**
-  @private
-  @param {Event} event (unused)
-  @param {XMLHTTPRequest} xhr the XHR that has initiated a request
-*/
-function decrementAjaxPendingRequests(event: any, xhr: XMLHttpRequest): void {
-  // In most Ember versions to date (current version is 2.16) RSVP promises are
-  // configured to flush in the actions queue of the Ember run loop, however it
-  // is possible that in the future this changes to use "true" micro-task
-  // queues.
-  //
-  // The entire point here, is that _whenever_ promises are resolved will be
-  // before the next run of the JS event loop. Then in the next event loop this
-  // counter will decrement. In the specific case of AJAX, this means that any
-  // promises chained off of `$.ajax` will properly have their `.then` called
-  // _before_ this is decremented (and testing continues)
-  nextTick(() => {
-    for (let i = 0; i < requests.length; i++) {
-      if (xhr === requests[i]) {
-        requests.splice(i, 1);
-      }
-    }
-  });
-}
-
-/**
-  Clears listeners that were previously setup for `ajaxSend` and `ajaxComplete`.
-
-  @private
-*/
-export function _teardownAJAXHooks() {
-  // jQuery will not invoke `ajaxComplete` if
-  //    1. `transport.send` throws synchronously and
-  //    2. it has an `error` option which also throws synchronously
-
-  // We can no longer handle any remaining requests
-  requests = [];
-
-  if (typeof (globalThis as any).jQuery === 'undefined') {
-    return;
-  }
-
-  (globalThis as any)
-    .jQuery(document)
-    .off('ajaxSend', incrementAjaxPendingRequests);
-  (globalThis as any)
-    .jQuery(document)
-    .off('ajaxComplete', decrementAjaxPendingRequests);
-}
-
-/**
-  Sets up listeners for `ajaxSend` and `ajaxComplete`.
-
-  @private
-*/
-export function _setupAJAXHooks() {
-  requests = [];
-
-  if (typeof (globalThis as any).jQuery === 'undefined') {
-    return;
-  }
-
-  (globalThis as any)
-    .jQuery(document)
-    .on('ajaxSend', incrementAjaxPendingRequests);
-  (globalThis as any)
-    .jQuery(document)
-    .on('ajaxComplete', decrementAjaxPendingRequests);
+  return _internalGetPendingRequestsCount();
 }
 
 export interface SettledState {
@@ -127,13 +43,12 @@ export interface SettledState {
   - `hasPendingWaiters` - Checks if any registered test waiters are still
     pending (e.g. the waiter returns `true`). If there are pending waiters,
     this will be `true`, otherwise `false`.
-  - `hasPendingRequests` - Checks if there are pending AJAX requests (based on
-    `ajaxSend` / `ajaxComplete` events triggered by `jQuery.ajax`). If there
+  - `hasPendingRequests` - Checks if there are pending requests. If there
     are pending requests, this will be `true`, otherwise `false`.
   - `hasPendingTransitions` - Checks if there are pending route transitions. If the
     router has not been instantiated / setup for the test yet this will return `null`,
     if there are pending transitions, this will be `true`, otherwise `false`.
-  - `pendingRequestCount` - The count of pending AJAX requests.
+  - `pendingRequestCount` - The count of pending requests.
   - `debugInfo` - Debug information that's combined with info return from backburner's
     getDebugInfo method.
   - `isRenderPending` - Checks if there are any pending render operations. This will be true as long
@@ -176,7 +91,7 @@ export function getSettledState(): SettledState {
   Checks various settledness metrics (via `getSettledState()`) to determine if things are settled or not.
 
   Settled generally means that there are no pending timers, no pending waiters,
-  no pending AJAX requests, and no current run loop. However, new settledness
+  no pending requests, and no current run loop. However, new settledness
   metrics may be added and used as they become available.
 
   @public

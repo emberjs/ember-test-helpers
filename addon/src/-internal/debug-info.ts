@@ -12,7 +12,7 @@ import {
   type PendingWaiterState,
 } from '@ember/test-waiters';
 
-const PENDING_AJAX_REQUESTS = 'Pending AJAX requests';
+const PENDING_REQUESTS = 'Pending requests';
 const PENDING_TEST_WAITERS = 'Pending test waiters';
 const SCHEDULED_ASYNC = 'Scheduled async';
 const SCHEDULED_AUTORUN = 'Scheduled autorun';
@@ -158,7 +158,7 @@ export class TestDebugInfo implements DebugInfo {
     const summary = this.summary;
 
     if (summary.hasPendingRequests) {
-      _console.log(PENDING_AJAX_REQUESTS);
+      _console.log(PENDING_REQUESTS);
     }
 
     if (summary.hasPendingLegacyWaiters) {

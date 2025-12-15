@@ -4,15 +4,8 @@ import { isSettled, getSettledState } from '@ember/test-helpers';
 import { macroCondition, dependencySatisfies } from '@embroider/macros';
 import { TestDebugInfo } from '@ember/test-helpers/-internal/debug-info';
 import hasEmberVersion from '@ember/test-helpers/has-ember-version';
-import {
-  _setupAJAXHooks,
-  _teardownAJAXHooks,
-} from '@ember/test-helpers/settled';
 import { next, later, run, schedule } from '@ember/runloop';
 import { buildWaiter, _reset as resetWaiters } from '@ember/test-waiters';
-import Pretender from 'pretender';
-import hasjQuery from '../helpers/has-jquery';
-import ajax from '../helpers/ajax';
 
 const WAITER_NAME = 'custom-waiter';
 
@@ -22,8 +15,6 @@ module('settled', function (hooks) {
   }
 
   hooks.beforeEach(function (assert) {
-    _setupAJAXHooks();
-
     this.confirmSettles = (done) => {
       return function () {
         setTimeout(() => {
@@ -55,16 +46,6 @@ module('settled', function (hooks) {
       };
     };
 
-    this.server = new Pretender(function () {
-      this.get(
-        '/whazzits',
-        function () {
-          return [200, { 'Content-Type': 'text/plain' }, 'Remote Data!'];
-        },
-        25
-      );
-    });
-
     this._legacyWaiter = () => {
       return !this.isWaiterPending;
     };
@@ -77,8 +58,6 @@ module('settled', function (hooks) {
   hooks.afterEach(function () {
     unregisterWaiter(this._legacyWaiter);
     resetWaiters();
-    this.server.shutdown();
-    _teardownAJAXHooks();
   });
 
   module('isSettled', function () {
@@ -131,18 +110,6 @@ module('settled', function (hooks) {
       });
 
       assert.strictEqual(isSettled(), true, 'post cond');
-    });
-
-    test('when AJAX requests are pending', function (assert) {
-      assert.expect(4);
-
-      let done = assert.async();
-
-      assert.strictEqual(isSettled(), true, 'precond');
-
-      ajax('/whazzits').then(this.confirmSettles(done));
-
-      assert.strictEqual(isSettled(), false);
     });
 
     test('when legacy waiters are pending', function (assert) {
@@ -306,59 +273,6 @@ module('settled', function (hooks) {
       });
 
       assert.strictEqual(isSettled(), true, 'post cond');
-    });
-
-    test('when AJAX requests are pending', function (assert) {
-      assert.expect(4);
-
-      let done = assert.async();
-
-      assert.strictEqual(isSettled(), true, 'precond');
-
-      ajax('/whazzits').then(this.confirmSettles(done));
-
-      /*
-        When testing without jQuery `ajax` is provided by ember-fetch which uses a test waiter
-        to ensure tests wait for pending `fetch` requests, but under jQuery.ajax we use global
-        ajax start/stop timers
-      */
-      if (hasjQuery()) {
-        assert.deepEqual(getSettledState(), {
-          hasPendingRequests: true,
-          hasPendingTimers: false,
-          hasPendingWaiters: false,
-          hasPendingTransitions: null,
-          hasRunLoop: false,
-          pendingRequestCount: 1,
-          isRenderPending: false,
-          debugInfo: new TestDebugInfo({
-            hasPendingTimers: false,
-            hasRunLoop: false,
-            hasPendingLegacyWaiters: false,
-            hasPendingTestWaiters: false,
-            hasPendingRequests: true,
-            isRenderPending: false,
-          }),
-        });
-      } else {
-        assert.deepEqual(getSettledState(), {
-          hasPendingRequests: false,
-          hasPendingTimers: false,
-          hasPendingWaiters: true,
-          hasPendingTransitions: null,
-          hasRunLoop: false,
-          isRenderPending: false,
-          pendingRequestCount: 0,
-          debugInfo: new TestDebugInfo({
-            hasPendingTimers: false,
-            hasRunLoop: false,
-            hasPendingLegacyWaiters: true,
-            hasPendingTestWaiters: false,
-            hasPendingRequests: false,
-            isRenderPending: false,
-          }),
-        });
-      }
     });
 
     test('when legacy waiters are pending', function (assert) {
