@@ -3,7 +3,6 @@
 // this type will be `any`.
 import { _backburner } from '@ember/runloop';
 import { Test } from 'ember-testing';
-import { pendingRequests as _internalGetPendingRequestsCount } from 'ember-testing/lib/test/pending_requests';
 
 import { nextTick } from './-utils.ts';
 import waitUntil from './wait-until.ts';
@@ -20,10 +19,7 @@ const checkWaiters = Test.checkWaiters;
   @returns {number} the count of pending requests
 */
 function pendingRequests() {
-  const localRequestsPending = requests !== undefined ? requests.length : 0;
-  const internalRequestsPending = _internalGetPendingRequestsCount();
-
-  return localRequestsPending + internalRequestsPending;
+  return requests !== undefined ? requests.length : 0;
 }
 
 /**
