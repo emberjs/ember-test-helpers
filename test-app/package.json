@@ -47,7 +47,6 @@
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-htmlbars": "^7.0.1",
     "ember-cli-inject-live-reload": "^2.1.0",
-    "ember-data": "~4.11.3",
     "ember-fetch": "^8.1.2",
     "ember-load-initializers": "^2.1.2",
     "ember-modifier": "^4.1.0",
