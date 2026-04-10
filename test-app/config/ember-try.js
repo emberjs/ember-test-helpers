@@ -113,7 +113,7 @@ module.exports = async function () {
             '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('canary'),
             'ember-cli': '^6.10.0',
-            'ember-resolver': '10.0.0',
+            'ember-resolver': '^13.1.0',
             '@ember/string': '3.0.1',
           },
         },
