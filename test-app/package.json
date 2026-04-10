@@ -87,5 +87,10 @@
   },
   "dependencies": {
     "dom-element-descriptors": "^0.5.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "ember-cli-htmlbars": "^7.0.1"
+    }
   }
 }
