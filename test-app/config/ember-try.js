@@ -43,6 +43,7 @@ module.exports = async function () {
             '@glimmer/interfaces': '~0.84.3',
             '@glimmer/reference': '~0.84.3',
             'ember-source': '~4.4.0',
+            'ember-qunit': '^7.0.0',
             ...atTypes,
           },
         },
