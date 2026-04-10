@@ -92,6 +92,7 @@ module.exports = async function () {
           devDependencies: {
             '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('release'),
+            'ember-cli': '^6.10.0',
           },
         },
       },
@@ -101,6 +102,7 @@ module.exports = async function () {
           devDependencies: {
             '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('beta'),
+            'ember-cli': '^6.10.0',
           },
         },
       },
@@ -110,6 +112,7 @@ module.exports = async function () {
           devDependencies: {
             '@glimmer/interfaces': '~0.92.0',
             'ember-source': await getChannelURL('canary'),
+            'ember-cli': '^6.10.0',
             'ember-resolver': '10.0.0',
             '@ember/string': '3.0.1',
           },
