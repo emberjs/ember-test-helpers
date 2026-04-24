@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2026-04-24)
+
+* @ember/test-helpers 5.4.2 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1561](https://github.com/emberjs/ember-test-helpers/pull/1561) Remove pendingRequests check from ember-testing internal API ([@Copilot](https://github.com/apps/copilot-swe-agent))
+
+#### :house: Internal
+* [#1564](https://github.com/emberjs/ember-test-helpers/pull/1564) pnpm dlx create-release-plan-setup@latest ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Copilot [Bot] ([@copilot-swe-agent](https://github.com/apps/copilot-swe-agent))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-11-14)
 
 * @ember/test-helpers 5.4.1 (patch)
