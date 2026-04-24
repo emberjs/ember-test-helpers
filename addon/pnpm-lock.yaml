@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+overrides:
+  ember-cli-htmlbars: ^7.0.1
+
 importers:
 
   .:
@@ -36,6 +39,9 @@ importers:
       '@babel/runtime':
         specifier: ^7.24.4
         version: 7.29.2
+      '@ember/library-tsconfig':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@embroider/addon-dev':
         specifier: ^5.0.0
         version: 5.0.0(@glint/template@1.7.7)(rollup@4.60.1)
@@ -45,9 +51,6 @@ importers:
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.1.0(@babel/core@7.29.0)(rollup@4.60.1)
-      '@tsconfig/ember':
-        specifier: ^3.0.6
-        version: 3.0.12
       '@types/rsvp':
         specifier: ^4.0.9
         version: 4.0.9
@@ -733,6 +736,9 @@ packages:
   '@ember/edition-utils@1.2.0':
     resolution: {integrity: sha512-VmVq/8saCaPdesQmftPqbFtxJWrzxNGSQ+e8x8LLe3Hjm36pJ04Q8LeORGZkAeOhldoUX9seLGmSaHeXkIqoog==}
 
+  '@ember/library-tsconfig@2.0.0':
+    resolution: {integrity: sha512-DTGt9TYZ3bhObUviQXx4C0v46oWM7HsRrUTbgONw2QBhJVHlmXA89uXenlvuqVrCQkA0g5kz7wwyOlcjIZ8h0w==}
+
   '@ember/test-waiters@4.1.1':
     resolution: {integrity: sha512-HbK70JYCDJcGI0CrwcbjeL2QHAn0HLwa3oGep7mr6l/yO95U7JYA8VN+/9VTsWJTmKueLtWayUqEmGS3a3mVOg==}
 
@@ -1112,10 +1118,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@tsconfig/ember@3.0.12':
-    resolution: {integrity: sha512-ypFTXqIzQAB5HpYPi4TwDElDcUheWrKsEaYXgjiCAvsH6zxcQ4zUeuJqmfT+FoUlHTPZ3Xyel81OxrcjI+rilw==}
-    deprecated: Please use @ember/app-tsconfig or @ember/library-tsconfig instead. These live at https://github.com/ember-cli/tsconfigs
 
   '@types/debug@4.1.13':
     resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==}
@@ -5128,6 +5130,8 @@ snapshots:
 
   '@ember/edition-utils@1.2.0': {}
 
+  '@ember/library-tsconfig@2.0.0': {}
+
   '@ember/test-waiters@4.1.1(@babel/core@7.29.0)(@glint/template@1.7.7)':
     dependencies:
       '@embroider/addon-shim': 1.10.2
@@ -5635,8 +5639,6 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@tsconfig/ember@3.0.12': {}
 
   '@types/debug@4.1.13':
     dependencies:
