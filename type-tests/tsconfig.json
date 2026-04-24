@@ -1,11 +1,6 @@
 {
   "extends": "@ember/app-tsconfig",
   "compilerOptions": {
-    "paths": {
-      "*": [
-        "types/*"
-      ]
-    }
   },
   "include": ["api.ts", "./types/**/*"]
 }
