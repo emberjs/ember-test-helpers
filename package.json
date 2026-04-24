@@ -6,6 +6,7 @@
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
     "build:docs": "pnpm --filter '@ember/test-helpers' run build:docs",
+    "prepare": "pnpm --filter '@ember/test-helpers' build",
     "lint": "pnpm --filter '*' lint",
     "lint:fix": "pnpm --filter '*' lint:fix",
     "test": "pnpm --filter '*' test"
@@ -13,9 +14,14 @@
   "devDependencies": {
     "release-plan": "^0.18.0"
   },
+  "pnpm": {
+    "overrides": {
+      "ember-cli-htmlbars": "^7.0.1"
+    }
+  },
   "packageManager": "pnpm@9.5.0",
   "volta": {
-    "node": "18.20.4",
+    "node": "24.14.0",
     "pnpm": "9.5.0"
   }
 }

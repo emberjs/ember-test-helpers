@@ -5,8 +5,8 @@ export function setRegistry(newRegistry) {
   registry = newRegistry;
 }
 
-export default Resolver.extend({
+export default class AppResolver extends Resolver {
   resolve(fullName) {
-    return registry[fullName] || this._super(...arguments);
-  },
-});
+    return registry[fullName] || super.resolve(fullName);
+  }
+}
