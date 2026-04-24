@@ -1,7 +1,6 @@
 {
   "extends": "@ember/app-tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "*": [
         "types/*"
