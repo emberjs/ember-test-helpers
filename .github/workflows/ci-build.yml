@@ -21,7 +21,7 @@ jobs:
         with:
           cache: pnpm
       - name: Install Dependencies
-        run: pnpm install 
+        run: pnpm install
       - run: pnpm lint
 
   test:
@@ -36,7 +36,7 @@ jobs:
         with:
           cache: pnpm
       - name: Install Dependencies
-        run: pnpm install 
+        run: pnpm install
       - run: |
           google-chrome --version
 
@@ -58,10 +58,9 @@ jobs:
         with:
           cache: pnpm
       - name: Install Dependencies
-        run: pnpm install 
+        run: pnpm install
       - run: pnpm build:docs
       - run: echo "If this fails, docs gen is out of sync. Please run 'pnpm build:docs'" && git diff --exit-code
-
 
   floating:
     name: "Floating Dependencies"
@@ -107,7 +106,7 @@ jobs:
           - ember-canary
           - ember-default
           - embroider-safe
-          - embroider-optimized 
+          - embroider-optimized
           - "@ember/test-waiters@v4"
 
     steps:
@@ -117,7 +116,7 @@ jobs:
         with:
           cache: pnpm
       - name: Install Dependencies
-        run: pnpm install 
+        run: pnpm install
       - name: Build addon
         working-directory: addon
         run: pnpm build
@@ -134,12 +133,11 @@ jobs:
       fail-fast: false
       matrix:
         ts-version:
-          - 5.0
-          - 5.1
-          - 5.2
-          - 5.3
-          - 5.4
-          - 5.5
+          - 5.6
+          - 5.7
+          - 5.8
+          - 5.9
+          - 6.0
           - next
 
     steps:
@@ -149,7 +147,7 @@ jobs:
         with:
           cache: pnpm
       - name: Install Dependencies
-        run: pnpm install 
+        run: pnpm install
       - name: Build types for addon
         working-directory: addon
         run: pnpm build
@@ -158,4 +156,4 @@ jobs:
         run: pnpm add --save-dev typescript@${{matrix.ts-version}}
       - name: public types
         working-directory: type-tests
-        run: pnpm test 
+        run: pnpm test
