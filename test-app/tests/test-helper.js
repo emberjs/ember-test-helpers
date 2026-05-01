@@ -6,6 +6,11 @@ import { _backburner } from '@ember/runloop';
 import './helpers/resolver';
 import { setup } from 'qunit-dom';
 import { start } from 'ember-qunit';
+import {
+  macroCondition,
+  dependencySatisfies,
+  importSync,
+} from '@embroider/macros';
 
 import {
   getDeprecationsDuringCallback,
@@ -98,6 +103,14 @@ QUnit.assert.deprecationsInclude = function (expected) {
     message: `expected to find \`${expected}\` deprecation`,
   });
 };
+
+if (macroCondition(dependencySatisfies('ember-qunit', '>= 9.0.0'))) {
+  const { loadTests } = importSync('ember-qunit/test-loader');
+  const { setupEmberOnerrorValidation } = importSync('ember-qunit');
+
+  setupEmberOnerrorValidation();
+  loadTests();
+}
 
 start({
   // We manage Ember.testing manually in this test-app

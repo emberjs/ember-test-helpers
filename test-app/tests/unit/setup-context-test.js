@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { isTesting } from '@ember/debug';
-import Service, { inject as injectService } from '@ember/service';
+import Service, { service as injectService } from '@ember/service';
 import {
   setupContext,
   teardownContext,
