@@ -1,3 +1,4 @@
+import Application from '@ember/application';
 import { module, test } from 'qunit';
 import { application, resolver } from '../helpers/resolver';
 import {
@@ -16,6 +17,18 @@ module('application', function (hooks) {
   hooks.afterEach(function () {
     setApplication(application);
     setResolver(resolver);
+  });
+
+  test('RFC#1132: calling set application does not set resolver if the application has modules = {}', function (assert) {
+    class App extends Application {
+      modules = {};
+    }
+
+    setApplication(App);
+
+    let actualResolver = getResolver();
+    assert.notOk(actualResolver, 'there is no resolver');
+    assert.deepEqual(getApplication().constructor, application.constructor);
   });
 
   test('calling setApplication sets resolver when resolver is unset', function (assert) {
