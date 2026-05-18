@@ -1,6 +1,7 @@
 import Application from '@ember/application';
 import { module, test } from 'qunit';
 import { application, resolver } from '../helpers/resolver';
+import ApplicationPolyfill from 'ember-strict-application-resolver';
 import {
   getApplication,
   setApplication,
@@ -31,6 +32,20 @@ module('application', function (hooks) {
       //
       //       Once the above PR lands, we'll want to wrap this test in a macroCondition
       buildRegistry() {}
+    }
+
+    setApplication(
+      App.create({ autoboot: false, rootElement: '#ember-testing' })
+    );
+
+    let actualResolver = getResolver();
+    assert.notOk(actualResolver, 'there is no resolver');
+    assert.deepEqual(getApplication().constructor, App);
+  });
+
+  test('RFC#1132 (polyfilled): calling set application does not set resolver if the application has modules = {}', function (assert) {
+    class App extends ApplicationPolyfill {
+      modules = {};
     }
 
     setApplication(
