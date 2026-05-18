@@ -22,13 +22,24 @@ module('application', function (hooks) {
   test('RFC#1132: calling set application does not set resolver if the application has modules = {}', function (assert) {
     class App extends Application {
       modules = {};
+
+      // TODO: This isn't needed once we upgrade to
+      //       a new enough ember that supports this.
+      //       But to support the implementation PR, @ember/test-helpers
+      //       needs to be compatible with modules = {} first for the smoke tests
+      //       to pass in https://github.com/emberjs/ember.js/pull/21303
+      //
+      //       Once the above PR lands, we'll want to wrap this test in a macroCondition
+      buildRegistry() {}
     }
 
-    setApplication(App);
+    setApplication(
+      App.create({ autoboot: false, rootElement: '#ember-testing' })
+    );
 
     let actualResolver = getResolver();
     assert.notOk(actualResolver, 'there is no resolver');
-    assert.deepEqual(getApplication().constructor, application.constructor);
+    assert.deepEqual(getApplication().constructor, App);
   });
 
   test('calling setApplication sets resolver when resolver is unset', function (assert) {

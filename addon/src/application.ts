@@ -23,7 +23,7 @@ export function setApplication(application: Application): void {
    * SAFETY: modules is a new API, so older Application
    *         types will not have it.
    */
-  if ((application as any).modules) return;
+  if ((application as any)?.modules) return;
 
   if (!getResolver()) {
     const Resolver = (application as any).Resolver;
