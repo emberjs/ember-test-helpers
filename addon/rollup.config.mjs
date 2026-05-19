@@ -22,16 +22,22 @@ export default {
     // up your addon's public API. Also make sure your package.json#exports
     // is aligned to the config here.
     // See https://github.com/embroider-build/embroider/blob/main/docs/v2-faq.md#how-can-i-define-the-public-exports-of-my-addon
-    addon.publicEntrypoints(['**/*.js', 'index.js', 'template-registry.js']),
-
-    // These are the modules that should get reexported into the traditional
-    // "app" tree. Things in here should also be in publicEntrypoints above, but
-    // not everything in publicEntrypoints necessarily needs to go here.
-    addon.appReexports([
-      'components/**/*.js',
-      'helpers/**/*.js',
-      'modifiers/**/*.js',
-      'services/**/*.js',
+    addon.publicEntrypoints([
+      'index.js',
+      // Included for legacy reasons
+      'has-ember-version.js',
+      // included because this repo doesn't yet use the new source-testing approach
+      // present in @ember/addon-blueprint
+      //
+      // We can delete these entries when we update the blueprint
+      '-internal/debug-info.js',
+      '-internal/debug-info-helpers.js',
+      '-internal/deprecations.js',
+      '-internal/is-promise.js',
+      '-internal/warnings.js',
+      'dom/-logging.js',
+      'settled.js',
+      'test-metadata.js',
     ]),
 
     // Follow the V2 Addon rules about dependencies. Your code can import from
