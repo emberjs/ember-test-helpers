@@ -5,14 +5,9 @@ import {
   teardownContext,
   find,
 } from '@ember/test-helpers';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { registerDescriptorData } from 'dom-element-descriptors';
 
 module('DOM Helper: waitForFocus', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, rootElement;
 
   hooks.beforeEach(function () {

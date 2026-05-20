@@ -4,7 +4,6 @@ import { buildInstrumentedElement, insertElement } from '../../helpers/events';
 import { isFirefox, isChrome } from '../../helpers/browser-detect';
 import { debounce } from '@ember/runloop';
 import { Promise } from 'rsvp';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import {
   registerHooks,
   unregisterHooks,
@@ -82,10 +81,6 @@ if (isChrome) {
 }
 
 module('DOM Helper: typeIn', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {

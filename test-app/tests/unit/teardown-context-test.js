@@ -9,7 +9,6 @@ import {
   isSettled,
 } from '@ember/test-helpers';
 import { setResolverRegistry } from '../helpers/resolver';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { isTesting } from '@ember/debug';
 
 import hasjQuery from '../helpers/has-jquery';
@@ -18,10 +17,6 @@ import Pretender from 'pretender';
 import setupManualTestWaiter from '../helpers/manual-test-waiter';
 
 module('teardownContext', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   setupManualTestWaiter(hooks);
 
   let context;
