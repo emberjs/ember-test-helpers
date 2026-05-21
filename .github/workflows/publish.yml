@@ -23,6 +23,12 @@ jobs:
       command: ${{ steps.check-release.outputs.command }}
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -43,13 +49,19 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           # This creates an .npmrc that reads the NODE_AUTH_TOKEN environment variable
           registry-url: 'https://registry.npmjs.org'
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - run: pnpm install --frozen-lockfile
       - name: npm publish
         run: pnpm release-plan publish

@@ -21,6 +21,12 @@ jobs:
       command: ${{ steps.check-release.outputs.command }}
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -45,6 +51,12 @@ jobs:
     if: (github.event_name == 'push' && needs.check-plan.outputs.command != 'release') || (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true)
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
         # We need to download lots of history so that
         # github-changelog can discover what's changed since the last release
@@ -54,7 +66,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - run: pnpm install --frozen-lockfile
       - name: "Generate Explanation and Prep Changelogs"
         id: explanation
@@ -75,7 +87,7 @@ jobs:
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: peter-evans/create-pull-request@v6
+      - uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6
         with:
           commit-message: "Prepare Release using 'release-plan'"
           labels: "internal"
