@@ -28,7 +28,9 @@ module('teardownContext', function (hooks) {
   hooks.beforeEach(function () {
     this.pretender = new Pretender();
     setResolverRegistry({
-      'service:foo': Service.extend({ isFoo: true }),
+      'service:foo': class extends Service {
+        isFoo = true;
+      },
     });
     context = {};
     return setupContext(context);

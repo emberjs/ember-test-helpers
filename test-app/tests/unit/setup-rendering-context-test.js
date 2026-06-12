@@ -35,10 +35,10 @@ import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 async function buildEngineOwner(parentOwner, registry) {
   parentOwner.register(
     'engine:foo',
-    Engine.extend({
-      router: null,
+    class extends Engine {
+      router = null;
 
-      Resolver: {
+      Resolver = {
         create() {
           return {
             registry,
@@ -47,8 +47,8 @@ async function buildEngineOwner(parentOwner, registry) {
             },
           };
         },
-      },
-    })
+      };
+    }
   );
 
   let instance = parentOwner.buildChildEngineInstance('foo', {
@@ -78,14 +78,16 @@ module('setupRenderingContext', function (hooks) {
   function setupRenderingContextTests(hooks) {
     hooks.beforeEach(async function () {
       setResolverRegistry({
-        'service:foo': Service.extend({ isFoo: true }),
+        'service:foo': class extends Service {
+          isFoo = true;
+        },
         'component:template-only': setComponentTemplate(
           hbs`template-only component here`,
           class extends Component {}
         ),
-        'component:js-only': Component.extend({
-          classNames: ['js-only'],
-        }),
+        'component:js-only': class extends Component {
+          classNames = ['js-only'];
+        },
         'component:outer-comp': setComponentTemplate(
           hbs`outer{{inner-comp}}outer`,
           class extends Component {}
@@ -306,11 +308,11 @@ module('setupRenderingContext', function (hooks) {
     test('can create a component instance for direct testing without a template', function (assert) {
       this.owner.register(
         'component:foo-bar',
-        Component.extend({
+        class extends Component {
           someMethod() {
             return 'hello thar!';
-          },
-        })
+          }
+        }
       );
 
       let subject = this.owner.lookup('component:foo-bar');
@@ -325,11 +327,11 @@ module('setupRenderingContext', function (hooks) {
         'component:x-foo',
         setComponentTemplate(
           hbs`<button>Click me!</button>`,
-          Component.extend({
+          class extends Component {
             click() {
               assert.ok(true, 'click was fired');
-            },
-          })
+            }
+          }
         )
       );
 
@@ -376,7 +378,7 @@ module('setupRenderingContext', function (hooks) {
         'component:x-foo',
         setComponentTemplate(
           hbs`<button {{on 'click' @clicked}}>Click me!</button>`,
-          Component.extend()
+          class extends Component {}
         )
       );
 
@@ -603,9 +605,9 @@ module('setupRenderingContext', function (hooks) {
             }
           );
 
-          const Foo = Component.extend({
-            favoriteColor: 'red',
-          });
+          const Foo = class extends Component {
+            favoriteColor = 'red';
+          };
 
           setComponentTemplate(template, Foo);
           await render(Foo);
@@ -689,9 +691,9 @@ module('setupRenderingContext', function (hooks) {
             '<p>hello my favorite color is {{this.favoriteColor}}</p>'
           );
 
-          const Foo = Component.extend({
-            favoriteColor: 'red',
-          });
+          const Foo = class extends Component {
+            favoriteColor = 'red';
+          };
 
           const component = setComponentTemplate(template, Foo);
 

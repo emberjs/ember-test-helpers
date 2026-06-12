@@ -31,15 +31,15 @@ const PromiseWrapperTemplate = hbs`
 {{~/if}}
 `;
 
-const PromiseWrapper = Component.extend({
+class PromiseWrapper extends Component {
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     this.promise
       .then((value) => this.set('fulfillmentValue', value))
       .finally(() => this.set('settled', true));
-  },
-});
+  }
+}
 
 const ClickMeButtonTemplate = hbs`
 {{~#if this.wasClicked~}}
@@ -49,17 +49,18 @@ const ClickMeButtonTemplate = hbs`
 {{~/if~}}
 `;
 
-const ClickMeButtonComponent = Component.extend({
-  classNames: ['click-me-button'],
+class ClickMeButtonComponent extends Component {
+  classNames = ['click-me-button'];
+
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     this.wasClicked = false;
-  },
+  }
 
   click() {
     this.set('wasClicked', true);
-  },
-});
+  }
+}
 
 module('setupRenderingContext "real world"', function (hooks) {
   hooks.beforeEach(async function () {

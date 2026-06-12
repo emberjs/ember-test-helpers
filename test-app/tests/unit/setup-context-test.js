@@ -36,7 +36,9 @@ module('setupContext', function (hooks) {
 
   hooks.beforeEach(function () {
     setResolverRegistry({
-      'service:foo': Service.extend({ isFoo: true }),
+      'service:foo': class extends Service {
+        isFoo = true;
+      },
     });
   });
 
@@ -189,11 +191,11 @@ module('setupContext', function (hooks) {
       test('can be used for unit style testing', function (assert) {
         context.owner.register(
           'service:foo',
-          Service.extend({
+          class extends Service {
             someMethod() {
               return 'hello thar!';
-            },
-          })
+            }
+          }
         );
 
         let subject = context.owner.lookup('service:foo');
@@ -202,15 +204,15 @@ module('setupContext', function (hooks) {
       });
 
       test('can access a service instance (instead of this.inject.service("thing") in 0.6)', function (assert) {
-        context.owner.register('service:bar', Service.extend());
+        context.owner.register('service:bar', class extends Service {});
         context.owner.register(
           'service:foo',
-          Service.extend({
-            bar: injectService(),
+          class extends Service {
+            @injectService bar;
             someMethod() {
               this.set('bar.someProp', 'derp');
-            },
-          })
+            }
+          }
         );
 
         let subject = context.owner.lookup('service:foo');
@@ -813,7 +815,9 @@ module('setupContext', function (hooks) {
       test('it can specify a custom resolver', async function (assert) {
         context = {};
         let resolver = createCustomResolver({
-          'service:foo': Service.extend({ isFoo: 'maybe?' }),
+          'service:foo': class extends Service {
+            isFoo = 'maybe?';
+          },
         });
         await setupContext(context, { resolver });
         let { owner } = context;
@@ -868,7 +872,7 @@ module('setupContext', function (hooks) {
 
     hooks.beforeEach(function () {
       const AppConfig = Object.assign({ autoboot: false }, config.APP);
-      // .extend() because initializers are stored in the constructor, and we
+      // subclass because initializers are stored in the constructor, and we
       // don't want to pollute other tests using an application created from the
       // same constructor.
       isolatedApp = class extends App {}.create(AppConfig);

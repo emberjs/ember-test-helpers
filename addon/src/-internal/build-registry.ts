@@ -48,9 +48,16 @@ function exposeRegistryMethodsWithoutDeprecations(container: any) {
 // NOTE: this is the same as what `EngineInstance`/`ApplicationInstance`
 // implement, and is thus a superset of the `InternalOwner` contract from Ember
 // itself.
+// This is the same merging pattern Ember itself uses for `Engine` etc.: the
+// interface reflects the mixins actually applied in the `extends` clause.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface Owner extends RegistryProxyMixin, ContainerProxyMixin {}
-const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
-  _emberTestHelpersMockOwner: true,
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+class Owner extends EmberObject.extend(
+  RegistryProxyMixin,
+  ContainerProxyMixin,
+) {
+  _emberTestHelpersMockOwner = true;
 
   /* eslint-disable valid-jsdoc */
   /**
@@ -65,7 +72,7 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
    * @see {@link https://github.com/emberjs/ember.js/blob/v4.5.0-alpha.5/packages/%40ember/engine/instance.ts#L152-L167}
    */
   /* eslint-enable valid-jsdoc */
-  unregister(this: Owner, fullName: FullName) {
+  unregister(fullName: FullName) {
     // SAFETY: this is always present, but only the stable type definitions from
     // Ember actually preserve it, since it is private API.
     (this as any)['__container__'].reset(fullName);
@@ -74,8 +81,8 @@ const Owner = EmberObject.extend(RegistryProxyMixin, ContainerProxyMixin, {
     // SAFETY: this is always present, but only the stable type definitions from
     // Ember actually preserve it, since it is private API.
     (this as any)['__registry__'].unregister(fullName);
-  },
-});
+  }
+}
 
 /**
  * @private
@@ -128,7 +135,7 @@ export default function buildRegistry(resolver: Resolver) {
     // safety, and maximal backwards compatibility means we have to account for
     // that.
     __registry__: registry,
-    __container__: null,
+    __container__: null as any,
   }) as unknown as Owner;
 
   // @ts-ignore: this is private API.

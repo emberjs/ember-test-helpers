@@ -58,6 +58,8 @@ module.exports = {
 
         // eslint-plugin-ember
         'ember/avoid-leaking-state-in-ember-objects': 'off',
+        'ember/classic-decorator-hooks': 'off',
+        'ember/classic-decorator-no-classic-methods': 'off',
         'ember/new-module-imports': 'off',
         'ember/no-actions-hash': 'off',
         'ember/no-classic-classes': 'off',
