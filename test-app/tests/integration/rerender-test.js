@@ -18,13 +18,8 @@ import GlimmerComponent from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { hbs } from 'ember-cli-htmlbars';
 import { module, test } from 'qunit';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 
 module('rerender real-world', function (hooks) {
-  // this test requires Ember 3.25 in order to use lexically scoped values in templates
-  if (!hasEmberVersion(3, 25)) {
-    return;
-  }
   hooks.beforeEach(async function () {
     await setupContext(this);
     await setupRenderingContext(this);

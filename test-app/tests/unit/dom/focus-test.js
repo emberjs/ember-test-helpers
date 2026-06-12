@@ -11,7 +11,6 @@ import {
   instrumentElement,
 } from '../../helpers/events';
 import { isEdge, isChrome } from '../../helpers/browser-detect';
-import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { createDescriptor } from 'dom-element-descriptors';
 
 let focusSteps = ['focus', 'focusin'];
@@ -26,10 +25,6 @@ if (isChrome) {
 }
 
 module('DOM Helper: focus', function (hooks) {
-  if (!hasEmberVersion(2, 4)) {
-    return;
-  }
-
   let context, element;
 
   hooks.beforeEach(function () {
