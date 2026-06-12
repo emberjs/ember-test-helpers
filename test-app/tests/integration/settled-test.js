@@ -18,32 +18,32 @@ import { hbs } from 'ember-cli-htmlbars';
 import Pretender from 'pretender';
 import ajax from '../helpers/ajax';
 
-const TestComponent1 = Component.extend({
-  layout: hbs`{{this.internalValue}}`,
+class TestComponent1 extends Component {
+  layout = hbs`{{this.internalValue}}`;
 
-  internalValue: 'initial value',
+  internalValue = 'initial value';
 
   init() {
-    this._super.apply(this, arguments);
+    super.init(...arguments);
 
     later(this, () => this.set('internalValue', 'async value'), 10);
-  },
-});
+  }
+}
 
-const TestComponent2 = Component.extend({
-  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
+class TestComponent2 extends Component {
+  layout = hbs`<div class="test-component">{{this.internalValue}}</div>`;
 
-  internalValue: 'initial value',
+  internalValue = 'initial value';
 
   click() {
     later(this, () => this.set('internalValue', 'async value'), 10);
-  },
-});
+  }
+}
 
-const TestComponent3 = Component.extend({
-  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
+class TestComponent3 extends Component {
+  layout = hbs`<div class="test-component">{{this.internalValue}}</div>`;
 
-  internalValue: '',
+  internalValue = '';
 
   click() {
     ajax('/whazzits').then((data) => {
@@ -51,13 +51,13 @@ const TestComponent3 = Component.extend({
 
       run(this, 'set', 'internalValue', value + data);
     });
-  },
-});
+  }
+}
 
-const TestComponent4 = Component.extend({
-  layout: hbs`<div class="test-component">{{this.internalValue}}</div>`,
+class TestComponent4 extends Component {
+  layout = hbs`<div class="test-component">{{this.internalValue}}</div>`;
 
-  internalValue: '',
+  internalValue = '';
 
   click() {
     later(() => run(this, 'set', 'internalValue', 'Local Data!'), 10);
@@ -79,22 +79,22 @@ const TestComponent4 = Component.extend({
         });
       }, 15);
     });
-  },
-});
+  }
+}
 
-const TestComponent5 = Component.extend({
-  layout: hbs`{{this.internalValue}}`,
+class TestComponent5 extends Component {
+  layout = hbs`{{this.internalValue}}`;
 
-  internalValue: 'initial value',
+  internalValue = 'initial value';
 
-  ready: false,
+  ready = false;
 
   isReady() {
     return this.get('ready');
-  },
+  }
 
   init() {
-    this._super.apply(this, arguments);
+    super.init(...arguments);
     registerWaiter(this, this.isReady);
     later(() => {
       this.setProperties({
@@ -102,13 +102,13 @@ const TestComponent5 = Component.extend({
         ready: true,
       });
     }, 25);
-  },
+  }
 
   willDestroy() {
-    this._super.apply(this, arguments);
+    super.willDestroy(...arguments);
     unregisterWaiter(this, this.isReady);
-  },
-});
+  }
+}
 
 module('settled real-world scenarios', function (hooks) {
   if (!hasEmberVersion(2, 4)) {

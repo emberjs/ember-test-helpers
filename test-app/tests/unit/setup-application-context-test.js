@@ -19,7 +19,9 @@ import hasEmberVersion from '@ember/test-helpers/has-ember-version';
 import { setResolverRegistry } from '../helpers/resolver';
 import { hbs } from 'ember-cli-htmlbars';
 
-const Router = EmberRouter.extend({ location: 'none' });
+class Router extends EmberRouter {
+  location = 'none';
+}
 Router.map(function () {
   this.route('widgets');
   this.route('posts', function () {
@@ -45,18 +47,20 @@ module('setupApplicationContext', function (hooks) {
       'template:links-to-slow': hbs`<LinkTo @route="slow" class="to-slow">to slow</LinkTo>`,
       'template:posts': hbs`<h1>Posts Page</h1>{{outlet}}`,
       'template:posts/post': hbs`<div class="post-id">{{this.model.post_id}}</div>`,
-      'service:foo': Service.extend({ isFoo: true }),
-      'route:posts/post': Route.extend({
+      'service:foo': class extends Service {
+        isFoo = true;
+      },
+      'route:posts/post': class extends Route {
         model(params) {
           return params;
-        },
-      }),
-      'route:widgets': Route.extend({
+        }
+      },
+      'route:widgets': class extends Route {
         model() {
           throw new Error('Model hook error from /widgets');
-        },
-      }),
-      'route:slow': Route.extend({
+        }
+      },
+      'route:slow': class extends Route {
         model() {
           QUnit.config.current.assert.step('model start');
           return new Promise((resolve) => {
@@ -65,8 +69,8 @@ module('setupApplicationContext', function (hooks) {
               resolve();
             }, 50);
           });
-        },
-      }),
+        }
+      },
     };
 
     if (!hasEmberVersion(3, 12)) {
