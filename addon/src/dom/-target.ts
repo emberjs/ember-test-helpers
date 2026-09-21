@@ -1,7 +1,11 @@
 import type { IDOMElementDescriptor } from 'dom-element-descriptors';
 
 export type Target =
-  string | Element | IDOMElementDescriptor | Document | Window;
+  | string
+  | Element
+  | IDOMElementDescriptor
+  | Document
+  | Window;
 
 export interface HTMLElementContentEditable extends HTMLElement {
   isContentEditable: true;

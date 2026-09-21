@@ -17,8 +17,11 @@ import isComponent from './-internal/is-component.ts';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { precompileTemplate } from '@ember/template-compilation';
-import { setComponentTemplate } from '@glimmer/manager';
-import { setComponentManager, capabilities } from '@ember/component';
+import {
+  setComponentManager,
+  setComponentTemplate,
+  capabilities,
+} from '@ember/component';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { renderComponent } from '@ember/-internals/glimmer';
@@ -146,19 +149,20 @@ function renderViaRenderComponent(
 
   const ownerToRenderFrom = options?.owner || owner;
 
+  // wrapping in `run` enables `setupOnerror` hook
   if (
     ownerToRenderFrom === owner &&
     typeof (owner as any).renderRootComponent === 'function'
   ) {
-    (owner as any).renderRootComponent(component);
+    run(() => (owner as any).renderRootComponent(component));
   } else {
-    // @TODO: Evaluate if `renderRootComponent` should allow an alternative owner
-    // as per `RenderOptions.owner` comment
-    renderComponent(component, {
-      into: getRootElement() as Element,
-      owner: ownerToRenderFrom,
-      appendIntoTarget: true,
-    });
+    run(() =>
+      renderComponent(component, {
+        // a Cursor appends into the element instead of replacing its contents
+        into: { element: getRootElement(), nextSibling: null },
+        owner: ownerToRenderFrom,
+      }),
+    );
   }
 }
 
