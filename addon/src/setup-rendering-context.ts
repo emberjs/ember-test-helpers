@@ -12,19 +12,14 @@ import type { Owner } from './build-owner.ts';
 import getTestMetadata from './test-metadata.ts';
 import { runHooks } from './helper-hooks.ts';
 import isComponent from './-internal/is-component.ts';
+import renderComponent from './-internal/render-component.ts';
 
-// the built in types do not provide types for @ember/template-compilation
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { precompileTemplate } from '@ember/template-compilation';
 import {
   setComponentManager,
   setComponentTemplate,
   capabilities,
 } from '@ember/component';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { renderComponent } from '@ember/-internals/glimmer';
 
 const OUTLET_TEMPLATE = precompileTemplate(`{{outlet}}`, { strictMode: false });
 const EMPTY_TEMPLATE = precompileTemplate(``, { strictMode: false });
@@ -56,10 +51,6 @@ export function isRenderingTestContext(
 
 function supportsRenderRootComponent(owner: Owner): boolean {
   return typeof (owner as any).renderRootComponent === 'function';
-}
-
-function supportsRenderComponent(): boolean {
-  return typeof renderComponent === 'function';
 }
 
 /**
@@ -157,7 +148,7 @@ function renderViaRenderComponent(
     run(() => (owner as any).renderRootComponent(component));
   } else {
     run(() =>
-      renderComponent(component, {
+      renderComponent!(component, {
         // a Cursor appends into the element instead of replacing its contents
         into: { element: getRootElement(), nextSibling: null },
         owner: ownerToRenderFrom,
@@ -264,7 +255,7 @@ export function render(
       const testMetadata = getTestMetadata(context);
       testMetadata.usedHelpers.push('render');
 
-      if (supportsRenderComponent()) {
+      if (renderComponent) {
         // modern `renderComponent` path
         renderViaRenderComponent(
           owner,
@@ -360,7 +351,7 @@ export default function setupRenderingContext(
         (dispatcher as any).setup({}, '#ember-testing');
       }
 
-      if (supportsRenderComponent()) {
+      if (renderComponent) {
         if (supportsRenderRootComponent(owner)) {
           (owner as any).rootElement = getRootElement();
         }
