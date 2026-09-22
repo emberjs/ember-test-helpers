@@ -11,6 +11,8 @@ import {
   render,
   rerender,
   click,
+  setupOnerror,
+  resetOnerror,
 } from '@ember/test-helpers';
 import templateOnly from '@ember/component/template-only';
 
@@ -204,5 +206,40 @@ module('setupRenderingContext "real world"', function (hooks) {
         assert.equal(this.element.textContent, 'my name is Tomster');
       });
     }
+  });
+});
+
+module('setupRenderingContext | render error handling', function (hooks) {
+  const RENDER_ERROR =
+    'setupOnerror does not receive render errors when render() is not run in a runloop';
+
+  hooks.beforeEach(async function () {
+    await setupContext(this);
+    await setupRenderingContext(this);
+  });
+
+  hooks.afterEach(async function () {
+    resetOnerror();
+    await teardownContext(this);
+  });
+
+  test('an error thrown while rendering is routed to the setupOnerror handler', async function (assert) {
+    assert.expect(1);
+
+    setupOnerror((error) => {
+      assert.strictEqual(error.message, RENDER_ERROR);
+    });
+
+    let boom = helper(function () {
+      throw new Error(RENDER_ERROR);
+    });
+
+    await render(
+      precompileTemplate('{{boom}}', {
+        scope() {
+          return { boom };
+        },
+      })
+    );
   });
 });
