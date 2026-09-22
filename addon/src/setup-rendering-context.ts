@@ -149,8 +149,7 @@ function renderViaRenderComponent(
   } else {
     run(() =>
       renderComponent!(component, {
-        // a Cursor appends into the element instead of replacing its contents
-        into: { element: getRootElement(), nextSibling: null },
+        into: getRootElement() as Element,
         owner: ownerToRenderFrom,
       }),
     );
