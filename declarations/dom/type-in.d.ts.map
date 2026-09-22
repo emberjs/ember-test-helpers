@@ -1,0 +1,1 @@
+{"version":3,"file":"type-in.d.ts","sourceRoot":"","sources":["../../src/dom/type-in.ts"],"names":[],"mappings":"AAMA,OAAO,EACL,KAAK,MAAM,EAIZ,MAAM,cAAc,CAAC;AAMtB,MAAM,WAAW,OAAO;IACtB,KAAK,CAAC,EAAE,MAAM,CAAC;CAChB;AAMD;;;;;;;;;;;;;;;;;;;;;;;GAuBG;AACH,MAAM,CAAC,OAAO,UAAU,MAAM,CAC5B,MAAM,EAAE,MAAM,EACd,IAAI,EAAE,MAAM,EACZ,OAAO,GAAE,OAAY,GACpB,OAAO,CAAC,IAAI,CAAC,CAwDf"}
