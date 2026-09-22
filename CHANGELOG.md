@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-09-22)
+
+* @ember/test-helpers 5.5.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`
+  * [#1573](https://github.com/emberjs/ember-test-helpers/pull/1573) Add renderComponent support for emberjs/emberjs#21460 ([@BobrImperator](https://github.com/BobrImperator))
+
+#### :house: Internal
+* `@ember/test-helpers`
+  * [#1571](https://github.com/emberjs/ember-test-helpers/pull/1571) No extend ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Bartlomiej Dudzik ([@BobrImperator](https://github.com/BobrImperator))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2026-06-12)
 
 * @ember/test-helpers 5.4.3 (patch)
