@@ -141,15 +141,16 @@ function renderViaRenderComponent(
   const ownerToRenderFrom = options?.owner || owner;
 
   // `schedule` (not `run`) starts an autorun, so the first paint happens on a
-  // later microtask, like `setOutletState` in the legacy path.
+  // later microtask. The legacy path paints from the `render` queue of an
+  // autorun, so scheduling into `render` keeps the same first-paint timing.
   // Errors still reach the `setupOnerror` hook through the runloop.
   if (
     ownerToRenderFrom === owner &&
     typeof (owner as any).renderRootComponent === 'function'
   ) {
-    schedule('actions', () => (owner as any).renderRootComponent(component));
+    schedule('render', () => (owner as any).renderRootComponent(component));
   } else {
-    schedule('actions', () =>
+    schedule('render', () =>
       renderComponent!(component, {
         into: getRootElement() as Element,
         owner: ownerToRenderFrom,
