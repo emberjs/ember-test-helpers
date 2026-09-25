@@ -93,6 +93,9 @@ importers:
       ember-source-channel-url:
         specifier: ^3.0.0
         version: 3.0.0
+      ember-strict-application-resolver:
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.29.0)
       ember-template-lint:
         specifier: ^5.7.2
         version: 5.13.0
@@ -2685,6 +2688,9 @@ packages:
     engines: {node: '>= 18.*'}
     peerDependencies:
       '@glimmer/component': ^1.1.2
+
+  ember-strict-application-resolver@0.1.1:
+    resolution: {integrity: sha512-/49JZ2Yk2ggicAGIoFNWcz05llhe2i+/2dpH5Pv1KlwZOBKkqMMJpTKEB4IMg+FjKBiE0r2yxuZzo9Oly9vc1A==}
 
   ember-template-imports@3.4.2:
     resolution: {integrity: sha512-OS8TUVG2kQYYwP3netunLVfeijPoOKIs1SvPQRTNOQX4Pu8xGGBEZmrv0U1YTnQn12Eg+p6w/0UdGbUnITjyzw==}
@@ -9567,6 +9573,14 @@ snapshots:
       - rsvp
       - supports-color
       - webpack
+
+  ember-strict-application-resolver@0.1.1(@babel/core@7.29.0):
+    dependencies:
+      '@embroider/addon-shim': 1.10.2
+      decorator-transforms: 2.3.1(@babel/core@7.29.0)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   ember-template-imports@3.4.2:
     dependencies:
