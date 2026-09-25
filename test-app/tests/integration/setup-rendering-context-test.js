@@ -243,3 +243,41 @@ module('setupRenderingContext | render error handling', function (hooks) {
     );
   });
 });
+
+module('setupRenderingContext | render timing', function (hooks) {
+  hooks.beforeEach(async function () {
+    await setupContext(this);
+    await setupRenderingContext(this);
+  });
+
+  hooks.afterEach(async function () {
+    await teardownContext(this);
+  });
+
+  test('work started before render() that settles within a few microtasks is settled at first paint', async function (assert) {
+    let isSettled = false;
+
+    // The same chain as a typical "loading state" helper:
+    // returning a promise from an async function takes a few microtasks,
+    // and each of then/catch/finally adds another.
+    (async () => Promise.resolve())()
+      .then(() => {})
+      .catch(() => {})
+      .finally(() => (isSettled = true));
+
+    let seen = [];
+    let read = helper(function () {
+      seen.push(isSettled);
+    });
+
+    await render(
+      precompileTemplate('{{read}}', {
+        scope() {
+          return { read };
+        },
+      })
+    );
+
+    assert.deepEqual(seen, [true]);
+  });
+});

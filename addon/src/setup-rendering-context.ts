@@ -1,4 +1,4 @@
-import { run } from '@ember/runloop';
+import { run, schedule } from '@ember/runloop';
 import { EventDispatcher } from '@ember/-internals/views';
 import {
   type BaseContext,
@@ -140,14 +140,17 @@ function renderViaRenderComponent(
 
   const ownerToRenderFrom = options?.owner || owner;
 
-  // wrapping in `run` enables `setupOnerror` hook
+  // `schedule` (not `run`) starts an autorun, so the first paint happens on a
+  // later microtask. The legacy path paints from the `render` queue of an
+  // autorun, so scheduling into `render` keeps the same first-paint timing.
+  // Errors still reach the `setupOnerror` hook through the runloop.
   if (
     ownerToRenderFrom === owner &&
     typeof (owner as any).renderRootComponent === 'function'
   ) {
-    run(() => (owner as any).renderRootComponent(component));
+    schedule('render', () => (owner as any).renderRootComponent(component));
   } else {
-    run(() =>
+    schedule('render', () =>
       renderComponent!(component, {
         into: getRootElement() as Element,
         owner: ownerToRenderFrom,
