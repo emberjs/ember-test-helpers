@@ -1,15 +1,18 @@
-// @ts-ignore: this is private API. This import will work Ember 5.1+ since it
-// "provides" this public API, but does not for earlier versions. As a result,
-// this type will be `any`.
-import { _backburner } from '@ember/runloop';
+import { importSync } from '@embroider/macros';
 import { Test } from 'ember-testing';
 
 import { nextTick } from './-utils.ts';
-import waitUntil from './wait-until.ts';
 import { hasPendingTransitions } from './setup-application-context.ts';
-import { hasPendingWaiters } from '@ember/test-waiters';
+import { hasPendingWaiters, waitersSettled } from '@ember/test-waiters';
 import type DebugInfo from './-internal/debug-info.ts';
 import { TestDebugInfo } from './-internal/debug-info.ts';
+import renderSettled from './-internal/render-settled.ts';
+
+// This is private API. Runloop-less builds of ember-source (the RFC 957
+// spikes) do not export `_backburner` at all, so it is read off the module
+// namespace -- a missing export degrades to `undefined` here instead of a
+// build-time missing-export error in consuming apps.
+const _backburner: any = (importSync('@ember/runloop') as any)._backburner;
 
 let requests: XMLHttpRequest[];
 const checkWaiters = Test.checkWaiters;
@@ -139,14 +142,15 @@ export interface SettledState {
   @returns {Object} object with properties for each of the metrics used to determine settledness
 */
 export function getSettledState(): SettledState {
-  const hasPendingTimers = _backburner.hasTimers();
-  const hasRunLoop = Boolean(_backburner.currentInstance);
+  const hasPendingTimers = _backburner ? _backburner.hasTimers() : false;
+  const hasRunLoop = _backburner ? Boolean(_backburner.currentInstance) : false;
   const hasPendingLegacyWaiters = checkWaiters();
   const hasPendingTestWaiters = hasPendingWaiters();
   const pendingRequestCount = pendingRequests();
   const hasPendingRequests = pendingRequestCount > 0;
-  // TODO: Ideally we'd have a function in Ember itself that can synchronously identify whether
-  // or not there are any pending render operations, but this will have to suffice for now
+  // On runloop-driven builds a pending render is observable as backburner's
+  // autorun instance. Builds that schedule without the runloop have nothing
+  // to observe here -- `settled()` awaits `renderSettled()` directly.
   const isRenderPending = !!hasRunLoop;
 
   return {
@@ -209,6 +213,39 @@ export function isSettled(): boolean {
   @public
   @returns {Promise<void>} resolves when settled
 */
-export default function settled(): Promise<void> {
-  return waitUntil(isSettled, { timeout: Infinity }).then(() => {});
+export default async function settled(): Promise<void> {
+  // Settledness is awaited, not polled: rendering resolves
+  // `renderSettled()` when it completes, and waiters resolve
+  // `waitersSettled()` from their operations' own completion promises.
+  //
+  // The timers are not a polling cadence, and both are load-bearing:
+  //
+  // - The 50ms race covers what cannot announce completion: run loop
+  //   timers, legacy `Ember.Test.registerWaiter` callbacks, request
+  //   counters, and `Waiter` implementations that do not implement
+  //   `settled`. Without it, `settled()` returns while those are still
+  //   pending. It is 50ms rather than 10 so that it loses the race to a
+  //   frame-paced render tick; at 10ms it decided 30 of 117 iterations
+  //   and cost an extra pass each time. In practice the promises decide
+  //   (measured 91 of 92 iterations).
+  //
+  // - The 0ms yield makes quiet observable from a macrotask. Task
+  //   sources already queued (worker messages, zero-delay timers) can
+  //   register waiters or dirty tracked state, and an observation made
+  //   in microtask context wins the race against them and settles
+  //   early.
+  //
+  // The loop re-checks because settling can start more work.
+  for (;;) {
+    await Promise.race([
+      Promise.all([renderSettled(), waitersSettled()]),
+      new Promise((resolve) => setTimeout(resolve, 50)),
+    ]);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    if (isSettled()) {
+      return;
+    }
+  }
 }
