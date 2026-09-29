@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-09-29)
+
+* @ember/test-helpers 5.5.2 (patch)
+
+#### :bug: Bug Fix
+* `@ember/test-helpers`
+  * [#1578](https://github.com/emberjs/ember-test-helpers/pull/1578) Adjust renderComponent condition for Ember compatibility ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 1
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2026-09-27)
 
 * @ember/test-helpers 5.5.1 (patch)
