@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "build:docs": "pnpm build && documentation build --document-exported \"./dist/index.js\" --config documentation.yml --markdown-toc-max-depth 3 -f md -o ../API.md",
+    "build:docs": "node scripts/build-docs.mjs",
     "lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
     "lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
     "lint:js": "eslint . --cache",
