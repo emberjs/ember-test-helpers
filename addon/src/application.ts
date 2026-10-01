@@ -16,6 +16,15 @@ let __application__: Application | undefined;
 export function setApplication(application: Application): void {
   __application__ = application;
 
+  /**
+   * For RFC#1132, the strict resolver is not accessible.
+   * It is closed off from extension.
+   *
+   * SAFETY: modules is a new API, so older Application
+   *         types will not have it.
+   */
+  if ((application as any)?.modules) return;
+
   if (!getResolver()) {
     const Resolver = (application as any).Resolver;
     const resolver = Resolver.create({ namespace: application });
