@@ -2,6 +2,24 @@
 
 ## Release (2026-10-01)
 
+* @ember/test-helpers 5.7.0 (minor)
+
+#### :rocket: Enhancement
+* `@ember/test-helpers`
+  * [#1551](https://github.com/emberjs/ember-test-helpers/pull/1551) Emit fewer modules to optimize vite ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1566](https://github.com/emberjs/ember-test-helpers/pull/1566) Support RFC#1132, strict-resolver ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#1580](https://github.com/emberjs/ember-test-helpers/pull/1580) Change version check to >=6.12.1 for renderComponent ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `@ember/test-helpers`
+  * [#1581](https://github.com/emberjs/ember-test-helpers/pull/1581) Prepare Release v5.6.0 ([@github-actions[bot]](https://github.com/apps/github-actions))
+
+#### Committers: 2
+- GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2026-10-01)
+
 * @ember/test-helpers 5.6.0 (minor)
 
 #### :rocket: Enhancement
