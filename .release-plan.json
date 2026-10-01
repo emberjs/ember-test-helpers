@@ -2,17 +2,21 @@
   "solution": {
     "@ember/test-helpers": {
       "impact": "minor",
-      "oldVersion": "5.5.2",
-      "newVersion": "5.6.0",
+      "oldVersion": "5.6.0",
+      "newVersion": "5.7.0",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "minor",
           "reason": "Appears in changelog section :rocket: Enhancement"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2026-10-01)\n\n* @ember/test-helpers 5.6.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1551](https://github.com/emberjs/ember-test-helpers/pull/1551) Emit fewer modules to optimize vite ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1566](https://github.com/emberjs/ember-test-helpers/pull/1566) Support RFC#1132, strict-resolver ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1580](https://github.com/emberjs/ember-test-helpers/pull/1580) Change version check to >=6.12.1 for renderComponent ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 1\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2026-10-01)\n\n* @ember/test-helpers 5.7.0 (minor)\n\n#### :rocket: Enhancement\n* `@ember/test-helpers`\n  * [#1551](https://github.com/emberjs/ember-test-helpers/pull/1551) Emit fewer modules to optimize vite ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1566](https://github.com/emberjs/ember-test-helpers/pull/1566) Support RFC#1132, strict-resolver ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#1580](https://github.com/emberjs/ember-test-helpers/pull/1580) Change version check to >=6.12.1 for renderComponent ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :house: Internal\n* `@ember/test-helpers`\n  * [#1581](https://github.com/emberjs/ember-test-helpers/pull/1581) Prepare Release v5.6.0 ([@github-actions[bot]](https://github.com/apps/github-actions))\n\n#### Committers: 2\n- GitHub Actions [Bot] ([@github-actions](https://github.com/apps/github-actions))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
