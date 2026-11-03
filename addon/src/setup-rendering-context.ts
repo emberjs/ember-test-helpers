@@ -1,5 +1,4 @@
 import { run, schedule } from '@ember/runloop';
-import { EventDispatcher } from '@ember/-internals/views';
 import {
   type BaseContext,
   type TestContext,
@@ -341,17 +340,6 @@ export default function setupRenderingContext(
   return Promise.resolve()
     .then(() => {
       const { owner } = renderingContext;
-
-      // When the host app uses `setApplication` (instead of `setResolver`) the event dispatcher has
-      // already been setup via `applicationInstance.boot()` in `./build-owner`. If using
-      // `setResolver` (instead of `setApplication`) a "mock owner" is created by extending
-      // `Ember._ContainerProxyMixin` and `Ember._RegistryProxyMixin` in this scenario we need to
-      // manually start the event dispatcher.
-      if (owner._emberTestHelpersMockOwner) {
-        const dispatcher =
-          owner.lookup('event_dispatcher:main') || EventDispatcher.create();
-        (dispatcher as any).setup({}, '#ember-testing');
-      }
 
       if (renderComponent) {
         if (supportsRenderRootComponent(owner)) {

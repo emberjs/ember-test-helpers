@@ -1,12 +1,11 @@
 import Application from '@ember/application';
+import { registerDestructor } from '@ember/destroyable';
 import type { Resolver } from '@ember/owner';
 
-import legacyBuildRegistry from './-internal/build-registry.ts';
 import type EmberOwner from '@ember/owner';
 import type { SimpleElement } from '@simple-dom/interface';
 
 export interface Owner extends EmberOwner {
-  _emberTestHelpersMockOwner?: boolean;
   rootElement?: string | Element | SimpleElement | null;
 
   _lookupFactory?(key: string): any;
@@ -19,22 +18,22 @@ export interface Owner extends EmberOwner {
 }
 
 /**
-  Creates an "owner" (an object that either _is_ or duck-types like an
-  `Ember.ApplicationInstance`) from the provided options.
+  Creates an "owner" (an `Ember.ApplicationInstance`) from the provided
+  options.
 
   If `options.application` is present (e.g. setup by an earlier call to
   `setApplication`) an `Ember.ApplicationInstance` is built via
   `application.buildInstance()`.
 
   If `options.application` is not present, we fall back to using
-  `options.resolver` instead (setup via `setResolver`). This creates a mock
-  "owner" by using a custom created combination of `Ember.Registry`,
-  `Ember.Container`, `Ember._ContainerProxyMixin`, and
-  `Ember._RegistryProxyMixin`.
+  `options.resolver` instead (setup via `setResolver`). This creates an
+  `Ember.Application` that has only the resolver, and builds the
+  `Ember.ApplicationInstance` from it. The application is destroyed together
+  with the instance.
 
   @private
   @param {Ember.Application} [application] the Ember.Application to build an instance from
-  @param {Ember.Resolver} [resolver] the resolver to use to back a "mock owner"
+  @param {Ember.Resolver} [resolver] the resolver to build an application from
   @returns {Promise<Ember.ApplicationInstance>} a promise resolving to the generated "owner"
 */
 export default function buildOwner(
@@ -55,9 +54,27 @@ export default function buildOwner(
     );
   }
 
-  const { owner } = legacyBuildRegistry(resolver) as unknown as {
-    owner: Owner;
-  };
+  const resolverOnlyApplication = Application.create({
+    autoboot: false,
+    rootElement: '#ember-testing',
+    // @ts-ignore: this is actually the correcct type, but there was a typo in
+    // Ember's docs for many years which meant that there was a matching problem
+    // in the types for Ember's definition of `Engine`. Once we require at least
+    // Ember 5.1 (in some future breaking change), this ts-ignore can be removed.
+    Resolver: {
+      create() {
+        return resolver;
+      },
+    },
+  });
 
-  return Promise.resolve(owner);
+  // @ts-ignore: see the note on `visit` above.
+  return resolverOnlyApplication
+    .boot()
+    .then((app) => app.buildInstance().boot())
+    .then((owner) => {
+      registerDestructor(owner, () => resolverOnlyApplication.destroy());
+
+      return owner;
+    });
 }

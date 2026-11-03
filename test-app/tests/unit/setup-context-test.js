@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { isTesting } from '@ember/debug';
+import ApplicationInstance from '@ember/application/instance';
 import Service, { service as injectService } from '@ember/service';
 import {
   setupContext,
@@ -15,6 +16,7 @@ import {
   setResolver,
   getTestMetadata,
   settled,
+  getRootElement,
 } from '@ember/test-helpers';
 import { getDeprecationsForContext } from '@ember/test-helpers/-internal/deprecations';
 import { getWarningsForContext } from '@ember/test-helpers/-internal/warnings';
@@ -865,6 +867,30 @@ module('setupContext', function (hooks) {
     });
 
     setupContextTests();
+
+    test('the owner is an ApplicationInstance', async function (assert) {
+      context = {};
+      await setupContext(context);
+
+      assert.true(context.owner instanceof ApplicationInstance);
+      assert.strictEqual(
+        getRootElement(),
+        document.querySelector('#ember-testing')
+      );
+    });
+
+    test('teardownContext destroys the application of the owner', async function (assert) {
+      let localContext = {};
+      await setupContext(localContext);
+
+      let { application } = localContext.owner;
+
+      assert.false(application.isDestroyed);
+
+      await teardownContext(localContext);
+
+      assert.true(application.isDestroyed);
+    });
   });
 
   module('initializers', function (hooks) {

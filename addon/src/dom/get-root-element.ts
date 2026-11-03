@@ -23,16 +23,7 @@ export default function getRootElement(): Element | Document {
     );
   }
 
-  const owner = context.owner;
-
-  let rootElement;
-  // When the host app uses `setApplication` (instead of `setResolver`) the owner has
-  // a `rootElement` set on it with the element or id to be used
-  if (owner && owner._emberTestHelpersMockOwner === undefined) {
-    rootElement = owner.rootElement;
-  } else {
-    rootElement = '#ember-testing';
-  }
+  let rootElement: unknown = context.owner.rootElement;
 
   if (rootElement instanceof Window) {
     rootElement = rootElement.document;
