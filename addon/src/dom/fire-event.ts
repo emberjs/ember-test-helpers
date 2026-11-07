@@ -153,18 +153,31 @@ export default fireEvent;
 
 // eslint-disable-next-line require-jsdoc
 function buildBasicEvent(type: string, options: any = {}): Event {
-  const event = document.createEvent('Events');
-
   const bubbles = options.bubbles !== undefined ? options.bubbles : true;
   const cancelable =
     options.cancelable !== undefined ? options.cancelable : true;
+  // Per the HTML spec, form control `input` events are composed (they cross
+  // shadow DOM boundaries); `change` events are not. Default `composed` to
+  // true for `input` events and false otherwise — an explicit option wins.
+  const composed =
+    options.composed !== undefined ? options.composed : type === 'input';
 
   delete options.bubbles;
   delete options.cancelable;
+  delete options.composed;
 
-  // bubbles and cancelable are readonly, so they can be
-  // set when initializing event
-  event.initEvent(type, bubbles, cancelable);
+  let event: Event;
+  try {
+    // The legacy `initEvent` API cannot set `composed`, so build the event
+    // with the Event constructor when it is available.
+    event = new Event(type, { bubbles, cancelable, composed });
+  } catch {
+    event = document.createEvent('Events');
+
+    // bubbles and cancelable are readonly, so they can be
+    // set when initializing event
+    event.initEvent(type, bubbles, cancelable);
+  }
   for (const prop in options) {
     (event as any)[prop] = options[prop];
   }
