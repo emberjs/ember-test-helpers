@@ -78,6 +78,54 @@ module('DOM Helper: triggerEvent', function (hooks) {
     assert.verifySteps(['fliberty']);
   });
 
+  test('input events are composed by default', async function (assert) {
+    element = document.createElement('input');
+    insertElement(element);
+
+    let event;
+    element.addEventListener('input', (e) => {
+      event = e;
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'input');
+
+    assert.true(event.composed, `input event is composed`);
+  });
+
+  test('change events are not composed', async function (assert) {
+    element = document.createElement('input');
+    insertElement(element);
+
+    let event;
+    element.addEventListener('change', (e) => {
+      event = e;
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'change');
+
+    assert.false(event.composed, `change event is not composed`);
+  });
+
+  test('an explicit composed option is honored for input events', async function (assert) {
+    element = document.createElement('input');
+    insertElement(element);
+
+    let event;
+    element.addEventListener('input', (e) => {
+      event = e;
+    });
+
+    await setupContext(context);
+    await triggerEvent(element, 'input', { composed: false });
+
+    assert.false(
+      event.composed,
+      `input event respects an explicit composed: false`,
+    );
+  });
+
   test('triggering event via selector with context set fires the given event type', async function (assert) {
     element = buildInstrumentedElement('div');
 
@@ -160,7 +208,7 @@ module('DOM Helper: triggerEvent', function (hooks) {
 
     assert.rejects(
       triggerEvent(element),
-      /Must provide an `eventType` to `triggerEvent`/
+      /Must provide an `eventType` to `triggerEvent`/,
     );
   });
 
@@ -172,8 +220,8 @@ module('DOM Helper: triggerEvent', function (hooks) {
     assert.rejects(
       triggerEvent(element, 'mouseenter'),
       new Error(
-        'Can not `triggerEvent` on disabled [object HTMLTextAreaElement]'
-      )
+        'Can not `triggerEvent` on disabled [object HTMLTextAreaElement]',
+      ),
     );
   });
 
